@@ -5,6 +5,7 @@
 
 import { SpellingEngine } from './engine/spelling-engine.js';
 import { SPELLING_DECKS, getDeckById } from './content/spelling-catalog.js';
+import { ShareController } from './engine/share-controller.js';
 
 // Storage Keys & Default State
 const STORAGE_KEY = 'luckys_learning_world_state';
@@ -88,9 +89,37 @@ class AppController {
     this.setupMathArena();
     this.setupWordArena();
     this.setupVictoryModal();
+    this.setupShareHandler();
+    this.checkUrlChallenge();
     this.updateHeaderProfile();
     this.renderPokedex();
     this.switchView('dashboard-view');
+  }
+
+  setupShareHandler() {
+    document.getElementById('btn-share-line')?.addEventListener('click', () => {
+      const shareUrl = ShareController.createShareUrl({
+        deckId: 'y3-sightwords',
+        senderName: this.state.player.name,
+        score: this.state.player.stars
+      });
+      ShareController.shareToLine(shareUrl, `Lucky challenged you to a learning duel!`);
+    });
+  }
+
+  checkUrlChallenge() {
+    const challenge = ShareController.parseUrlChallenge();
+    if (challenge && challenge.customWords) {
+      console.log('📲 Loaded custom word challenge from URL:', challenge);
+      const customDeck = {
+        id: 'url-challenge',
+        name: `Challenge from ${challenge.senderName}`,
+        grade: 'custom',
+        words: challenge.customWords
+      };
+      this.spellingEngine = new SpellingEngine(customDeck);
+      this.switchView('word-view');
+    }
   }
 
   updateHeaderProfile() {
