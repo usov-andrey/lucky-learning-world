@@ -84,7 +84,7 @@
       </div>
     </section>
 
-    <!-- VIEW 2: Math Realm Screen -->
+    <!-- VIEW 2: Math Battle Realm Screen -->
     <section id="math-view" class="view-screen">
       <div class="screen-header">
         <button class="back-btn" id="btn-back-from-math">⬅️ Back to Hub</button>
@@ -92,19 +92,43 @@
       </div>
 
       <div class="chips-row" id="math-mode-chips">
-        <button class="chip-btn active" data-math-mode="x-table">Multiplication (×2 .. ×12)</button>
+        <button class="chip-btn active" data-math-mode="multiplication">Multiplication (×2 .. ×12)</button>
         <button class="chip-btn" data-math-mode="addition">Speed Addition (+)</button>
         <button class="chip-btn" data-math-mode="division">Division Master (÷)</button>
       </div>
 
-      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 40px; text-align: center; border: 1px solid var(--border-glass);">
-        <span style="font-size: 64px;">👾</span>
-        <h3 style="margin-top: 16px; font-size: 24px;">Math Battle Arena Ready!</h3>
-        <p style="color: var(--text-muted); margin-top: 8px;">Select a mode above to launch your first math monster battle.</p>
+      <!-- Math Battle Arena -->
+      <div class="arena-card" id="math-arena-card">
+        <!-- Battle Stage Header -->
+        <div class="battle-stage">
+          <div class="fighter-box monster-fighter">
+            <div class="hp-bar-wrap">
+              <div class="hp-bar-fill" id="math-monster-hp-bar" style="width: 100%;"></div>
+            </div>
+            <div class="sprite-wrapper">
+              <img id="math-monster-img" src="pokemon/pikachu.png" alt="Monster" class="battle-sprite float-anim">
+            </div>
+            <div class="fighter-name" id="math-monster-name">Math Monster</div>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-container">
+          <div class="question-progress" id="math-question-progress">Question 1 of 10</div>
+          <div class="question-display" id="math-question-text">6 × 7 = ?</div>
+          <div class="feedback-banner" id="math-feedback-text">&nbsp;</div>
+
+          <!-- Answer Options Grid -->
+          <div class="answers-grid" id="math-answers-grid">
+            <button class="answer-btn" data-answer-idx="0">42</button>
+            <button class="answer-btn" data-answer-idx="1">36</button>
+            <button class="answer-btn" data-answer-idx="2">48</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- VIEW 3: Word Realm Screen -->
+    <!-- VIEW 3: Word Battle Realm Screen -->
     <section id="word-view" class="view-screen">
       <div class="screen-header">
         <button class="back-btn" id="btn-back-from-word">⬅️ Back to Hub</button>
@@ -112,15 +136,57 @@
       </div>
 
       <div class="chips-row" id="word-deck-chips">
-        <button class="chip-btn active" data-deck="y3-sightwords">UK Year 3 Sight Words</button>
-        <button class="chip-btn" data-deck="phonics-blend">Phonics & Blends</button>
-        <button class="chip-btn" data-deck="oxford-g3">Oxford Primary G3</button>
+        <button class="chip-btn active" data-deck-id="g1-sightwords">Grade 1 Sight Words</button>
+        <button class="chip-btn" data-deck-id="y3-sightwords">Grade 3 (Lucky's Deck)</button>
+        <button class="chip-btn" data-deck-id="phonics-blend">Phonics & Blends</button>
+        <button class="chip-btn" data-deck-id="oxford-g3">Oxford G3 International</button>
       </div>
 
-      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 40px; text-align: center; border: 1px solid var(--border-glass);">
-        <span style="font-size: 64px;">🐉</span>
-        <h3 style="margin-top: 16px; font-size: 24px;">Spelling Arena Ready!</h3>
-        <p style="color: var(--text-muted); margin-top: 8px;">Listen to words, build them letter by letter, and defeat spelling dragons.</p>
+      <!-- Word Battle Arena -->
+      <div class="arena-card" id="word-arena-card">
+        <!-- Battle Stage Header -->
+        <div class="battle-stage">
+          <div class="fighter-box monster-fighter">
+            <div class="hp-bar-wrap">
+              <div class="hp-bar-fill" id="word-monster-hp-bar" style="width: 100%;"></div>
+            </div>
+            <div class="sprite-wrapper">
+              <img id="word-monster-img" src="pokemon/eevee.png" alt="Dragon" class="battle-sprite float-anim">
+            </div>
+            <div class="fighter-name" id="word-monster-name">Spelling Dragon</div>
+          </div>
+        </div>
+
+        <!-- Word Question & Audio Container -->
+        <div class="question-container">
+          <div class="question-progress" id="word-question-progress">Word 1 of 8</div>
+          
+          <button class="audio-pronounce-btn" id="btn-speak-word">
+            <span style="font-size: 28px;">🔊</span>
+            <span>Tap to Listen</span>
+          </button>
+
+          <div class="word-hint-text" id="word-hint-text">"Land surrounded by water"</div>
+
+          <!-- Current Typed / Tapped Slots -->
+          <div class="word-slots-row" id="word-slots-row">
+            <span class="letter-slot">i</span>
+            <span class="letter-slot">s</span>
+            <span class="letter-slot empty">_</span>
+          </div>
+
+          <div class="feedback-banner" id="word-feedback-text">&nbsp;</div>
+
+          <!-- Letter Tiles Bank -->
+          <div class="letter-tiles-bank" id="letter-tiles-bank">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div class="spelling-actions-row">
+            <button class="secondary-btn" id="btn-clear-spelling">Clear</button>
+            <button class="primary-btn" id="btn-submit-spelling">Check Word ➔</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -128,13 +194,11 @@
     <section id="pokedex-view" class="view-screen">
       <div class="screen-header">
         <button class="back-btn" id="btn-back-from-pokedex">⬅️ Back to Hub</button>
-        <h2 style="font-size: 24px;">🐾 Pokédex Pet Sanctuary</h2>
+        <h2 style="font-size: 24px;">🐾 Pokédex & Pet Sanctuary</h2>
       </div>
 
-      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 40px; text-align: center; border: 1px solid var(--border-glass);">
-        <span style="font-size: 64px;">🦄</span>
-        <h3 style="margin-top: 16px; font-size: 24px;">Pet Collection Locked</h3>
-        <p style="color: var(--text-muted); margin-top: 8px;">Win battles in Math or Word realms to hatch your first companion pet!</p>
+      <div class="pokedex-grid" id="pokedex-grid">
+        <!-- Rendered dynamically in app.js -->
       </div>
     </section>
 
@@ -147,7 +211,7 @@
 
       <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border-glass);">
         <h3 style="font-size: 20px; margin-bottom: 16px;">Curriculum & Grade Preset</h3>
-        <div class="chips-row">
+        <div class="chips-row" id="settings-grade-chips">
           <button class="chip-btn" data-grade="g1">Grade 1 / UK Year 1</button>
           <button class="chip-btn" data-grade="g2">Grade 2 / UK Year 2</button>
           <button class="chip-btn active" data-grade="g3">Grade 3 / UK Year 3 (Lucky's Grade)</button>
@@ -158,6 +222,24 @@
     </section>
 
   </main>
+
+  <!-- VICTORY REWARD MODAL -->
+  <div class="modal-overlay" id="victory-modal">
+    <div class="modal-card">
+      <div style="font-size: 54px; animation: pulse-bounce 1s infinite;">🎉</div>
+      <h2 style="font-size: 32px; margin-top: 10px;" id="victory-title">VICTORY!</h2>
+      <p style="color: var(--text-muted); margin-top: 6px;" id="victory-subtitle">You defeated the monster and earned 3 Stars!</p>
+      
+      <div class="reward-pet-preview">
+        <img id="reward-pet-img" src="pokemon/pikachu.png" alt="Rescued Pet" class="reward-pet-img">
+        <div style="font-weight: 700; font-size: 20px; margin-top: 10px;" id="reward-pet-name">Pikachu Rescued!</div>
+      </div>
+
+      <button class="realm-action-btn" id="btn-victory-continue" style="background: var(--grad-success); width: 100%; margin-top: 20px;">
+        Collect Pet & Continue ➔
+      </button>
+    </div>
+  </div>
 
   <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
