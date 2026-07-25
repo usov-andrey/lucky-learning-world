@@ -3,10 +3,10 @@
 // inconsistent, so a broken content edit fails fast instead of surfacing as a
 // runtime crash mid-session.
 
-import { LEVELS } from "./content/levels.js?v=2026-07-20b";
-import { CHARACTERS } from "./content/characters.js?v=2026-07-20b";
-import { REWARD_POOLS } from "./content/reward-pools.js?v=2026-07-20b";
-import { MIX } from "./content/mix.js?v=2026-07-20b";
+import { LEVELS } from "./levels.js?v=2026-07-20b";
+import { CHARACTERS } from "./characters.js?v=2026-07-20b";
+import { REWARD_POOLS } from "./reward-pools.js?v=2026-07-20b";
+import { MIX } from "./mix.js?v=2026-07-20b";
 
 function assertUniqueIds(list, label) {
   const seen = new Set();

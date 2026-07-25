@@ -11,7 +11,7 @@ export class SpellingEngine {
     this.monsterMaxHp = deck.words.length * 10;
     this.monsterHp = this.monsterMaxHp;
     this.currentUserInput = "";
-    this.synth = window.speechSynthesis || null;
+    this.synth = typeof window !== 'undefined' && window.speechSynthesis ? window.speechSynthesis : null;
   }
 
   getCurrentQuestion() {
