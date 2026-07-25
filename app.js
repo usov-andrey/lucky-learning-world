@@ -89,6 +89,7 @@ class AppController {
     this.registerServiceWorker();
     this.setupNavigation();
     this.setupModeChips();
+    this.setupSettings();
     this.setupMathArena();
     this.setupWordArena();
     this.setupVictoryModal();
@@ -112,6 +113,29 @@ class AppController {
     const modal = document.getElementById('onboarding-modal');
     const nameInput = document.getElementById('onboarding-name-input');
     const startBtn = document.getElementById('btn-start-onboarding');
+    const onboardingGradeChips = document.getElementById('onboarding-grade-chips');
+
+    let selectedGrade = this.state.player.grade || 'g3';
+
+    if (onboardingGradeChips) {
+      // Sync default active state
+      onboardingGradeChips.querySelectorAll('.chip-btn').forEach(btn => {
+        if (btn.dataset.grade === selectedGrade) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      onboardingGradeChips.onclick = (e) => {
+        const btn = e.target.closest('.chip-btn');
+        if (!btn || !btn.dataset.grade) return;
+        soundFx.playClick();
+        onboardingGradeChips.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        selectedGrade = btn.dataset.grade;
+      };
+    }
 
     if (!this.state.player.hasCompletedOnboarding && modal) {
       modal.classList.add('active');
@@ -121,13 +145,43 @@ class AppController {
       startBtn.onclick = () => {
         const inputVal = nameInput ? nameInput.value.trim() : 'Lucky';
         this.state.player.name = inputVal || 'Lucky';
+        this.state.player.grade = selectedGrade;
         this.state.player.hasCompletedOnboarding = true;
         this.saveState();
+        this.syncSettingsGradeChips();
         this.updateHeaderProfile();
         soundFx.playClick();
         if (modal) modal.classList.remove('active');
       };
     }
+  }
+
+  setupSettings() {
+    const settingsChips = document.getElementById('settings-grade-chips');
+    if (settingsChips) {
+      this.syncSettingsGradeChips();
+      settingsChips.addEventListener('click', (e) => {
+        const btn = e.target.closest('.chip-btn');
+        if (!btn || !btn.dataset.grade) return;
+        soundFx.playClick();
+        this.state.player.grade = btn.dataset.grade;
+        this.saveState();
+        this.syncSettingsGradeChips();
+      });
+    }
+  }
+
+  syncSettingsGradeChips() {
+    const settingsChips = document.getElementById('settings-grade-chips');
+    if (!settingsChips) return;
+    const currentGrade = this.state.player.grade || 'g3';
+    settingsChips.querySelectorAll('.chip-btn').forEach(c => {
+      if (c.dataset.grade === currentGrade) {
+        c.classList.add('active');
+      } else {
+        c.classList.remove('active');
+      }
+    });
   }
 
   setupShareHandler() {
@@ -189,6 +243,8 @@ class AppController {
       this.startWordSession('g1-sightwords');
     } else if (viewId === 'pokedex-view') {
       this.renderPokedex();
+    } else if (viewId === 'settings-view') {
+      this.syncSettingsGradeChips();
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -532,6 +588,7 @@ class AppController {
 
   triggerVictory(pet) {
     soundFx.playVictory();
+    this.lastRescuedPet = pet;
     this.state.player.stars += 3;
     if (!this.state.player.petsUnlocked.includes(pet.id)) {
       this.state.player.petsUnlocked.push(pet.id);
@@ -549,6 +606,17 @@ class AppController {
   }
 
   setupVictoryModal() {
+    document.getElementById('btn-share-victory-card')?.addEventListener('click', () => {
+      soundFx.playClick();
+      const pet = this.lastRescuedPet || PET_ROSTER[0];
+      ShareController.shareVictoryCard({
+        playerName: this.state.player.name,
+        score: 3,
+        petName: pet.name,
+        petImgUrl: pet.img
+      });
+    });
+
     document.getElementById('btn-victory-continue')?.addEventListener('click', () => {
       soundFx.playClick();
       const modal = document.getElementById('victory-modal');

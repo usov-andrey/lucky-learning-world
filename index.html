@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Lucky's Learning World — Multi-Subject Educational PWA</title>
   <meta name="description" content="Gamified learning hub for Lucky and classmates: Math Monster battles, Spelling Bee challenges, Pokédex pets, and LINE challenge sharing.">
+  
+  <!-- Open Graph / LINE Social Preview Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="🌟 Lucky's Learning World — Can you beat my score?">
+  <meta property="og:description" content="Play Math Monster battles & Spelling Bee duels with Lucky! Collect Pokédex pets!">
+  <meta property="og:image" content="pokemon/pikachu.png">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
   <!-- Automatic Error Reporter -> Cloudflare Worker -> GitHub Issues -->
@@ -216,7 +224,7 @@
         <div class="chips-row" id="settings-grade-chips">
           <button class="chip-btn" data-grade="g1">Grade 1 / UK Year 1</button>
           <button class="chip-btn" data-grade="g2">Grade 2 / UK Year 2</button>
-          <button class="chip-btn active" data-grade="g3">Grade 3 / UK Year 3 (Lucky's Grade)</button>
+          <button class="chip-btn" data-grade="g3">Grade 3 / UK Year 3</button>
           <button class="chip-btn" data-grade="g4">Grade 4 / UK Year 4</button>
           <button class="chip-btn" data-grade="g5">Grade 5 / UK Year 5</button>
         </div>
@@ -230,11 +238,22 @@
     <div class="modal-card">
       <div style="font-size: 54px; animation: pulse-bounce 1s infinite;">🌟</div>
       <h2 style="font-size: 32px; margin-top: 10px;">Welcome Adventurer!</h2>
-      <p style="color: var(--text-muted); margin-top: 6px;">Enter your name to start your learning journey!</p>
+      <p style="color: var(--text-muted); margin-top: 6px;">Enter your name and grade to start your learning journey!</p>
 
       <div style="margin: 20px 0; text-align: left;">
         <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">YOUR PLAYER NAME:</label>
         <input type="text" id="onboarding-name-input" value="Lucky" placeholder="Enter your name..." style="width: 100%; height: 54px; padding: 0 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.1); border: 2px solid var(--border-glow); color: white; font-family: inherit; font-size: 20px; font-weight: 700;">
+      </div>
+
+      <div style="margin: 20px 0; text-align: left;">
+        <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">SELECT YOUR GRADE:</label>
+        <div class="chips-row" id="onboarding-grade-chips" style="justify-content: center; margin: 0;">
+          <button type="button" class="chip-btn" data-grade="g1">Grade 1</button>
+          <button type="button" class="chip-btn" data-grade="g2">Grade 2</button>
+          <button type="button" class="chip-btn active" data-grade="g3">Grade 3</button>
+          <button type="button" class="chip-btn" data-grade="g4">Grade 4</button>
+          <button type="button" class="chip-btn" data-grade="g5">Grade 5</button>
+        </div>
       </div>
 
       <button class="realm-action-btn" id="btn-start-onboarding" style="background: var(--grad-primary); width: 100%; margin-top: 10px;">
@@ -255,7 +274,11 @@
         <div style="font-weight: 700; font-size: 20px; margin-top: 10px;" id="reward-pet-name">Pikachu Rescued!</div>
       </div>
 
-      <button class="realm-action-btn" id="btn-victory-continue" style="background: var(--grad-success); width: 100%; margin-top: 20px;">
+      <button class="realm-action-btn" id="btn-share-victory-card" style="background: var(--grad-primary); width: 100%; margin-top: 16px;">
+        📸 Share Victory Card to LINE 📲
+      </button>
+
+      <button class="realm-action-btn" id="btn-victory-continue" style="background: var(--grad-success); width: 100%; margin-top: 10px;">
         Collect Pet & Continue ➔
       </button>
     </div>
