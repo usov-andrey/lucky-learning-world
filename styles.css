@@ -1,0 +1,372 @@
+/* ==========================================================================
+   Lucky's Learning World - Core Design System & CSS Tokens
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@400;600;800;900&display=swap');
+
+:root {
+  /* Color Palette - Vibrant Dark Mode */
+  --bg-dark: #0f1225;
+  --bg-card: rgba(26, 32, 62, 0.7);
+  --bg-card-hover: rgba(38, 46, 88, 0.85);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(124, 93, 250, 0.4);
+
+  /* Primary Accent Gradients */
+  --grad-primary: linear-gradient(135deg, #7c5dfa 0%, #6366f1 100%);
+  --grad-math: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --grad-word: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+  --grad-pokedex: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  --grad-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+
+  /* Text Colors */
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --text-highlight: #ffdd59;
+
+  /* Touch Targets & Spacing */
+  --min-touch-target: 64px;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  /* Shadows & Glows */
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glow-math: 0 0 25px rgba(0, 242, 254, 0.35);
+  --glow-word: 0 0 25px rgba(255, 8, 68, 0.35);
+  --glow-pokedex: 0 0 25px rgba(246, 211, 101, 0.35);
+
+  /* Transitions */
+  --trans-fast: 0.15s ease;
+  --trans-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --trans-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Outfit', sans-serif;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(124, 93, 250, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(255, 8, 68, 0.08) 0%, transparent 60%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* App Header & Navigation Bar */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: rgba(15, 18, 37, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glass);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.brand-icon {
+  font-size: 32px;
+  animation: pulse-bounce 2s infinite ease-in-out;
+}
+
+.brand-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  background: linear-gradient(90deg, #ffffff, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.star-count {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-highlight);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Container & Layout */
+.main-container {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px 100px 16px;
+}
+
+/* Realm Selection Grid (Dashboard View) */
+.realms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.realm-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--trans-bounce);
+}
+
+.realm-card:hover, .realm-card:focus {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.realm-card.math-realm:hover { box-shadow: var(--glow-math); }
+.realm-card.word-realm:hover { box-shadow: var(--glow-word); }
+.realm-card.pokedex-realm:hover { box-shadow: var(--glow-pokedex); }
+
+.realm-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+}
+
+.realm-card.math-realm::before { background: var(--grad-math); }
+.realm-card.word-realm::before { background: var(--grad-word); }
+.realm-card.pokedex-realm::before { background: var(--grad-pokedex); }
+
+.realm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.realm-icon {
+  font-size: 54px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.realm-badge {
+  background: rgba(255,255,255,0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.realm-content {
+  margin-top: 16px;
+}
+
+.realm-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.realm-desc {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.realm-action-btn {
+  margin-top: 20px;
+  height: var(--min-touch-target);
+  border-radius: var(--radius-md);
+  border: none;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--trans-smooth);
+}
+
+.math-realm .realm-action-btn { background: var(--grad-math); }
+.word-realm .realm-action-btn { background: var(--grad-word); }
+.pokedex-realm .realm-action-btn { background: var(--grad-pokedex); color: #2d1800; }
+
+.realm-action-btn:active {
+  transform: scale(0.96);
+}
+
+/* Views & Screens Switcher */
+.view-screen {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.view-screen.active {
+  display: block;
+}
+
+/* Screen Headers */
+.screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  height: var(--min-touch-target);
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--trans-fast);
+}
+
+.back-btn:hover {
+  background: var(--bg-card-hover);
+}
+
+/* Preset & Mode Selection Chips */
+.chips-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.chip-btn {
+  min-height: 48px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans-fast);
+}
+
+.chip-btn.active {
+  background: var(--grad-primary);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(124, 93, 250, 0.4);
+}
+
+/* Bottom Nav Bar for Tablets & Mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(15, 18, 37, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 16px;
+  z-index: 99;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 64px;
+  padding: 4px 8px;
+  transition: var(--trans-fast);
+}
+
+.nav-item .nav-icon {
+  font-size: 24px;
+}
+
+.nav-item.active {
+  color: #a5b4fc;
+}
+
+.nav-item.active .nav-icon {
+  transform: scale(1.15);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.05); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .brand-title { font-size: 18px; }
+  .realms-grid { grid-template-columns: 1fr; }
+}

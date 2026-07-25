@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lucky's Learning World — Multi-Subject Educational PWA</title>
+  <meta name="description" content="Gamified learning hub for Lucky and classmates: Math Monster battles, Spelling Bee challenges, Pokédex pets, and LINE challenge sharing.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+  <meta name="theme-color" content="#0f1225">
+</head>
+<body>
+
+  <!-- Sticky Top Header -->
+  <header class="app-header">
+    <div class="brand" id="brand-logo-btn" title="Back to Main Hub">
+      <span class="brand-icon">🌟</span>
+      <h1 class="brand-title">Lucky's Learning World</h1>
+    </div>
+    <div class="user-profile-badge" id="user-profile-badge">
+      <span>🐾 Lucky</span>
+      <div class="star-count">
+        <span>⭐</span>
+        <span id="total-stars-count">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Views Container -->
+  <main class="main-container">
+
+    <!-- VIEW 1: Main Hub / Dashboard -->
+    <section id="dashboard-view" class="view-screen active">
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-size: 28px; font-weight: 800;">Choose Your Realm, Adventurer!</h2>
+        <p style="color: var(--text-muted); margin-top: 4px;">Select a world to battle monsters, earn stars, and catch pets!</p>
+      </div>
+
+      <div class="realms-grid">
+        <!-- Math Realm Card -->
+        <article class="realm-card math-realm" id="card-math-realm">
+          <div class="realm-header">
+            <span class="realm-icon">🧮</span>
+            <span class="realm-badge">Grade 1 - 5</span>
+          </div>
+          <div class="realm-content">
+            <h3 class="realm-title">Math Monster Realm</h3>
+            <p class="realm-desc">Master multiplication tables, addition & division duels to defeat math monsters!</p>
+          </div>
+          <button class="realm-action-btn" id="btn-enter-math">
+            <span>Play Math Duel</span> ➔
+          </button>
+        </article>
+
+        <!-- Word Realm Card -->
+        <article class="realm-card word-realm" id="card-word-realm">
+          <div class="realm-header">
+            <span class="realm-icon">🔤</span>
+            <span class="realm-badge">Spelling & Audio</span>
+          </div>
+          <div class="realm-content">
+            <h3 class="realm-title">Word Monster Realm</h3>
+            <p class="realm-desc">Listen to school sight words & phonics, assemble letter tiles, and capture pets!</p>
+          </div>
+          <button class="realm-action-btn" id="btn-enter-word">
+            <span>Play Spelling Bee</span> ➔
+          </button>
+        </article>
+
+        <!-- Pokédex Realm Card -->
+        <article class="realm-card pokedex-realm" id="card-pokedex-realm">
+          <div class="realm-header">
+            <span class="realm-icon">🐾</span>
+            <span class="realm-badge" id="pets-collected-count">0 / 24 Pets</span>
+          </div>
+          <div class="realm-content">
+            <h3 class="realm-title">Pokédex & Pet Sanctuary</h3>
+            <p class="realm-desc">View your rescued pets, feed them treats, and display your trophy collection!</p>
+          </div>
+          <button class="realm-action-btn" id="btn-enter-pokedex">
+            <span>Open Pokédex</span> ➔
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <!-- VIEW 2: Math Realm Screen -->
+    <section id="math-view" class="view-screen">
+      <div class="screen-header">
+        <button class="back-btn" id="btn-back-from-math">⬅️ Back to Hub</button>
+        <h2 style="font-size: 24px;">🧮 Math Monster Realm</h2>
+      </div>
+
+      <div class="chips-row" id="math-mode-chips">
+        <button class="chip-btn active" data-math-mode="x-table">Multiplication (×2 .. ×12)</button>
+        <button class="chip-btn" data-math-mode="addition">Speed Addition (+)</button>
+        <button class="chip-btn" data-math-mode="division">Division Master (÷)</button>
+      </div>
+
+      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 40px; text-align: center; border: 1px solid var(--border-glass);">
+        <span style="font-size: 64px;">👾</span>
+        <h3 style="margin-top: 16px; font-size: 24px;">Math Battle Arena Ready!</h3>
+        <p style="color: var(--text-muted); margin-top: 8px;">Select a mode above to launch your first math monster battle.</p>
+      </div>
+    </section>
+
+    <!-- VIEW 3: Word Realm Screen -->
+    <section id="word-view" class="view-screen">
+      <div class="screen-header">
+        <button class="back-btn" id="btn-back-from-word">⬅️ Back to Hub</button>
+        <h2 style="font-size: 24px;">🔤 Word Monster Realm</h2>
+      </div>
+
+      <div class="chips-row" id="word-deck-chips">
+        <button class="chip-btn active" data-deck="y3-sightwords">UK Year 3 Sight Words</button>
+        <button class="chip-btn" data-deck="phonics-blend">Phonics & Blends</button>
+        <button class="chip-btn" data-deck="oxford-g3">Oxford Primary G3</button>
+      </div>
+
+      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 40px; text-align: center; border: 1px solid var(--border-glass);">
+        <span style="font-size: 64px;">🐉</span>
+        <h3 style="margin-top: 16px; font-size: 24px;">Spelling Arena Ready!</h3>
+        <p style="color: var(--text-muted); margin-top: 8px;">Listen to words, build them letter by letter, and defeat spelling dragons.</p>
+      </div>
+    </section>
+
+    <!-- VIEW 4: Pokédex & Pet Collection Screen -->
+    <section id="pokedex-view" class="view-screen">
+      <div class="screen-header">
+        <button class="back-btn" id="btn-back-from-pokedex">⬅️ Back to Hub</button>
+        <h2 style="font-size: 24px;">🐾 Pokédex Pet Sanctuary</h2>
+      </div>
+
+      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 40px; text-align: center; border: 1px solid var(--border-glass);">
+        <span style="font-size: 64px;">🦄</span>
+        <h3 style="margin-top: 16px; font-size: 24px;">Pet Collection Locked</h3>
+        <p style="color: var(--text-muted); margin-top: 8px;">Win battles in Math or Word realms to hatch your first companion pet!</p>
+      </div>
+    </section>
+
+    <!-- VIEW 5: Settings Screen -->
+    <section id="settings-view" class="view-screen">
+      <div class="screen-header">
+        <button class="back-btn" id="btn-back-from-settings">⬅️ Back to Hub</button>
+        <h2 style="font-size: 24px;">⚙️ Settings & Grade Profile</h2>
+      </div>
+
+      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border-glass);">
+        <h3 style="font-size: 20px; margin-bottom: 16px;">Curriculum & Grade Preset</h3>
+        <div class="chips-row">
+          <button class="chip-btn" data-grade="g1">Grade 1 / UK Year 1</button>
+          <button class="chip-btn" data-grade="g2">Grade 2 / UK Year 2</button>
+          <button class="chip-btn active" data-grade="g3">Grade 3 / UK Year 3 (Lucky's Grade)</button>
+          <button class="chip-btn" data-grade="g4">Grade 4 / UK Year 4</button>
+          <button class="chip-btn" data-grade="g5">Grade 5 / UK Year 5</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-btn-hub">
+      <span class="nav-icon">🏠</span>
+      <span>Hub</span>
+    </button>
+    <button class="nav-item" id="nav-btn-math">
+      <span class="nav-icon">🧮</span>
+      <span>Math</span>
+    </button>
+    <button class="nav-item" id="nav-btn-word">
+      <span class="nav-icon">🔤</span>
+      <span>Spelling</span>
+    </button>
+    <button class="nav-item" id="nav-btn-pokedex">
+      <span class="nav-icon">🐾</span>
+      <span>Pets</span>
+    </button>
+    <button class="nav-item" id="nav-btn-settings">
+      <span class="nav-icon">⚙️</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- Core App JS -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
