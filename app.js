@@ -6,6 +6,7 @@
 import { SpellingEngine } from './engine/spelling-engine.js';
 import { SPELLING_DECKS, getDeckById } from './content/spelling-catalog.js';
 import { ShareController } from './engine/share-controller.js';
+import { soundFx } from './engine/sound-fx.js';
 
 // Storage Keys & Default State
 const STORAGE_KEY = 'luckys_learning_world_state';
@@ -30,7 +31,8 @@ const defaultState = {
     name: 'Lucky',
     grade: 'g3',
     stars: 12,
-    petsUnlocked: ['pikachu']
+    petsUnlocked: ['pikachu'],
+    hasCompletedOnboarding: false
   },
   settings: {
     soundEnabled: true,
@@ -84,26 +86,59 @@ class AppController {
 
   init() {
     console.log("🌟 Initializing Lucky's Learning World Master Controller...");
+    this.registerServiceWorker();
     this.setupNavigation();
     this.setupModeChips();
     this.setupMathArena();
     this.setupWordArena();
     this.setupVictoryModal();
     this.setupShareHandler();
+    this.checkOnboarding();
     this.checkUrlChallenge();
     this.updateHeaderProfile();
     this.renderPokedex();
     this.switchView('dashboard-view');
   }
 
+  registerServiceWorker() {
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('SW registration skipped or failed:', err);
+      });
+    }
+  }
+
+  checkOnboarding() {
+    const modal = document.getElementById('onboarding-modal');
+    const nameInput = document.getElementById('onboarding-name-input');
+    const startBtn = document.getElementById('btn-start-onboarding');
+
+    if (!this.state.player.hasCompletedOnboarding && modal) {
+      modal.classList.add('active');
+    }
+
+    if (startBtn) {
+      startBtn.onclick = () => {
+        const inputVal = nameInput ? nameInput.value.trim() : 'Lucky';
+        this.state.player.name = inputVal || 'Lucky';
+        this.state.player.hasCompletedOnboarding = true;
+        this.saveState();
+        this.updateHeaderProfile();
+        soundFx.playClick();
+        if (modal) modal.classList.remove('active');
+      };
+    }
+  }
+
   setupShareHandler() {
     document.getElementById('btn-share-line')?.addEventListener('click', () => {
+      soundFx.playClick();
       const shareUrl = ShareController.createShareUrl({
         deckId: 'y3-sightwords',
         senderName: this.state.player.name,
         score: this.state.player.stars
       });
-      ShareController.shareToLine(shareUrl, `Lucky challenged you to a learning duel!`);
+      ShareController.shareToLine(shareUrl, `${this.state.player.name} challenged you to a learning duel!`);
     });
   }
 
@@ -123,14 +158,19 @@ class AppController {
   }
 
   updateHeaderProfile() {
+    const nameEl = document.getElementById('header-player-name');
+    const greetingEl = document.getElementById('welcome-greeting-title');
     const starsEl = document.getElementById('total-stars-count');
     const petsCountEl = document.getElementById('pets-collected-count');
     
+    if (nameEl) nameEl.textContent = `🐾 ${this.state.player.name}`;
+    if (greetingEl) greetingEl.textContent = `Welcome back, ${this.state.player.name}! 🚀`;
     if (starsEl) starsEl.textContent = this.state.player.stars;
     if (petsCountEl) petsCountEl.textContent = `${this.state.player.petsUnlocked.length} / ${PET_ROSTER.length} Pets`;
   }
 
   switchView(viewId) {
+    soundFx.playClick();
     const views = document.querySelectorAll('.view-screen');
     views.forEach(view => {
       if (view.id === viewId) {
@@ -143,7 +183,6 @@ class AppController {
     this.currentView = viewId;
     this.updateBottomNavState(viewId);
 
-    // Initialize realm session when opening view
     if (viewId === 'math-view') {
       this.startMathSession();
     } else if (viewId === 'word-view') {
@@ -198,12 +237,12 @@ class AppController {
   }
 
   setupModeChips() {
-    // Math Mode Chips
     const mathChips = document.getElementById('math-mode-chips');
     if (mathChips) {
       mathChips.addEventListener('click', (e) => {
         const btn = e.target.closest('.chip-btn');
         if (!btn || !btn.dataset.mathMode) return;
+        soundFx.playClick();
         mathChips.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
         this.mathState.mode = btn.dataset.mathMode;
@@ -211,12 +250,12 @@ class AppController {
       });
     }
 
-    // Word Deck Chips
     const wordChips = document.getElementById('word-deck-chips');
     if (wordChips) {
       wordChips.addEventListener('click', (e) => {
         const btn = e.target.closest('.chip-btn');
         if (!btn || !btn.dataset.deckId) return;
+        soundFx.playClick();
         wordChips.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
         this.startWordSession(btn.dataset.deckId);
@@ -234,7 +273,6 @@ class AppController {
     this.mathState.monsterHp = 100;
     this.mathState.monsterMaxHp = 100;
 
-    // Pick random pet for battle stage
     const pet = PET_ROSTER[Math.floor(Math.random() * PET_ROSTER.length)];
     this.mathState.currentPet = pet;
 
@@ -262,14 +300,12 @@ class AppController {
         a = b * answer;
         promptText = `${a} ÷ ${b} = ?`;
       } else {
-        // Multiplication
         a = Math.floor(Math.random() * 9) + 2;
         b = Math.floor(Math.random() * 9) + 2;
         answer = a * b;
         promptText = `${a} × ${b} = ?`;
       }
 
-      // Generate 2 distractors
       const distractors = new Set();
       while (distractors.size < 2) {
         const delta = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 5) + 1);
@@ -278,7 +314,6 @@ class AppController {
       }
 
       const options = [answer, ...Array.from(distractors)];
-      // Shuffle options
       options.sort(() => Math.random() - 0.5);
 
       questions.push({
@@ -311,7 +346,6 @@ class AppController {
       hpBar.style.width = `${pct}%`;
     }
 
-    // Render 3 option buttons
     const grid = document.getElementById('math-answers-grid');
     if (grid) {
       grid.innerHTML = '';
@@ -334,7 +368,7 @@ class AppController {
     const monsterImg = document.getElementById('math-monster-img');
 
     if (selectedAnswer === q.answer) {
-      // Correct!
+      soundFx.playCorrect();
       if (feedbackEl) {
         feedbackEl.textContent = 'Awesome! Spot on! ⭐';
         feedbackEl.classList.remove('wrong');
@@ -349,13 +383,12 @@ class AppController {
       this.mathState.currentIdx += 1;
 
       if (this.mathState.currentIdx >= this.mathState.questions.length) {
-        // Battle Won!
         setTimeout(() => this.triggerVictory(this.mathState.currentPet), 600);
       } else {
         setTimeout(() => this.renderMathQuestion(), 500);
       }
     } else {
-      // Wrong!
+      soundFx.playWrong();
       if (feedbackEl) {
         feedbackEl.textContent = 'Try again! You can do it! 💪';
         feedbackEl.classList.add('wrong');
@@ -363,9 +396,7 @@ class AppController {
     }
   }
 
-  setupMathArena() {
-    // Initialized dynamically
-  }
+  setupMathArena() {}
 
   /* ==========================================================================
      WORD MONSTER REALM ENGINE
@@ -410,7 +441,6 @@ class AppController {
     this.renderWordSlots(q.targetWord.length);
     this.renderLetterTiles(q.tiles);
 
-    // Speak word automatically on question load
     setTimeout(() => this.spellingEngine.speakCurrentWord(), 300);
   }
 
@@ -444,6 +474,7 @@ class AppController {
       btn.className = 'tile-btn';
       btn.textContent = letter;
       btn.addEventListener('click', () => {
+        soundFx.playClick();
         this.currentSpellingInput += letter;
         const q = this.spellingEngine.getCurrentQuestion();
         if (q) this.renderWordSlots(q.targetWord.length);
@@ -454,10 +485,12 @@ class AppController {
 
   setupWordArena() {
     document.getElementById('btn-speak-word')?.addEventListener('click', () => {
+      soundFx.playClick();
       if (this.spellingEngine) this.spellingEngine.speakCurrentWord();
     });
 
     document.getElementById('btn-clear-spelling')?.addEventListener('click', () => {
+      soundFx.playClick();
       this.currentSpellingInput = "";
       const q = this.spellingEngine?.getCurrentQuestion();
       if (q) this.renderWordSlots(q.targetWord.length);
@@ -469,6 +502,7 @@ class AppController {
       const feedbackEl = document.getElementById('word-feedback-text');
 
       if (res.isCorrect) {
+        soundFx.playCorrect();
         if (feedbackEl) {
           feedbackEl.textContent = 'Great Spelling! 🌟';
           feedbackEl.classList.remove('wrong');
@@ -483,6 +517,7 @@ class AppController {
           setTimeout(() => this.renderWordQuestion(), 500);
         }
       } else {
+        soundFx.playWrong();
         if (feedbackEl) {
           feedbackEl.textContent = 'Not quite! Try tapping the letters again!';
           feedbackEl.classList.add('wrong');
@@ -496,7 +531,7 @@ class AppController {
      ========================================================================== */
 
   triggerVictory(pet) {
-    // Award 3 stars & unlock pet
+    soundFx.playVictory();
     this.state.player.stars += 3;
     if (!this.state.player.petsUnlocked.includes(pet.id)) {
       this.state.player.petsUnlocked.push(pet.id);
@@ -515,6 +550,7 @@ class AppController {
 
   setupVictoryModal() {
     document.getElementById('btn-victory-continue')?.addEventListener('click', () => {
+      soundFx.playClick();
       const modal = document.getElementById('victory-modal');
       if (modal) modal.classList.remove('active');
       this.switchView('pokedex-view');

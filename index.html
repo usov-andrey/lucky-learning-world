@@ -6,6 +6,7 @@
   <title>Lucky's Learning World — Multi-Subject Educational PWA</title>
   <meta name="description" content="Gamified learning hub for Lucky and classmates: Math Monster battles, Spelling Bee challenges, Pokédex pets, and LINE challenge sharing.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
   <!-- Automatic Error Reporter -> Cloudflare Worker -> GitHub Issues -->
   <script>
     window.LMM_REPORTER = { 
@@ -27,7 +28,7 @@
       <h1 class="brand-title">Lucky's Learning World</h1>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
-      <span>🐾 Lucky</span>
+      <span id="header-player-name">🐾 Lucky</span>
       <div class="star-count">
         <span>⭐</span>
         <span id="total-stars-count">0</span>
@@ -42,7 +43,7 @@
     <!-- VIEW 1: Main Hub / Dashboard -->
     <section id="dashboard-view" class="view-screen active">
       <div style="margin-bottom: 20px;">
-        <h2 style="font-size: 28px; font-weight: 800;">Choose Your Realm, Adventurer!</h2>
+        <h2 style="font-size: 28px; font-weight: 800;" id="welcome-greeting-title">Choose Your Realm, Adventurer!</h2>
         <p style="color: var(--text-muted); margin-top: 4px;">Select a world to battle monsters, earn stars, and catch pets!</p>
       </div>
 
@@ -109,7 +110,6 @@
 
       <!-- Math Battle Arena -->
       <div class="arena-card" id="math-arena-card">
-        <!-- Battle Stage Header -->
         <div class="battle-stage">
           <div class="fighter-box monster-fighter">
             <div class="hp-bar-wrap">
@@ -122,13 +122,11 @@
           </div>
         </div>
 
-        <!-- Question Card -->
         <div class="question-container">
           <div class="question-progress" id="math-question-progress">Question 1 of 10</div>
           <div class="question-display" id="math-question-text">6 × 7 = ?</div>
           <div class="feedback-banner" id="math-feedback-text">&nbsp;</div>
 
-          <!-- Answer Options Grid -->
           <div class="answers-grid" id="math-answers-grid">
             <button class="answer-btn" data-answer-idx="0">42</button>
             <button class="answer-btn" data-answer-idx="1">36</button>
@@ -154,7 +152,6 @@
 
       <!-- Word Battle Arena -->
       <div class="arena-card" id="word-arena-card">
-        <!-- Battle Stage Header -->
         <div class="battle-stage">
           <div class="fighter-box monster-fighter">
             <div class="hp-bar-wrap">
@@ -167,7 +164,6 @@
           </div>
         </div>
 
-        <!-- Word Question & Audio Container -->
         <div class="question-container">
           <div class="question-progress" id="word-question-progress">Word 1 of 8</div>
           
@@ -178,7 +174,6 @@
 
           <div class="word-hint-text" id="word-hint-text">"Land surrounded by water"</div>
 
-          <!-- Current Typed / Tapped Slots -->
           <div class="word-slots-row" id="word-slots-row">
             <span class="letter-slot">i</span>
             <span class="letter-slot">s</span>
@@ -187,9 +182,7 @@
 
           <div class="feedback-banner" id="word-feedback-text">&nbsp;</div>
 
-          <!-- Letter Tiles Bank -->
           <div class="letter-tiles-bank" id="letter-tiles-bank">
-            <!-- Rendered dynamically -->
           </div>
 
           <div class="spelling-actions-row">
@@ -208,7 +201,6 @@
       </div>
 
       <div class="pokedex-grid" id="pokedex-grid">
-        <!-- Rendered dynamically in app.js -->
       </div>
     </section>
 
@@ -232,6 +224,24 @@
     </section>
 
   </main>
+
+  <!-- ONBOARDING FIRST-TIME VISIT MODAL -->
+  <div class="modal-overlay" id="onboarding-modal">
+    <div class="modal-card">
+      <div style="font-size: 54px; animation: pulse-bounce 1s infinite;">🌟</div>
+      <h2 style="font-size: 32px; margin-top: 10px;">Welcome Adventurer!</h2>
+      <p style="color: var(--text-muted); margin-top: 6px;">Enter your name to start your learning journey!</p>
+
+      <div style="margin: 20px 0; text-align: left;">
+        <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">YOUR PLAYER NAME:</label>
+        <input type="text" id="onboarding-name-input" value="Lucky" placeholder="Enter your name..." style="width: 100%; height: 54px; padding: 0 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.1); border: 2px solid var(--border-glow); color: white; font-family: inherit; font-size: 20px; font-weight: 700;">
+      </div>
+
+      <button class="realm-action-btn" id="btn-start-onboarding" style="background: var(--grad-primary); width: 100%; margin-top: 10px;">
+        Start My Adventure! 🚀
+      </button>
+    </div>
+  </div>
 
   <!-- VICTORY REWARD MODAL -->
   <div class="modal-overlay" id="victory-modal">
