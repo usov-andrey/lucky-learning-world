@@ -6,6 +6,15 @@
   <title>Lucky's Learning World — Multi-Subject Educational PWA</title>
   <meta name="description" content="Gamified learning hub for Lucky and classmates: Math Monster battles, Spelling Bee challenges, Pokédex pets, and LINE challenge sharing.">
   <link rel="stylesheet" href="styles.css">
+  <!-- Automatic Error Reporter -> Cloudflare Worker -> GitHub Issues -->
+  <script>
+    window.LMM_REPORTER = { 
+      endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
+      channel: "stable", 
+      version: "1.0.0" 
+    };
+  </script>
+  <script src="reporter.js"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
