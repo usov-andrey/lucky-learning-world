@@ -8,3 +8,7 @@ export const REWARD_POOLS = [
   { id: "x9", characterIds: ["wispurr", "glowmoth", "tidalpup"] },
   { id: "x10", characterIds: ["starhorn", "aurelio", "moonkit"] },
 ];
+
+export function getPoolById(poolId) {
+  return REWARD_POOLS.find(p => p.id === poolId) || REWARD_POOLS[0];
+}

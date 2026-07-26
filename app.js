@@ -214,7 +214,10 @@ class AppController {
         pokedex: document.getElementById("nav-btn-pokedex")
       },
 
-      // Dashboard
+      // Dashboard Cards & Buttons
+      cardMathRealm: document.getElementById("card-math-realm"),
+      cardWordRealm: document.getElementById("card-word-realm"),
+      cardPokedexRealm: document.getElementById("card-pokedex-realm"),
       btnEnterMath: document.getElementById("btn-enter-math"),
       btnEnterWord: document.getElementById("btn-enter-word"),
       btnEnterPokedex: document.getElementById("btn-enter-pokedex"),
@@ -302,13 +305,22 @@ class AppController {
       if (btn) btn.addEventListener("click", () => this.showScreen(screenKey));
     });
 
-    // Dashboard Realm Cards
-    this.elements.btnEnterMath.addEventListener("click", () => this.startMathRealm());
-    this.elements.btnEnterWord.addEventListener("click", () => this.startWordRealm());
-    this.elements.btnEnterPokedex.addEventListener("click", () => this.showScreen("pokedex"));
+    // Dashboard Realm Cards & Buttons
+    const enterMath = () => this.startMathRealm();
+    const enterWord = () => this.startWordRealm();
+    const enterPokedex = () => this.showScreen("pokedex");
 
-    this.elements.btnBackMath.addEventListener("click", () => this.showScreen("dashboard"));
-    this.elements.btnBackWord.addEventListener("click", () => this.showScreen("dashboard"));
+    if (this.elements.btnEnterMath) this.elements.btnEnterMath.addEventListener("click", enterMath);
+    if (this.elements.cardMathRealm) this.elements.cardMathRealm.addEventListener("click", enterMath);
+
+    if (this.elements.btnEnterWord) this.elements.btnEnterWord.addEventListener("click", enterWord);
+    if (this.elements.cardWordRealm) this.elements.cardWordRealm.addEventListener("click", enterWord);
+
+    if (this.elements.btnEnterPokedex) this.elements.btnEnterPokedex.addEventListener("click", enterPokedex);
+    if (this.elements.cardPokedexRealm) this.elements.cardPokedexRealm.addEventListener("click", enterPokedex);
+
+    if (this.elements.btnBackMath) this.elements.btnBackMath.addEventListener("click", () => this.showScreen("dashboard"));
+    if (this.elements.btnBackWord) this.elements.btnBackWord.addEventListener("click", () => this.showScreen("dashboard"));
 
     // Onboarding starter buttons
     const starterBtns = document.querySelectorAll(".starter-pet-btn");
@@ -323,95 +335,121 @@ class AppController {
       });
     });
 
-    this.elements.btnStartOnboarding.addEventListener("click", () => this.completeOnboarding());
+    if (this.elements.btnStartOnboarding) {
+      this.elements.btnStartOnboarding.addEventListener("click", () => this.completeOnboarding());
+    }
 
     // Math Level selection
-    this.elements.mathLevelChips.addEventListener("click", (e) => {
-      const chip = e.target.closest("[data-math-level]");
-      if (!chip) return;
+    if (this.elements.mathLevelChips) {
+      this.elements.mathLevelChips.addEventListener("click", (e) => {
+        const chip = e.target.closest("[data-math-level]");
+        if (!chip) return;
 
-      this.elements.mathLevelChips.querySelectorAll(".chip-btn").forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
+        this.elements.mathLevelChips.querySelectorAll(".chip-btn").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
 
-      const levelId = chip.dataset.mathLevel;
-      if (levelId === "mix") {
-        this.startMathMixSession();
-      } else {
-        const level = LEVELS.find(l => l.id === levelId);
-        if (level) this.startMathLevelSession(level);
-      }
-    });
+        const levelId = chip.dataset.mathLevel;
+        if (levelId === "mix") {
+          this.startMathMixSession();
+        } else {
+          const level = LEVELS.find(l => l.id === levelId);
+          if (level) this.startMathLevelSession(level);
+        }
+      });
+    }
 
     // Spelling Mode Chips
-    this.elements.spellingModeChips.addEventListener("click", (e) => {
-      const chip = e.target.closest("[data-spelling-mode]");
-      if (!chip) return;
+    if (this.elements.spellingModeChips) {
+      this.elements.spellingModeChips.addEventListener("click", (e) => {
+        const chip = e.target.closest("[data-spelling-mode]");
+        if (!chip) return;
 
-      this.elements.spellingModeChips.querySelectorAll(".chip-btn").forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
+        this.elements.spellingModeChips.querySelectorAll(".chip-btn").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
 
-      const mode = chip.dataset.spellingMode;
-      this.switchSpellingMode(mode);
-    });
+        const mode = chip.dataset.spellingMode;
+        this.switchSpellingMode(mode);
+      });
+    }
 
     // Learn Mode Controls
-    this.elements.btnLearnSpeakWord.addEventListener("click", () => {
-      const item = this.spellingEngine.getCurrentLearnItem();
-      if (item) playAudioFile(item.audio, item.word);
-    });
-    this.elements.btnLearnSpeakDef.addEventListener("click", () => {
-      const item = this.spellingEngine.getCurrentLearnItem();
-      if (item) playAudioFile(item.definitionAudio, item.definition);
-    });
-    this.elements.btnLearnPrev.addEventListener("click", () => {
-      this.spellingEngine.prevLearn();
-      this.renderSpellingLearn();
-    });
-    this.elements.btnLearnNext.addEventListener("click", () => {
-      this.spellingEngine.nextLearn();
-      this.renderSpellingLearn();
-    });
+    if (this.elements.btnLearnSpeakWord) {
+      this.elements.btnLearnSpeakWord.addEventListener("click", () => {
+        const item = this.spellingEngine.getCurrentLearnItem();
+        if (item) playAudioFile(item.audio, item.word);
+      });
+    }
+    if (this.elements.btnLearnSpeakDef) {
+      this.elements.btnLearnSpeakDef.addEventListener("click", () => {
+        const item = this.spellingEngine.getCurrentLearnItem();
+        if (item) playAudioFile(item.definitionAudio, item.definition);
+      });
+    }
+    if (this.elements.btnLearnPrev) {
+      this.elements.btnLearnPrev.addEventListener("click", () => {
+        this.spellingEngine.prevLearn();
+        this.renderSpellingLearn();
+      });
+    }
+    if (this.elements.btnLearnNext) {
+      this.elements.btnLearnNext.addEventListener("click", () => {
+        this.spellingEngine.nextLearn();
+        this.renderSpellingLearn();
+      });
+    }
 
     // Test Mode Controls
-    this.elements.btnSubmodeDigital.addEventListener("click", () => this.switchTestSubmode("digital"));
-    this.elements.btnSubmodePaper.addEventListener("click", () => this.switchTestSubmode("paper"));
+    if (this.elements.btnSubmodeDigital) this.elements.btnSubmodeDigital.addEventListener("click", () => this.switchTestSubmode("digital"));
+    if (this.elements.btnSubmodePaper) this.elements.btnSubmodePaper.addEventListener("click", () => this.switchTestSubmode("paper"));
 
-    this.elements.btnTestSpeakWord.addEventListener("click", () => {
-      const q = this.spellingEngine.getCurrentTestQuestion();
-      if (q) playAudioFile(q.audio, q.targetWord);
-    });
+    if (this.elements.btnTestSpeakWord) {
+      this.elements.btnTestSpeakWord.addEventListener("click", () => {
+        const q = this.spellingEngine.getCurrentTestQuestion();
+        if (q) playAudioFile(q.audio, q.targetWord);
+      });
+    }
 
-    this.elements.btnDigitalSubmit.addEventListener("click", () => this.handleDigitalTestSubmit());
-    this.elements.digitalTestInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") this.handleDigitalTestSubmit();
-    });
+    if (this.elements.btnDigitalSubmit) this.elements.btnDigitalSubmit.addEventListener("click", () => this.handleDigitalTestSubmit());
+    if (this.elements.digitalTestInput) {
+      this.elements.digitalTestInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") this.handleDigitalTestSubmit();
+      });
+    }
 
-    this.elements.btnPaperReveal.addEventListener("click", () => {
-      const q = this.spellingEngine.revealTestWord();
-      if (q) {
-        this.elements.paperRevealedWord.textContent = q.targetWord.toUpperCase();
-        this.elements.paperRevealedWord.style.display = "block";
-      }
-    });
-    this.elements.btnPaperCorrect.addEventListener("click", () => this.handlePaperTestResult(true));
-    this.elements.btnPaperRetry.addEventListener("click", () => this.handlePaperTestResult(false));
+    if (this.elements.btnPaperReveal) {
+      this.elements.btnPaperReveal.addEventListener("click", () => {
+        const q = this.spellingEngine.revealTestWord();
+        if (q) {
+          this.elements.paperRevealedWord.textContent = q.targetWord.toUpperCase();
+          this.elements.paperRevealedWord.style.display = "block";
+        }
+      });
+    }
+    if (this.elements.btnPaperCorrect) this.elements.btnPaperCorrect.addEventListener("click", () => this.handlePaperTestResult(true));
+    if (this.elements.btnPaperRetry) this.elements.btnPaperRetry.addEventListener("click", () => this.handlePaperTestResult(false));
 
     // Game Mode Controls
-    this.elements.btnSpeakWord.addEventListener("click", () => {
-      const q = this.spellingEngine.getCurrentGameQuestion();
-      if (q) playAudioFile(q.audio, q.targetWord);
-    });
-    this.elements.btnClearSpelling.addEventListener("click", () => {
-      this.selectedLetterTiles = [];
-      this.renderSpellingTiles();
-    });
-    this.elements.btnSubmitSpelling.addEventListener("click", () => this.handleSpellingGameSubmit());
+    if (this.elements.btnSpeakWord) {
+      this.elements.btnSpeakWord.addEventListener("click", () => {
+        const q = this.spellingEngine.getCurrentGameQuestion();
+        if (q) playAudioFile(q.audio, q.targetWord);
+      });
+    }
+    if (this.elements.btnClearSpelling) {
+      this.elements.btnClearSpelling.addEventListener("click", () => {
+        this.selectedLetterTiles = [];
+        this.renderSpellingTiles();
+      });
+    }
+    if (this.elements.btnSubmitSpelling) this.elements.btnSubmitSpelling.addEventListener("click", () => this.handleSpellingGameSubmit());
 
     // Victory Modal
-    this.elements.btnVictoryContinue.addEventListener("click", () => {
-      this.elements.victoryModal.classList.remove("active");
-      this.showScreen("pokedex");
-    });
+    if (this.elements.btnVictoryContinue) {
+      this.elements.btnVictoryContinue.addEventListener("click", () => {
+        this.elements.victoryModal.classList.remove("active");
+        this.showScreen("pokedex");
+      });
+    }
   }
 
   checkOnboarding() {
@@ -495,10 +533,10 @@ class AppController {
     const plan = buildLevelSessionPlan(level, {}, this.settings);
     this.mathSession = createLevelSession(level.id, plan.questions, this.settings);
 
-    const resident = getCharacterById(level.residentId.replace("res_", ""));
+    const resident = getCharacterById(level.residentId);
     const monsterName = resident ? resident.name : `Level ${level.table} Monster`;
     this.elements.mathMonsterName.textContent = monsterName;
-    if (resident) {
+    if (resident && resident.art && resident.art.src) {
       this.elements.mathMonsterImg.src = resident.art.src;
     }
 

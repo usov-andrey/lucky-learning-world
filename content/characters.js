@@ -1,18 +1,6 @@
 // Static character roster. `id` is permanent and never reused; presentation
 // (art) can be replaced wholesale without touching stored collection data.
-//
-// Art is real Pokémon official artwork (PNG in pokemon/<slug>.png, same free
-// source as the Lucky spelling test). Each entry maps a permanent `id` to a
-// `pokemon` slug + display `name`; swapping art later is a one-line content
-// change, never an engine change. Pokémon images © Nintendo / Creatures /
-// GAME FREAK — bundled for personal, non-commercial family use.
-//
-// Collectible pool characters carry an evolution/shiny/mega art LADDER
-// (`art.stages`, index 0 = base) generated from PokeAPI by
-// scripts/fetch-pokemon-art.mjs into stages.generated.js. The displayed art for
-// a collection entry at `level` L is stages[min(L-1, stages.length-1)]; past the
-// top stage the art holds and only the Lv./star badge climbs.
-//
+
 import { STAGE_LADDERS } from "./stages.generated.js?v=2026-07-20b";
 
 // Residents: one per level, fixed, used only for the in-level silhouette
@@ -49,8 +37,6 @@ const POOL_CHARACTERS = [
   { id: "moonkit", name: "Sylveon", pokemon: "sylveon" },
 ];
 
-// `collectible` characters get their generated evolution ladder; residents keep
-// a single-stage ladder (their art never levels up).
 function makeImageCharacter(collectible) {
   return function imageCharacter({ id, name, pokemon, legendary }) {
     const ladder = collectible ? STAGE_LADDERS[pokemon] : null;
@@ -63,7 +49,7 @@ function makeImageCharacter(collectible) {
         src: stages[0],
         stages,
         shinyStage: ladder && Number.isInteger(ladder.shinyStage) ? ladder.shinyStage : null,
-        shinySrc: null, // back-compat; display is stage-driven now
+        shinySrc: null,
         legendary: Boolean(legendary),
       },
     };
@@ -77,15 +63,15 @@ export const CHARACTERS = [
 
 const BY_ID = new Map(CHARACTERS.map((character) => [character.id, character]));
 
-// Number of art stages in a character's ladder (>=1). A collection entry is at
-// its "top stage" once its level reaches this count.
+export function getCharacterById(characterId) {
+  return BY_ID.get(characterId) || null;
+}
+
 export function getStageCount(characterId) {
   const character = BY_ID.get(characterId);
   return character && Array.isArray(character.art.stages) ? character.art.stages.length : 1;
 }
 
-// The collection `level` at which a character's art reaches its shiny stage, or
-// null if it has none. Used to flip the entry's `shiny` flag meaningfully.
 export function getShinyStageLevel(characterId) {
   const character = BY_ID.get(characterId);
   return character && character.art.shinyStage != null ? character.art.shinyStage + 1 : null;
