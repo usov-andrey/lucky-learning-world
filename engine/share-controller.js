@@ -1,3 +1,5 @@
+import { QRGenerator } from './qr-generator.js';
+
 /**
  * Zero-Friction Social Sharing Controller for LINE / Web Share API
  * Allows parents/teachers/Lucky to share custom word challenges via URL links.
@@ -105,12 +107,17 @@ export class ShareController {
     ctx.font = 'italic 20px system-ui, sans-serif';
     ctx.fillText('Can you beat my score in Math & Spelling?', 50, 280);
 
-    // Call to Action Banner
+    // Call to Action Banner & QR Code
+    const shareUrl = this.createShareUrl(options);
+    const qrCanvas = document.createElement('canvas');
+    QRGenerator.renderToCanvas(qrCanvas, shareUrl, { size: 100, margin: 4, logoText: '🌟' });
+    ctx.drawImage(qrCanvas, 650, 310, 100, 100);
+
     ctx.fillStyle = '#22c55e';
-    ctx.fillRect(50, 320, 320, 50);
+    ctx.fillRect(50, 335, 300, 45);
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 20px system-ui, sans-serif';
-    ctx.fillText('📲 Play via LINE Link!', 75, 353);
+    ctx.font = 'bold 18px system-ui, sans-serif';
+    ctx.fillText('📲 Play via LINE / Scan QR ➔', 65, 363);
 
     // 4. Load & Render Pet Image
     if (petImgUrl) {
@@ -120,7 +127,7 @@ export class ShareController {
         img.onload = () => {
           // Draw Glowing Circle Backing
           ctx.beginPath();
-          ctx.arc(580, 225, 120, 0, Math.PI * 2);
+          ctx.arc(520, 225, 110, 0, Math.PI * 2);
           ctx.fillStyle = 'rgba(99, 102, 241, 0.2)';
           ctx.fill();
           ctx.lineWidth = 4;
@@ -128,7 +135,7 @@ export class ShareController {
           ctx.stroke();
 
           // Draw Pet Sprite
-          ctx.drawImage(img, 470, 115, 220, 220);
+          ctx.drawImage(img, 420, 125, 200, 200);
           resolve();
         };
         img.onerror = () => resolve();
@@ -139,6 +146,17 @@ export class ShareController {
     return new Promise((resolve) => {
       canvas.toBlob((blob) => resolve(blob), 'image/png');
     });
+  }
+
+  static renderQrModal(canvasEl, urlInputEl, options = {}) {
+    const url = this.createShareUrl(options);
+    if (canvasEl) {
+      QRGenerator.renderToCanvas(canvasEl, url, { size: 260, margin: 12, logoText: '🌟' });
+    }
+    if (urlInputEl) {
+      urlInputEl.value = url;
+    }
+    return url;
   }
 
   static async shareVictoryCard(options = {}) {

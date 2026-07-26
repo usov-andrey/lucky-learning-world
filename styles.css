@@ -49,6 +49,7 @@
   padding: 0;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 body {
@@ -64,6 +65,29 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+}
+
+/* Mobile & Touch Compatibility Rules */
+button,
+.realm-card,
+.chip-btn,
+.answer-btn,
+.tile-btn,
+.nav-item,
+.primary-btn,
+.secondary-btn,
+.back-btn,
+.brand,
+.audio-pronounce-btn {
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+}
+
+/* Ensure touch on text/images inside buttons/cards bubbles directly to parent listener */
+.realm-card *,
+button * {
+  pointer-events: none;
 }
 
 /* App Header & Navigation Bar */
@@ -142,7 +166,7 @@ body {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 16px 100px 16px;
+  padding: 24px 16px 120px 16px;
 }
 
 /* Realm Selection Grid (Dashboard View) */

@@ -317,7 +317,16 @@ class AppController {
       victorySubtitle: document.getElementById("victory-subtitle"),
       rewardPetImg: document.getElementById("reward-pet-img"),
       rewardPetName: document.getElementById("reward-pet-name"),
-      btnVictoryContinue: document.getElementById("btn-victory-continue")
+      btnVictoryContinue: document.getElementById("btn-victory-continue"),
+
+      // QR Code Modal & Buttons
+      btnShowQrHeader: document.getElementById("btn-show-qr-header"),
+      btnShowQrVictory: document.getElementById("btn-show-qr-victory"),
+      qrModal: document.getElementById("qr-modal"),
+      qrModalCanvas: document.getElementById("qr-modal-canvas"),
+      qrModalUrlInput: document.getElementById("qr-modal-url-input"),
+      btnCopyQrUrl: document.getElementById("btn-copy-qr-url"),
+      btnCloseQrModal: document.getElementById("btn-close-qr-modal")
     };
 
     if (this.elements.appVersionBadge) {
@@ -431,6 +440,30 @@ class AppController {
     if (this.elements.toggleHardDrill) {
       this.elements.toggleHardDrill.addEventListener("change", (e) => {
         this.settings.hardDrill = e.target.checked;
+      });
+    }
+
+    // QR Code Modal Bindings
+    if (this.elements.btnShowQrHeader) {
+      bindTouchClick(this.elements.btnShowQrHeader, () => this.openQrModal());
+    }
+    if (this.elements.btnShowQrVictory) {
+      bindTouchClick(this.elements.btnShowQrVictory, () => this.openQrModal());
+    }
+    if (this.elements.btnCloseQrModal) {
+      bindTouchClick(this.elements.btnCloseQrModal, () => {
+        if (this.elements.qrModal) this.elements.qrModal.classList.remove("active");
+      });
+    }
+    if (this.elements.btnCopyQrUrl) {
+      bindTouchClick(this.elements.btnCopyQrUrl, () => {
+        if (this.elements.qrModalUrlInput) {
+          navigator.clipboard.writeText(this.elements.qrModalUrlInput.value).then(() => {
+            const orig = this.elements.btnCopyQrUrl.textContent;
+            this.elements.btnCopyQrUrl.textContent = "Copied! ✓";
+            setTimeout(() => { this.elements.btnCopyQrUrl.textContent = orig; }, 2000);
+          }).catch(() => {});
+        }
       });
     }
 
@@ -1008,6 +1041,21 @@ class AppController {
     }
 
     this.elements.victoryModal.classList.add("active");
+  }
+
+  openQrModal() {
+    if (!this.elements.qrModal) return;
+    const pet = this.lastRescuedPet || { name: 'Pikachu' };
+    ShareController.renderQrModal(
+      this.elements.qrModalCanvas,
+      this.elements.qrModalUrlInput,
+      {
+        playerName: this.player ? this.player.name : 'Lucky',
+        score: 3,
+        petName: pet.name
+      }
+    );
+    this.elements.qrModal.classList.add("active");
   }
 }
 

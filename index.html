@@ -44,6 +44,7 @@
         <span>⭐</span>
         <span id="total-stars-count">0</span>
       </div>
+      <button class="secondary-btn" id="btn-show-qr-header" style="height: 40px; padding: 0 10px; font-size: 16px; margin-left: 4px; background: rgba(255, 255, 255, 0.12);" title="Show QR Code for Friends">📱 QR</button>
       <button class="secondary-btn" id="btn-parent-mode-header" style="height: 40px; padding: 0 10px; font-size: 16px; margin-left: 4px; background: rgba(255, 255, 255, 0.08);" title="Parent Protected Settings">🔒</button>
     </div>
   </header>
@@ -412,12 +413,38 @@
       <p style="color: var(--text-muted); margin-top: 6px;" id="victory-subtitle">You earned 3 Stars!</p>
       
       <div class="reward-pet-preview">
-        <img id="reward-pet-img" src="pokemon/pikachu.png" alt="Rescued Pet" class="reward-pet-img">
-        <div style="font-weight: 700; font-size: 20px; margin-top: 10px;" id="reward-pet-name">Pet Rescued!</div>
-      </div>
+      <button class="realm-action-btn" id="btn-share-victory-card" style="background: var(--grad-primary); width: 100%; margin-top: 16px;">
+        📸 Share Victory Card to LINE 📲
+      </button>
+
+      <button class="realm-action-btn" id="btn-show-qr-victory" style="background: rgba(255,255,255,0.15); width: 100%; margin-top: 10px;">
+        📱 Show In-Class QR Code
+      </button>
 
       <button class="realm-action-btn" id="btn-victory-continue" style="background: var(--grad-success); width: 100%; margin-top: 10px;">
         Collect Pet & Continue ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- IN-CLASS QR CODE MODAL -->
+  <div class="modal-overlay" id="qr-modal">
+    <div class="modal-card" style="text-align: center; max-width: 400px;">
+      <div style="font-size: 40px; animation: pulse-bounce 1s infinite;">📱</div>
+      <h2 style="font-size: 24px; margin-top: 6px;">In-Classroom Challenge QR</h2>
+      <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Have your classmate scan this QR code with their iPad camera!</p>
+
+      <div style="background: #ffffff; padding: 16px; border-radius: var(--radius-md); display: inline-block; margin: 16px 0; border: 4px solid var(--border-glow);">
+        <canvas id="qr-modal-canvas" width="240" height="240" style="display: block;"></canvas>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <input type="text" id="qr-modal-url-input" readonly style="flex: 1; height: 44px; padding: 0 12px; border-radius: var(--radius-md); background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: white; font-size: 13px;">
+        <button class="secondary-btn" id="btn-copy-qr-url" style="height: 44px; padding: 0 14px;">Copy</button>
+      </div>
+
+      <button class="realm-action-btn" id="btn-close-qr-modal" style="background: var(--grad-primary); width: 100%;">
+        Done / Back ➔
       </button>
     </div>
   </div>
