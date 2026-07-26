@@ -1,6 +1,7 @@
 /**
  * Lucky's Learning World — Main Application Router & Presenter Orchestrator
  * Connects pure engine modules to UI views with zero-coupling architecture.
+ * UI is 100% English for Lucky.
  */
 
 import {
