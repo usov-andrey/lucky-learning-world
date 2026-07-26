@@ -29,16 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v13";
+} from "./engine/reward-engine.js?v=20260726_v14";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v13";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v14";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v13";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v13";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v13";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v13";
+import { LEVELS } from "./content/levels.js?v=20260726_v14";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v14";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v14";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v14";
 
-const APP_VERSION = "v2.0.0-v13";
+const APP_VERSION = "v2.0.0-v14";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
