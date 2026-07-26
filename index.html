@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lucky's Learning World — PWA Hub v2.0.0-v3</title>
+  <title>Lucky's Learning World — PWA Hub v2.0.0-v5</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
-  <link rel="stylesheet" href="styles.css?v=20260726_v4">
+  <link rel="stylesheet" href="styles.css?v=20260726_v5">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0-v4" 
+      version: "2.0.0-v5" 
     };
 
     // Service Worker auto-update snippet to clear old PWA caches
@@ -22,10 +22,10 @@
           reg.update();
         }
       });
-      navigator.serviceWorker.register('./sw.js?v=20260726_v4').catch(() => {});
+      navigator.serviceWorker.register('./sw.js?v=20260726_v5').catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=20260726_v4"></script>
+  <script src="reporter.js?v=20260726_v5"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -37,7 +37,7 @@
       <span class="brand-icon">🌟</span>
       <div>
         <h1 class="brand-title">Lucky's Learning World</h1>
-        <span class="version-badge" id="app-version-badge">v2.0.0-v4</span>
+        <span class="version-badge" id="app-version-badge">v2.0.0-v5</span>
       </div>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
@@ -355,7 +355,7 @@
           <h2 style="font-size: 24px; color: white;">⚙️ Parent Controls & Settings</h2>
           <span style="font-size: 12px; color: var(--text-muted);">Protected Area for Parents / Teachers</span>
         </div>
-        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v4</span>
+        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v5</span>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -364,7 +364,7 @@
         <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
           <div style="font-size: 13px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 6px;">System Diagnostics</div>
           <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v4 (2026-07-26)</span></div>
+            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v5 (2026-07-26)</span></div>
             <div>• <b>Storage Namespace:</b> <code>lmm3s:</code> (stable & safe)</div>
             <div>• <b>Environment:</b> Production GitHub Pages</div>
           </div>
@@ -446,6 +446,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=20260726_v4"></script>
+  <script type="module" src="app.js?v=20260726_v5"></script>
 </body>
 </html>

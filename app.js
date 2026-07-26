@@ -14,29 +14,29 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260726_v4";
+} from "./engine/math-engine.js?v=20260726_v5";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v4";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v5";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260726_v4";
+} from "./engine/progression.js?v=20260726_v5";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v4";
+} from "./engine/reward-engine.js?v=20260726_v5";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v4";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v4";
-import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v4";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v4";
+import { LEVELS } from "./content/levels.js?v=20260726_v5";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v5";
+import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v5";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v5";
 
-const APP_VERSION = "v2.0.0-v4";
+const APP_VERSION = "v2.0.0-v5";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -326,9 +326,23 @@ class AppController {
   }
 
   bindEvents() {
+    // Mobile Touch & Click Unified Handler
+    const bindTouchClick = (element, handler) => {
+      if (!element) return;
+      let lastTime = 0;
+      const execute = (e) => {
+        const now = Date.now();
+        if (now - lastTime < 300) return; // Prevent double trigger
+        lastTime = now;
+        handler(e);
+      };
+      element.addEventListener("touchend", execute, { passive: true });
+      element.addEventListener("click", execute);
+    };
+
     // Nav bar
     Object.entries(this.elements.navBtns).forEach(([screenKey, btn]) => {
-      if (btn) btn.addEventListener("click", () => this.showScreen(screenKey));
+      bindTouchClick(btn, () => this.showScreen(screenKey));
     });
 
     // Dashboard Realm Cards & Buttons
@@ -336,33 +350,29 @@ class AppController {
     const enterWord = () => this.startWordRealm();
     const enterPokedex = () => this.showScreen("pokedex");
 
-    if (this.elements.btnEnterMath) this.elements.btnEnterMath.addEventListener("click", enterMath);
-    if (this.elements.cardMathRealm) this.elements.cardMathRealm.addEventListener("click", enterMath);
+    bindTouchClick(this.elements.btnEnterMath, enterMath);
+    bindTouchClick(this.elements.cardMathRealm, enterMath);
 
-    if (this.elements.btnEnterWord) this.elements.btnEnterWord.addEventListener("click", enterWord);
-    if (this.elements.cardWordRealm) this.elements.cardWordRealm.addEventListener("click", enterWord);
+    bindTouchClick(this.elements.btnEnterWord, enterWord);
+    bindTouchClick(this.elements.cardWordRealm, enterWord);
 
-    if (this.elements.btnEnterPokedex) this.elements.btnEnterPokedex.addEventListener("click", enterPokedex);
-    if (this.elements.cardPokedexRealm) this.elements.cardPokedexRealm.addEventListener("click", enterPokedex);
+    bindTouchClick(this.elements.btnEnterPokedex, enterPokedex);
+    bindTouchClick(this.elements.cardPokedexRealm, enterPokedex);
 
-    if (this.elements.btnBackMath) this.elements.btnBackMath.addEventListener("click", () => this.showScreen("dashboard"));
-    if (this.elements.btnBackWord) this.elements.btnBackWord.addEventListener("click", () => this.showScreen("dashboard"));
+    // Back to Hub Buttons
+    bindTouchClick(this.elements.btnBackMath, () => this.showScreen("dashboard"));
+    bindTouchClick(this.elements.btnBackWord, () => this.showScreen("dashboard"));
+    bindTouchClick(this.elements.btnBackPokedex, () => this.showScreen("dashboard"));
+    bindTouchClick(document.getElementById("brand-logo-btn"), () => this.showScreen("dashboard"));
 
     // Parent Mode Header Trigger
-    if (this.elements.btnParentModeHeader) {
-      this.elements.btnParentModeHeader.addEventListener("click", () => this.openParentGate());
-    }
+    bindTouchClick(this.elements.btnParentModeHeader, () => this.openParentGate());
 
     // Parent Gate Controls
-    if (this.elements.btnParentGateCancel) {
-      this.elements.btnParentGateCancel.addEventListener("click", () => {
-        this.elements.parentGateModal.classList.remove("active");
-      });
-    }
-
-    if (this.elements.btnParentGateSubmit) {
-      this.elements.btnParentGateSubmit.addEventListener("click", () => this.verifyParentGate());
-    }
+    bindTouchClick(this.elements.btnParentGateCancel, () => {
+      this.elements.parentGateModal.classList.remove("active");
+    });
+    bindTouchClick(this.elements.btnParentGateSubmit, () => this.verifyParentGate());
 
     if (this.elements.parentGateInput) {
       this.elements.parentGateInput.addEventListener("keydown", (e) => {
@@ -371,62 +381,52 @@ class AppController {
     }
 
     // Parent Settings Controls
-    if (this.elements.btnCloseParentSettings) {
-      this.elements.btnCloseParentSettings.addEventListener("click", () => {
-        this.elements.parentSettingsModal.classList.remove("active");
-      });
-    }
+    bindTouchClick(this.elements.btnCloseParentSettings, () => {
+      this.elements.parentSettingsModal.classList.remove("active");
+    });
 
-    if (this.elements.btnSaveParentPin) {
-      this.elements.btnSaveParentPin.addEventListener("click", () => {
-        const newPin = this.elements.inputNewParentPin.value.trim();
-        if (newPin.length === 4 && /^\d{4}$/.test(newPin)) {
-          this.parentPin = newPin;
-          localStorage.setItem(STORAGE_KEYS.PARENT_PIN, newPin);
-          alert("Parent PIN updated successfully!");
-          this.elements.inputNewParentPin.value = "";
-        } else {
-          alert("Please enter a valid 4-digit PIN.");
-        }
-      });
-    }
+    bindTouchClick(this.elements.btnSaveParentPin, () => {
+      const newPin = this.elements.inputNewParentPin.value.trim();
+      if (newPin.length === 4 && /^\d{4}$/.test(newPin)) {
+        this.parentPin = newPin;
+        localStorage.setItem(STORAGE_KEYS.PARENT_PIN, newPin);
+        alert("Parent PIN updated successfully!");
+        this.elements.inputNewParentPin.value = "";
+      } else {
+        alert("Please enter a valid 4-digit PIN.");
+      }
+    });
 
-    if (this.elements.btnResetMathProgress) {
-      this.elements.btnResetMathProgress.addEventListener("click", () => {
-        if (confirm("Reset all Math levels and star progress?")) {
-          this.progression = normalizeStoredState(null, LEVELS);
-          this.saveProgression();
-          alert("Math progress reset!");
-          this.renderHeader();
-        }
-      });
-    }
+    bindTouchClick(this.elements.btnResetMathProgress, () => {
+      if (confirm("Reset all Math levels and star progress?")) {
+        this.progression = normalizeStoredState(null, LEVELS);
+        this.saveProgression();
+        alert("Math progress reset!");
+        this.renderHeader();
+      }
+    });
 
-    if (this.elements.btnResetPokedex) {
-      this.elements.btnResetPokedex.addEventListener("click", () => {
-        if (confirm("Reset Pokédex pet collection?")) {
-          this.collection = [{ id: "embercub", shiny: false, level: 1 }];
-          this.saveCollection();
-          alert("Pokédex reset!");
-          this.renderHeader();
-        }
-      });
-    }
+    bindTouchClick(this.elements.btnResetPokedex, () => {
+      if (confirm("Reset Pokédex pet collection?")) {
+        this.collection = [{ id: "embercub", shiny: false, level: 1 }];
+        this.saveCollection();
+        alert("Pokédex reset!");
+        this.renderHeader();
+      }
+    });
 
-    if (this.elements.btnResetAll) {
-      this.elements.btnResetAll.addEventListener("click", () => {
-        if (confirm("Reset ALL data (Player name, Math, Spelling, Pokédex)?")) {
-          localStorage.removeItem(STORAGE_KEYS.PLAYER);
-          localStorage.removeItem(STORAGE_KEYS.MATH_PROGRESSION);
-          localStorage.removeItem(STORAGE_KEYS.MATH_COLLECTION);
-          this.player = null;
-          this.progression = normalizeStoredState(null, LEVELS);
-          this.collection = [];
-          alert("All data cleared! Onboarding will reappear.");
-          location.reload();
-        }
-      });
-    }
+    bindTouchClick(this.elements.btnResetAll, () => {
+      if (confirm("Reset ALL data (Player name, Math, Spelling, Pokédex)?")) {
+        localStorage.removeItem(STORAGE_KEYS.PLAYER);
+        localStorage.removeItem(STORAGE_KEYS.MATH_PROGRESSION);
+        localStorage.removeItem(STORAGE_KEYS.MATH_COLLECTION);
+        this.player = null;
+        this.progression = normalizeStoredState(null, LEVELS);
+        this.collection = [];
+        alert("All data cleared! Onboarding will reappear.");
+        location.reload();
+      }
+    });
 
     if (this.elements.toggleHardDrill) {
       this.elements.toggleHardDrill.addEventListener("change", (e) => {
@@ -437,7 +437,7 @@ class AppController {
     // Onboarding starter buttons
     const starterBtns = document.querySelectorAll(".starter-pet-btn");
     starterBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
+      bindTouchClick(btn, () => {
         starterBtns.forEach(b => {
           b.classList.remove("active");
           b.style.borderColor = "var(--border-glass)";
@@ -447,9 +447,7 @@ class AppController {
       });
     });
 
-    if (this.elements.btnStartOnboarding) {
-      this.elements.btnStartOnboarding.addEventListener("click", () => this.completeOnboarding());
-    }
+    bindTouchClick(this.elements.btnStartOnboarding, () => this.completeOnboarding());
 
     // Math Level selection
     if (this.elements.mathLevelChips) {
@@ -485,83 +483,65 @@ class AppController {
     }
 
     // Learn Mode Controls
-    if (this.elements.btnLearnSpeakWord) {
-      this.elements.btnLearnSpeakWord.addEventListener("click", () => {
-        const item = this.spellingEngine.getCurrentLearnItem();
-        if (item) playAudioFile(item.audio, item.word);
-      });
-    }
-    if (this.elements.btnLearnSpeakDef) {
-      this.elements.btnLearnSpeakDef.addEventListener("click", () => {
-        const item = this.spellingEngine.getCurrentLearnItem();
-        if (item) playAudioFile(item.definitionAudio, item.definition);
-      });
-    }
-    if (this.elements.btnLearnPrev) {
-      this.elements.btnLearnPrev.addEventListener("click", () => {
-        this.spellingEngine.prevLearn();
-        this.renderSpellingLearn();
-      });
-    }
-    if (this.elements.btnLearnNext) {
-      this.elements.btnLearnNext.addEventListener("click", () => {
-        this.spellingEngine.nextLearn();
-        this.renderSpellingLearn();
-      });
-    }
+    bindTouchClick(this.elements.btnLearnSpeakWord, () => {
+      const item = this.spellingEngine.getCurrentLearnItem();
+      if (item) playAudioFile(item.audio, item.word);
+    });
+    bindTouchClick(this.elements.btnLearnSpeakDef, () => {
+      const item = this.spellingEngine.getCurrentLearnItem();
+      if (item) playAudioFile(item.definitionAudio, item.definition);
+    });
+    bindTouchClick(this.elements.btnLearnPrev, () => {
+      this.spellingEngine.prevLearn();
+      this.renderSpellingLearn();
+    });
+    bindTouchClick(this.elements.btnLearnNext, () => {
+      this.spellingEngine.nextLearn();
+      this.renderSpellingLearn();
+    });
 
     // Test Mode Controls
-    if (this.elements.btnSubmodeDigital) this.elements.btnSubmodeDigital.addEventListener("click", () => this.switchTestSubmode("digital"));
-    if (this.elements.btnSubmodePaper) this.elements.btnSubmodePaper.addEventListener("click", () => this.switchTestSubmode("paper"));
+    bindTouchClick(this.elements.btnSubmodeDigital, () => this.switchTestSubmode("digital"));
+    bindTouchClick(this.elements.btnSubmodePaper, () => this.switchTestSubmode("paper"));
 
-    if (this.elements.btnTestSpeakWord) {
-      this.elements.btnTestSpeakWord.addEventListener("click", () => {
-        const q = this.spellingEngine.getCurrentTestQuestion();
-        if (q) playAudioFile(q.audio, q.targetWord);
-      });
-    }
+    bindTouchClick(this.elements.btnTestSpeakWord, () => {
+      const q = this.spellingEngine.getCurrentTestQuestion();
+      if (q) playAudioFile(q.audio, q.targetWord);
+    });
 
-    if (this.elements.btnDigitalSubmit) this.elements.btnDigitalSubmit.addEventListener("click", () => this.handleDigitalTestSubmit());
+    bindTouchClick(this.elements.btnDigitalSubmit, () => this.handleDigitalTestSubmit());
     if (this.elements.digitalTestInput) {
       this.elements.digitalTestInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") this.handleDigitalTestSubmit();
       });
     }
 
-    if (this.elements.btnPaperReveal) {
-      this.elements.btnPaperReveal.addEventListener("click", () => {
-        const q = this.spellingEngine.revealTestWord();
-        if (q) {
-          this.elements.paperRevealedWord.textContent = q.targetWord.toUpperCase();
-          this.elements.paperRevealedWord.style.display = "block";
-        }
-      });
-    }
-    if (this.elements.btnPaperCorrect) this.elements.btnPaperCorrect.addEventListener("click", () => this.handlePaperTestResult(true));
-    if (this.elements.btnPaperRetry) this.elements.btnPaperRetry.addEventListener("click", () => this.handlePaperTestResult(false));
+    bindTouchClick(this.elements.btnPaperReveal, () => {
+      const q = this.spellingEngine.revealTestWord();
+      if (q) {
+        this.elements.paperRevealedWord.textContent = q.targetWord.toUpperCase();
+        this.elements.paperRevealedWord.style.display = "block";
+      }
+    });
+    bindTouchClick(this.elements.btnPaperCorrect, () => this.handlePaperTestResult(true));
+    bindTouchClick(this.elements.btnPaperRetry, () => this.handlePaperTestResult(false));
 
     // Game Mode Controls
-    if (this.elements.btnSpeakWord) {
-      this.elements.btnSpeakWord.addEventListener("click", () => {
-        const q = this.spellingEngine.getCurrentGameQuestion();
-        if (q) playAudioFile(q.audio, q.targetWord);
-      });
-    }
-    if (this.elements.btnClearSpelling) {
-      this.elements.btnClearSpelling.addEventListener("click", () => {
-        this.selectedLetterTiles = [];
-        this.renderSpellingTiles();
-      });
-    }
-    if (this.elements.btnSubmitSpelling) this.elements.btnSubmitSpelling.addEventListener("click", () => this.handleSpellingGameSubmit());
+    bindTouchClick(this.elements.btnSpeakWord, () => {
+      const q = this.spellingEngine.getCurrentGameQuestion();
+      if (q) playAudioFile(q.audio, q.targetWord);
+    });
+    bindTouchClick(this.elements.btnClearSpelling, () => {
+      this.selectedLetterTiles = [];
+      this.renderSpellingTiles();
+    });
+    bindTouchClick(this.elements.btnSubmitSpelling, () => this.handleSpellingGameSubmit());
 
     // Victory Modal
-    if (this.elements.btnVictoryContinue) {
-      this.elements.btnVictoryContinue.addEventListener("click", () => {
-        this.elements.victoryModal.classList.remove("active");
-        this.showScreen("pokedex");
-      });
-    }
+    bindTouchClick(this.elements.btnVictoryContinue, () => {
+      this.elements.victoryModal.classList.remove("active");
+      this.showScreen("pokedex");
+    });
   }
 
   // --- PARENT GATE LOGIC ---

@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
 test('Integration Contract: content/characters.js exports all required symbols', async () => {
   const mod = await import('../content/characters.js');
@@ -55,4 +57,30 @@ test('Integration Contract: engine/reward-engine.js exports chooseReward & apply
   assert.equal(typeof mod.chooseMixReward, 'function');
   assert.equal(typeof mod.applyReward, 'function');
   assert.equal(typeof mod.normalizeCollection, 'function');
+});
+
+test('Integration Contract: index.html contains all navigation and back button IDs', () => {
+  const htmlPath = path.join(process.cwd(), 'index.html');
+  const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+
+  const requiredIds = [
+    'btn-back-from-math',
+    'btn-back-from-word',
+    'btn-back-from-pokedex',
+    'brand-logo-btn',
+    'nav-btn-hub',
+    'nav-btn-math',
+    'nav-btn-word',
+    'nav-btn-pokedex',
+    'btn-enter-math',
+    'btn-enter-word',
+    'btn-enter-pokedex',
+    'card-math-realm',
+    'card-word-realm',
+    'card-pokedex-realm'
+  ];
+
+  requiredIds.forEach(id => {
+    assert.ok(htmlContent.includes(`id="${id}"`), `index.html must contain id="${id}"`);
+  });
 });
