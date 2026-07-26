@@ -29,16 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v14";
+} from "./engine/reward-engine.js?v=20260726_v15";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v14";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v15";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v14";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v14";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v14";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v14";
+import { LEVELS } from "./content/levels.js?v=20260726_v15";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v15";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v15";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v15";
 
-const APP_VERSION = "v2.0.0-v14";
+const APP_VERSION = "v2.0.0-v15";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -332,8 +332,11 @@ class AppController {
       btnCloseQrModal: document.getElementById("btn-close-qr-modal")
     };
 
-    if (this.elements.appVersionBadge) {
-      this.elements.appVersionBadge.textContent = APP_VERSION;
+    if (document.getElementById("modal-app-version")) {
+      document.getElementById("modal-app-version").textContent = APP_VERSION;
+    }
+    if (document.getElementById("diag-build-version")) {
+      document.getElementById("diag-build-version").textContent = `${APP_VERSION} (2026-07-26)`;
     }
   }
 
