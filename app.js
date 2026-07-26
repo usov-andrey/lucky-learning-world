@@ -29,16 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v11";
+} from "./engine/reward-engine.js?v=20260726_v13";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v11";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v13";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v11";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v11";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v11";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v11";
+import { LEVELS } from "./content/levels.js?v=20260726_v13";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v13";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v13";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v13";
 
-const APP_VERSION = "v2.0.0-v11";
+const APP_VERSION = "v2.0.0-v13";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -442,24 +442,34 @@ class AppController {
     }
 
     // QR Code Modal Bindings
-    if (this.elements.btnShowQrHeader) {
-      bindTouchClick(this.elements.btnShowQrHeader, () => this.openQrModal());
-    }
-    if (this.elements.btnShowQrVictory) {
-      bindTouchClick(this.elements.btnShowQrVictory, () => this.openQrModal());
-    }
-    if (this.elements.btnCloseQrModal) {
-      bindTouchClick(this.elements.btnCloseQrModal, () => {
-        this.closeModal(this.elements.qrModal);
+    const attachQrListener = (btn) => {
+      if (!btn) return;
+      bindTouchClick(btn, (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        this.openQrModal();
+      });
+    };
+
+    attachQrListener(this.elements.btnShowQrHeader || document.getElementById("btn-show-qr-header"));
+    attachQrListener(this.elements.btnShowQrVictory || document.getElementById("btn-show-qr-victory"));
+
+    const closeQrBtn = this.elements.btnCloseQrModal || document.getElementById("btn-close-qr-modal");
+    if (closeQrBtn) {
+      bindTouchClick(closeQrBtn, () => {
+        const modal = this.elements.qrModal || document.getElementById("qr-modal");
+        this.closeModal(modal);
       });
     }
-    if (this.elements.btnCopyQrUrl) {
-      bindTouchClick(this.elements.btnCopyQrUrl, () => {
-        if (this.elements.qrModalUrlInput) {
-          navigator.clipboard.writeText(this.elements.qrModalUrlInput.value).then(() => {
-            const orig = this.elements.btnCopyQrUrl.textContent;
-            this.elements.btnCopyQrUrl.textContent = "Copied! ✓";
-            setTimeout(() => { this.elements.btnCopyQrUrl.textContent = orig; }, 2000);
+
+    const copyQrBtn = this.elements.btnCopyQrUrl || document.getElementById("btn-copy-qr-url");
+    if (copyQrBtn) {
+      bindTouchClick(copyQrBtn, () => {
+        const input = this.elements.qrModalUrlInput || document.getElementById("qr-modal-url-input");
+        if (input && input.value) {
+          navigator.clipboard.writeText(input.value).then(() => {
+            const orig = copyQrBtn.textContent;
+            copyQrBtn.textContent = "Copied! ✓";
+            setTimeout(() => { copyQrBtn.textContent = orig; }, 2000);
           }).catch(() => {});
         }
       });
@@ -1084,17 +1094,27 @@ class AppController {
 
   openQrModal() {
     if (!this.elements.qrModal) return;
-    const pet = this.lastRescuedPet || { name: 'Pikachu' };
-    ShareController.renderQrModal(
-      this.elements.qrModalCanvas,
-      this.elements.qrModalUrlInput,
-      {
-        playerName: this.player ? this.player.name : 'Lucky',
-        score: 3,
-        petName: pet.name
-      }
-    );
     this.openModal(this.elements.qrModal);
+
+    const pet = this.lastRescuedPet || { name: 'Pikachu' };
+    const playerName = this.player ? this.player.name : 'Lucky';
+
+    try {
+      ShareController.renderQrModal(
+        this.elements.qrModalCanvas,
+        this.elements.qrModalUrlInput,
+        {
+          senderName: playerName,
+          score: (this.player && this.player.stars) ? this.player.stars : 3,
+          petName: pet.name
+        }
+      );
+    } catch (err) {
+      console.warn("QR rendering fallback:", err);
+      if (this.elements.qrModalUrlInput) {
+        this.elements.qrModalUrlInput.value = ShareController.createShareUrl({ senderName: playerName });
+      }
+    }
   }
 }
 

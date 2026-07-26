@@ -687,7 +687,10 @@ body.modal-open {
 }
 
 .modal-overlay.active {
-  display: flex;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 9999 !important;
   animation: fadeIn 0.3s ease-in-out;
 }
 
