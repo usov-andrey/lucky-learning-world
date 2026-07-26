@@ -1,26 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lucky's Learning World — Multi-Subject Educational PWA</title>
-  <meta name="description" content="Gamified learning hub for Lucky and classmates: Math Monster battles, Spelling Bee challenges, Pokédex pets, and LINE challenge sharing.">
+  <title>Lucky's Learning World — PWA Hub</title>
+  <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
-  <!-- Open Graph / LINE Social Preview Cards -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="🌟 Lucky's Learning World — Can you beat my score?">
-  <meta property="og:description" content="Play Math Monster battles & Spelling Bee duels with Lucky! Collect Pokédex pets!">
-  <meta property="og:image" content="pokemon/pikachu.png">
-  <meta name="twitter:card" content="summary_large_image">
-
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
-  <!-- Automatic Error Reporter -> Cloudflare Worker -> GitHub Issues -->
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "1.0.0" 
+      version: "2.0.0" 
     };
   </script>
   <script src="reporter.js"></script>
@@ -29,19 +21,20 @@
 </head>
 <body>
 
-  <!-- Sticky Top Header -->
+  <!-- Header Navigation -->
   <header class="app-header">
     <div class="brand" id="brand-logo-btn" title="Back to Main Hub">
       <span class="brand-icon">🌟</span>
       <h1 class="brand-title">Lucky's Learning World</h1>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
-      <span id="header-player-name">🐾 Lucky</span>
+      <span id="header-player-avatar">🐾</span>
+      <span id="header-player-name">Lucky</span>
       <div class="star-count">
         <span>⭐</span>
         <span id="total-stars-count">0</span>
       </div>
-      <button class="secondary-btn" id="btn-share-line" style="height: 36px; padding: 0 12px; font-size: 13px; margin-left: 6px;">📲 Share LINE</button>
+      <button class="secondary-btn" id="btn-share-line" style="height: 44px; padding: 0 14px; font-size: 14px; margin-left: 6px;">📲 LINE</button>
     </div>
   </header>
 
@@ -51,8 +44,8 @@
     <!-- VIEW 1: Main Hub / Dashboard -->
     <section id="dashboard-view" class="view-screen active">
       <div style="margin-bottom: 20px;">
-        <h2 style="font-size: 28px; font-weight: 800;" id="welcome-greeting-title">Choose Your Realm, Adventurer!</h2>
-        <p style="color: var(--text-muted); margin-top: 4px;">Select a world to battle monsters, earn stars, and catch pets!</p>
+        <h2 style="font-size: 28px; font-weight: 800;" id="welcome-greeting-title">Привет, Лаки! Выбирай мир!</h2>
+        <p style="color: var(--text-muted); margin-top: 4px;">Сражайся с монстрами, зарабатывай звёзды и собирай питомцев в Pokédex!</p>
       </div>
 
       <div class="realms-grid">
@@ -60,14 +53,14 @@
         <article class="realm-card math-realm" id="card-math-realm">
           <div class="realm-header">
             <span class="realm-icon">🧮</span>
-            <span class="realm-badge">Grade 1 - 5</span>
+            <span class="realm-badge">Таблица умножения ×6–×10</span>
           </div>
           <div class="realm-content">
             <h3 class="realm-title">Math Monster Realm</h3>
-            <p class="realm-desc">Master multiplication tables, addition & division duels to defeat math monsters!</p>
+            <p class="realm-desc">Битвы умножения ×6, ×7, ×8, ×9, ×10! 5 уровней, проявление монстров и аудио-обучение без поражений.</p>
           </div>
           <button class="realm-action-btn" id="btn-enter-math">
-            <span>Play Math Duel</span> ➔
+            <span>Вперед в Math Realm</span> ➔
           </button>
         </article>
 
@@ -75,14 +68,14 @@
         <article class="realm-card word-realm" id="card-word-realm">
           <div class="realm-header">
             <span class="realm-icon">🔤</span>
-            <span class="realm-badge">Spelling & Audio</span>
+            <span class="realm-badge">Page 22 (Schwa ‹or›)</span>
           </div>
           <div class="realm-content">
-            <h3 class="realm-title">Word Monster Realm</h3>
-            <p class="realm-desc">Listen to school sight words & phonics, assemble letter tiles, and capture pets!</p>
+            <h3 class="realm-title">Word Realm (Spelling)</h3>
+            <p class="realm-desc">18 слов Page 22 (от author до opportunity). Три режима: Learn, Test (Paper/Digital) и Game Battle!</p>
           </div>
           <button class="realm-action-btn" id="btn-enter-word">
-            <span>Play Spelling Bee</span> ➔
+            <span>Вперед в Word Realm</span> ➔
           </button>
         </article>
 
@@ -93,11 +86,11 @@
             <span class="realm-badge" id="pets-collected-count">0 / 24 Pets</span>
           </div>
           <div class="realm-content">
-            <h3 class="realm-title">Pokédex & Pet Sanctuary</h3>
-            <p class="realm-desc">View your rescued pets, feed them treats, and display your trophy collection!</p>
+            <h3 class="realm-title">Единый Pokédex</h3>
+            <p class="realm-desc">Общая коллекция питомцев и трофеев за победы в Математике и Орфографии!</p>
           </div>
           <button class="realm-action-btn" id="btn-enter-pokedex">
-            <span>Open Pokédex</span> ➔
+            <span>Открыть Pokédex</span> ➔
           </button>
         </article>
       </div>
@@ -106,14 +99,17 @@
     <!-- VIEW 2: Math Battle Realm Screen -->
     <section id="math-view" class="view-screen">
       <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-math">⬅️ Back to Hub</button>
-        <h2 style="font-size: 24px;">🧮 Math Monster Realm</h2>
+        <button class="back-btn" id="btn-back-from-math">⬅️ В главный хаб</button>
+        <h2 style="font-size: 24px;">🧮 Math Monster Realm (×6–×10)</h2>
       </div>
 
-      <div class="chips-row" id="math-mode-chips">
-        <button class="chip-btn active" data-math-mode="multiplication">Multiplication (×2 .. ×12)</button>
-        <button class="chip-btn" data-math-mode="addition">Speed Addition (+)</button>
-        <button class="chip-btn" data-math-mode="division">Division Master (÷)</button>
+      <div class="chips-row" id="math-level-chips">
+        <button class="chip-btn active" data-math-level="x6">Уровень ×6</button>
+        <button class="chip-btn" data-math-level="x7">Уровень ×7</button>
+        <button class="chip-btn" data-math-level="x8">Уровень ×8</button>
+        <button class="chip-btn" data-math-level="x9">Уровень ×9</button>
+        <button class="chip-btn" data-math-level="x10">Уровень ×10</button>
+        <button class="chip-btn" data-math-level="mix">🔥 Mix Mode</button>
       </div>
 
       <!-- Math Battle Arena -->
@@ -124,42 +120,113 @@
               <div class="hp-bar-fill" id="math-monster-hp-bar" style="width: 100%;"></div>
             </div>
             <div class="sprite-wrapper">
-              <img id="math-monster-img" src="pokemon/pikachu.png" alt="Monster" class="battle-sprite float-anim">
+              <img id="math-monster-img" src="pokemon/pikachu.png" alt="Monster" class="battle-sprite float-anim" style="opacity: 0.2; transition: opacity 0.5s ease;">
             </div>
-            <div class="fighter-name" id="math-monster-name">Math Monster</div>
+            <div class="fighter-name" id="math-monster-name">Монстр скрыт (Прояви его!)</div>
           </div>
         </div>
 
         <div class="question-container">
-          <div class="question-progress" id="math-question-progress">Question 1 of 10</div>
+          <div class="question-progress" id="math-question-progress">Вопрос 1 из 12</div>
           <div class="question-display" id="math-question-text">6 × 7 = ?</div>
           <div class="feedback-banner" id="math-feedback-text">&nbsp;</div>
 
           <div class="answers-grid" id="math-answers-grid">
-            <button class="answer-btn" data-answer-idx="0">42</button>
-            <button class="answer-btn" data-answer-idx="1">36</button>
-            <button class="answer-btn" data-answer-idx="2">48</button>
+            <button class="answer-btn" data-answer-val="42">42</button>
+            <button class="answer-btn" data-answer-val="36">36</button>
+            <button class="answer-btn" data-answer-val="48">48</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 3: Word Battle Realm Screen -->
+    <!-- VIEW 3: Word Battle Realm Screen (Spelling Page 22) -->
     <section id="word-view" class="view-screen">
       <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-word">⬅️ Back to Hub</button>
-        <h2 style="font-size: 24px;">🔤 Word Monster Realm</h2>
+        <button class="back-btn" id="btn-back-from-word">⬅️ В главный хаб</button>
+        <h2 style="font-size: 24px;">🔤 Word Realm — Page 22 (Schwa ‹or›)</h2>
       </div>
 
-      <div class="chips-row" id="word-deck-chips">
-        <button class="chip-btn active" data-deck-id="g1-sightwords">Grade 1 Sight Words</button>
-        <button class="chip-btn" data-deck-id="y3-sightwords">Grade 3 (Lucky's Deck)</button>
-        <button class="chip-btn" data-deck-id="phonics-blend">Phonics & Blends</button>
-        <button class="chip-btn" data-deck-id="oxford-g3">Oxford G3 International</button>
+      <!-- 3 Modes Tabs -->
+      <div class="chips-row" id="spelling-mode-chips">
+        <button class="chip-btn active" data-spelling-mode="learn">📖 Learn Mode</button>
+        <button class="chip-btn" data-spelling-mode="test">📝 Test Mode</button>
+        <button class="chip-btn" data-spelling-mode="game">⚔️ Game Mode (Tiles)</button>
       </div>
 
-      <!-- Word Battle Arena -->
-      <div class="arena-card" id="word-arena-card">
+      <!-- Mode 1: Learn Mode Container -->
+      <div id="spelling-learn-container" class="arena-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <span style="font-size: 14px; color: var(--text-muted);" id="learn-progress-text">Слово 1 из 18</span>
+          <span class="realm-badge">Page 22 • Schwa ‹or›</span>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 24px;">
+          <div style="font-size: 42px; font-weight: 900; color: var(--text-highlight); letter-spacing: 1px;" id="learn-word-display">author</div>
+          <button class="audio-pronounce-btn" id="btn-learn-speak-word" style="margin: 16px auto;">
+            <span>🔊 Произнести слово</span>
+          </button>
+        </div>
+
+        <!-- Meaning Card ("What does it mean?") -->
+        <div style="background: rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-glass);">
+          <h4 style="font-size: 20px; margin-bottom: 12px; color: #a5b4fc;">What does it mean?</h4>
+          <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+            <img id="learn-image" src="content/page-22/images/author.svg" alt="Illustration" style="width: 140px; height: 140px; object-fit: contain; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 16px; border: 1px solid var(--border-glass);">
+            <div style="flex: 1; min-width: 200px;">
+              <p id="learn-definition" style="font-size: 18px; line-height: 1.5; color: white;">A person who writes books, stories, or articles.</p>
+              <button class="secondary-btn" id="btn-learn-speak-def" style="margin-top: 14px; height: 48px; font-size: 14px;">
+                <span>🔊 Прослушать определение</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+          <button class="back-btn" id="btn-learn-prev">⬅️ Назад</button>
+          <button class="primary-btn" id="btn-learn-next" style="height: var(--min-touch-target); padding: 0 32px;">Дальше ➔</button>
+        </div>
+      </div>
+
+      <!-- Mode 2: Test Mode Container -->
+      <div id="spelling-test-container" class="arena-card" style="display: none;">
+        <div class="chips-row" style="margin-bottom: 16px;">
+          <button class="chip-btn active" id="btn-submode-digital">📱 Digital Test (Планшет)</button>
+          <button class="chip-btn" id="btn-submode-paper">📝 Paper Test (Бумага)</button>
+        </div>
+
+        <div class="question-container">
+          <div class="question-progress" id="test-question-progress">Слово 1 из 18</div>
+
+          <button class="audio-pronounce-btn" id="btn-test-speak-word">
+            <span style="font-size: 28px;">🔊</span>
+            <span>Диктант (Прослушать слово)</span>
+          </button>
+
+          <div class="word-hint-text" id="test-word-hint">Подсказка к слову...</div>
+
+          <!-- Digital Input -->
+          <div id="digital-test-box" style="width: 100%; max-width: 400px; margin: 16px 0;">
+            <input type="text" id="digital-test-input" placeholder="Введи слово на английском..." autocomplete="off" spellcheck="false" style="width: 100%; height: 64px; border-radius: var(--radius-md); background: rgba(255,255,255,0.1); border: 2px solid var(--border-glow); color: white; font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700; text-align: center; text-transform: lowercase;">
+            <div class="feedback-banner" id="digital-feedback-text" style="margin-top: 10px;">&nbsp;</div>
+            <button class="primary-btn" id="btn-digital-submit" style="width: 100%; height: var(--min-touch-target); margin-top: 12px;">Проверить ответ ➔</button>
+          </div>
+
+          <!-- Paper Test Reveal Box -->
+          <div id="paper-test-box" style="display: none; text-align: center; margin: 16px 0;">
+            <p style="color: var(--text-muted); margin-bottom: 12px;">Напиши слово на бумаге, а затем нажми кнопку для самопроверки:</p>
+            <div id="paper-revealed-word" style="font-size: 40px; font-weight: 900; color: var(--text-highlight); display: none; margin-bottom: 16px;">AUTHOR</div>
+            <button class="secondary-btn" id="btn-paper-reveal" style="height: var(--min-touch-target); padding: 0 24px; font-size: 18px;">👁️ Показать правильное слово</button>
+            <div style="display: flex; gap: 16px; margin-top: 16px;">
+              <button class="primary-btn" id="btn-paper-correct" style="flex: 1; height: var(--min-touch-target);">✅ Написала верно!</button>
+              <button class="secondary-btn" id="btn-paper-retry" style="flex: 1; height: var(--min-touch-target); background: rgba(255, 71, 87, 0.2);">🔄 Повторить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode 3: Game Mode Container (Letter Tiles Battle) -->
+      <div id="spelling-game-container" class="arena-card" style="display: none;">
         <div class="battle-stage">
           <div class="fighter-box monster-fighter">
             <div class="hp-bar-wrap">
@@ -168,23 +235,21 @@
             <div class="sprite-wrapper">
               <img id="word-monster-img" src="pokemon/eevee.png" alt="Dragon" class="battle-sprite float-anim">
             </div>
-            <div class="fighter-name" id="word-monster-name">Spelling Dragon</div>
+            <div class="fighter-name" id="word-monster-name">Spelling Dragon (Page 22)</div>
           </div>
         </div>
 
         <div class="question-container">
-          <div class="question-progress" id="word-question-progress">Word 1 of 8</div>
+          <div class="question-progress" id="word-question-progress">Слово 1 из 18</div>
           
           <button class="audio-pronounce-btn" id="btn-speak-word">
             <span style="font-size: 28px;">🔊</span>
-            <span>Tap to Listen</span>
+            <span>Произнести слово</span>
           </button>
 
-          <div class="word-hint-text" id="word-hint-text">"Land surrounded by water"</div>
+          <div class="word-hint-text" id="word-hint-text">A person who writes books</div>
 
           <div class="word-slots-row" id="word-slots-row">
-            <span class="letter-slot">i</span>
-            <span class="letter-slot">s</span>
             <span class="letter-slot empty">_</span>
           </div>
 
@@ -194,8 +259,8 @@
           </div>
 
           <div class="spelling-actions-row">
-            <button class="secondary-btn" id="btn-clear-spelling">Clear</button>
-            <button class="primary-btn" id="btn-submit-spelling">Check Word ➔</button>
+            <button class="secondary-btn" id="btn-clear-spelling" style="height: var(--min-touch-target); min-width: 100px;">Стереть</button>
+            <button class="primary-btn" id="btn-submit-spelling" style="height: var(--min-touch-target); padding: 0 28px;">Атака плиткам! ➔</button>
           </div>
         </div>
       </div>
@@ -204,30 +269,11 @@
     <!-- VIEW 4: Pokédex & Pet Collection Screen -->
     <section id="pokedex-view" class="view-screen">
       <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-pokedex">⬅️ Back to Hub</button>
-        <h2 style="font-size: 24px;">🐾 Pokédex & Pet Sanctuary</h2>
+        <button class="back-btn" id="btn-back-from-pokedex">⬅️ В главный хаб</button>
+        <h2 style="font-size: 24px;">🐾 Единый Pokédex & Коллекция Питомцев</h2>
       </div>
 
       <div class="pokedex-grid" id="pokedex-grid">
-      </div>
-    </section>
-
-    <!-- VIEW 5: Settings Screen -->
-    <section id="settings-view" class="view-screen">
-      <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-settings">⬅️ Back to Hub</button>
-        <h2 style="font-size: 24px;">⚙️ Settings & Grade Profile</h2>
-      </div>
-
-      <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border-glass);">
-        <h3 style="font-size: 20px; margin-bottom: 16px;">Curriculum & Grade Preset</h3>
-        <div class="chips-row" id="settings-grade-chips">
-          <button class="chip-btn" data-grade="g1">Grade 1 / UK Year 1</button>
-          <button class="chip-btn" data-grade="g2">Grade 2 / UK Year 2</button>
-          <button class="chip-btn" data-grade="g3">Grade 3 / UK Year 3</button>
-          <button class="chip-btn" data-grade="g4">Grade 4 / UK Year 4</button>
-          <button class="chip-btn" data-grade="g5">Grade 5 / UK Year 5</button>
-        </div>
       </div>
     </section>
 
@@ -237,27 +283,34 @@
   <div class="modal-overlay" id="onboarding-modal">
     <div class="modal-card">
       <div style="font-size: 54px; animation: pulse-bounce 1s infinite;">🌟</div>
-      <h2 style="font-size: 32px; margin-top: 10px;">Welcome Adventurer!</h2>
-      <p style="color: var(--text-muted); margin-top: 6px;">Enter your name and grade to start your learning journey!</p>
+      <h2 style="font-size: 30px; margin-top: 10px;">Добро пожаловать, Лаки!</h2>
+      <p style="color: var(--text-muted); margin-top: 6px;">Введи своё имя и выбери стартового питомца!</p>
 
       <div style="margin: 20px 0; text-align: left;">
-        <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">YOUR PLAYER NAME:</label>
-        <input type="text" id="onboarding-name-input" value="Lucky" placeholder="Enter your name..." style="width: 100%; height: 54px; padding: 0 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.1); border: 2px solid var(--border-glow); color: white; font-family: inherit; font-size: 20px; font-weight: 700;">
+        <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">ИМЯ ИГРОКА:</label>
+        <input type="text" id="onboarding-name-input" value="Lucky" placeholder="Введи имя..." style="width: 100%; height: 54px; padding: 0 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.1); border: 2px solid var(--border-glow); color: white; font-family: inherit; font-size: 20px; font-weight: 700;">
       </div>
 
       <div style="margin: 20px 0; text-align: left;">
-        <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">SELECT YOUR GRADE:</label>
-        <div class="chips-row" id="onboarding-grade-chips" style="justify-content: center; margin: 0;">
-          <button type="button" class="chip-btn" data-grade="g1">Grade 1</button>
-          <button type="button" class="chip-btn" data-grade="g2">Grade 2</button>
-          <button type="button" class="chip-btn active" data-grade="g3">Grade 3</button>
-          <button type="button" class="chip-btn" data-grade="g4">Grade 4</button>
-          <button type="button" class="chip-btn" data-grade="g5">Grade 5</button>
+        <label style="font-size: 14px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">ВЫБЕРИ СТАРТОВОГО ПИТОМЦА:</label>
+        <div style="display: flex; gap: 12px; justify-content: center;">
+          <button type="button" class="starter-pet-btn active" data-starter="embercub" style="flex: 1; padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.1); border: 2px solid var(--border-glow); color: white; cursor: pointer; text-align: center;">
+            <img src="pokemon/pikachu.png" alt="Embercub" style="width: 60px; height: 60px; object-fit: contain;">
+            <div style="font-weight: 700; margin-top: 4px; font-size: 14px;">Embercub</div>
+          </button>
+          <button type="button" class="starter-pet-btn" data-starter="aquafox" style="flex: 1; padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.1); border: 2px solid var(--border-glass); color: white; cursor: pointer; text-align: center;">
+            <img src="pokemon/eevee.png" alt="Aquafox" style="width: 60px; height: 60px; object-fit: contain;">
+            <div style="font-weight: 700; margin-top: 4px; font-size: 14px;">Aquafox</div>
+          </button>
+          <button type="button" class="starter-pet-btn" data-starter="leafpup" style="flex: 1; padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.1); border: 2px solid var(--border-glass); color: white; cursor: pointer; text-align: center;">
+            <img src="pokemon/charmander.png" alt="Leafpup" style="width: 60px; height: 60px; object-fit: contain;">
+            <div style="font-weight: 700; margin-top: 4px; font-size: 14px;">Leafpup</div>
+          </button>
         </div>
       </div>
 
       <button class="realm-action-btn" id="btn-start-onboarding" style="background: var(--grad-primary); width: 100%; margin-top: 10px;">
-        Start My Adventure! 🚀
+        Начать приключение! 🚀
       </button>
     </div>
   </div>
@@ -266,20 +319,16 @@
   <div class="modal-overlay" id="victory-modal">
     <div class="modal-card">
       <div style="font-size: 54px; animation: pulse-bounce 1s infinite;">🎉</div>
-      <h2 style="font-size: 32px; margin-top: 10px;" id="victory-title">VICTORY!</h2>
-      <p style="color: var(--text-muted); margin-top: 6px;" id="victory-subtitle">You defeated the monster and earned 3 Stars!</p>
+      <h2 style="font-size: 32px; margin-top: 10px;" id="victory-title">ПОБЕДА!</h2>
+      <p style="color: var(--text-muted); margin-top: 6px;" id="victory-subtitle">Ты заработала 3 Звезды!</p>
       
       <div class="reward-pet-preview">
         <img id="reward-pet-img" src="pokemon/pikachu.png" alt="Rescued Pet" class="reward-pet-img">
-        <div style="font-weight: 700; font-size: 20px; margin-top: 10px;" id="reward-pet-name">Pikachu Rescued!</div>
+        <div style="font-weight: 700; font-size: 20px; margin-top: 10px;" id="reward-pet-name">Питомец пойман!</div>
       </div>
 
-      <button class="realm-action-btn" id="btn-share-victory-card" style="background: var(--grad-primary); width: 100%; margin-top: 16px;">
-        📸 Share Victory Card to LINE 📲
-      </button>
-
       <button class="realm-action-btn" id="btn-victory-continue" style="background: var(--grad-success); width: 100%; margin-top: 10px;">
-        Collect Pet & Continue ➔
+        Забрать питомца и продолжить ➔
       </button>
     </div>
   </div>
@@ -288,23 +337,19 @@
   <nav class="bottom-nav">
     <button class="nav-item active" id="nav-btn-hub">
       <span class="nav-icon">🏠</span>
-      <span>Hub</span>
+      <span>Хаб</span>
     </button>
     <button class="nav-item" id="nav-btn-math">
       <span class="nav-icon">🧮</span>
-      <span>Math</span>
+      <span>Математика</span>
     </button>
     <button class="nav-item" id="nav-btn-word">
       <span class="nav-icon">🔤</span>
-      <span>Spelling</span>
+      <span>Орфография</span>
     </button>
     <button class="nav-item" id="nav-btn-pokedex">
       <span class="nav-icon">🐾</span>
-      <span>Pets</span>
-    </button>
-    <button class="nav-item" id="nav-btn-settings">
-      <span class="nav-icon">⚙️</span>
-      <span>Settings</span>
+      <span>Pokédex</span>
     </button>
   </nav>
 

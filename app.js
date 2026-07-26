@@ -1,651 +1,864 @@
 /**
- * Lucky's Learning World - Master Game Engine Controller & Router
- * Pure Vanilla ES Module Architecture
+ * Lucky's Learning World — Main Application Router & Presenter Orchestrator
+ * Connects pure engine modules to UI views with zero-coupling architecture.
  */
 
-import { SpellingEngine } from './engine/spelling-engine.js';
-import { SPELLING_DECKS, getDeckById } from './content/spelling-catalog.js';
-import { ShareController } from './engine/share-controller.js';
-import { soundFx } from './engine/sound-fx.js';
+import {
+  buildLevelSessionPlan,
+  buildMixSessionPlan,
+  createLevelSession,
+  currentQuestion,
+  computeAnswer,
+  buildChoices,
+  answerFirstTry,
+  confirmCorrection,
+  factKey
+} from "./engine/math-engine.js";
 
-// Storage Keys & Default State
-const STORAGE_KEY = 'luckys_learning_world_state';
+import { SpellingEngine } from "./engine/spelling-engine.js";
 
-const PET_ROSTER = [
-  { id: 'pikachu', name: 'Pikachu', img: 'pokemon/pikachu.png' },
-  { id: 'charmander', name: 'Charmander', img: 'pokemon/charmander.png' },
-  { id: 'bulbasaur', name: 'Bulbasaur', img: 'pokemon/bulbasaur.png' },
-  { id: 'squirtle', name: 'Squirtle', img: 'pokemon/squirtle.png' },
-  { id: 'eevee', name: 'Eevee', img: 'pokemon/eevee.png' },
-  { id: 'growlithe', name: 'Growlithe', img: 'pokemon/growlithe.png' },
-  { id: 'jolteon', name: 'Jolteon', img: 'pokemon/jolteon.png' },
-  { id: 'vaporeon', name: 'Vaporeon', img: 'pokemon/vaporeon.png' },
-  { id: 'mew', name: 'Mew', img: 'pokemon/mew.png' },
-  { id: 'rowlet', name: 'Rowlet', img: 'pokemon/rowlet.png' },
-  { id: 'geodude', name: 'Geodude', img: 'pokemon/geodude.png' },
-  { id: 'sylveon', name: 'Sylveon', img: 'pokemon/sylveon.png' }
-];
+import {
+  normalizeStoredState,
+  computeLevelOutcome,
+  applyLevelOutcome
+} from "./engine/progression.js";
 
-const defaultState = {
-  player: {
-    name: 'Lucky',
-    grade: 'g3',
-    stars: 12,
-    petsUnlocked: ['pikachu'],
-    hasCompletedOnboarding: false
-  },
-  settings: {
-    soundEnabled: true,
-    ttsSpeed: 1.0
+import {
+  chooseReward,
+  chooseMixReward,
+  applyReward,
+  normalizeCollection
+} from "./engine/reward-engine.js";
+
+import { LEVELS } from "./content/levels.js";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js";
+import { CHARACTERS, getCharacterById } from "./content/characters.js";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js";
+
+// --- GLOBAL AUDIO & TTS CONTROLLER ---
+let audioUnlocked = false;
+let currentAudio = null;
+
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+
+  if (window.speechSynthesis) {
+    const dummy = new SpeechSynthesisUtterance("");
+    dummy.volume = 0.01;
+    window.speechSynthesis.speak(dummy);
   }
+}
+
+window.addEventListener("pointerdown", unlockAudio, { once: true });
+window.addEventListener("touchstart", unlockAudio, { once: true });
+
+function playAudioFile(src, fallbackText) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+
+  if (src) {
+    const audio = new Audio(src);
+    currentAudio = audio;
+    audio.play().catch(() => {
+      if (fallbackText) speakTTS(fallbackText);
+    });
+  } else if (fallbackText) {
+    speakTTS(fallbackText);
+  }
+}
+
+function speakTTS(text, rate = 0.85) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = rate;
+  utterance.lang = "en-US";
+  window.speechSynthesis.speak(utterance);
+}
+
+function speakMathFact(a, b) {
+  const product = a * b;
+  const wordA = numberToWord(a);
+  const wordB = numberToWord(b);
+  const wordProd = numberToWord(product);
+  speakTTS(`${wordA} times ${wordB} is ${wordProd}`);
+}
+
+function speakPraise() {
+  const praises = [
+    "Awesome job, Lucky!",
+    "Superstar math skills!",
+    "Brilliant answer!",
+    "You are unstoppable!",
+    "Fantastic learning!"
+  ];
+  const chosen = praises[Math.floor(Math.random() * praises.length)];
+  speakTTS(chosen, 0.95);
+}
+
+function numberToWord(n) {
+  const words = [
+    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+    "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
+  ];
+  if (n <= 20) return words[n];
+  if (n < 100) {
+    const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+    const t = Math.floor(n / 10);
+    const r = n % 10;
+    return r === 0 ? tens[t] : `${tens[t]} ${words[r]}`;
+  }
+  return n.toString();
+}
+
+// --- STATE MANAGEMENT ---
+const STORAGE_KEYS = {
+  PLAYER: "lucky_learning_player",
+  MATH_PROGRESSION: "lmm3s:progression",
+  MATH_COLLECTION: "lmm3s:collection",
+  SETTINGS: "lmm3s:settings"
+};
+
+const DEFAULT_SETTINGS = {
+  warmupCount: 2,
+  scoredCount: 10,
+  hardDrill: true,
+  passThreshold: 0.5,
+  unlockThreshold: 0.8,
+  rewardThreshold: 0.9
 };
 
 class AppController {
   constructor() {
-    this.state = this.loadState();
-    this.currentView = 'dashboard-view';
-    
-    // Math Session State
-    this.mathState = {
-      mode: 'multiplication',
-      questions: [],
-      currentIdx: 0,
-      monsterHp: 100,
-      monsterMaxHp: 100,
-      currentPet: PET_ROSTER[0]
-    };
+    this.player = this.loadPlayer();
+    this.progression = this.loadProgression();
+    this.collection = this.loadCollection();
+    this.settings = DEFAULT_SETTINGS;
 
-    // Word Session State
-    this.spellingEngine = null;
-    this.currentSpellingInput = "";
+    this.spellingEngine = new SpellingEngine(PAGE_22_DECK, "learn");
+    this.mathSession = null;
+    this.currentMathLevel = LEVELS[0];
+    this.selectedLetterTiles = [];
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.init());
-    } else {
-      this.init();
-    }
-  }
-
-  loadState() {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? { ...defaultState, ...JSON.parse(saved) } : { ...defaultState };
-    } catch (e) {
-      console.warn('Failed to load state:', e);
-      return { ...defaultState };
-    }
-  }
-
-  saveState() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
-    } catch (e) {
-      console.error('Failed to save state:', e);
-    }
-  }
-
-  init() {
-    console.log("🌟 Initializing Lucky's Learning World Master Controller...");
-    this.registerServiceWorker();
-    this.setupNavigation();
-    this.setupModeChips();
-    this.setupSettings();
-    this.setupMathArena();
-    this.setupWordArena();
-    this.setupVictoryModal();
-    this.setupShareHandler();
+    this.initDOM();
+    this.bindEvents();
     this.checkOnboarding();
-    this.checkUrlChallenge();
-    this.updateHeaderProfile();
-    this.renderPokedex();
-    this.switchView('dashboard-view');
+    this.renderHeader();
   }
 
-  registerServiceWorker() {
-    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-      navigator.serviceWorker.register('./sw.js').catch(err => {
-        console.warn('SW registration skipped or failed:', err);
-      });
+  loadPlayer() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.PLAYER);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
     }
+  }
+
+  savePlayer() {
+    localStorage.setItem(STORAGE_KEYS.PLAYER, JSON.stringify(this.player));
+    this.renderHeader();
+  }
+
+  loadProgression() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATH_PROGRESSION));
+      return normalizeStoredState(raw, LEVELS);
+    } catch {
+      return normalizeStoredState(null, LEVELS);
+    }
+  }
+
+  saveProgression() {
+    localStorage.setItem(STORAGE_KEYS.MATH_PROGRESSION, JSON.stringify(this.progression));
+  }
+
+  loadCollection() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATH_COLLECTION));
+      return normalizeCollection(raw);
+    } catch {
+      return [];
+    }
+  }
+
+  saveCollection() {
+    localStorage.setItem(STORAGE_KEYS.MATH_COLLECTION, JSON.stringify(this.collection));
+  }
+
+  initDOM() {
+    this.elements = {
+      // Header
+      headerPlayerName: document.getElementById("header-player-name"),
+      headerPlayerAvatar: document.getElementById("header-player-avatar"),
+      totalStarsCount: document.getElementById("total-stars-count"),
+      btnShareLine: document.getElementById("btn-share-line"),
+
+      // Screens
+      screens: {
+        dashboard: document.getElementById("dashboard-view"),
+        math: document.getElementById("math-view"),
+        word: document.getElementById("word-view"),
+        pokedex: document.getElementById("pokedex-view")
+      },
+
+      // Nav
+      navBtns: {
+        hub: document.getElementById("nav-btn-hub"),
+        math: document.getElementById("nav-btn-math"),
+        word: document.getElementById("nav-btn-word"),
+        pokedex: document.getElementById("nav-btn-pokedex")
+      },
+
+      // Dashboard
+      btnEnterMath: document.getElementById("btn-enter-math"),
+      btnEnterWord: document.getElementById("btn-enter-word"),
+      btnEnterPokedex: document.getElementById("btn-enter-pokedex"),
+
+      // Math
+      btnBackMath: document.getElementById("btn-back-from-math"),
+      mathLevelChips: document.getElementById("math-level-chips"),
+      mathMonsterImg: document.getElementById("math-monster-img"),
+      mathMonsterName: document.getElementById("math-monster-name"),
+      mathMonsterHpBar: document.getElementById("math-monster-hp-bar"),
+      mathQuestionProgress: document.getElementById("math-question-progress"),
+      mathQuestionText: document.getElementById("math-question-text"),
+      mathFeedbackText: document.getElementById("math-feedback-text"),
+      mathAnswersGrid: document.getElementById("math-answers-grid"),
+
+      // Word (Spelling)
+      btnBackWord: document.getElementById("btn-back-from-word"),
+      spellingModeChips: document.getElementById("spelling-mode-chips"),
+      spellingLearnContainer: document.getElementById("spelling-learn-container"),
+      spellingTestContainer: document.getElementById("spelling-test-container"),
+      spellingGameContainer: document.getElementById("spelling-game-container"),
+
+      // Learn Mode Elements
+      learnWordDisplay: document.getElementById("learn-word-display"),
+      learnProgressText: document.getElementById("learn-progress-text"),
+      btnLearnSpeakWord: document.getElementById("btn-learn-speak-word"),
+      learnImage: document.getElementById("learn-image"),
+      learnDefinition: document.getElementById("learn-definition"),
+      btnLearnSpeakDef: document.getElementById("btn-learn-speak-def"),
+      btnLearnPrev: document.getElementById("btn-learn-prev"),
+      btnLearnNext: document.getElementById("btn-learn-next"),
+
+      // Test Mode Elements
+      btnSubmodeDigital: document.getElementById("btn-submode-digital"),
+      btnSubmodePaper: document.getElementById("btn-submode-paper"),
+      digitalTestBox: document.getElementById("digital-test-box"),
+      paperTestBox: document.getElementById("paper-test-box"),
+      testQuestionProgress: document.getElementById("test-question-progress"),
+      btnTestSpeakWord: document.getElementById("btn-test-speak-word"),
+      testWordHint: document.getElementById("test-word-hint"),
+      digitalTestInput: document.getElementById("digital-test-input"),
+      digitalFeedbackText: document.getElementById("digital-feedback-text"),
+      btnDigitalSubmit: document.getElementById("btn-digital-submit"),
+      paperRevealedWord: document.getElementById("paper-revealed-word"),
+      btnPaperReveal: document.getElementById("btn-paper-reveal"),
+      btnPaperCorrect: document.getElementById("btn-paper-correct"),
+      btnPaperRetry: document.getElementById("btn-paper-retry"),
+
+      // Game Mode Elements
+      wordMonsterHpBar: document.getElementById("word-monster-hp-bar"),
+      wordMonsterImg: document.getElementById("word-monster-img"),
+      wordMonsterName: document.getElementById("word-monster-name"),
+      wordQuestionProgress: document.getElementById("word-question-progress"),
+      btnSpeakWord: document.getElementById("btn-speak-word"),
+      wordHintText: document.getElementById("word-hint-text"),
+      wordSlotsRow: document.getElementById("word-slots-row"),
+      wordFeedbackText: document.getElementById("word-feedback-text"),
+      letterTilesBank: document.getElementById("letter-tiles-bank"),
+      btnClearSpelling: document.getElementById("btn-clear-spelling"),
+      btnSubmitSpelling: document.getElementById("btn-submit-spelling"),
+
+      // Pokédex
+      btnBackPokedex: document.getElementById("btn-back-from-pokedex"),
+      pokedexGrid: document.getElementById("pokedex-grid"),
+      petsCollectedCount: document.getElementById("pets-collected-count"),
+
+      // Onboarding Modal
+      onboardingModal: document.getElementById("onboarding-modal"),
+      onboardingNameInput: document.getElementById("onboarding-name-input"),
+      btnStartOnboarding: document.getElementById("btn-start-onboarding"),
+
+      // Victory Modal
+      victoryModal: document.getElementById("victory-modal"),
+      victoryTitle: document.getElementById("victory-title"),
+      victorySubtitle: document.getElementById("victory-subtitle"),
+      rewardPetImg: document.getElementById("reward-pet-img"),
+      rewardPetName: document.getElementById("reward-pet-name"),
+      btnVictoryContinue: document.getElementById("btn-victory-continue")
+    };
+  }
+
+  bindEvents() {
+    // Nav bar
+    Object.entries(this.elements.navBtns).forEach(([screenKey, btn]) => {
+      if (btn) btn.addEventListener("click", () => this.showScreen(screenKey));
+    });
+
+    // Dashboard Realm Cards
+    this.elements.btnEnterMath.addEventListener("click", () => this.startMathRealm());
+    this.elements.btnEnterWord.addEventListener("click", () => this.startWordRealm());
+    this.elements.btnEnterPokedex.addEventListener("click", () => this.showScreen("pokedex"));
+
+    this.elements.btnBackMath.addEventListener("click", () => this.showScreen("dashboard"));
+    this.elements.btnBackWord.addEventListener("click", () => this.showScreen("dashboard"));
+
+    // Onboarding starter buttons
+    const starterBtns = document.querySelectorAll(".starter-pet-btn");
+    starterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        starterBtns.forEach(b => {
+          b.classList.remove("active");
+          b.style.borderColor = "var(--border-glass)";
+        });
+        btn.classList.add("active");
+        btn.style.borderColor = "var(--border-glow)";
+      });
+    });
+
+    this.elements.btnStartOnboarding.addEventListener("click", () => this.completeOnboarding());
+
+    // Math Level selection
+    this.elements.mathLevelChips.addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-math-level]");
+      if (!chip) return;
+
+      this.elements.mathLevelChips.querySelectorAll(".chip-btn").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+
+      const levelId = chip.dataset.mathLevel;
+      if (levelId === "mix") {
+        this.startMathMixSession();
+      } else {
+        const level = LEVELS.find(l => l.id === levelId);
+        if (level) this.startMathLevelSession(level);
+      }
+    });
+
+    // Spelling Mode Chips
+    this.elements.spellingModeChips.addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-spelling-mode]");
+      if (!chip) return;
+
+      this.elements.spellingModeChips.querySelectorAll(".chip-btn").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+
+      const mode = chip.dataset.spellingMode;
+      this.switchSpellingMode(mode);
+    });
+
+    // Learn Mode Controls
+    this.elements.btnLearnSpeakWord.addEventListener("click", () => {
+      const item = this.spellingEngine.getCurrentLearnItem();
+      if (item) playAudioFile(item.audio, item.word);
+    });
+    this.elements.btnLearnSpeakDef.addEventListener("click", () => {
+      const item = this.spellingEngine.getCurrentLearnItem();
+      if (item) playAudioFile(item.definitionAudio, item.definition);
+    });
+    this.elements.btnLearnPrev.addEventListener("click", () => {
+      this.spellingEngine.prevLearn();
+      this.renderSpellingLearn();
+    });
+    this.elements.btnLearnNext.addEventListener("click", () => {
+      this.spellingEngine.nextLearn();
+      this.renderSpellingLearn();
+    });
+
+    // Test Mode Controls
+    this.elements.btnSubmodeDigital.addEventListener("click", () => this.switchTestSubmode("digital"));
+    this.elements.btnSubmodePaper.addEventListener("click", () => this.switchTestSubmode("paper"));
+
+    this.elements.btnTestSpeakWord.addEventListener("click", () => {
+      const q = this.spellingEngine.getCurrentTestQuestion();
+      if (q) playAudioFile(q.audio, q.targetWord);
+    });
+
+    this.elements.btnDigitalSubmit.addEventListener("click", () => this.handleDigitalTestSubmit());
+    this.elements.digitalTestInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") this.handleDigitalTestSubmit();
+    });
+
+    this.elements.btnPaperReveal.addEventListener("click", () => {
+      const q = this.spellingEngine.revealTestWord();
+      if (q) {
+        this.elements.paperRevealedWord.textContent = q.targetWord.toUpperCase();
+        this.elements.paperRevealedWord.style.display = "block";
+      }
+    });
+    this.elements.btnPaperCorrect.addEventListener("click", () => this.handlePaperTestResult(true));
+    this.elements.btnPaperRetry.addEventListener("click", () => this.handlePaperTestResult(false));
+
+    // Game Mode Controls
+    this.elements.btnSpeakWord.addEventListener("click", () => {
+      const q = this.spellingEngine.getCurrentGameQuestion();
+      if (q) playAudioFile(q.audio, q.targetWord);
+    });
+    this.elements.btnClearSpelling.addEventListener("click", () => {
+      this.selectedLetterTiles = [];
+      this.renderSpellingTiles();
+    });
+    this.elements.btnSubmitSpelling.addEventListener("click", () => this.handleSpellingGameSubmit());
+
+    // Victory Modal
+    this.elements.btnVictoryContinue.addEventListener("click", () => {
+      this.elements.victoryModal.classList.remove("active");
+      this.showScreen("pokedex");
+    });
   }
 
   checkOnboarding() {
-    const modal = document.getElementById('onboarding-modal');
-    const nameInput = document.getElementById('onboarding-name-input');
-    const startBtn = document.getElementById('btn-start-onboarding');
-    const onboardingGradeChips = document.getElementById('onboarding-grade-chips');
-
-    let selectedGrade = this.state.player.grade || 'g3';
-
-    if (onboardingGradeChips) {
-      // Sync default active state
-      onboardingGradeChips.querySelectorAll('.chip-btn').forEach(btn => {
-        if (btn.dataset.grade === selectedGrade) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-
-      onboardingGradeChips.onclick = (e) => {
-        const btn = e.target.closest('.chip-btn');
-        if (!btn || !btn.dataset.grade) return;
-        soundFx.playClick();
-        onboardingGradeChips.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        selectedGrade = btn.dataset.grade;
-      };
-    }
-
-    if (!this.state.player.hasCompletedOnboarding && modal) {
-      modal.classList.add('active');
-    }
-
-    if (startBtn) {
-      startBtn.onclick = () => {
-        const inputVal = nameInput ? nameInput.value.trim() : 'Lucky';
-        this.state.player.name = inputVal || 'Lucky';
-        this.state.player.grade = selectedGrade;
-        this.state.player.hasCompletedOnboarding = true;
-        this.saveState();
-        this.syncSettingsGradeChips();
-        this.updateHeaderProfile();
-        soundFx.playClick();
-        if (modal) modal.classList.remove('active');
-      };
+    if (!this.player) {
+      this.elements.onboardingModal.classList.add("active");
     }
   }
 
-  setupSettings() {
-    const settingsChips = document.getElementById('settings-grade-chips');
-    if (settingsChips) {
-      this.syncSettingsGradeChips();
-      settingsChips.addEventListener('click', (e) => {
-        const btn = e.target.closest('.chip-btn');
-        if (!btn || !btn.dataset.grade) return;
-        soundFx.playClick();
-        this.state.player.grade = btn.dataset.grade;
-        this.saveState();
-        this.syncSettingsGradeChips();
-      });
-    }
-  }
+  completeOnboarding() {
+    const name = this.elements.onboardingNameInput.value.trim() || "Lucky";
+    const activeStarter = document.querySelector(".starter-pet-btn.active");
+    const starterId = activeStarter ? activeStarter.dataset.starter : "embercub";
 
-  syncSettingsGradeChips() {
-    const settingsChips = document.getElementById('settings-grade-chips');
-    if (!settingsChips) return;
-    const currentGrade = this.state.player.grade || 'g3';
-    settingsChips.querySelectorAll('.chip-btn').forEach(c => {
-      if (c.dataset.grade === currentGrade) {
-        c.classList.add('active');
-      } else {
-        c.classList.remove('active');
-      }
-    });
-  }
-
-  setupShareHandler() {
-    document.getElementById('btn-share-line')?.addEventListener('click', () => {
-      soundFx.playClick();
-      const shareUrl = ShareController.createShareUrl({
-        deckId: 'y3-sightwords',
-        senderName: this.state.player.name,
-        score: this.state.player.stars
-      });
-      ShareController.shareToLine(shareUrl, `${this.state.player.name} challenged you to a learning duel!`);
-    });
-  }
-
-  checkUrlChallenge() {
-    const challenge = ShareController.parseUrlChallenge();
-    if (challenge && challenge.customWords) {
-      console.log('📲 Loaded custom word challenge from URL:', challenge);
-      const customDeck = {
-        id: 'url-challenge',
-        name: `Challenge from ${challenge.senderName}`,
-        grade: 'custom',
-        words: challenge.customWords
-      };
-      this.spellingEngine = new SpellingEngine(customDeck);
-      this.switchView('word-view');
-    }
-  }
-
-  updateHeaderProfile() {
-    const nameEl = document.getElementById('header-player-name');
-    const greetingEl = document.getElementById('welcome-greeting-title');
-    const starsEl = document.getElementById('total-stars-count');
-    const petsCountEl = document.getElementById('pets-collected-count');
-    
-    if (nameEl) nameEl.textContent = `🐾 ${this.state.player.name}`;
-    if (greetingEl) greetingEl.textContent = `Welcome back, ${this.state.player.name}! 🚀`;
-    if (starsEl) starsEl.textContent = this.state.player.stars;
-    if (petsCountEl) petsCountEl.textContent = `${this.state.player.petsUnlocked.length} / ${PET_ROSTER.length} Pets`;
-  }
-
-  switchView(viewId) {
-    soundFx.playClick();
-    const views = document.querySelectorAll('.view-screen');
-    views.forEach(view => {
-      if (view.id === viewId) {
-        view.classList.add('active');
-      } else {
-        view.classList.remove('active');
-      }
-    });
-
-    this.currentView = viewId;
-    this.updateBottomNavState(viewId);
-
-    if (viewId === 'math-view') {
-      this.startMathSession();
-    } else if (viewId === 'word-view') {
-      this.startWordSession('g1-sightwords');
-    } else if (viewId === 'pokedex-view') {
-      this.renderPokedex();
-    } else if (viewId === 'settings-view') {
-      this.syncSettingsGradeChips();
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  updateBottomNavState(viewId) {
-    const navButtons = document.querySelectorAll('.bottom-nav .nav-item');
-    navButtons.forEach(btn => btn.classList.remove('active'));
-
-    const navMap = {
-      'dashboard-view': 'nav-btn-hub',
-      'math-view': 'nav-btn-math',
-      'word-view': 'nav-btn-word',
-      'pokedex-view': 'nav-btn-pokedex',
-      'settings-view': 'nav-btn-settings'
+    const starterPetMap = {
+      embercub: "embercub",
+      aquafox: "leafpup",
+      leafpup: "glowmoth"
     };
 
-    const activeNavId = navMap[viewId];
-    if (activeNavId) {
-      const activeBtn = document.getElementById(activeNavId);
-      if (activeBtn) activeBtn.classList.add('active');
+    const initialPetId = starterPetMap[starterId] || "embercub";
+
+    this.player = {
+      name,
+      starter: starterId,
+      spellingStars: 0,
+      createdAt: Date.now()
+    };
+
+    if (this.collection.length === 0) {
+      this.collection = [{ id: initialPetId, shiny: false, level: 1 }];
+      this.saveCollection();
     }
+
+    this.savePlayer();
+    this.elements.onboardingModal.classList.remove("active");
   }
 
-  setupNavigation() {
-    // Brand Logo -> Main Hub
-    document.getElementById('brand-logo-btn')?.addEventListener('click', () => this.switchView('dashboard-view'));
+  renderHeader() {
+    if (this.elements.headerPlayerName) {
+      this.elements.headerPlayerName.textContent = this.player ? this.player.name : "Lucky";
+    }
 
-    // Dashboard Realm Cards
-    document.getElementById('btn-enter-math')?.addEventListener('click', () => this.switchView('math-view'));
-    document.getElementById('btn-enter-word')?.addEventListener('click', () => this.switchView('word-view'));
-    document.getElementById('btn-enter-pokedex')?.addEventListener('click', () => this.switchView('pokedex-view'));
-
-    // Back Buttons
-    document.getElementById('btn-back-from-math')?.addEventListener('click', () => this.switchView('dashboard-view'));
-    document.getElementById('btn-back-from-word')?.addEventListener('click', () => this.switchView('dashboard-view'));
-    document.getElementById('btn-back-from-pokedex')?.addEventListener('click', () => this.switchView('dashboard-view'));
-    document.getElementById('btn-back-from-settings')?.addEventListener('click', () => this.switchView('dashboard-view'));
-
-    // Bottom Navigation Bar
-    document.getElementById('nav-btn-hub')?.addEventListener('click', () => this.switchView('dashboard-view'));
-    document.getElementById('nav-btn-math')?.addEventListener('click', () => this.switchView('math-view'));
-    document.getElementById('nav-btn-word')?.addEventListener('click', () => this.switchView('word-view'));
-    document.getElementById('nav-btn-pokedex')?.addEventListener('click', () => this.switchView('pokedex-view'));
-    document.getElementById('nav-btn-settings')?.addEventListener('click', () => this.switchView('settings-view'));
-  }
-
-  setupModeChips() {
-    const mathChips = document.getElementById('math-mode-chips');
-    if (mathChips) {
-      mathChips.addEventListener('click', (e) => {
-        const btn = e.target.closest('.chip-btn');
-        if (!btn || !btn.dataset.mathMode) return;
-        soundFx.playClick();
-        mathChips.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        this.mathState.mode = btn.dataset.mathMode;
-        this.startMathSession();
+    let mathStars = 0;
+    if (this.progression && this.progression.levels) {
+      Object.values(this.progression.levels).forEach(lvl => {
+        mathStars += (lvl.stars || 0);
       });
     }
+    const totalStars = mathStars + (this.player ? (this.player.spellingStars || 0) : 0);
+    this.elements.totalStarsCount.textContent = totalStars;
 
-    const wordChips = document.getElementById('word-deck-chips');
-    if (wordChips) {
-      wordChips.addEventListener('click', (e) => {
-        const btn = e.target.closest('.chip-btn');
-        if (!btn || !btn.dataset.deckId) return;
-        soundFx.playClick();
-        wordChips.querySelectorAll('.chip-btn').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        this.startWordSession(btn.dataset.deckId);
-      });
+    if (this.elements.petsCollectedCount) {
+      this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${CHARACTERS.length} Pets`;
     }
   }
 
-  /* ==========================================================================
-     MATH MONSTER REALM ENGINE
-     ========================================================================== */
+  showScreen(screenKey) {
+    Object.values(this.elements.screens).forEach(s => s.classList.remove("active"));
+    Object.values(this.elements.navBtns).forEach(b => b.classList.remove("active"));
 
-  startMathSession() {
-    this.mathState.questions = this.generateMathQuestions(10, this.mathState.mode);
-    this.mathState.currentIdx = 0;
-    this.mathState.monsterHp = 100;
-    this.mathState.monsterMaxHp = 100;
+    if (this.elements.screens[screenKey]) {
+      this.elements.screens[screenKey].classList.add("active");
+    }
+    if (this.elements.navBtns[screenKey]) {
+      this.elements.navBtns[screenKey].classList.add("active");
+    }
 
-    const pet = PET_ROSTER[Math.floor(Math.random() * PET_ROSTER.length)];
-    this.mathState.currentPet = pet;
+    if (screenKey === "pokedex") {
+      this.renderPokedex();
+    }
+  }
 
-    const monsterImg = document.getElementById('math-monster-img');
-    const monsterName = document.getElementById('math-monster-name');
-    if (monsterImg) monsterImg.src = pet.img;
-    if (monsterName) monsterName.textContent = pet.name;
+  // --- MATH REALM CONTROLLER ---
+  startMathRealm() {
+    this.showScreen("math");
+    this.startMathLevelSession(LEVELS[0]);
+  }
+
+  startMathLevelSession(level) {
+    this.currentMathLevel = level;
+    const plan = buildLevelSessionPlan(level, {}, this.settings);
+    this.mathSession = createLevelSession(level.id, plan.questions, this.settings);
+
+    const resident = getCharacterById(level.residentId.replace("res_", ""));
+    const monsterName = resident ? resident.name : `Level ${level.table} Monster`;
+    this.elements.mathMonsterName.textContent = monsterName;
+    if (resident) {
+      this.elements.mathMonsterImg.src = resident.art.src;
+    }
 
     this.renderMathQuestion();
   }
 
-  generateMathQuestions(count, mode) {
-    const questions = [];
-    for (let i = 0; i < count; i++) {
-      let a, b, answer, promptText;
+  startMathMixSession() {
+    const unlockedTables = [6, 7, 8, 9, 10];
+    const plan = buildMixSessionPlan(unlockedTables, {}, this.settings);
+    this.mathSession = createLevelSession("mix", plan.questions, this.settings);
 
-      if (mode === 'addition') {
-        a = Math.floor(Math.random() * 20) + 1;
-        b = Math.floor(Math.random() * 20) + 1;
-        answer = a + b;
-        promptText = `${a} + ${b} = ?`;
-      } else if (mode === 'division') {
-        b = Math.floor(Math.random() * 9) + 2;
-        answer = Math.floor(Math.random() * 9) + 2;
-        a = b * answer;
-        promptText = `${a} ÷ ${b} = ?`;
-      } else {
-        a = Math.floor(Math.random() * 9) + 2;
-        b = Math.floor(Math.random() * 9) + 2;
-        answer = a * b;
-        promptText = `${a} × ${b} = ?`;
-      }
-
-      const distractors = new Set();
-      while (distractors.size < 2) {
-        const delta = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 5) + 1);
-        const dist = answer + delta;
-        if (dist > 0 && dist !== answer) distractors.add(dist);
-      }
-
-      const options = [answer, ...Array.from(distractors)];
-      options.sort(() => Math.random() - 0.5);
-
-      questions.push({
-        promptText,
-        answer,
-        options
-      });
-    }
-    return questions;
+    this.elements.mathMonsterName.textContent = "🔥 Ultimate Mix Monster";
+    this.elements.mathMonsterImg.src = "pokemon/pikachu.png";
+    this.renderMathQuestion();
   }
 
   renderMathQuestion() {
-    const q = this.mathState.questions[this.mathState.currentIdx];
-    if (!q) return;
-
-    const progressEl = document.getElementById('math-question-progress');
-    const displayEl = document.getElementById('math-question-text');
-    const feedbackEl = document.getElementById('math-feedback-text');
-    const hpBar = document.getElementById('math-monster-hp-bar');
-
-    if (progressEl) progressEl.textContent = `Question ${this.mathState.currentIdx + 1} of ${this.mathState.questions.length}`;
-    if (displayEl) displayEl.textContent = q.promptText;
-    if (feedbackEl) {
-      feedbackEl.textContent = '\u00A0';
-      feedbackEl.classList.remove('wrong');
+    if (!this.mathSession || this.mathSession.finished) {
+      this.finishMathSession();
+      return;
     }
 
-    if (hpBar) {
-      const pct = Math.max(0, Math.round((this.mathState.monsterHp / this.mathState.monsterMaxHp) * 100));
-      hpBar.style.width = `${pct}%`;
+    const q = currentQuestion(this.mathSession);
+    if (!q) {
+      this.finishMathSession();
+      return;
     }
 
-    const grid = document.getElementById('math-answers-grid');
-    if (grid) {
-      grid.innerHTML = '';
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'answer-btn';
-        btn.dataset.answerIdx = idx;
-        btn.textContent = opt;
-        btn.addEventListener('click', () => this.handleMathAnswer(opt));
-        grid.appendChild(btn);
-      });
-    }
-  }
+    const total = this.settings.warmupCount + this.settings.scoredCount;
+    const currentNum = this.mathSession.history.length + 1;
+    this.elements.mathQuestionProgress.textContent = `Question ${Math.min(currentNum, total)} of ${total}`;
 
-  handleMathAnswer(selectedAnswer) {
-    const q = this.mathState.questions[this.mathState.currentIdx];
-    if (!q) return;
+    // Silhouette opacity reveal
+    const revealOpacity = 0.2 + (this.mathSession.reveal / 8) * 0.8;
+    this.elements.mathMonsterImg.style.opacity = Math.min(1, revealOpacity);
 
-    const feedbackEl = document.getElementById('math-feedback-text');
-    const monsterImg = document.getElementById('math-monster-img');
-
-    if (selectedAnswer === q.answer) {
-      soundFx.playCorrect();
-      if (feedbackEl) {
-        feedbackEl.textContent = 'Awesome! Spot on! ⭐';
-        feedbackEl.classList.remove('wrong');
-      }
-
-      if (monsterImg) {
-        monsterImg.classList.add('hit-anim');
-        setTimeout(() => monsterImg.classList.remove('hit-anim'), 450);
-      }
-
-      this.mathState.monsterHp -= Math.ceil(100 / this.mathState.questions.length);
-      this.mathState.currentIdx += 1;
-
-      if (this.mathState.currentIdx >= this.mathState.questions.length) {
-        setTimeout(() => this.triggerVictory(this.mathState.currentPet), 600);
-      } else {
-        setTimeout(() => this.renderMathQuestion(), 500);
-      }
+    if (q.type === "missing") {
+      this.elements.mathQuestionText.textContent = `${q.a} × ? = ${q.a * q.b}`;
     } else {
-      soundFx.playWrong();
-      if (feedbackEl) {
-        feedbackEl.textContent = 'Try again! You can do it! 💪';
-        feedbackEl.classList.add('wrong');
-      }
-    }
-  }
-
-  setupMathArena() {}
-
-  /* ==========================================================================
-     WORD MONSTER REALM ENGINE
-     ========================================================================== */
-
-  startWordSession(deckId) {
-    const deck = getDeckById(deckId);
-    this.spellingEngine = new SpellingEngine(deck);
-    this.currentSpellingInput = "";
-
-    const monsterImg = document.getElementById('word-monster-img');
-    const monsterName = document.getElementById('word-monster-name');
-    const pet = PET_ROSTER[Math.floor(Math.random() * PET_ROSTER.length)];
-    if (monsterImg) monsterImg.src = pet.img;
-    if (monsterName) monsterName.textContent = `Spelling ${pet.name}`;
-
-    this.renderWordQuestion();
-  }
-
-  renderWordQuestion() {
-    if (!this.spellingEngine) return;
-    const q = this.spellingEngine.getCurrentQuestion();
-    if (!q) return;
-
-    const progressEl = document.getElementById('word-question-progress');
-    const hintEl = document.getElementById('word-hint-text');
-    const feedbackEl = document.getElementById('word-feedback-text');
-    const hpBar = document.getElementById('word-monster-hp-bar');
-
-    if (progressEl) progressEl.textContent = `Word ${q.questionNumber} of ${q.totalQuestions}`;
-    if (hintEl) hintEl.textContent = `"${q.hint}"`;
-    if (feedbackEl) {
-      feedbackEl.textContent = '\u00A0';
-      feedbackEl.classList.remove('wrong');
+      this.elements.mathQuestionText.textContent = `${q.a} × ${q.b} = ?`;
     }
 
-    if (hpBar) {
-      const pct = Math.max(0, Math.round((this.spellingEngine.monsterHp / this.spellingEngine.monsterMaxHp) * 100));
-      hpBar.style.width = `${pct}%`;
-    }
+    this.elements.mathFeedbackText.innerHTML = "&nbsp;";
+    this.elements.mathFeedbackText.classList.remove("wrong");
 
-    this.renderWordSlots(q.targetWord.length);
-    this.renderLetterTiles(q.tiles);
-
-    setTimeout(() => this.spellingEngine.speakCurrentWord(), 300);
+    const choices = buildChoices(q);
+    this.elements.mathAnswersGrid.innerHTML = "";
+    choices.forEach(choice => {
+      const btn = document.createElement("button");
+      btn.className = "answer-btn";
+      btn.textContent = choice.value;
+      btn.addEventListener("click", () => this.handleMathAnswer(choice.value, q));
+      this.elements.mathAnswersGrid.appendChild(btn);
+    });
   }
 
-  renderWordSlots(targetLength) {
-    const slotsRow = document.getElementById('word-slots-row');
-    if (!slotsRow) return;
+  handleMathAnswer(value, question) {
+    const correctVal = computeAnswer(question);
+    const isCorrect = value === correctVal;
 
-    slotsRow.innerHTML = '';
-    const letters = this.currentSpellingInput.split('');
+    if (isCorrect) {
+      speakPraise();
+      this.elements.mathFeedbackText.textContent = "Correct! ⭐";
+      this.elements.mathFeedbackText.classList.remove("wrong");
 
-    for (let i = 0; i < targetLength; i++) {
-      const slot = document.createElement('span');
-      slot.className = 'letter-slot';
-      if (i < letters.length) {
-        slot.textContent = letters[i];
+      if (this.mathSession.pendingCorrection) {
+        this.mathSession = confirmCorrection(this.mathSession);
       } else {
-        slot.classList.add('empty');
-        slot.textContent = '_';
+        this.mathSession = answerFirstTry(this.mathSession, value, 1000);
       }
-      slotsRow.appendChild(slot);
+
+      setTimeout(() => this.renderMathQuestion(), 800);
+    } else {
+      // Wrong answer No-Lose Loop: highlight correct answer, recite full fact, requeue 2-3 steps
+      speakMathFact(question.a, question.b);
+      this.elements.mathFeedbackText.textContent = `Fact: ${question.a} × ${question.b} = ${question.a * question.b}`;
+      this.elements.mathFeedbackText.classList.add("wrong");
+
+      const buttons = this.elements.mathAnswersGrid.querySelectorAll(".answer-btn");
+      buttons.forEach(b => {
+        if (Number(b.textContent) === correctVal) {
+          b.style.background = "#2ed573";
+          b.style.borderColor = "#2ed573";
+        } else if (Number(b.textContent) === value) {
+          b.style.background = "#ff4757";
+        }
+      });
+
+      if (!this.mathSession.pendingCorrection) {
+        this.mathSession = answerFirstTry(this.mathSession, value, 1000);
+      }
     }
   }
 
-  renderLetterTiles(tiles) {
-    const tilesBank = document.getElementById('letter-tiles-bank');
-    if (!tilesBank) return;
+  finishMathSession() {
+    const outcome = computeLevelOutcome(this.mathSession, this.settings);
+    outcome.outcomeId = `out_${Date.now()}`;
+    outcome.levelId = this.mathSession.levelId;
+    outcome.createdAt = new Date().toISOString();
 
-    tilesBank.innerHTML = '';
-    tiles.forEach((letter) => {
-      const btn = document.createElement('button');
-      btn.className = 'tile-btn';
+    this.progression = applyLevelOutcome(this.progression, outcome, LEVELS);
+    this.saveProgression();
+
+    if (outcome.earnsReward) {
+      const pool = getPoolById(this.currentMathLevel.rewardPoolId) || REWARD_POOLS[0];
+      const reward = chooseReward(pool, this.collection, REWARD_POOLS);
+      const applyRes = applyReward(this.collection, reward, outcome.outcomeId);
+      this.collection = applyRes.collection;
+      this.saveCollection();
+
+      const pet = getCharacterById(reward.characterId);
+      this.showVictoryModal("MATH DUEL VICTORY!", `You earned ${outcome.stars} Stars!`, pet);
+    } else {
+      this.showVictoryModal("LEVEL COMPLETE!", `You scored ${outcome.points} points. Keep practicing!`, null);
+    }
+
+    this.renderHeader();
+  }
+
+  // --- WORD REALM CONTROLLER ---
+  startWordRealm() {
+    this.showScreen("word");
+    this.switchSpellingMode("learn");
+  }
+
+  switchSpellingMode(mode) {
+    this.spellingEngine.setMode(mode);
+
+    this.elements.spellingLearnContainer.style.display = mode === "learn" ? "block" : "none";
+    this.elements.spellingTestContainer.style.display = mode === "test" ? "block" : "none";
+    this.elements.spellingGameContainer.style.display = mode === "game" ? "block" : "none";
+
+    if (mode === "learn") {
+      this.renderSpellingLearn();
+    } else if (mode === "test") {
+      this.renderSpellingTest();
+    } else if (mode === "game") {
+      this.renderSpellingGame();
+    }
+  }
+
+  // Learn Mode Presenter
+  renderSpellingLearn() {
+    const item = this.spellingEngine.getCurrentLearnItem();
+    if (!item) return;
+
+    this.elements.learnProgressText.textContent = `Word ${item.index + 1} of ${item.total}`;
+    this.elements.learnWordDisplay.textContent = item.word;
+    this.elements.learnDefinition.textContent = item.definition;
+
+    if (item.image) {
+      this.elements.learnImage.src = item.image;
+      this.elements.learnImage.style.display = "block";
+    } else {
+      this.elements.learnImage.style.display = "none";
+    }
+
+    playAudioFile(item.audio, item.word);
+  }
+
+  // Test Mode Presenter
+  switchTestSubmode(submode) {
+    this.spellingEngine.testSubMode = submode;
+    this.elements.btnSubmodeDigital.classList.toggle("active", submode === "digital");
+    this.elements.btnSubmodePaper.classList.toggle("active", submode === "paper");
+
+    this.elements.digitalTestBox.style.display = submode === "digital" ? "block" : "none";
+    this.elements.paperTestBox.style.display = submode === "paper" ? "block" : "none";
+
+    this.renderSpellingTest();
+  }
+
+  renderSpellingTest() {
+    const q = this.spellingEngine.getCurrentTestQuestion();
+    if (!q) {
+      this.finishSpellingSession();
+      return;
+    }
+
+    this.elements.testQuestionProgress.textContent = `Word ${q.index + 1} of ${q.totalQuestions}`;
+    this.elements.testWordHint.textContent = `Hint: "${q.hint || q.definition}"`;
+    this.elements.digitalTestInput.value = "";
+    this.elements.digitalFeedbackText.innerHTML = "&nbsp;";
+    this.elements.digitalFeedbackText.classList.remove("wrong");
+
+    this.elements.paperRevealedWord.style.display = "none";
+
+    playAudioFile(q.audio, q.targetWord);
+  }
+
+  handleDigitalTestSubmit() {
+    const input = this.elements.digitalTestInput.value;
+    const res = this.spellingEngine.submitDigitalAnswer(input);
+
+    if (res.isCorrect) {
+      speakPraise();
+      this.elements.digitalFeedbackText.textContent = "Correct! ⭐";
+      this.elements.digitalFeedbackText.classList.remove("wrong");
+      setTimeout(() => {
+        if (res.isFinished) this.finishSpellingSession();
+        else this.renderSpellingTest();
+      }, 800);
+    } else {
+      const q = this.spellingEngine.getCurrentTestQuestion();
+      if (q) playAudioFile(q.audio, q.targetWord);
+      this.elements.digitalFeedbackText.textContent = `Requeued! Target word: ${q ? q.targetWord : ""}`;
+      this.elements.digitalFeedbackText.classList.add("wrong");
+      setTimeout(() => this.renderSpellingTest(), 1400);
+    }
+  }
+
+  handlePaperTestResult(isCorrect) {
+    if (isCorrect) {
+      speakPraise();
+      this.spellingEngine.score += 10;
+    }
+    this.spellingEngine.currentIndex += 1;
+    if (this.spellingEngine.currentIndex >= this.spellingEngine.deck.words.length) {
+      this.finishSpellingSession();
+    } else {
+      this.renderSpellingTest();
+    }
+  }
+
+  // Game Mode Presenter (Letter Tiles Battle)
+  renderSpellingGame() {
+    const q = this.spellingEngine.getCurrentGameQuestion();
+    if (!q) {
+      this.finishSpellingSession();
+      return;
+    }
+
+    this.elements.wordQuestionProgress.textContent = `Word ${q.questionNumber} of ${q.totalQuestions}`;
+    this.elements.wordHintText.textContent = `"${q.hint || q.definition}"`;
+
+    this.selectedLetterTiles = [];
+    this.renderSpellingTiles();
+
+    // Render Tiles Bank
+    this.elements.letterTilesBank.innerHTML = "";
+    q.tiles.forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "tile-btn";
       btn.textContent = letter;
-      btn.addEventListener('click', () => {
-        soundFx.playClick();
-        this.currentSpellingInput += letter;
-        const q = this.spellingEngine.getCurrentQuestion();
-        if (q) this.renderWordSlots(q.targetWord.length);
+      btn.addEventListener("click", () => {
+        this.selectedLetterTiles.push(letter);
+        this.renderSpellingTiles();
       });
-      tilesBank.appendChild(btn);
+      this.elements.letterTilesBank.appendChild(btn);
     });
+
+    playAudioFile(q.audio, q.targetWord);
   }
 
-  setupWordArena() {
-    document.getElementById('btn-speak-word')?.addEventListener('click', () => {
-      soundFx.playClick();
-      if (this.spellingEngine) this.spellingEngine.speakCurrentWord();
-    });
-
-    document.getElementById('btn-clear-spelling')?.addEventListener('click', () => {
-      soundFx.playClick();
-      this.currentSpellingInput = "";
-      const q = this.spellingEngine?.getCurrentQuestion();
-      if (q) this.renderWordSlots(q.targetWord.length);
-    });
-
-    document.getElementById('btn-submit-spelling')?.addEventListener('click', () => {
-      if (!this.spellingEngine) return;
-      const res = this.spellingEngine.submitAnswer(this.currentSpellingInput);
-      const feedbackEl = document.getElementById('word-feedback-text');
-
-      if (res.isCorrect) {
-        soundFx.playCorrect();
-        if (feedbackEl) {
-          feedbackEl.textContent = 'Great Spelling! 🌟';
-          feedbackEl.classList.remove('wrong');
-        }
-
-        this.currentSpellingInput = "";
-
-        if (res.isFinished) {
-          const pet = PET_ROSTER[Math.floor(Math.random() * PET_ROSTER.length)];
-          setTimeout(() => this.triggerVictory(pet), 600);
-        } else {
-          setTimeout(() => this.renderWordQuestion(), 500);
-        }
-      } else {
-        soundFx.playWrong();
-        if (feedbackEl) {
-          feedbackEl.textContent = 'Not quite! Try tapping the letters again!';
-          feedbackEl.classList.add('wrong');
-        }
-      }
-    });
-  }
-
-  /* ==========================================================================
-     VICTORY & POKÉDEX CONTROLLER
-     ========================================================================== */
-
-  triggerVictory(pet) {
-    soundFx.playVictory();
-    this.lastRescuedPet = pet;
-    this.state.player.stars += 3;
-    if (!this.state.player.petsUnlocked.includes(pet.id)) {
-      this.state.player.petsUnlocked.push(pet.id);
+  renderSpellingTiles() {
+    this.elements.wordSlotsRow.innerHTML = "";
+    if (this.selectedLetterTiles.length === 0) {
+      const slot = document.createElement("span");
+      slot.className = "letter-slot empty";
+      slot.textContent = "_";
+      this.elements.wordSlotsRow.appendChild(slot);
+      return;
     }
-    this.saveState();
-    this.updateHeaderProfile();
 
-    const modal = document.getElementById('victory-modal');
-    const petImg = document.getElementById('reward-pet-img');
-    const petName = document.getElementById('reward-pet-name');
-
-    if (petImg) petImg.src = pet.img;
-    if (petName) petName.textContent = `${pet.name} Rescued & Added to Pokédex!`;
-    if (modal) modal.classList.add('active');
-  }
-
-  setupVictoryModal() {
-    document.getElementById('btn-share-victory-card')?.addEventListener('click', () => {
-      soundFx.playClick();
-      const pet = this.lastRescuedPet || PET_ROSTER[0];
-      ShareController.shareVictoryCard({
-        playerName: this.state.player.name,
-        score: 3,
-        petName: pet.name,
-        petImgUrl: pet.img
-      });
-    });
-
-    document.getElementById('btn-victory-continue')?.addEventListener('click', () => {
-      soundFx.playClick();
-      const modal = document.getElementById('victory-modal');
-      if (modal) modal.classList.remove('active');
-      this.switchView('pokedex-view');
+    this.selectedLetterTiles.forEach(char => {
+      const slot = document.createElement("span");
+      slot.className = "letter-slot";
+      slot.textContent = char;
+      this.elements.wordSlotsRow.appendChild(slot);
     });
   }
 
+  handleSpellingGameSubmit() {
+    const wordInput = this.selectedLetterTiles.join("");
+    const res = this.spellingEngine.submitGameAnswer(wordInput);
+
+    if (res.isCorrect) {
+      speakPraise();
+      this.elements.wordFeedbackText.textContent = "Direct hit! 💥";
+      this.elements.wordFeedbackText.classList.remove("wrong");
+
+      const hpPercent = (res.monsterHp / res.monsterMaxHp) * 100;
+      this.elements.wordMonsterHpBar.style.width = `${hpPercent}%`;
+
+      setTimeout(() => {
+        if (res.isFinished) this.finishSpellingSession();
+        else this.renderSpellingGame();
+      }, 800);
+    } else {
+      const q = this.spellingEngine.getCurrentGameQuestion();
+      if (q) playAudioFile(q.audio, q.targetWord);
+      this.elements.wordFeedbackText.textContent = `Wrong tiles! Word: ${q ? q.targetWord : ""}`;
+      this.elements.wordFeedbackText.classList.add("wrong");
+      this.selectedLetterTiles = [];
+      setTimeout(() => this.renderSpellingGame(), 1400);
+    }
+  }
+
+  finishSpellingSession() {
+    const stars = this.spellingEngine.stars || 3;
+    if (this.player) {
+      this.player.spellingStars = (this.player.spellingStars || 0) + stars;
+      this.savePlayer();
+    }
+
+    // Award pet reward
+    const pool = REWARD_POOLS[0];
+    const reward = chooseReward(pool, this.collection, REWARD_POOLS);
+    const applyRes = applyReward(this.collection, reward, `spelling_${Date.now()}`);
+    this.collection = applyRes.collection;
+    this.saveCollection();
+
+    const pet = getCharacterById(reward.characterId);
+    this.showVictoryModal("SPELLING BEE VICTORY!", `Page 22 Mastered! Earned ${stars} Stars!`, pet);
+    this.renderHeader();
+  }
+
+  // --- UNIFIED POKÉDEX PRESENTER ---
   renderPokedex() {
-    const grid = document.getElementById('pokedex-grid');
-    if (!grid) return;
+    this.elements.pokedexGrid.innerHTML = "";
+    const ownedMap = new Map(this.collection.map(item => [item.id, item]));
 
-    grid.innerHTML = '';
-    PET_ROSTER.forEach(pet => {
-      const isUnlocked = this.state.player.petsUnlocked.includes(pet.id);
-      const card = document.createElement('div');
-      card.className = `pet-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+    CHARACTERS.forEach(char => {
+      const isOwned = ownedMap.has(char.id);
+      const ownedData = ownedMap.get(char.id);
+
+      const card = document.createElement("article");
+      card.className = `pet-card ${isOwned ? "" : "locked"}`;
+
+      const levelBadge = isOwned ? `<span style="position: absolute; top: 10px; right: 10px; background: var(--grad-primary); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700;">Lv. ${ownedData.level || 1}</span>` : "";
+      const shinyBadge = isOwned && ownedData.shiny ? `<span style="position: absolute; top: 10px; left: 10px; font-size: 16px;">✨</span>` : "";
 
       card.innerHTML = `
-        <img src="${pet.img}" alt="${pet.name}" class="pet-img">
-        <div class="pet-name">${pet.name}</div>
-        <div style="font-size: 12px; margin-top: 4px; color: var(--text-muted);">
-          ${isUnlocked ? '⭐ Level 1 Companion' : '🔒 Battle to Unlock'}
-        </div>
+        ${levelBadge}
+        ${shinyBadge}
+        <img class="pet-img" src="${char.art.src}" alt="${char.name}">
+        <div class="pet-name">${char.name}</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${isOwned ? "Rescued & Leveling" : "Locked in Realm"}</div>
       `;
-      grid.appendChild(card);
+
+      this.elements.pokedexGrid.appendChild(card);
     });
+  }
+
+  showVictoryModal(title, subtitle, pet) {
+    this.elements.victoryTitle.textContent = title;
+    this.elements.victorySubtitle.textContent = subtitle;
+
+    if (pet) {
+      this.elements.rewardPetImg.src = pet.art.src;
+      this.elements.rewardPetName.textContent = `${pet.name} Rescued!`;
+    } else {
+      this.elements.rewardPetImg.src = "pokemon/pikachu.png";
+      this.elements.rewardPetName.textContent = "Great Progress!";
+    }
+
+    this.elements.victoryModal.classList.add("active");
   }
 }
 
-// Global App Instance
-export const app = new AppController();
+// Bootstrap app on DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  window.app = new AppController();
+});
