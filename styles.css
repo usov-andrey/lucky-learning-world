@@ -666,7 +666,6 @@ button * {
 
 body.modal-open {
   overflow: hidden !important;
-  touch-action: none;
 }
 
 /* Victory & Parent Modals */

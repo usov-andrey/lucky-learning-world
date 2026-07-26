@@ -29,16 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v15";
+} from "./engine/reward-engine.js?v=20260726_v16";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v15";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v16";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v15";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v15";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v15";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v15";
+import { LEVELS } from "./content/levels.js?v=20260726_v16";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v16";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v16";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v16";
 
-const APP_VERSION = "v2.0.0-v15";
+const APP_VERSION = "v2.0.0-v16";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -344,15 +344,9 @@ class AppController {
     // Mobile Touch & Click Unified Handler
     const bindTouchClick = (element, handler) => {
       if (!element) return;
-      let lastTime = 0;
-      const execute = (e) => {
-        const now = Date.now();
-        if (now - lastTime < 300) return; // Prevent double trigger
-        lastTime = now;
+      element.addEventListener("click", (e) => {
         handler(e);
-      };
-      element.addEventListener("touchend", execute, { passive: true });
-      element.addEventListener("click", execute);
+      });
     };
 
     // Nav bar (mapping 'hub' -> 'dashboard')
