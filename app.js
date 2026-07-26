@@ -37,6 +37,8 @@ import { LEVELS } from "./content/levels.js?v=20260726_v18";
 import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v18";
 import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v18";
 import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v18";
+import { ThemeManager } from "./content/themes.js?v=20260726_v18";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260726_v18";
 
 const APP_VERSION = "v2.0.0-v18";
 
@@ -433,6 +435,42 @@ export class AppController {
         alert("Please enter a valid 4-digit PIN.");
       }
     });
+
+    // Appearance / Theme Radio Controls
+    const radioPokemon = document.getElementById("radio-theme-pokemon");
+    const radioComic = document.getElementById("radio-theme-comic");
+    const optionPokemon = document.getElementById("theme-option-pokemon");
+    const optionComic = document.getElementById("theme-option-comic");
+
+    const updateThemeRadioUi = (currentTheme) => {
+      if (radioPokemon) radioPokemon.checked = (currentTheme === "pokemon");
+      if (radioComic) radioComic.checked = (currentTheme === "comic");
+      if (optionPokemon) optionPokemon.classList.toggle("active", currentTheme === "pokemon");
+      if (optionComic) optionComic.classList.toggle("active", currentTheme === "comic");
+    };
+
+    updateThemeRadioUi(ThemeManager.getTheme());
+
+    [radioPokemon, radioComic].forEach(r => {
+      if (r) {
+        r.addEventListener("change", (e) => {
+          const selectedTheme = e.target.value;
+          ThemeManager.setTheme(selectedTheme);
+          updateThemeRadioUi(selectedTheme);
+        });
+      }
+    });
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("lucky:themechanged", (e) => {
+        const newTheme = e?.detail?.theme || ThemeManager.getTheme();
+        updateThemeRadioUi(newTheme);
+        this.renderHeader();
+        if (this.currentScreen === "pokedex") {
+          this.renderPokedex();
+        }
+      });
+    }
 
     bindTouchClick(this.elements.btnResetMathProgress, () => {
       if (confirm("Reset all Math levels and star progress?")) {
@@ -1095,6 +1133,10 @@ export class AppController {
       const isOwned = ownedMap.has(char.id);
       const ownedData = ownedMap.get(char.id);
 
+      const presentation = ThemeManager.getCharacterPresentation(char.id, char);
+      const charName = presentation ? presentation.name : char.name;
+      const charSrc = presentation ? presentation.art.src : char.art.src;
+
       const card = document.createElement("article");
       card.className = `pet-card ${isOwned ? "unlocked" : "locked"}`;
 
@@ -1104,8 +1146,8 @@ export class AppController {
       card.innerHTML = `
         ${levelBadge}
         ${shinyBadge}
-        <img class="pet-img" src="${char.art.src}" alt="${char.name}">
-        <div class="pet-name">${char.name}</div>
+        <img class="pet-img" src="${charSrc}" alt="${charName}">
+        <div class="pet-name">${charName}</div>
         <div style="font-size: 12px; font-weight: 700; color: ${isOwned ? "#2ed573" : "var(--text-muted)"}; margin-top: 4px;">${isOwned ? "✨ Rescued & Leveling" : "Locked in Realm"}</div>
       `;
 
@@ -1118,10 +1160,14 @@ export class AppController {
     this.elements.victorySubtitle.textContent = subtitle;
 
     if (pet) {
-      this.elements.rewardPetImg.src = pet.art.src;
-      this.elements.rewardPetName.textContent = `${pet.name} Rescued!`;
+      const presentation = ThemeManager.getCharacterPresentation(pet.id, pet);
+      const charName = presentation ? presentation.name : pet.name;
+      const charSrc = presentation ? presentation.art.src : pet.art.src;
+      this.elements.rewardPetImg.src = charSrc;
+      this.elements.rewardPetName.textContent = `${charName} Rescued!`;
     } else {
-      this.elements.rewardPetImg.src = "pokemon/pikachu.png";
+      const fallbackPres = ThemeManager.getCharacterPresentation("res_x6");
+      this.elements.rewardPetImg.src = fallbackPres ? fallbackPres.art.src : "pokemon/pikachu.png";
       this.elements.rewardPetName.textContent = "Great Progress!";
     }
 

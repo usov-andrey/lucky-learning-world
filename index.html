@@ -6,6 +6,18 @@
   <title>Lucky's Learning World — PWA Hub v2.0.0-v18</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('lucky_learning_theme');
+        var theme = (saved === 'comic' || saved === 'pokemon') ? saved : 'pokemon';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {
+        document.documentElement.setAttribute('data-theme', 'pokemon');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="themes.css?v=20260726_v18">
   <link rel="stylesheet" href="styles.css?v=20260726_v18">
   <link rel="manifest" href="manifest.json">
   <script>
@@ -399,6 +411,35 @@
           <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px;">
             <input type="password" id="input-new-parent-pin" maxlength="4" placeholder="New 4-digit PIN" style="flex: 1; height: 42px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glow); color: white; text-align: center; font-size: 18px; font-weight: 700;">
             <button class="secondary-btn" id="btn-save-parent-pin" style="height: 42px; font-size: 13px;">Save PIN</button>
+          </div>
+        </div>
+
+        <!-- Section 5: Appearance / Theme Selector -->
+        <div id="parent-appearance-section" class="appearance-section">
+          <div class="appearance-title">🎨 Appearance & Theme</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Choose presentation theme for Lucky's Learning World:</p>
+          <div class="theme-radio-group" role="radiogroup" aria-label="Appearance theme selection">
+            <label class="theme-option-card" id="theme-option-pokemon">
+              <div class="theme-option-left">
+                <span class="theme-option-icon">⚡</span>
+                <div class="theme-option-info">
+                  <span class="theme-option-name">Pokémon Adventure</span>
+                  <span class="theme-option-desc">Dark neon glassmorphism & Pokédex monsters</span>
+                </div>
+              </div>
+              <input type="radio" name="lucky-theme-choice" value="pokemon" class="theme-radio-input" id="radio-theme-pokemon">
+            </label>
+
+            <label class="theme-option-card" id="theme-option-comic">
+              <div class="theme-option-left">
+                <span class="theme-option-icon">📖</span>
+                <div class="theme-option-info">
+                  <span class="theme-option-name">Comic Quest</span>
+                  <span class="theme-option-desc">Light comic paper theme & interactive storybook heroes</span>
+                </div>
+              </div>
+              <input type="radio" name="lucky-theme-choice" value="comic" class="theme-radio-input" id="radio-theme-comic">
+            </label>
           </div>
         </div>
 

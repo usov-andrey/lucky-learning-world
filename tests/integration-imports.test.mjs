@@ -84,3 +84,17 @@ test('Integration Contract: index.html contains all navigation and back button I
     assert.ok(htmlContent.includes(`id="${id}"`), `index.html must contain id="${id}"`);
   });
 });
+
+test('Integration Contract: content/themes.js exports ThemeManager', async () => {
+  const mod = await import('../content/themes.js');
+  assert.ok(mod.ThemeManager, 'ThemeManager must be exported');
+  assert.equal(typeof mod.ThemeManager.getTheme, 'function');
+  assert.equal(typeof mod.ThemeManager.setTheme, 'function');
+});
+
+test('Integration Contract: content/comic-characters.js exports COMIC_CHARACTERS', async () => {
+  const mod = await import('../content/comic-characters.js');
+  assert.ok(mod.COMIC_CHARACTERS, 'COMIC_CHARACTERS must be exported');
+  assert.equal(typeof mod.getComicCharacterById, 'function');
+});
+

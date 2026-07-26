@@ -1,0 +1,177 @@
+/* ==========================================================================
+   Lucky's Learning World - Multi-Theme Token Architecture
+   Themes: Pokémon Adventure (default) & Comic Quest
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Pokémon Adventure Theme (Dark Neon Glassmorphism)
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="pokemon"] {
+  --theme-id: "pokemon";
+  
+  --bg-dark: #0f1225;
+  --bg-card: rgba(26, 32, 62, 0.7);
+  --bg-card-hover: rgba(38, 46, 88, 0.85);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(124, 93, 250, 0.4);
+
+  --grad-primary: linear-gradient(135deg, #7c5dfa 0%, #6366f1 100%);
+  --grad-math: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --grad-word: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+  --grad-pokedex: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  --grad-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --text-highlight: #ffdd59;
+
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glow-math: 0 0 25px rgba(0, 242, 254, 0.35);
+  --glow-word: 0 0 25px rgba(255, 8, 68, 0.35);
+  --glow-pokedex: 0 0 25px rgba(246, 211, 101, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   2. Comic Quest Theme (Paper, Ink & Speech Bubble Style)
+   -------------------------------------------------------------------------- */
+[data-theme="comic"] {
+  --theme-id: "comic";
+
+  --bg-dark: #FFF8E8;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFF3D1;
+  --border-glass: #202020;
+  --border-glow: #FF9F1C;
+
+  --grad-primary: linear-gradient(135deg, #FF9F1C 0%, #E71D36 100%);
+  --grad-math: linear-gradient(135deg, #2EC4B6 0%, #202020 100%);
+  --grad-word: linear-gradient(135deg, #E71D36 0%, #FF9F1C 100%);
+  --grad-pokedex: linear-gradient(135deg, #FFBF69 0%, #FF9F1C 100%);
+  --grad-success: linear-gradient(135deg, #2EC4B6 0%, #CBF3F0 100%);
+
+  --text-main: #202020;
+  --text-muted: #4b5563;
+  --text-highlight: #E71D36;
+
+  --shadow-glass: 4px 4px 0px #202020;
+  --glow-math: 4px 4px 0px #202020;
+  --glow-word: 4px 4px 0px #202020;
+  --glow-pokedex: 4px 4px 0px #202020;
+}
+
+[data-theme="comic"] body {
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(#e5d9b6 1.5px, transparent 1.5px),
+    radial-gradient(#e5d9b6 1.5px, #FFF8E8 1.5px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  color: var(--text-main);
+}
+
+[data-theme="comic"] .realm-card,
+[data-theme="comic"] .arena-card,
+[data-theme="comic"] .modal-card,
+[data-theme="comic"] .pet-card {
+  border: 3px solid #202020 !important;
+  box-shadow: 6px 6px 0px #202020 !important;
+  border-radius: 18px !important;
+}
+
+[data-theme="comic"] .app-header,
+[data-theme="comic"] .bottom-nav {
+  background: #FFF8E8 !important;
+  border-bottom: 3px solid #202020 !important;
+  border-top: 3px solid #202020 !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. Parent Settings - Appearance Section & Radio Controls
+   -------------------------------------------------------------------------- */
+.appearance-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-glass);
+}
+
+.appearance-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.theme-option-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: var(--trans-smooth);
+}
+
+.theme-option-card:hover,
+.theme-option-card:focus-within {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+}
+
+.theme-option-card.active {
+  border-color: #38ef7d;
+  background: rgba(56, 239, 125, 0.12);
+  box-shadow: 0 0 12px rgba(56, 239, 125, 0.25);
+}
+
+.theme-option-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.theme-option-icon {
+  font-size: 28px;
+}
+
+.theme-option-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-option-name {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.theme-option-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.theme-radio-input {
+  width: 24px;
+  height: 24px;
+  accent-color: #38ef7d;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}
