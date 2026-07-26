@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lucky's Learning World — PWA Hub</title>
+  <title>Lucky's Learning World — PWA Hub v2.0.0-v3</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
   <link rel="stylesheet" href="styles.css?v=20260726_v3">
@@ -12,7 +12,7 @@
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0" 
+      version: "2.0.0-v3" 
     };
   </script>
   <script src="reporter.js?v=20260726_v3"></script>
@@ -25,7 +25,10 @@
   <header class="app-header">
     <div class="brand" id="brand-logo-btn" title="Back to Main Hub">
       <span class="brand-icon">🌟</span>
-      <h1 class="brand-title">Lucky's Learning World</h1>
+      <div>
+        <h1 class="brand-title">Lucky's Learning World</h1>
+        <span class="version-badge" id="app-version-badge">v2.0.0-v3</span>
+      </div>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
       <span id="header-player-avatar">🐾</span>
@@ -34,7 +37,7 @@
         <span>⭐</span>
         <span id="total-stars-count">0</span>
       </div>
-      <button class="secondary-btn" id="btn-share-line" style="height: 44px; padding: 0 14px; font-size: 14px; margin-left: 6px;">📲 LINE</button>
+      <button class="secondary-btn" id="btn-parent-mode-header" style="height: 44px; padding: 0 12px; font-size: 14px; margin-left: 6px; background: rgba(255, 255, 255, 0.08);" title="Parent Protected Settings">🔒 Parents</button>
     </div>
   </header>
 
@@ -312,6 +315,77 @@
       <button class="realm-action-btn" id="btn-start-onboarding" style="background: var(--grad-primary); width: 100%; margin-top: 10px;">
         Start My Adventure! 🚀
       </button>
+    </div>
+  </div>
+
+  <!-- PARENT GATE CHALLENGE MODAL -->
+  <div class="modal-overlay" id="parent-gate-modal">
+    <div class="modal-card">
+      <div style="font-size: 48px;">🔒</div>
+      <h2 style="font-size: 26px; margin-top: 8px;">Parents Only</h2>
+      <p style="color: var(--text-muted); margin-top: 4px; font-size: 14px;">To access parent controls, please solve the math problem or enter PIN:</p>
+      
+      <div style="margin: 20px 0; background: rgba(255,255,255,0.06); padding: 16px; border-radius: 16px; border: 1px solid var(--border-glass);">
+        <div style="font-size: 32px; font-weight: 900; color: var(--text-highlight);" id="parent-math-challenge">7 × 8 = ?</div>
+        <input type="number" id="parent-gate-input" placeholder="Enter answer or PIN..." style="width: 100%; height: 50px; margin-top: 12px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glow); color: white; text-align: center; font-size: 22px; font-weight: 700;">
+        <div id="parent-gate-error" style="color: #ff4757; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;">Incorrect answer. Try again!</div>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="secondary-btn" id="btn-parent-gate-cancel" style="flex: 1; height: 48px;">Cancel</button>
+        <button class="primary-btn" id="btn-parent-gate-submit" style="flex: 1; height: 48px;">Unlock 🔓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARENT PROTECTED SETTINGS MODAL -->
+  <div class="modal-overlay" id="parent-settings-modal">
+    <div class="modal-card" style="max-width: 580px; text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 24px; color: white;">⚙️ Parent Controls & Settings</h2>
+          <span style="font-size: 12px; color: var(--text-muted);">Protected Area for Parents / Teachers</span>
+        </div>
+        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v3</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- Section 1: Build & Diagnostic Info -->
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
+          <div style="font-size: 13px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 6px;">System Diagnostics</div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v3 (2026-07-26)</span></div>
+            <div>• <b>Storage Namespace:</b> <code>lmm3s:</code> (stable & safe)</div>
+            <div>• <b>Environment:</b> Production GitHub Pages</div>
+          </div>
+        </div>
+
+        <!-- Section 2: Reset Controls -->
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
+          <div style="font-size: 13px; font-weight: 700; color: #ff4757; text-transform: uppercase; margin-bottom: 6px;">Reset Progress Data</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Select which progress component to reset for a fresh learning start:</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="secondary-btn" id="btn-reset-math-progress" style="height: 42px; font-size: 13px; background: rgba(255, 71, 87, 0.15); border-color: #ff4757;">Reset Math Progress</button>
+            <button class="secondary-btn" id="btn-reset-pokedex" style="height: 42px; font-size: 13px; background: rgba(255, 71, 87, 0.15); border-color: #ff4757;">Reset Pokédex Pets</button>
+            <button class="secondary-btn" id="btn-reset-all" style="height: 42px; font-size: 13px; background: #ff4757; color: white; border: none;">Reset EVERYTHING</button>
+          </div>
+        </div>
+
+        <!-- Section 3: Difficulty & Drill Settings -->
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
+          <div style="font-size: 13px; font-weight: 700; color: #38ef7d; text-transform: uppercase; margin-bottom: 6px;">Math Practice Tuning</div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+            <span style="font-size: 14px; color: white;">Hard Facts Focus (Drill weak facts 6×6..6×9):</span>
+            <input type="checkbox" id="toggle-hard-drill" checked style="width: 24px; height: 24px; cursor: pointer;">
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top: 20px; text-align: right;">
+        <button class="primary-btn" id="btn-close-parent-settings" style="height: 48px; padding: 0 24px;">Done / Close ✖</button>
+      </div>
     </div>
   </div>
 

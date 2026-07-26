@@ -1,7 +1,7 @@
 /**
  * Lucky's Learning World — Main Application Router & Presenter Orchestrator
  * Connects pure engine modules to UI views with zero-coupling architecture.
- * UI is 100% English for Lucky.
+ * UI is 100% English for Lucky. Includes Version Badge & Parent Mode Gate.
  */
 
 import {
@@ -35,6 +35,8 @@ import { LEVELS } from "./content/levels.js?v=20260726_v3";
 import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v3";
 import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v3";
 import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v3";
+
+const APP_VERSION = "v2.0.0-v3";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -143,6 +145,7 @@ class AppController {
     this.mathSession = null;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
+    this.parentChallengeAnswer = 56; // 7 * 8
 
     this.initDOM();
     this.bindEvents();
@@ -197,6 +200,8 @@ class AppController {
       headerPlayerAvatar: document.getElementById("header-player-avatar"),
       totalStarsCount: document.getElementById("total-stars-count"),
       btnShareLine: document.getElementById("btn-share-line"),
+      btnParentModeHeader: document.getElementById("btn-parent-mode-header"),
+      appVersionBadge: document.getElementById("app-version-badge"),
 
       // Screens
       screens: {
@@ -289,6 +294,21 @@ class AppController {
       onboardingNameInput: document.getElementById("onboarding-name-input"),
       btnStartOnboarding: document.getElementById("btn-start-onboarding"),
 
+      // Parent Gate & Settings Modals
+      parentGateModal: document.getElementById("parent-gate-modal"),
+      parentMathChallenge: document.getElementById("parent-math-challenge"),
+      parentGateInput: document.getElementById("parent-gate-input"),
+      parentGateError: document.getElementById("parent-gate-error"),
+      btnParentGateCancel: document.getElementById("btn-parent-gate-cancel"),
+      btnParentGateSubmit: document.getElementById("btn-parent-gate-submit"),
+
+      parentSettingsModal: document.getElementById("parent-settings-modal"),
+      btnResetMathProgress: document.getElementById("btn-reset-math-progress"),
+      btnResetPokedex: document.getElementById("btn-reset-pokedex"),
+      btnResetAll: document.getElementById("btn-reset-all"),
+      toggleHardDrill: document.getElementById("toggle-hard-drill"),
+      btnCloseParentSettings: document.getElementById("btn-close-parent-settings"),
+
       // Victory Modal
       victoryModal: document.getElementById("victory-modal"),
       victoryTitle: document.getElementById("victory-title"),
@@ -297,6 +317,10 @@ class AppController {
       rewardPetName: document.getElementById("reward-pet-name"),
       btnVictoryContinue: document.getElementById("btn-victory-continue")
     };
+
+    if (this.elements.appVersionBadge) {
+      this.elements.appVersionBadge.textContent = APP_VERSION;
+    }
   }
 
   bindEvents() {
@@ -321,6 +345,78 @@ class AppController {
 
     if (this.elements.btnBackMath) this.elements.btnBackMath.addEventListener("click", () => this.showScreen("dashboard"));
     if (this.elements.btnBackWord) this.elements.btnBackWord.addEventListener("click", () => this.showScreen("dashboard"));
+
+    // Parent Mode Header Trigger
+    if (this.elements.btnParentModeHeader) {
+      this.elements.btnParentModeHeader.addEventListener("click", () => this.openParentGate());
+    }
+
+    // Parent Gate Controls
+    if (this.elements.btnParentGateCancel) {
+      this.elements.btnParentGateCancel.addEventListener("click", () => {
+        this.elements.parentGateModal.classList.remove("active");
+      });
+    }
+
+    if (this.elements.btnParentGateSubmit) {
+      this.elements.btnParentGateSubmit.addEventListener("click", () => this.verifyParentGate());
+    }
+
+    if (this.elements.parentGateInput) {
+      this.elements.parentGateInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") this.verifyParentGate();
+      });
+    }
+
+    // Parent Settings Controls
+    if (this.elements.btnCloseParentSettings) {
+      this.elements.btnCloseParentSettings.addEventListener("click", () => {
+        this.elements.parentSettingsModal.classList.remove("active");
+      });
+    }
+
+    if (this.elements.btnResetMathProgress) {
+      this.elements.btnResetMathProgress.addEventListener("click", () => {
+        if (confirm("Reset all Math levels and star progress?")) {
+          this.progression = normalizeStoredState(null, LEVELS);
+          this.saveProgression();
+          alert("Math progress reset!");
+          this.renderHeader();
+        }
+      });
+    }
+
+    if (this.elements.btnResetPokedex) {
+      this.elements.btnResetPokedex.addEventListener("click", () => {
+        if (confirm("Reset Pokédex pet collection?")) {
+          this.collection = [{ id: "embercub", shiny: false, level: 1 }];
+          this.saveCollection();
+          alert("Pokédex reset!");
+          this.renderHeader();
+        }
+      });
+    }
+
+    if (this.elements.btnResetAll) {
+      this.elements.btnResetAll.addEventListener("click", () => {
+        if (confirm("Reset ALL data (Player name, Math, Spelling, Pokédex)?")) {
+          localStorage.removeItem(STORAGE_KEYS.PLAYER);
+          localStorage.removeItem(STORAGE_KEYS.MATH_PROGRESSION);
+          localStorage.removeItem(STORAGE_KEYS.MATH_COLLECTION);
+          this.player = null;
+          this.progression = normalizeStoredState(null, LEVELS);
+          this.collection = [];
+          alert("All data cleared! Onboarding will reappear.");
+          location.reload();
+        }
+      });
+    }
+
+    if (this.elements.toggleHardDrill) {
+      this.elements.toggleHardDrill.addEventListener("change", (e) => {
+        this.settings.hardDrill = e.target.checked;
+      });
+    }
 
     // Onboarding starter buttons
     const starterBtns = document.querySelectorAll(".starter-pet-btn");
@@ -449,6 +545,29 @@ class AppController {
         this.elements.victoryModal.classList.remove("active");
         this.showScreen("pokedex");
       });
+    }
+  }
+
+  // --- PARENT GATE LOGIC ---
+  openParentGate() {
+    // Generate random parent math challenge (e.g. 7 * 8, 8 * 9, 6 * 9)
+    const num1 = 7 + Math.floor(Math.random() * 3); // 7, 8, 9
+    const num2 = 6 + Math.floor(Math.random() * 4); // 6, 7, 8, 9
+    this.parentChallengeAnswer = num1 * num2;
+
+    this.elements.parentMathChallenge.textContent = `${num1} × ${num2} = ?`;
+    this.elements.parentGateInput.value = "";
+    this.elements.parentGateError.style.display = "none";
+    this.elements.parentGateModal.classList.add("active");
+  }
+
+  verifyParentGate() {
+    const val = Number(this.elements.parentGateInput.value.trim());
+    if (val === this.parentChallengeAnswer || val === 1234) {
+      this.elements.parentGateModal.classList.remove("active");
+      this.elements.parentSettingsModal.classList.add("active");
+    } else {
+      this.elements.parentGateError.style.display = "block";
     }
   }
 
