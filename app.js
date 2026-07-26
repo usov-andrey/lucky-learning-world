@@ -55,8 +55,10 @@ function unlockAudio() {
   }
 }
 
-window.addEventListener("pointerdown", unlockAudio, { once: true });
-window.addEventListener("touchstart", unlockAudio, { once: true });
+if (typeof window !== "undefined") {
+  window.addEventListener("pointerdown", unlockAudio, { once: true });
+  window.addEventListener("touchstart", unlockAudio, { once: true });
+}
 
 function playAudioFile(src, fallbackText) {
   if (currentAudio) {
@@ -64,7 +66,7 @@ function playAudioFile(src, fallbackText) {
     currentAudio = null;
   }
 
-  if (src) {
+  if (src && typeof Audio !== "undefined") {
     const audio = new Audio(src);
     currentAudio = audio;
     audio.play().catch(() => {
@@ -76,7 +78,7 @@ function playAudioFile(src, fallbackText) {
 }
 
 function speakTTS(text, rate = 0.85) {
-  if (!window.speechSynthesis) return;
+  if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === "undefined") return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = rate;
@@ -137,7 +139,7 @@ const DEFAULT_SETTINGS = {
   rewardThreshold: 0.9
 };
 
-class AppController {
+export class AppController {
   constructor() {
     this.player = this.loadPlayer();
     this.progression = this.loadProgression();
@@ -1116,6 +1118,8 @@ class AppController {
 }
 
 // Bootstrap app on DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  window.app = new AppController();
-});
+if (typeof document !== "undefined") {
+  document.addEventListener("DOMContentLoaded", () => {
+    window.app = new AppController();
+  });
+}
