@@ -11,6 +11,21 @@ It unifies:
 
 ---
 
+## 📜 Core Development Rules & Guidelines
+All AI agents (Antigravity, Codex, Claude Code, Windsurf, Cursor) working on this repository MUST strictly follow the mandatory rules documented in:
+
+👉 **[DEVELOPMENT_RULES.md](file:///d:/SD/personal/projects/lucky-learning-world/DEVELOPMENT_RULES.md)**
+
+### Key Highlights:
+- **100% English Game UI**: No Russian text inside user-facing interface or modals.
+- **Mobile Touch First**: Touch targets $\ge 64\text{px} \times 64\text{px}$, `touch-action: manipulation`, `pointer-events: none` on children.
+- **Disabled Navigation Guard**: Back/Prev buttons MUST be disabled on `index === 0`.
+- **High-Contrast Active Tabs**: Bottom nav items require glowing background pill and top indicator bar.
+- **Responsive Modals**: `max-height: 85vh` (desktop) / `92vh` (mobile) with `overflow-y: auto`.
+- **4-Digit Parent PIN Gate**: Protected parent settings using customizable PIN.
+
+---
+
 ## 🏗 Architecture & Engineering Principles
 
 1. **Zero-Build Architecture**: 
@@ -18,21 +33,7 @@ It unifies:
    - No Webpack, Vite, or npm bundlers required for core web app execution.
    - Fully runnable via static hosting (GitHub Pages, `python -m http.server`).
 
-2. **Mobile & Tablet First Touch UI**:
-   - Primary target devices: iPad, Android Tablets, Smartphones.
-   - Interactive touch targets MUST be at least **64px × 64px** to accommodate young learners.
-   - Vibrant dark-mode UI with high contrast, glassmorphism, and responsive CSS Grid/Flexbox layouts.
-
-3. **Disabled Navigation Guard**:
-   - Navigation controls (such as `Back` / `Previous` buttons in sequence views like Spelling Learn Mode) MUST be disabled (`disabled` attribute, `opacity: 0.3`, `pointer-events: none`) on the first item (`index === 0`). Never leave active no-op buttons for the user to tap.
-
-4. **High-Contrast Active Navigation Highlight**:
-   - Bottom navigation items and active tabs MUST have vibrant, high-contrast visual indicators (glowing background pill, top indicator line, bright color) so the user instantly sees which tab is active.
-
-5. **No-Lose Educational Philosophy**:
-   - Encourages learning through immediate feedback, hints, and retries without demoralizing penalty screens or hard game-over states.
-
-6. **Testing**:
+2. **Testing**:
    - Core engine modules tested with Node native test runner: `node --test tests/*.test.mjs`.
 
 ---
@@ -41,7 +42,8 @@ It unifies:
 
 ```
 d:\SD\personal\projects\lucky-learning-world\
-├── AGENTS.md                 # Project instructions and rules
+├── AGENTS.md                 # Root AI agent entry point & guidelines link
+├── DEVELOPMENT_RULES.md      # Detailed UI/UX and engineering rules
 ├── README.md                 # Project documentation and launch instructions
 ├── index.html                # Main PWA entry point
 ├── styles.css                # Central CSS design system & UI tokens
