@@ -268,6 +268,18 @@ button * {
   line-height: 1.4;
 }
 
+button, .realm-action-btn, .primary-btn, .secondary-btn, .header-action-btn, .chip-btn, .answer-btn, .tile-btn, .back-btn {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-btn *, .chip-btn *, .answer-btn *, .tile-btn *, .back-btn * {
+  pointer-events: none !important;
+}
+
 .realm-action-btn {
   margin-top: 20px;
   height: var(--min-touch-target);

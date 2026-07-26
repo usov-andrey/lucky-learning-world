@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lucky's Learning World — PWA Hub v2.0.0-v16</title>
+  <title>Lucky's Learning World — PWA Hub v2.0.0-v17</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
-  <link rel="stylesheet" href="styles.css?v=20260726_v16">
+  <link rel="stylesheet" href="styles.css?v=20260726_v17">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0-v16" 
+      version: "2.0.0-v17" 
     };
 
     // PWA Service Worker Auto-Update & Auto-Reload Snippet
@@ -25,12 +25,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20260726_v16').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=20260726_v17').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=20260726_v16"></script>
+  <script src="reporter.js?v=20260726_v17"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>

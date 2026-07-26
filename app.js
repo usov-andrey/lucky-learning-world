@@ -29,16 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v16";
+} from "./engine/reward-engine.js?v=20260726_v17";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v16";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v17";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v16";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v16";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v16";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v16";
+import { LEVELS } from "./content/levels.js?v=20260726_v17";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v17";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v17";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v17";
 
-const APP_VERSION = "v2.0.0-v16";
+const APP_VERSION = "v2.0.0-v17";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -343,13 +343,44 @@ export class AppController {
   }
 
   bindEvents() {
-    // Mobile Touch & Click Unified Handler
+    // Mobile Touch & Click Unified Handler with pointerdown fallback & debouncing
     const bindTouchClick = (element, handler) => {
       if (!element) return;
-      element.addEventListener("click", (e) => {
+      let handled = false;
+      const execute = (e) => {
+        if (handled) return;
+        handled = true;
+        setTimeout(() => { handled = false; }, 300);
         handler(e);
-      });
+      };
+
+      element.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "touch" || e.pointerType === "pen") {
+          execute(e);
+        }
+      }, { passive: true });
+      element.addEventListener("click", execute);
     };
+
+    // Global Event Delegate for 100% Bulletproof Button & Card Navigation
+    if (typeof document !== "undefined") {
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("button, .realm-action-btn, .chip-btn, .answer-btn, .tile-btn, .nav-item, .back-btn, .header-action-btn");
+        if (!btn) return;
+
+        const id = btn.id;
+        if (id === "btn-enter-math") this.startMathRealm();
+        else if (id === "btn-enter-word") this.startWordRealm();
+        else if (id === "btn-enter-pokedex") this.showScreen("pokedex");
+        else if (id === "btn-back-from-math" || id === "btn-back-from-word" || id === "btn-back-from-pokedex" || id === "brand-logo-btn") this.showScreen("dashboard");
+        else if (id === "nav-btn-hub") this.showScreen("dashboard");
+        else if (id === "nav-btn-math") this.startMathRealm();
+        else if (id === "nav-btn-word") this.startWordRealm();
+        else if (id === "nav-btn-pokedex") this.showScreen("pokedex");
+        else if (id === "btn-parent-mode-header") this.openParentGate();
+        else if (id === "btn-show-qr-header" || id === "btn-show-qr-victory") this.openQrModal();
+      });
+    }
 
     // Nav bar (mapping 'hub' -> 'dashboard')
     Object.entries(this.elements.navBtns).forEach(([screenKey, btn]) => {
