@@ -22,21 +22,21 @@ import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260726_v9";
+} from "./engine/progression.js?v=20260726_v10";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v9";
+} from "./engine/reward-engine.js?v=20260726_v10";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v9";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v9";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v9";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v9";
+import { LEVELS } from "./content/levels.js?v=20260726_v10";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v10";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v10";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v10";
 
-const APP_VERSION = "v2.0.0-v9";
+const APP_VERSION = "v2.0.0-v10";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;

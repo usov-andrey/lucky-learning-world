@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lucky's Learning World — PWA Hub v2.0.0-v9</title>
+  <title>Lucky's Learning World — PWA Hub v2.0.0-v10</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
-  <link rel="stylesheet" href="styles.css?v=20260726_v9">
+  <link rel="stylesheet" href="styles.css?v=20260726_v10">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0-v9" 
+      version: "2.0.0-v10" 
     };
 
     // Service Worker auto-update snippet to clear old PWA caches
@@ -22,10 +22,10 @@
           reg.update();
         }
       });
-      navigator.serviceWorker.register('./sw.js?v=20260726_v9').catch(() => {});
+      navigator.serviceWorker.register('./sw.js?v=20260726_v10').catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=20260726_v9"></script>
+  <script src="reporter.js?v=20260726_v10"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -44,8 +44,8 @@
         <span>⭐</span>
         <span id="total-stars-count">0</span>
       </div>
-      <button class="secondary-btn" id="btn-show-qr-header" style="height: 40px; padding: 0 10px; font-size: 16px; margin-left: 4px; background: rgba(255, 255, 255, 0.12);" title="Show QR Code for Friends">📱 QR</button>
-      <button class="secondary-btn" id="btn-parent-mode-header" style="height: 40px; padding: 0 10px; font-size: 16px; margin-left: 4px; background: rgba(255, 255, 255, 0.08);" title="Parent Protected Settings">🔒</button>
+      <button class="header-action-btn" id="btn-show-qr-header" title="Show QR Code for Friends">📱 QR</button>
+      <button class="header-action-btn" id="btn-parent-mode-header" title="Parent Protected Settings">🔒</button>
     </div>
   </header>
 
@@ -470,6 +470,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=20260726_v6"></script>
+  <script type="module" src="app.js?v=20260726_v10"></script>
 </body>
 </html>
