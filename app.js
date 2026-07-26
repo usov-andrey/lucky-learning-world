@@ -29,14 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v10";
+} from "./engine/reward-engine.js?v=20260726_v11";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v10";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v10";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v10";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v10";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v11";
 
-const APP_VERSION = "v2.0.0-v10";
+import { LEVELS } from "./content/levels.js?v=20260726_v11";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v11";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v11";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v11";
+
+const APP_VERSION = "v2.0.0-v11";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -317,6 +319,7 @@ class AppController {
       victorySubtitle: document.getElementById("victory-subtitle"),
       rewardPetImg: document.getElementById("reward-pet-img"),
       rewardPetName: document.getElementById("reward-pet-name"),
+      btnShareVictoryCard: document.getElementById("btn-share-victory-card"),
       btnVictoryContinue: document.getElementById("btn-victory-continue"),
 
       // QR Code Modal & Buttons
@@ -566,6 +569,18 @@ class AppController {
     bindTouchClick(this.elements.btnSubmitSpelling, () => this.handleSpellingGameSubmit());
 
     // Victory Modal
+    if (this.elements.btnShareVictoryCard) {
+      bindTouchClick(this.elements.btnShareVictoryCard, () => {
+        const pet = this.lastRescuedPet || { name: 'Pikachu', art: { src: 'pokemon/pikachu.png' } };
+        ShareController.shareVictoryCard({
+          playerName: this.player ? this.player.name : 'Lucky',
+          score: 3,
+          petName: pet.name,
+          petImgUrl: pet.art ? pet.art.src : 'pokemon/pikachu.png'
+        });
+      });
+    }
+
     bindTouchClick(this.elements.btnVictoryContinue, () => {
       this.closeModal(this.elements.victoryModal);
       this.showScreen("pokedex");

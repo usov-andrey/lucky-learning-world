@@ -9,8 +9,9 @@ export class ShareController {
   static PRODUCTION_URL = 'https://usov-andrey.github.io/lucky-learning-world/';
 
   static createShareUrl(options = {}) {
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const baseUrl = isLocal ? this.PRODUCTION_URL : (window.location.origin + window.location.pathname);
+    const hasWindow = typeof window !== 'undefined' && window.location;
+    const isLocal = hasWindow && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const baseUrl = (hasWindow && !isLocal) ? (window.location.origin + window.location.pathname) : this.PRODUCTION_URL;
     const params = new URLSearchParams();
 
     if (options.deckId) {

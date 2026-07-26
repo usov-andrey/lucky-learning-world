@@ -310,3 +310,13 @@ test("pickRecentMistakeKeys: only live wrong streaks, worst first", () => {
   const keys = pickRecentMistakeKeys(factStats, [6], mulberry32(2));
   assert.deepEqual(keys, ["6x9", "6x8"]);
 });
+
+test("Integration Contract: ShareController exports createShareUrl and renderQrModal", async () => {
+  const { ShareController } = await import("../engine/share-controller.js");
+  assert.ok(typeof ShareController.createShareUrl === "function");
+  assert.ok(typeof ShareController.renderQrModal === "function");
+
+  const url = ShareController.createShareUrl({ senderName: "Lucky", score: 3 });
+  assert.ok(url.includes("from=Lucky"));
+  assert.ok(url.includes("score=3"));
+});
