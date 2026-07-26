@@ -15,7 +15,9 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 - **Touch Latency & Event Bubbling**:
   - All interactive containers MUST include CSS `touch-action: manipulation;` to eliminate 300ms touch delay.
   - Child elements (`<span>`, `<p>`, `<img>`, `<h3>`) inside buttons and `.realm-card` elements MUST have CSS `pointer-events: none;` so touch events bubble cleanly to the card/button container.
-- **Entire Card Clickability**: Tapping anywhere on a Realm card MUST trigger navigation, not just the text button inside it.
+- **Strict Button-Only Realm Navigation (Touch Scroll Safety)**:
+  - Touch & click navigation handlers for Realm Cards MUST be bound strictly to explicit Action Buttons (`Enter Math Realm`, `Enter Word Realm`, `Open Pokédex`).
+  - NEVER bind navigation handlers to the `.realm-card` body container, as touch-scrolling gestures will accidentally trigger navigation when the user attempts to swipe down the page.
 
 ---
 

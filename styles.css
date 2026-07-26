@@ -214,20 +214,9 @@ button * {
   flex-direction: column;
   justify-content: space-between;
   min-height: 280px;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: var(--trans-bounce);
 }
-
-.realm-card:hover, .realm-card:focus {
-  transform: translateY(-8px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.realm-card.math-realm:hover { box-shadow: var(--glow-math); }
-.realm-card.word-realm:hover { box-shadow: var(--glow-word); }
-.realm-card.pokedex-realm:hover { box-shadow: var(--glow-pokedex); }
 
 .realm-card::before {
   content: '';

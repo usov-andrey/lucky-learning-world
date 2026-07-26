@@ -354,19 +354,14 @@ class AppController {
       bindTouchClick(btn, () => this.showScreen(screenKey));
     });
 
-    // Dashboard Realm Cards & Buttons
+    // Dashboard Realm Buttons (Strict button-only binding for touch scroll safety)
     const enterMath = () => this.startMathRealm();
     const enterWord = () => this.startWordRealm();
     const enterPokedex = () => this.showScreen("pokedex");
 
     bindTouchClick(this.elements.btnEnterMath, enterMath);
-    bindTouchClick(this.elements.cardMathRealm, enterMath);
-
     bindTouchClick(this.elements.btnEnterWord, enterWord);
-    bindTouchClick(this.elements.cardWordRealm, enterWord);
-
     bindTouchClick(this.elements.btnEnterPokedex, enterPokedex);
-    bindTouchClick(this.elements.cardPokedexRealm, enterPokedex);
 
     // Back to Hub Buttons
     bindTouchClick(this.elements.btnBackMath, () => this.showScreen("dashboard"));
