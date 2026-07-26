@@ -1,32 +1,11 @@
 /**
- * Service Worker for Lucky's Learning World
- * Provides offline caching for seamless play on iPad without Wi-Fi
+ * Service Worker for Lucky's Learning World v2.0.0-v3
+ * Uses Network-First strategy to guarantee instant updates on production!
  */
 
-const CACHE_NAME = 'lucky-world-v1';
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './styles.css',
-  './app.js',
-  './reporter.js',
-  './manifest.json',
-  './engine/spelling-engine.js',
-  './engine/share-controller.js',
-  './engine/sound-fx.js',
-  './content/spelling-catalog.js',
-  './content/catalog.js',
-  './pokemon/pikachu.png',
-  './pokemon/eevee.png',
-  './pokemon/charmander.png',
-  './pokemon/bulbasaur.png',
-  './pokemon/squirtle.png'
-];
+const CACHE_NAME = 'lucky-world-v2.0.0-v3';
 
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
-  );
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
@@ -35,16 +14,31 @@ self.addEventListener('activate', (e) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
         })
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (e) => {
+  // Ignore non-GET requests or browser extension requests
+  if (e.request.method !== 'GET' || !e.request.url.startsWith('http')) {
+    return;
+  }
+
+  // Network-First with Cache Fallback for offline play
   e.respondWith(
-    caches.match(e.request).then((res) => res || fetch(e.request))
+    fetch(e.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+        }
+        return networkResponse;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
