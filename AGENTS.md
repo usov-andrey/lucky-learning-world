@@ -23,11 +23,17 @@ It unifies:
    - Interactive touch targets MUST be at least **64px × 64px** to accommodate young learners.
    - Vibrant dark-mode UI with high contrast, glassmorphism, and responsive CSS Grid/Flexbox layouts.
 
-3. **No-Lose Educational Philosophy**:
+3. **Disabled Navigation Guard**:
+   - Navigation controls (such as `Back` / `Previous` buttons in sequence views like Spelling Learn Mode) MUST be disabled (`disabled` attribute, `opacity: 0.3`, `pointer-events: none`) on the first item (`index === 0`). Never leave active no-op buttons for the user to tap.
+
+4. **High-Contrast Active Navigation Highlight**:
+   - Bottom navigation items and active tabs MUST have vibrant, high-contrast visual indicators (glowing background pill, top indicator line, bright color) so the user instantly sees which tab is active.
+
+5. **No-Lose Educational Philosophy**:
    - Encourages learning through immediate feedback, hints, and retries without demoralizing penalty screens or hard game-over states.
 
-4. **Testing**:
-   - Core engine modules tested with Node native test runner: `node --test tests/*.test.js`.
+6. **Testing**:
+   - Core engine modules tested with Node native test runner: `node --test tests/*.test.mjs`.
 
 ---
 

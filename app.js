@@ -833,6 +833,19 @@ class AppController {
     this.elements.learnWordDisplay.textContent = item.word;
     this.elements.learnDefinition.textContent = item.definition;
 
+    // Disabled Navigation Guard: disable & dim Back button on the very 1st word (author)
+    if (this.elements.btnLearnPrev) {
+      if (item.index === 0) {
+        this.elements.btnLearnPrev.disabled = true;
+        this.elements.btnLearnPrev.style.opacity = "0.3";
+        this.elements.btnLearnPrev.style.pointerEvents = "none";
+      } else {
+        this.elements.btnLearnPrev.disabled = false;
+        this.elements.btnLearnPrev.style.opacity = "1";
+        this.elements.btnLearnPrev.style.pointerEvents = "auto";
+      }
+    }
+
     if (item.image) {
       this.elements.learnImage.src = item.image;
       this.elements.learnImage.style.display = "block";
