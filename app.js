@@ -14,29 +14,29 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260726_v3";
+} from "./engine/math-engine.js?v=20260726_v4";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v3";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v4";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260726_v3";
+} from "./engine/progression.js?v=20260726_v4";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v3";
+} from "./engine/reward-engine.js?v=20260726_v4";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v3";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v3";
-import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v3";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v3";
+import { LEVELS } from "./content/levels.js?v=20260726_v4";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v4";
+import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v4";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v4";
 
-const APP_VERSION = "v2.0.0-v3";
+const APP_VERSION = "v2.0.0-v4";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -122,7 +122,8 @@ const STORAGE_KEYS = {
   PLAYER: "lucky_learning_player",
   MATH_PROGRESSION: "lmm3s:progression",
   MATH_COLLECTION: "lmm3s:collection",
-  SETTINGS: "lmm3s:settings"
+  SETTINGS: "lmm3s:settings",
+  PARENT_PIN: "lucky_parent_pin"
 };
 
 const DEFAULT_SETTINGS = {
@@ -140,12 +141,12 @@ class AppController {
     this.progression = this.loadProgression();
     this.collection = this.loadCollection();
     this.settings = DEFAULT_SETTINGS;
+    this.parentPin = localStorage.getItem(STORAGE_KEYS.PARENT_PIN) || "1234";
 
     this.spellingEngine = new SpellingEngine(PAGE_22_DECK, "learn");
     this.mathSession = null;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
-    this.parentChallengeAnswer = 56; // 7 * 8
 
     this.initDOM();
     this.bindEvents();
@@ -296,7 +297,6 @@ class AppController {
 
       // Parent Gate & Settings Modals
       parentGateModal: document.getElementById("parent-gate-modal"),
-      parentMathChallenge: document.getElementById("parent-math-challenge"),
       parentGateInput: document.getElementById("parent-gate-input"),
       parentGateError: document.getElementById("parent-gate-error"),
       btnParentGateCancel: document.getElementById("btn-parent-gate-cancel"),
@@ -307,6 +307,8 @@ class AppController {
       btnResetPokedex: document.getElementById("btn-reset-pokedex"),
       btnResetAll: document.getElementById("btn-reset-all"),
       toggleHardDrill: document.getElementById("toggle-hard-drill"),
+      inputNewParentPin: document.getElementById("input-new-parent-pin"),
+      btnSaveParentPin: document.getElementById("btn-save-parent-pin"),
       btnCloseParentSettings: document.getElementById("btn-close-parent-settings"),
 
       // Victory Modal
@@ -372,6 +374,20 @@ class AppController {
     if (this.elements.btnCloseParentSettings) {
       this.elements.btnCloseParentSettings.addEventListener("click", () => {
         this.elements.parentSettingsModal.classList.remove("active");
+      });
+    }
+
+    if (this.elements.btnSaveParentPin) {
+      this.elements.btnSaveParentPin.addEventListener("click", () => {
+        const newPin = this.elements.inputNewParentPin.value.trim();
+        if (newPin.length === 4 && /^\d{4}$/.test(newPin)) {
+          this.parentPin = newPin;
+          localStorage.setItem(STORAGE_KEYS.PARENT_PIN, newPin);
+          alert("Parent PIN updated successfully!");
+          this.elements.inputNewParentPin.value = "";
+        } else {
+          alert("Please enter a valid 4-digit PIN.");
+        }
       });
     }
 
@@ -550,20 +566,14 @@ class AppController {
 
   // --- PARENT GATE LOGIC ---
   openParentGate() {
-    // Generate random parent math challenge (e.g. 7 * 8, 8 * 9, 6 * 9)
-    const num1 = 7 + Math.floor(Math.random() * 3); // 7, 8, 9
-    const num2 = 6 + Math.floor(Math.random() * 4); // 6, 7, 8, 9
-    this.parentChallengeAnswer = num1 * num2;
-
-    this.elements.parentMathChallenge.textContent = `${num1} × ${num2} = ?`;
     this.elements.parentGateInput.value = "";
     this.elements.parentGateError.style.display = "none";
     this.elements.parentGateModal.classList.add("active");
   }
 
   verifyParentGate() {
-    const val = Number(this.elements.parentGateInput.value.trim());
-    if (val === this.parentChallengeAnswer || val === 1234) {
+    const inputPin = this.elements.parentGateInput.value.trim();
+    if (inputPin === this.parentPin) {
       this.elements.parentGateModal.classList.remove("active");
       this.elements.parentSettingsModal.classList.add("active");
     } else {

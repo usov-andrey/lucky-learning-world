@@ -6,13 +6,13 @@
   <title>Lucky's Learning World — PWA Hub v2.0.0-v3</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
-  <link rel="stylesheet" href="styles.css?v=20260726_v3">
+  <link rel="stylesheet" href="styles.css?v=20260726_v4">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0-v3" 
+      version: "2.0.0-v4" 
     };
 
     // Service Worker auto-update snippet to clear old PWA caches
@@ -22,10 +22,10 @@
           reg.update();
         }
       });
-      navigator.serviceWorker.register('./sw.js?v=20260726_v3').catch(() => {});
+      navigator.serviceWorker.register('./sw.js?v=20260726_v4').catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=20260726_v3"></script>
+  <script src="reporter.js?v=20260726_v4"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -37,7 +37,7 @@
       <span class="brand-icon">🌟</span>
       <div>
         <h1 class="brand-title">Lucky's Learning World</h1>
-        <span class="version-badge" id="app-version-badge">v2.0.0-v3</span>
+        <span class="version-badge" id="app-version-badge">v2.0.0-v4</span>
       </div>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
@@ -328,17 +328,16 @@
     </div>
   </div>
 
-  <!-- PARENT GATE CHALLENGE MODAL -->
+  <!-- PARENT GATE PIN MODAL -->
   <div class="modal-overlay" id="parent-gate-modal">
     <div class="modal-card">
       <div style="font-size: 48px;">🔒</div>
       <h2 style="font-size: 26px; margin-top: 8px;">Parents Only</h2>
-      <p style="color: var(--text-muted); margin-top: 4px; font-size: 14px;">To access parent controls, please solve the math problem or enter PIN:</p>
+      <p style="color: var(--text-muted); margin-top: 4px; font-size: 14px;">Enter Parent PIN code (Default PIN is <b>1234</b>):</p>
       
       <div style="margin: 20px 0; background: rgba(255,255,255,0.06); padding: 16px; border-radius: 16px; border: 1px solid var(--border-glass);">
-        <div style="font-size: 32px; font-weight: 900; color: var(--text-highlight);" id="parent-math-challenge">7 × 8 = ?</div>
-        <input type="number" id="parent-gate-input" placeholder="Enter answer or PIN..." style="width: 100%; height: 50px; margin-top: 12px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glow); color: white; text-align: center; font-size: 22px; font-weight: 700;">
-        <div id="parent-gate-error" style="color: #ff4757; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;">Incorrect answer. Try again!</div>
+        <input type="password" id="parent-gate-input" maxlength="4" placeholder="••••" style="width: 100%; height: 56px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 2px solid var(--border-glow); color: white; text-align: center; font-size: 32px; font-weight: 800; letter-spacing: 8px;">
+        <div id="parent-gate-error" style="color: #ff4757; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;">Incorrect PIN. Try again!</div>
       </div>
 
       <div style="display: flex; gap: 12px;">
@@ -356,7 +355,7 @@
           <h2 style="font-size: 24px; color: white;">⚙️ Parent Controls & Settings</h2>
           <span style="font-size: 12px; color: var(--text-muted);">Protected Area for Parents / Teachers</span>
         </div>
-        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v3</span>
+        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v4</span>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -365,7 +364,7 @@
         <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
           <div style="font-size: 13px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 6px;">System Diagnostics</div>
           <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v3 (2026-07-26)</span></div>
+            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v4 (2026-07-26)</span></div>
             <div>• <b>Storage Namespace:</b> <code>lmm3s:</code> (stable & safe)</div>
             <div>• <b>Environment:</b> Production GitHub Pages</div>
           </div>
@@ -388,6 +387,15 @@
           <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
             <span style="font-size: 14px; color: white;">Hard Facts Focus (Drill weak facts 6×6..6×9):</span>
             <input type="checkbox" id="toggle-hard-drill" checked style="width: 24px; height: 24px; cursor: pointer;">
+          </div>
+        </div>
+
+        <!-- Section 4: Change Parent PIN -->
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
+          <div style="font-size: 13px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 6px;">Change Parent PIN</div>
+          <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px;">
+            <input type="password" id="input-new-parent-pin" maxlength="4" placeholder="New 4-digit PIN" style="flex: 1; height: 42px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glow); color: white; text-align: center; font-size: 18px; font-weight: 700;">
+            <button class="secondary-btn" id="btn-save-parent-pin" style="height: 42px; font-size: 13px;">Save PIN</button>
           </div>
         </div>
 
@@ -438,6 +446,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=20260726_v3"></script>
+  <script type="module" src="app.js?v=20260726_v4"></script>
 </body>
 </html>
