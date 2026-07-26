@@ -16,11 +16,15 @@
 
 Проверенная исходная версия приложения:
 
-- application baseline: commit `872aa30`;
-- видимая версия: `v2.0.0-v13`;
+- application baseline: commit `b10db88`;
+- видимая версия: `v2.0.0-v16`;
 - zero-build PWA на Vanilla JS и ES modules;
 - Parent Controls защищены 4-значным PIN;
 - service worker использует Network-First с cache fallback;
+- service worker `controllerchange` выполняет однократный auto-reload при
+  фактическом обновлении PWA;
+- version badge и diagnostics получают версию из `APP_VERSION`;
+- touch actions используют единый click binding без пары `touchend + click`;
 - действуют QR sharing, Victory Card, LINE/Web Share и reporter;
 - интерфейс игры полностью на английском;
 - на исходной точке проходят 51 из 51 тестов командой
@@ -32,7 +36,7 @@
 1. прочитать корневой `D:\SD\AGENTS.md`;
 2. прочитать проектные `AGENTS.md` и `DEVELOPMENT_RULES.md`;
 3. работать от последнего актуального commit основной ветки, а не возвращать
-   репозиторий к `872aa30`;
+   репозиторий к `b10db88`;
 4. запустить baseline-тесты;
 5. не откатывать сегодняшние исправления навигации, touch, модалок, QR,
    Parent PIN, cache и английского UI.
@@ -110,7 +114,8 @@ handoff, но не в игре.
 - дочерние элементы кнопок не перехватывают pointer events;
 - переход в Math/Word/Pokédex остаётся привязан только к явной action-кнопке,
   не ко всему `.realm-card`;
-- touchend + click не должны выполнять действие дважды;
+- сохранить click-only binding версии v16; не возвращать одновременную подписку
+  на `touchend + click`, которая может выполнить действие дважды;
 - Back/Previous на первом элементе должен быть действительно `disabled`;
 - active tabs и bottom nav сохраняют высококонтрастный индикатор.
 
@@ -125,6 +130,7 @@ handoff, но не в игре.
 - `overflow-y: auto`;
 - заголовок и Done/Close остаются достижимыми;
 - background scroll блокируется, пока открыта модалка;
+- не возвращать `touch-action: none` на `body.modal-open`, удалённый в v16;
 - закрытие одной модалки не снимает scroll lock, если другая ещё открыта;
 - новая секция Appearance не должна сделать Parent Settings непригодной на
   iPhone/iPad portrait.
@@ -149,6 +155,10 @@ handoff, но не в игре.
 Network-First стратегию не заменять обратно на stale Cache-First. После хотя бы
 одного успешного online-запуска выбранной темы её shell и необходимые assets
 должны быть доступны при offline reload.
+
+Сохранить текущий однократный `controllerchange` auto-reload при обновлении
+service worker. Обычная смена темы не должна регистрировать новый worker,
+вызывать `controllerchange` или перезагружать страницу.
 
 ## 6. Граница по авторским правам
 
