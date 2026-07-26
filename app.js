@@ -14,29 +14,29 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260726_v6";
+} from "./engine/math-engine.js?v=20260726_v9";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v6";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v9";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260726_v6";
+} from "./engine/progression.js?v=20260726_v9";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v6";
+} from "./engine/reward-engine.js?v=20260726_v9";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v6";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v6";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v6";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v6";
+import { LEVELS } from "./content/levels.js?v=20260726_v9";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v9";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v9";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v9";
 
-const APP_VERSION = "v2.0.0-v6";
+const APP_VERSION = "v2.0.0-v9";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -379,7 +379,7 @@ class AppController {
 
     // Parent Gate Controls
     bindTouchClick(this.elements.btnParentGateCancel, () => {
-      this.elements.parentGateModal.classList.remove("active");
+      this.closeModal(this.elements.parentGateModal);
     });
     bindTouchClick(this.elements.btnParentGateSubmit, () => this.verifyParentGate());
 
@@ -391,7 +391,7 @@ class AppController {
 
     // Parent Settings Controls
     bindTouchClick(this.elements.btnCloseParentSettings, () => {
-      this.elements.parentSettingsModal.classList.remove("active");
+      this.closeModal(this.elements.parentSettingsModal);
     });
 
     bindTouchClick(this.elements.btnSaveParentPin, () => {
@@ -452,7 +452,7 @@ class AppController {
     }
     if (this.elements.btnCloseQrModal) {
       bindTouchClick(this.elements.btnCloseQrModal, () => {
-        if (this.elements.qrModal) this.elements.qrModal.classList.remove("active");
+        this.closeModal(this.elements.qrModal);
       });
     }
     if (this.elements.btnCopyQrUrl) {
@@ -572,23 +572,39 @@ class AppController {
 
     // Victory Modal
     bindTouchClick(this.elements.btnVictoryContinue, () => {
-      this.elements.victoryModal.classList.remove("active");
+      this.closeModal(this.elements.victoryModal);
       this.showScreen("pokedex");
     });
+  }
+
+  // --- MODAL UTILITIES & SCROLL LOCK ---
+  openModal(modalElement) {
+    if (!modalElement) return;
+    modalElement.classList.add("active");
+    document.body.classList.add("modal-open");
+  }
+
+  closeModal(modalElement) {
+    if (!modalElement) return;
+    modalElement.classList.remove("active");
+    const activeModals = document.querySelectorAll(".modal-overlay.active");
+    if (activeModals.length === 0) {
+      document.body.classList.remove("modal-open");
+    }
   }
 
   // --- PARENT GATE LOGIC ---
   openParentGate() {
     this.elements.parentGateInput.value = "";
     this.elements.parentGateError.style.display = "none";
-    this.elements.parentGateModal.classList.add("active");
+    this.openModal(this.elements.parentGateModal);
   }
 
   verifyParentGate() {
     const inputPin = this.elements.parentGateInput.value.trim();
     if (inputPin === this.parentPin) {
-      this.elements.parentGateModal.classList.remove("active");
-      this.elements.parentSettingsModal.classList.add("active");
+      this.closeModal(this.elements.parentGateModal);
+      this.openModal(this.elements.parentSettingsModal);
     } else {
       this.elements.parentGateError.style.display = "block";
     }
@@ -596,7 +612,7 @@ class AppController {
 
   checkOnboarding() {
     if (!this.player) {
-      this.elements.onboardingModal.classList.add("active");
+      this.openModal(this.elements.onboardingModal);
     }
   }
 
@@ -626,7 +642,7 @@ class AppController {
     }
 
     this.savePlayer();
-    this.elements.onboardingModal.classList.remove("active");
+    this.closeModal(this.elements.onboardingModal);
   }
 
   renderHeader() {
@@ -1053,7 +1069,7 @@ class AppController {
       this.elements.rewardPetName.textContent = "Great Progress!";
     }
 
-    this.elements.victoryModal.classList.add("active");
+    this.openModal(this.elements.victoryModal);
   }
 
   openQrModal() {
@@ -1068,7 +1084,7 @@ class AppController {
         petName: pet.name
       }
     );
-    this.elements.qrModal.classList.add("active");
+    this.openModal(this.elements.qrModal);
   }
 }
 
