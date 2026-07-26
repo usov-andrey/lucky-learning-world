@@ -14,29 +14,29 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260726_v5";
+} from "./engine/math-engine.js?v=20260726_v6";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v5";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v6";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260726_v5";
+} from "./engine/progression.js?v=20260726_v6";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v5";
+} from "./engine/reward-engine.js?v=20260726_v6";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v5";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v5";
-import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v5";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v5";
+import { LEVELS } from "./content/levels.js?v=20260726_v6";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v6";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v6";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v6";
 
-const APP_VERSION = "v2.0.0-v5";
+const APP_VERSION = "v2.0.0-v6";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -340,7 +340,7 @@ class AppController {
       element.addEventListener("click", execute);
     };
 
-    // Nav bar
+    // Nav bar (mapping 'hub' -> 'dashboard')
     Object.entries(this.elements.navBtns).forEach(([screenKey, btn]) => {
       bindTouchClick(btn, () => this.showScreen(screenKey));
     });
@@ -611,22 +611,26 @@ class AppController {
     this.elements.totalStarsCount.textContent = totalStars;
 
     if (this.elements.petsCollectedCount) {
-      this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${CHARACTERS.length} Pets`;
+      this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length} Pets`;
     }
   }
 
   showScreen(screenKey) {
+    const targetKey = screenKey === "hub" ? "dashboard" : screenKey;
+
     Object.values(this.elements.screens).forEach(s => s.classList.remove("active"));
     Object.values(this.elements.navBtns).forEach(b => b.classList.remove("active"));
 
-    if (this.elements.screens[screenKey]) {
-      this.elements.screens[screenKey].classList.add("active");
+    if (this.elements.screens[targetKey]) {
+      this.elements.screens[targetKey].classList.add("active");
     }
     if (this.elements.navBtns[screenKey]) {
       this.elements.navBtns[screenKey].classList.add("active");
+    } else if (this.elements.navBtns["hub"]) {
+      this.elements.navBtns["hub"].classList.add("active");
     }
 
-    if (screenKey === "pokedex") {
+    if (targetKey === "pokedex") {
       this.renderPokedex();
     }
   }
@@ -968,7 +972,8 @@ class AppController {
     this.elements.pokedexGrid.innerHTML = "";
     const ownedMap = new Map(this.collection.map(item => [item.id, item]));
 
-    CHARACTERS.forEach(char => {
+    // Render ONLY collectible pool characters in Pokédex (15 total)
+    COLLECTIBLE_CHARACTERS.forEach(char => {
       const isOwned = ownedMap.has(char.id);
       const ownedData = ownedMap.get(char.id);
 

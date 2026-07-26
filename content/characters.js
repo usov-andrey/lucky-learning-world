@@ -56,9 +56,11 @@ function makeImageCharacter(collectible) {
   };
 }
 
+export const COLLECTIBLE_CHARACTERS = POOL_CHARACTERS.map(makeImageCharacter(true));
+
 export const CHARACTERS = [
   ...RESIDENTS.map(makeImageCharacter(false)),
-  ...POOL_CHARACTERS.map(makeImageCharacter(true)),
+  ...COLLECTIBLE_CHARACTERS,
 ];
 
 const BY_ID = new Map(CHARACTERS.map((character) => [character.id, character]));

@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Lucky's Learning World — PWA Hub v2.0.0-v5</title>
+  <title>Lucky's Learning World — PWA Hub v2.0.0-v6</title>
   <meta name="description" content="Gamified multi-subject learning hub for Lucky: Math Monster battles (x6-x10), Spelling Bee Page 22, and Pokédex pet collection.">
   
-  <link rel="stylesheet" href="styles.css?v=20260726_v5">
+  <link rel="stylesheet" href="styles.css?v=20260726_v6">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0-v5" 
+      version: "2.0.0-v6" 
     };
 
     // Service Worker auto-update snippet to clear old PWA caches
@@ -22,10 +22,10 @@
           reg.update();
         }
       });
-      navigator.serviceWorker.register('./sw.js?v=20260726_v5').catch(() => {});
+      navigator.serviceWorker.register('./sw.js?v=20260726_v6').catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=20260726_v5"></script>
+  <script src="reporter.js?v=20260726_v6"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -35,10 +35,7 @@
   <header class="app-header">
     <div class="brand" id="brand-logo-btn" title="Back to Main Hub">
       <span class="brand-icon">🌟</span>
-      <div>
-        <h1 class="brand-title">Lucky's Learning World</h1>
-        <span class="version-badge" id="app-version-badge">v2.0.0-v5</span>
-      </div>
+      <h1 class="brand-title">Lucky's Learning World</h1>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
       <span id="header-player-avatar">🐾</span>
@@ -47,7 +44,7 @@
         <span>⭐</span>
         <span id="total-stars-count">0</span>
       </div>
-      <button class="secondary-btn" id="btn-parent-mode-header" style="height: 44px; padding: 0 12px; font-size: 14px; margin-left: 6px; background: rgba(255, 255, 255, 0.08);" title="Parent Protected Settings">🔒 Parents</button>
+      <button class="secondary-btn" id="btn-parent-mode-header" style="height: 40px; padding: 0 10px; font-size: 16px; margin-left: 4px; background: rgba(255, 255, 255, 0.08);" title="Parent Protected Settings">🔒</button>
     </div>
   </header>
 
@@ -96,7 +93,7 @@
         <article class="realm-card pokedex-realm" id="card-pokedex-realm">
           <div class="realm-header">
             <span class="realm-icon">🐾</span>
-            <span class="realm-badge" id="pets-collected-count">0 / 24 Pets</span>
+            <span class="realm-badge" id="pets-collected-count">0 / 15 Pets</span>
           </div>
           <div class="realm-content">
             <h3 class="realm-title">Unified Pokédex</h3>
@@ -112,7 +109,7 @@
     <!-- VIEW 2: Math Battle Realm Screen -->
     <section id="math-view" class="view-screen">
       <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-math">⬅️ Back to Hub</button>
+        <button class="back-btn" id="btn-back-from-math">⬅️ Hub</button>
         <h2 style="font-size: 24px;">🧮 Math Monster Realm (×6–×10)</h2>
       </div>
 
@@ -156,7 +153,7 @@
     <!-- VIEW 3: Word Battle Realm Screen (Spelling Page 22) -->
     <section id="word-view" class="view-screen">
       <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-word">⬅️ Back to Hub</button>
+        <button class="back-btn" id="btn-back-from-word">⬅️ Hub</button>
         <h2 style="font-size: 24px;">🔤 Word Realm — Page 22 (Schwa ‹or›)</h2>
       </div>
 
@@ -282,7 +279,7 @@
     <!-- VIEW 4: Pokédex & Pet Collection Screen -->
     <section id="pokedex-view" class="view-screen">
       <div class="screen-header">
-        <button class="back-btn" id="btn-back-from-pokedex">⬅️ Back to Hub</button>
+        <button class="back-btn" id="btn-back-from-pokedex">⬅️ Hub</button>
         <h2 style="font-size: 24px;">🐾 Unified Pokédex & Pet Sanctuary</h2>
       </div>
 
@@ -355,7 +352,7 @@
           <h2 style="font-size: 24px; color: white;">⚙️ Parent Controls & Settings</h2>
           <span style="font-size: 12px; color: var(--text-muted);">Protected Area for Parents / Teachers</span>
         </div>
-        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v5</span>
+        <span class="version-badge" id="modal-app-version" style="background: var(--grad-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">v2.0.0-v6</span>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -364,7 +361,7 @@
         <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
           <div style="font-size: 13px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 6px;">System Diagnostics</div>
           <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v5 (2026-07-26)</span></div>
+            <div>• <b>Build Version:</b> <span id="diag-build-version">v2.0.0-v6 (2026-07-26)</span></div>
             <div>• <b>Storage Namespace:</b> <code>lmm3s:</code> (stable & safe)</div>
             <div>• <b>Environment:</b> Production GitHub Pages</div>
           </div>
@@ -446,6 +443,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=20260726_v5"></script>
+  <script type="module" src="app.js?v=20260726_v6"></script>
 </body>
 </html>
