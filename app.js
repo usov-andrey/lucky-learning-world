@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js";
+} from "./engine/math-engine.js?v=20260726_v3";
 
-import { SpellingEngine } from "./engine/spelling-engine.js";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v3";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js";
+} from "./engine/progression.js?v=20260726_v3";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js";
+} from "./engine/reward-engine.js?v=20260726_v3";
 
-import { LEVELS } from "./content/levels.js";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js";
-import { CHARACTERS, getCharacterById } from "./content/characters.js";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js";
+import { LEVELS } from "./content/levels.js?v=20260726_v3";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v3";
+import { CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v3";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v3";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
