@@ -659,8 +659,16 @@ button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-
   position: relative;
 }
 
+.pet-card.unlocked {
+  background: linear-gradient(135deg, rgba(124, 93, 250, 0.25), rgba(46, 213, 115, 0.15));
+  border: 2px solid var(--border-glow);
+  box-shadow: 0 0 20px rgba(124, 93, 250, 0.35);
+  opacity: 1;
+  filter: none;
+}
+
 .pet-card.locked {
-  opacity: 0.4;
+  opacity: 0.35;
   filter: grayscale(1);
 }
 

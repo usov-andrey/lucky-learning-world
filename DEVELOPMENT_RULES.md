@@ -42,6 +42,12 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 
 ---
 
-## 6. 🏗️ Architecture & Verification Rules
+## 6. 🐾 Pokédex Collection Presentation
+- **Rescued Pets First**: Rescued/Unlocked pets MUST always be sorted to the very top of the Pokédex grid FIRST.
+- **Vibrant Unlocked Card Styling**: Unlocked pet cards MUST use glowing gradient background styling (`.pet-card.unlocked`) with a neon border, glowing level badge, and bright green status text so unlocked pets stand out with 100% clarity on all devices.
+
+---
+
+## 7. 🏗️ Architecture & Verification Rules
 - **Zero-Build Architecture**: Standard Vanilla ES Modules (`import`/`export`). No Webpack, Vite, or npm bundlers. Static hostable on GitHub Pages.
 - **Mandatory Pre-Commit Verification**: Run `node --test tests/*.test.mjs` before committing or deploying any version.

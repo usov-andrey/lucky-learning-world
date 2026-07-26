@@ -29,16 +29,16 @@ import {
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v17";
+} from "./engine/reward-engine.js?v=20260726_v18";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v17";
+import { ShareController } from "./engine/share-controller.js?v=20260726_v18";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v17";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v17";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v17";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v17";
+import { LEVELS } from "./content/levels.js?v=20260726_v18";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v18";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v18";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v18";
 
-const APP_VERSION = "v2.0.0-v17";
+const APP_VERSION = "v2.0.0-v18";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let audioUnlocked = false;
@@ -1084,23 +1084,29 @@ export class AppController {
     this.elements.pokedexGrid.innerHTML = "";
     const ownedMap = new Map(this.collection.map(item => [item.id, item]));
 
-    // Render ONLY collectible pool characters in Pokédex (15 total)
-    COLLECTIBLE_CHARACTERS.forEach(char => {
+    // Sort Pokédex grid: Rescued/Unlocked pets first, then locked pets
+    const sorted = [...COLLECTIBLE_CHARACTERS].sort((a, b) => {
+      const aOwned = ownedMap.has(a.id) ? 1 : 0;
+      const bOwned = ownedMap.has(b.id) ? 1 : 0;
+      return bOwned - aOwned;
+    });
+
+    sorted.forEach(char => {
       const isOwned = ownedMap.has(char.id);
       const ownedData = ownedMap.get(char.id);
 
       const card = document.createElement("article");
-      card.className = `pet-card ${isOwned ? "" : "locked"}`;
+      card.className = `pet-card ${isOwned ? "unlocked" : "locked"}`;
 
-      const levelBadge = isOwned ? `<span style="position: absolute; top: 10px; right: 10px; background: var(--grad-primary); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700;">Lv. ${ownedData.level || 1}</span>` : "";
-      const shinyBadge = isOwned && ownedData.shiny ? `<span style="position: absolute; top: 10px; left: 10px; font-size: 16px;">✨</span>` : "";
+      const levelBadge = isOwned ? `<span style="position: absolute; top: 10px; right: 10px; background: var(--grad-primary); padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; color: white; box-shadow: 0 0 12px rgba(124, 93, 250, 0.6);">Lv. ${ownedData.level || 1}</span>` : "";
+      const shinyBadge = isOwned && ownedData.shiny ? `<span style="position: absolute; top: 10px; left: 10px; font-size: 18px;">✨</span>` : "";
 
       card.innerHTML = `
         ${levelBadge}
         ${shinyBadge}
         <img class="pet-img" src="${char.art.src}" alt="${char.name}">
         <div class="pet-name">${char.name}</div>
-        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${isOwned ? "Rescued & Leveling" : "Locked in Realm"}</div>
+        <div style="font-size: 12px; font-weight: 700; color: ${isOwned ? "#2ed573" : "var(--text-muted)"}; margin-top: 4px;">${isOwned ? "✨ Rescued & Leveling" : "Locked in Realm"}</div>
       `;
 
       this.elements.pokedexGrid.appendChild(card);
