@@ -102,7 +102,7 @@ test("Real DOM UI Smoke Test: complete onboarding, navigate screens, and open/cl
   btnCloseQrModal.click();
   assert.ok(!qrModal.classList.contains("active"), "qr-modal must close on done click");
 
-  // 6. Test Parent Gate Modal: Open & Cancel
+  // 6. Test Parent Gate Modal: Open, enter PIN, change theme to comic
   const btnParentModeHeader = document.getElementById("btn-parent-mode-header");
   assert.ok(btnParentModeHeader, "btn-parent-mode-header must exist");
   btnParentModeHeader.click();
@@ -110,8 +110,26 @@ test("Real DOM UI Smoke Test: complete onboarding, navigate screens, and open/cl
   const parentGateModal = document.getElementById("parent-gate-modal");
   assert.ok(parentGateModal.classList.contains("active"), "parent-gate-modal must become active on lock click");
 
-  const btnParentGateCancel = document.getElementById("btn-parent-gate-cancel");
-  assert.ok(btnParentGateCancel, "btn-parent-gate-cancel must exist");
-  btnParentGateCancel.click();
-  assert.ok(!parentGateModal.classList.contains("active"), "parent-gate-modal must close on cancel click");
+  const parentGateInput = document.getElementById("parent-gate-input");
+  assert.ok(parentGateInput, "parent-gate-input must exist");
+  parentGateInput.value = "1234";
+
+  const btnParentGateSubmit = document.getElementById("btn-parent-gate-submit");
+  assert.ok(btnParentGateSubmit, "btn-parent-gate-submit must exist");
+  btnParentGateSubmit.click();
+
+  const parentSettingsModal = document.getElementById("parent-settings-modal");
+  assert.ok(parentSettingsModal.classList.contains("active"), "parent-settings-modal must open after valid PIN");
+
+  const optionComic = document.getElementById("theme-option-comic");
+  assert.ok(optionComic, "theme-option-comic must exist");
+  optionComic.click();
+
+  assert.equal(document.documentElement.getAttribute("data-theme"), "comic", "data-theme attribute must update to 'comic'");
+
+  const btnCloseParentSettings = document.getElementById("btn-close-parent-settings");
+  assert.ok(btnCloseParentSettings, "btn-close-parent-settings must exist");
+  btnCloseParentSettings.click();
+  assert.ok(!parentSettingsModal.classList.contains("active"), "parent-settings-modal must close on Done click");
+  assert.equal(document.documentElement.getAttribute("data-theme"), "comic", "data-theme attribute must remain 'comic' after modal close");
 });

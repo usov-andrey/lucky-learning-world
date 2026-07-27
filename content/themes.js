@@ -29,9 +29,12 @@ export const ThemeManager = {
     }
 
     if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
-      window.dispatchEvent(new CustomEvent('lucky:themechanged', {
-        detail: { theme: validTheme }
-      }));
+      const CustomEvt = window.CustomEvent || (typeof CustomEvent !== 'undefined' ? CustomEvent : null);
+      if (CustomEvt) {
+        window.dispatchEvent(new CustomEvt('lucky:themechanged', {
+          detail: { theme: validTheme }
+        }));
+      }
     }
     return validTheme;
   },

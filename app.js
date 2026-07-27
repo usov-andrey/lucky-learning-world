@@ -437,34 +437,39 @@ export class AppController {
     });
 
     // Appearance / Theme Radio Controls
-    const radioPokemon = document.getElementById("radio-theme-pokemon");
-    const radioComic = document.getElementById("radio-theme-comic");
     const optionPokemon = document.getElementById("theme-option-pokemon");
     const optionComic = document.getElementById("theme-option-comic");
+    const radioPokemon = document.getElementById("radio-theme-pokemon");
+    const radioComic = document.getElementById("radio-theme-comic");
 
-    const updateThemeRadioUi = (currentTheme) => {
-      if (radioPokemon) radioPokemon.checked = (currentTheme === "pokemon");
-      if (radioComic) radioComic.checked = (currentTheme === "comic");
-      if (optionPokemon) optionPokemon.classList.toggle("active", currentTheme === "pokemon");
-      if (optionComic) optionComic.classList.toggle("active", currentTheme === "comic");
+    const selectTheme = (themeId) => {
+      ThemeManager.setTheme(themeId);
+      this.syncParentThemeRadioUi(themeId);
     };
 
-    updateThemeRadioUi(ThemeManager.getTheme());
+    if (optionPokemon) {
+      optionPokemon.addEventListener("click", (e) => {
+        selectTheme("pokemon");
+      });
+    }
+    if (optionComic) {
+      optionComic.addEventListener("click", (e) => {
+        selectTheme("comic");
+      });
+    }
+    if (radioPokemon) {
+      radioPokemon.addEventListener("change", () => selectTheme("pokemon"));
+    }
+    if (radioComic) {
+      radioComic.addEventListener("change", () => selectTheme("comic"));
+    }
 
-    [radioPokemon, radioComic].forEach(r => {
-      if (r) {
-        r.addEventListener("change", (e) => {
-          const selectedTheme = e.target.value;
-          ThemeManager.setTheme(selectedTheme);
-          updateThemeRadioUi(selectedTheme);
-        });
-      }
-    });
+    this.syncParentThemeRadioUi();
 
     if (typeof window !== "undefined") {
       window.addEventListener("lucky:themechanged", (e) => {
         const newTheme = e?.detail?.theme || ThemeManager.getTheme();
-        updateThemeRadioUi(newTheme);
+        this.syncParentThemeRadioUi(newTheme);
         this.renderHeader();
         if (this.currentScreen === "pokedex") {
           this.renderPokedex();
@@ -681,6 +686,18 @@ export class AppController {
     }
   }
 
+  syncParentThemeRadioUi(currentTheme = ThemeManager.getTheme()) {
+    const radioPokemon = document.getElementById("radio-theme-pokemon");
+    const radioComic = document.getElementById("radio-theme-comic");
+    const optionPokemon = document.getElementById("theme-option-pokemon");
+    const optionComic = document.getElementById("theme-option-comic");
+
+    if (radioPokemon) radioPokemon.checked = (currentTheme === "pokemon");
+    if (radioComic) radioComic.checked = (currentTheme === "comic");
+    if (optionPokemon) optionPokemon.classList.toggle("active", currentTheme === "pokemon");
+    if (optionComic) optionComic.classList.toggle("active", currentTheme === "comic");
+  }
+
   // --- PARENT GATE LOGIC ---
   openParentGate() {
     this.elements.parentGateInput.value = "";
@@ -692,6 +709,7 @@ export class AppController {
     const inputPin = this.elements.parentGateInput.value.trim();
     if (inputPin === this.parentPin) {
       this.closeModal(this.elements.parentGateModal);
+      this.syncParentThemeRadioUi();
       this.openModal(this.elements.parentSettingsModal);
     } else {
       this.elements.parentGateError.style.display = "block";
