@@ -45,9 +45,9 @@
   --border-glow: #FF9F1C;
 
   --grad-primary: linear-gradient(135deg, #FF9F1C 0%, #E71D36 100%);
-  --grad-math: linear-gradient(135deg, #2EC4B6 0%, #202020 100%);
-  --grad-word: linear-gradient(135deg, #E71D36 0%, #FF9F1C 100%);
-  --grad-pokedex: linear-gradient(135deg, #FFBF69 0%, #FF9F1C 100%);
+  --grad-math: linear-gradient(135deg, #00C9A7 0%, #00847B 100%);
+  --grad-word: linear-gradient(135deg, #FF4B4B 0%, #FF8585 100%);
+  --grad-pokedex: linear-gradient(135deg, #FFC75F 0%, #FF9642 100%);
   --grad-success: linear-gradient(135deg, #2EC4B6 0%, #CBF3F0 100%);
 
   --text-main: #202020;
@@ -61,29 +61,165 @@
 }
 
 [data-theme="comic"] body {
-  background-color: var(--bg-dark);
+  background-color: #FFF8E8 !important;
   background-image: 
     radial-gradient(#e5d9b6 1.5px, transparent 1.5px),
-    radial-gradient(#e5d9b6 1.5px, #FFF8E8 1.5px);
-  background-size: 24px 24px;
-  background-position: 0 0, 12px 12px;
-  color: var(--text-main);
+    radial-gradient(#e5d9b6 1.5px, #FFF8E8 1.5px) !important;
+  background-size: 24px 24px !important;
+  background-position: 0 0, 12px 12px !important;
+  color: #202020 !important;
 }
 
+/* App Header & Brand */
+[data-theme="comic"] .app-header {
+  background: #FFF8E8 !important;
+  border-bottom: 3px solid #202020 !important;
+}
+
+[data-theme="comic"] .brand-title {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: #202020 !important;
+  color: #202020 !important;
+  font-weight: 900 !important;
+}
+
+[data-theme="comic"] .user-profile-badge {
+  background: #FFFFFF !important;
+  border: 2px solid #202020 !important;
+  box-shadow: 3px 3px 0px #202020 !important;
+  color: #202020 !important;
+}
+
+[data-theme="comic"] .header-action-btn {
+  background: #FFF3D1 !important;
+  color: #202020 !important;
+  border: 2px solid #202020 !important;
+  box-shadow: 2px 2px 0px #202020 !important;
+}
+
+/* Headings, Subtitles & Text Elements */
+[data-theme="comic"] h1,
+[data-theme="comic"] h2,
+[data-theme="comic"] h3,
+[data-theme="comic"] h4,
+[data-theme="comic"] .realm-title,
+[data-theme="comic"] #welcome-greeting-title,
+[data-theme="comic"] .question-display,
+[data-theme="comic"] .learn-word-display {
+  color: #202020 !important;
+}
+
+[data-theme="comic"] p,
+[data-theme="comic"] .realm-desc,
+[data-theme="comic"] .question-progress,
+[data-theme="comic"] .word-hint-text,
+[data-theme="comic"] .text-muted {
+  color: #4b5563 !important;
+}
+
+/* Cards & Modals */
 [data-theme="comic"] .realm-card,
 [data-theme="comic"] .arena-card,
 [data-theme="comic"] .modal-card,
 [data-theme="comic"] .pet-card {
+  background: #FFFFFF !important;
   border: 3px solid #202020 !important;
   box-shadow: 6px 6px 0px #202020 !important;
   border-radius: 18px !important;
+  color: #202020 !important;
 }
 
-[data-theme="comic"] .app-header,
+[data-theme="comic"] .realm-badge {
+  background: #FFF3D1 !important;
+  color: #202020 !important;
+  border: 2px solid #202020 !important;
+  font-weight: 700 !important;
+}
+
+/* Chips & Mode Controls */
+[data-theme="comic"] .chip-btn {
+  background: #FFFFFF !important;
+  color: #202020 !important;
+  border: 2px solid #202020 !important;
+  box-shadow: 2px 2px 0px #202020 !important;
+}
+
+[data-theme="comic"] .chip-btn.active {
+  background: #FF9F1C !important;
+  color: #FFFFFF !important;
+  box-shadow: 3px 3px 0px #202020 !important;
+}
+
+/* Primary Action Buttons */
+[data-theme="comic"] .realm-action-btn,
+[data-theme="comic"] .primary-btn {
+  border: 3px solid #202020 !important;
+  box-shadow: 4px 4px 0px #202020 !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="comic"] .math-realm .realm-action-btn {
+  background: #00C9A7 !important;
+}
+
+[data-theme="comic"] .word-realm .realm-action-btn {
+  background: #FF4B4B !important;
+}
+
+[data-theme="comic"] .pokedex-realm .realm-action-btn {
+  background: #FFC75F !important;
+  color: #202020 !important;
+}
+
+/* Secondary & Back Buttons */
+[data-theme="comic"] .secondary-btn,
+[data-theme="comic"] .back-btn {
+  background: #FFFFFF !important;
+  color: #202020 !important;
+  border: 2px solid #202020 !important;
+  box-shadow: 3px 3px 0px #202020 !important;
+}
+
+/* Answer & Tile Buttons */
+[data-theme="comic"] .answer-btn {
+  background: #FFFFFF !important;
+  color: #202020 !important;
+  border: 3px solid #202020 !important;
+  box-shadow: 4px 4px 0px #202020 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="comic"] .tile-btn {
+  background: #FFF3D1 !important;
+  color: #202020 !important;
+  border: 3px solid #202020 !important;
+  box-shadow: 3px 3px 0px #202020 !important;
+}
+
+/* Inputs */
+[data-theme="comic"] input[type="text"],
+[data-theme="comic"] input[type="password"] {
+  background: #FFFFFF !important;
+  color: #202020 !important;
+  border: 2px solid #202020 !important;
+}
+
+/* Bottom Navigation Bar */
 [data-theme="comic"] .bottom-nav {
   background: #FFF8E8 !important;
-  border-bottom: 3px solid #202020 !important;
   border-top: 3px solid #202020 !important;
+}
+
+[data-theme="comic"] .nav-item {
+  color: #4b5563 !important;
+}
+
+[data-theme="comic"] .nav-item.active {
+  color: #202020 !important;
+  background: #FFF3D1 !important;
+  border: 2px solid #202020 !important;
 }
 
 /* --------------------------------------------------------------------------
