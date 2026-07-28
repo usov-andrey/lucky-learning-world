@@ -882,7 +882,7 @@ body.modal-open {
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   gap: 16px;

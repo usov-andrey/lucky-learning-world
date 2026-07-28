@@ -820,6 +820,18 @@ body.modal-open {
   box-shadow: 0 0 8px #7c5dfa;
 }
 
+.toast-banner {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: none;
+  background: var(--grad-primary);
+  border-radius: 3px;
+  box-shadow: 0 0 8px #7c5dfa;
+}
+
 /* Keyframe Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
