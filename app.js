@@ -41,6 +41,7 @@ import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260727_
 import { ThemeManager } from "./content/themes.js?v=20260727_v19";
 import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260727_v19";
 import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260727_v19";
+import { ClientTelemetry } from "./telemetry.js?v=20260728_v19.2";
 
 const APP_VERSION = "v2.0.2-v19.2";
 
@@ -674,6 +675,11 @@ export class AppController {
   }
 
   checkToastBannerVisibility() {
+    ClientTelemetry.log("info", "checkToastBannerVisibility evaluated", {
+      isLatestVersion: this.isLatestVersion,
+      hasToastElement: !!this.elements.toastVersionUpdate,
+      pathname: typeof window !== "undefined" ? window.location.pathname : ""
+    });
     if (this.isLatestVersion || (typeof window !== "undefined" && window.location.pathname.includes("/v2/"))) {
       if (this.elements.toastVersionUpdate) {
         this.elements.toastVersionUpdate.style.display = "none";

@@ -61,3 +61,12 @@ This document contains the official, binding Acceptance Criteria for development
   - `v1/` and `v2/` exist as physical standalone subdirectories on GitHub Pages.
   - `v1/` contains cross-link CTA to `./v2/`.
   - `v2/` contains Parent Settings button `⬅️ Switch to Legacy Version (v18)` pointing to `../v1/`.
+
+---
+
+## 6. 📊 Automated Client Telemetry & Telemetry Reporter System
+
+- **[AC-6.1] Automated Client Telemetry & Diagnostics Logger**:
+  - The application MUST initialize an automated client telemetry logger (`telemetry.js`) on page load.
+  - The telemetry module MUST capture uncaught window errors (`window.onerror`), unhandled promise rejections, console errors, and UI lifecycle events (e.g. version checks, DOM element presence).
+  - Telemetry logs MUST be persisted in `localStorage["lucky_telemetry_logs"]` (sliding log buffer of last 100 entries) so full runtime logs are automatically available for inspection and diagnostic reporting without manual user intervention.
