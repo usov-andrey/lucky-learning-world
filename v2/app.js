@@ -848,9 +848,10 @@ export class AppController {
       const starStr = stars > 0 ? "★".repeat(stars) : "";
       const lockStr = isUnlocked ? "" : "🔒 ";
       const activeClass = this.currentMathLevel && this.currentMathLevel.id === lvl.id ? "active" : "";
+      const lvlTitle = lvl.title || ("×" + lvl.table);
 
       html += `<button class="chip-btn ${activeClass}" data-math-level="${lvl.id}" ${!isUnlocked ? 'disabled style="opacity:0.5"' : ""}>
-        ${lockStr}${lvl.title} ${starStr}
+        ${lockStr}${lvlTitle} ${starStr}
       </button>`;
     });
 
@@ -1269,7 +1270,9 @@ export class AppController {
 
   // --- POKÉDEX VIEW ---
   renderPokedex() {
-    this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length}`;
+    if (this.elements.petsCollectedCount) {
+      this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length}`;
+    }
 
     let html = "";
     COLLECTIBLE_CHARACTERS.forEach(char => {
@@ -1277,18 +1280,20 @@ export class AppController {
       const isOwned = ownedItem != null;
       const pres = ThemeManager.getCharacterPresentation(char.id, char);
 
-      const nameStr = pres ? pres.name : char.name;
-      const imgPath = pres ? (pres.image || pres.assetPath) : char.image;
+      const nameStr = pres ? (pres.name || char.name) : char.name;
+      const imgPath = pres ? (pres.image || pres.assetPath || (pres.art && pres.art.src)) : (char.image || (char.art && char.art.src) || (char.pokemon ? `pokemon/${char.pokemon}.png` : ""));
       const levelStr = isOwned ? `Lvl ${ownedItem.level || 1}` : "Locked";
 
-      html += `<div class="pet-card ${isOwned ? 'owned' : 'locked'}">
-        <img class="pet-img" src="${isOwned ? imgPath : 'assets/silhouette_unknown.svg'}" alt="${nameStr}" />
-        <div class="pet-name">${isOwned ? nameStr : '???'}</div>
+      html += `<div class="pet-card ${isOwned ? 'owned unlocked' : 'locked'}">
+        <img class="pet-img" src="${imgPath || `pokemon/${char.pokemon || char.id}.png`}" alt="${nameStr}" />
+        <div class="pet-name">${nameStr}</div>
         <div class="pet-level">${levelStr}</div>
       </div>`;
     });
 
-    this.elements.pokedexGrid.innerHTML = html;
+    if (this.elements.pokedexGrid) {
+      this.elements.pokedexGrid.innerHTML = html;
+    }
   }
 
   // --- MODALS & PARENT GATE ---

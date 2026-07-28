@@ -1204,8 +1204,8 @@ export class AppController {
       const ownedData = ownedMap.get(char.id);
 
       const presentation = ThemeManager.getCharacterPresentation(char.id, char);
-      const charName = presentation ? presentation.name : char.name;
-      const charSrc = presentation ? presentation.art.src : char.art.src;
+      const charName = presentation ? (presentation.name || char.name) : char.name;
+      const charSrc = presentation ? (presentation.image || presentation.assetPath || (presentation.art && presentation.art.src)) : (char.image || (char.art && char.art.src) || (char.pokemon ? `pokemon/${char.pokemon}.png` : ""));
 
       const card = document.createElement("article");
       card.className = `pet-card ${isOwned ? "unlocked" : "locked"}`;
