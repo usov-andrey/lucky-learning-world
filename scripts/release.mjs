@@ -11,6 +11,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -196,4 +197,17 @@ if (args.bump === 'major') {
   }
 }
 
+// 5. Automatic Git Commit
+if (!dryRun) {
+  try {
+    console.log(`  💾 Automatically committing release changes to Git...`);
+    execSync(`git add .`, { cwd: rootDir });
+    execSync(`git commit -m "feat(${taskId}): release version v${newVer}"`, { cwd: rootDir });
+    console.log(`  ✓ Git commit completed: "feat(${taskId}): release version v${newVer}"`);
+  } catch (err) {
+    console.warn(`  ⚠️ Git commit notice: ${err.message}`);
+  }
+}
+
 console.log(`🎉 Release v${newVer} completed successfully!`);
+

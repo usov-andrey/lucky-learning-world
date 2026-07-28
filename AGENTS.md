@@ -25,6 +25,7 @@ All AI agents (Antigravity, Codex, Claude Code, Windsurf, Cursor) working on thi
 - **Responsive Modals**: `max-height: 85vh` (desktop) / `92vh` (mobile) with `overflow-y: auto`.
 - **4-Digit Parent PIN Gate**: Protected parent settings using customizable PIN.
 - **Project Artifact Storage & Unique History Rule**: All implementation plans, walkthroughs, task specifications, and release notes MUST be stored permanently inside the project directory (`D:\SD\personal\projects\lucky-learning-world\`). Plans are saved under `docs/plans/<TASK_ID>-implementation-plan.md` and walkthroughs under `docs/walkthroughs/<TASK_ID>-walkthrough.md` so historical documents are never overwritten. In addition, agents MUST always include absolute paths to project documents in final responses.
+- **Mandatory Automatic Git Commit**: Upon completion of ANY task or feature, the agent MUST automatically run `git add .` and `git commit -m "feat(TASK-XXX): description"`. Agents MUST NEVER complete a task leaving uncommitted working tree changes.
 
 ---
 

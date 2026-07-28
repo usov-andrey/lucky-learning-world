@@ -11,6 +11,7 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 - **Git Commit Convention**: Every commit MUST include the task ID in its header:
   - `feat(TASK-XXX): concise summary`
   - `fix(TASK-XXX): concise summary`
+- **Mandatory Automatic Git Commit**: Upon completing ANY task or feature implementation (once all tests pass and release artifacts/walkthroughs are written), the agent MUST AUTOMATICALLY run `git add .` and `git commit -m "feat(TASK-XXX): summary"`. Agents MUST NEVER end their response leaving uncommitted changes in the working tree.
 
 ---
 
