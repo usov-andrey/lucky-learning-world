@@ -7,6 +7,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 |---|---|---|---|---|---|---|
 | [TASK-001](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-001-comic-narrative.md) | Themed Narrative Mechanics & Toast Announcement Banner | RELEASED | v1.0.0 | 8 ACs | `tests/narrative-engine.test.mjs` | "#1" |
 | [TASK-002](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-002-code-coverage-ac-system.md) | Code Coverage Measurement & Acceptance Criteria Enforcement System | RELEASED | v1.0.1 | 0 ACs | `tests/coverage.test.mjs` | "#2" |
+| [TASK-003](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-003-github-agent-ecosystem.md) | GitHub External AI Agent Ecosystem & Task Artifact Synchronization | IN_PROGRESS | v1.0.2 | 0 ACs | `tests/github-agent-ecosystem.test.mjs` | - |
 
 ---
 

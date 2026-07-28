@@ -26,7 +26,7 @@ test("Version Toast Integration: Legacy instance (isLatestVersion = false) shows
 
   window.localStorage.clear();
 
-  const { AppController } = await import(`../app.js?update=${Date.now()}`);
+  const { AppController, APP_VERSION } = await import(`../app.js?update=${Date.now()}`);
   const app = new AppController();
   app.isLatestVersion = false; // Simulate legacy instance (v1)
 
@@ -45,7 +45,7 @@ test("Version Toast Integration: Legacy instance (isLatestVersion = false) shows
   tryBtn.click();
 
   // Verify version dismissal key is set and toast is hidden
-  assert.equal(window.localStorage.getItem("lucky_release_toast_dismissed"), app.APP_VERSION || "v1.0.0");
+  assert.equal(window.localStorage.getItem("lucky_release_toast_dismissed"), APP_VERSION);
   assert.equal(app.elements.toastVersionUpdate.style.display, "none");
 });
 

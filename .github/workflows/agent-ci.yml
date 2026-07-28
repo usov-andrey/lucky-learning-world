@@ -1,0 +1,25 @@
+name: External AI Agent Quality & Coverage Gate
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  agent-quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Run Test Suite & V8 Coverage Gate
+        run: npm run test:coverage:gate

@@ -1,0 +1,26 @@
+name: Sync Tasks & Validate Task Index
+
+on:
+  push:
+    paths:
+      - 'tasks/**'
+      - 'scripts/sync-issues.mjs'
+  pull_request:
+    paths:
+      - 'tasks/**'
+  workflow_dispatch:
+
+jobs:
+  sync-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify Task Index Sync
+        run: node scripts/sync-issues.mjs

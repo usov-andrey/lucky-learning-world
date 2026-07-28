@@ -1,0 +1,7 @@
+# Cursor AI Rules — Lucky's Learning World
+
+- Read `AGENTS.md` and `DEVELOPMENT_RULES.md` before making any code modifications.
+- Every task begins with Acceptance Criteria in `tasks/TASK-XXX.md` and `ACCEPTANCE_CRITERIA.md`.
+- Automated test files under `tests/*.test.mjs` must include `// @task TASK-XXX` and `// @ac AC-Y.Z` tags.
+- Run `npm run test:coverage:gate` to verify changes before completing work.
+- Zero-Build Vanilla JS (`import`/`export`) architecture required.

@@ -91,3 +91,16 @@ This document contains the official, binding Acceptance Criteria for development
   - Every `tests/*.test.mjs` file created or modified after TASK-002 MUST contain at least one `// @task TASK-XXX` annotation and one `// @ac AC-Y` (or `AC-Y.Z`) annotation matching regex `AC-\d+(\.\d+)?`.
   - Legacy untagged test files are strictly restricted to the TASK-002 waiver list (`tasks/TASK-002-code-coverage-ac-system.md`). The waiver list MUST NOT grow.
 
+---
+
+## 9. 🤖 GitHub External AI Agent Ecosystem & Task Sync Rules
+
+- **[AC-9.1] Multi-Agent Directive Adapters**:
+  - The repository MUST maintain root directive adapter files (`CLAUDE.md`, `.github/copilot-instructions.md`, `.cursorrules`, `.windsurfrules`) linking to `AGENTS.md` and `DEVELOPMENT_RULES.md`.
+  - External AI agents operating remotely or via CLI MUST follow the task lifecycle, AC tagging, Zero-Build architecture, and test verification standards.
+
+- **[AC-9.2] Automated GitHub Task Synchronization & CI Gates**:
+  - Task specifications in `tasks/` MUST be indexable and syncable with GitHub Issues via `npm run task:sync -- --github`.
+  - GitHub Actions workflows (`.github/workflows/sync-tasks.yml` and `.github/workflows/agent-ci.yml`) MUST automatically validate test coverage gates (`npm run test:coverage:gate`) on all pull requests and pushes to `master`.
+
+

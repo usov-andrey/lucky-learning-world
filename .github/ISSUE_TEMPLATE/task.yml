@@ -1,0 +1,54 @@
+name: Task Proposal (IaC Task Specification)
+description: Create a structured task proposal for Lucky's Learning World
+title: "TASK-XXX: "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting a task proposal for **Lucky's Learning World**! Please fill out the structured sections below.
+
+  - type: input
+    id: task_id
+    attributes:
+      label: Task ID
+      description: Target Task ID (e.g. TASK-003, TASK-004)
+      placeholder: "TASK-003"
+    validations:
+      required: true
+
+  - type: input
+    id: target_version
+    attributes:
+      label: Target Version
+      description: Target release version
+      placeholder: "v1.0.2"
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea_proposal
+    attributes:
+      label: 💡 Idea & Proposal
+      description: Describe context, problem statement, and proposed solution.
+      placeholder: "Context and solution details..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: 📋 Acceptance Criteria (AC)
+      description: Explicit, testable conditions (e.g., - [ ] AC-1: ...)
+      placeholder: "- [ ] AC-1: ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impacted_files
+    attributes:
+      label: 💻 Impacted Files & Test Suites
+      description: List files impacted and target test file under tests/
+      placeholder: "tests/task-xxx.test.mjs"
+    validations:
+      required: true

@@ -1,0 +1,6 @@
+# Windsurf Cascade Rules — Lucky's Learning World
+
+- Always inspect `AGENTS.md` and `DEVELOPMENT_RULES.md` at the start of any session.
+- Mandatory task cycle: `tasks/TASK-XXX.md` -> `ACCEPTANCE_CRITERIA.md` -> `tests/*.test.mjs` with `// @task` & `// @ac` tags -> Code implementation.
+- Zero-Build Vanilla ES Modules architecture.
+- Verify work using `npm run test:coverage:gate`.
