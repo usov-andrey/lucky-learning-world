@@ -407,8 +407,15 @@ export class AppController {
         if (typeof window !== "undefined" && window.NEW_VERSION_URL) {
           window.location.href = window.NEW_VERSION_URL;
         } else if (typeof window !== "undefined") {
-          window.location.reload(true);
+          window.location.href = "./v2/";
         }
+      });
+    }
+
+    const btnSwitchV1 = document.getElementById("btn-switch-to-v1");
+    if (btnSwitchV1) {
+      bindTouchClick(btnSwitchV1, () => {
+        window.location.href = "./v1/";
       });
     }
 
@@ -794,6 +801,10 @@ export class AppController {
     let stars = 0;
     Object.values(this.progression.starsByLevel || {}).forEach(s => stars += (s || 0));
     this.elements.totalStarsCount.textContent = stars;
+
+    if (this.elements.btnParentModeHeader) {
+      this.elements.btnParentModeHeader.title = `Parent Protected Settings (${APP_VERSION})`;
+    }
   }
 
   showScreen(screenKey) {

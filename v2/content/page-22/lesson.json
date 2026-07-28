@@ -1,0 +1,133 @@
+{
+  "title": "Spelling Test",
+  "pageLabel": "Page 22",
+  "topic": "Schwa ‹or›",
+  "words": [
+    {
+      "word": "author",
+      "definition": "A person who writes books, stories, or articles.",
+      "image": "images/author.svg",
+      "imageAlt": "A hand writing with a pen",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "error",
+      "definition": "A mistake; something that is not correct.",
+      "image": "images/error.svg",
+      "imageAlt": "A red cross mark showing an error",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "doctor",
+      "definition": "A person who helps sick or injured people get better.",
+      "image": "images/doctor.svg",
+      "imageAlt": "A doctor wearing a stethoscope",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "motor",
+      "definition": "A machine that makes something move.",
+      "image": "images/motor.svg",
+      "imageAlt": "A mechanical gear representing a motor",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "actor",
+      "definition": "A person who performs a character in a play, film, or show.",
+      "image": "images/actor.svg",
+      "imageAlt": "Theatre masks representing an actor",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "terror",
+      "definition": "A feeling of very great fear.",
+      "image": "images/terror.svg",
+      "imageAlt": "A face showing great fear",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "comfort",
+      "definition": "A feeling of being safe, calm, and free from pain.",
+      "image": "images/comfort.svg",
+      "imageAlt": "A comfortable sofa",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "senior",
+      "definition": "An older person, or someone at a higher level.",
+      "image": "images/senior.svg",
+      "imageAlt": "An older person",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "razor",
+      "definition": "A small tool with a sharp blade used for shaving hair.",
+      "image": "images/razor.svg",
+      "imageAlt": "A shaving razor",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "mirror",
+      "definition": "A smooth surface that shows your reflection.",
+      "image": "images/mirror.svg",
+      "imageAlt": "A standing mirror",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "memory",
+      "definition": "Something you remember, or the ability to remember.",
+      "image": "images/memory.svg",
+      "imageAlt": "A brain representing memory",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "stubborn",
+      "definition": "Not willing to change your mind or do what others ask.",
+      "image": "images/stubborn.svg",
+      "imageAlt": "A person refusing to change their mind",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "calculator",
+      "definition": "A device used to work out numbers.",
+      "image": "images/calculator.svg",
+      "imageAlt": "A calculator",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "visitor",
+      "definition": "A person who comes to see a place or another person.",
+      "image": "images/visitor.svg",
+      "imageAlt": "A visitor waving hello",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "collector",
+      "definition": "A person who gathers and keeps a group of similar things.",
+      "image": "images/collector.svg",
+      "imageAlt": "A box holding collected things",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "escalator",
+      "definition": "Moving stairs that carry people up or down.",
+      "image": "images/escalator.jpg",
+      "imageAlt": "An escalator next to a flight of stairs",
+      "imageCredit": {"name": "LOMT8282 / Wikimedia Commons", "url": "https://commons.wikimedia.org/wiki/File:Escalator_and_stairs.jpg", "license": "CC BY 4.0"}
+    },
+    {
+      "word": "decoration",
+      "definition": "Something used to make a place or object look nicer.",
+      "image": "images/decoration.svg",
+      "imageAlt": "A colourful balloon decoration",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    },
+    {
+      "word": "opportunity",
+      "definition": "A good chance to do or achieve something.",
+      "image": "images/opportunity.svg",
+      "imageAlt": "An open door representing an opportunity",
+      "imageCredit": {"name": "OpenMoji", "url": "https://openmoji.org/", "license": "CC BY-SA 4.0"}
+    }
+  ]
+}
