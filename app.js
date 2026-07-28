@@ -42,7 +42,7 @@ import { ThemeManager } from "./content/themes.js?v=20260727_v19";
 import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260727_v19";
 import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260727_v19";
 
-const APP_VERSION = "v2.0.0-v19";
+const APP_VERSION = "v2.0.1-v19.1";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let currentAudio = null;

@@ -47,7 +47,7 @@ test("Version Toast Integration: Un-PINned version update announcement banner", 
   tryBtn.click();
 
   // Verify version dismissal key is set and toast is hidden
-  assert.equal(window.localStorage.getItem("lucky_release_toast_dismissed"), "v2.0.0-v19");
+  assert.equal(window.localStorage.getItem("lucky_release_toast_dismissed"), "v2.0.1-v19.1");
   assert.equal(app.elements.toastVersionUpdate.style.display, "none");
 
   // Verify Parent Gate modal is NOT opened (No PIN prompt)
