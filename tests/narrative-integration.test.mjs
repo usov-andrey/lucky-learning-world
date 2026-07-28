@@ -45,7 +45,7 @@ test("Version Toast Integration: Legacy instance (isLatestVersion = false) shows
   tryBtn.click();
 
   // Verify version dismissal key is set and toast is hidden
-  assert.equal(window.localStorage.getItem("lucky_release_toast_dismissed"), "v2.0.2-v19.2");
+  assert.equal(window.localStorage.getItem("lucky_release_toast_dismissed"), app.APP_VERSION || "v1.0.0");
   assert.equal(app.elements.toastVersionUpdate.style.display, "none");
 });
 

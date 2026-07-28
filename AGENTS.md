@@ -24,7 +24,7 @@ All AI agents (Antigravity, Codex, Claude Code, Windsurf, Cursor) working on thi
 - **High-Contrast Active Tabs**: Bottom nav items require glowing background pill and top indicator bar.
 - **Responsive Modals**: `max-height: 85vh` (desktop) / `92vh` (mobile) with `overflow-y: auto`.
 - **4-Digit Parent PIN Gate**: Protected parent settings using customizable PIN.
-- **Project Artifact Storage**: All implementation plans, specifications, briefs, and architecture artifacts MUST be stored directly inside the project directory (`d:\SD\personal\projects\lucky-learning-world\`) rather than temporary internal folders (`.gemini/brain`).
+- **Project Artifact Storage & Unique History Rule**: All implementation plans, walkthroughs, task specifications, and release notes MUST be stored permanently inside the project directory (`D:\SD\personal\projects\lucky-learning-world\`). Plans are saved under `docs/plans/<TASK_ID>-implementation-plan.md` and walkthroughs under `docs/walkthroughs/<TASK_ID>-walkthrough.md` so historical documents are never overwritten. In addition, agents MUST always include absolute paths to project documents in final responses.
 
 ---
 
@@ -40,6 +40,20 @@ All AI agents (Antigravity, Codex, Claude Code, Windsurf, Cursor) working on thi
 
 ---
 
+## 🔍 AI Agent Diagnostic Protocol (Troubleshooting & Audit)
+When investigating a bug, regression, or user question about what was changed in a specific feature, follow this mandatory 4-step protocol:
+
+1. **Step 1: Check Master Task Index (`tasks/INDEX.md`)**:
+   Locate the task ID (`TASK-XXX`) associated with the feature or domain.
+2. **Step 2: Inspect Task Specification (`tasks/TASK-XXX.md`)**:
+   Review original user context, defined Acceptance Criteria (`AC-1`, `AC-2`...), impacted files, and target version.
+3. **Step 3: Run & Inspect Tagged Tests**:
+   Execute `rg "@task TASK-XXX" tests/` to find test cases written for that feature. Run `node --test tests/<test-file>.mjs`.
+4. **Step 4: Review Release Walkthrough (`docs/releases/vX.Y.Z.md`)**:
+   Check historical execution artifacts, release notes, and code diff notes.
+
+---
+
 ## 📁 Repository Directory Structure
 
 ```
@@ -47,11 +61,15 @@ d:\SD\personal\projects\lucky-learning-world\
 ├── AGENTS.md                 # Root AI agent entry point & guidelines link
 ├── DEVELOPMENT_RULES.md      # Detailed UI/UX and engineering rules
 ├── README.md                 # Project documentation and launch instructions
+├── CHANGELOG.md              # Auto-generated release notes history
+├── tasks/                    # Task specs (TASK-001.md, INDEX.md, templates)
+├── docs/releases/            # Per-release walkthrough artifacts
+├── scripts/                  # Release automation & GitHub sync scripts
 ├── index.html                # Main PWA entry point
 ├── styles.css                # Central CSS design system & UI tokens
 ├── app.js                    # Router & application state orchestrator
 ├── content/                  # Subject curriculum datasets & presets
 ├── engine/                   # Pure JS game engines (math, spelling, pet collection)
-├── scripts/                  # Python utilities (OCR deck generator, TTS downloader)
 └── assets/                   # Images, sounds, icons, and pet graphics
 ```
+
