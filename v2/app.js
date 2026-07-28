@@ -154,6 +154,7 @@ export class AppController {
     this.lastRescuedCharacterId = null;
     this.lastNarrativeEvent = null;
     this.toastCampaignKey = "comic-quest-v19";
+    this.isLatestVersion = true;
 
     this.initDOM();
     this.bindEvents();
@@ -673,6 +674,12 @@ export class AppController {
   }
 
   checkToastBannerVisibility() {
+    if (this.isLatestVersion || (typeof window !== "undefined" && window.location.pathname.includes("/v2/"))) {
+      if (this.elements.toastVersionUpdate) {
+        this.elements.toastVersionUpdate.style.display = "none";
+      }
+      return;
+    }
     const dismissedVer = localStorage.getItem("lucky_release_toast_dismissed");
     const isOnboarded = this.player != null;
     const isDashboard = this.elements.screens.dashboard && this.elements.screens.dashboard.classList.contains("active");

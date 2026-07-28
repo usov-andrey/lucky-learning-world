@@ -153,6 +153,7 @@ export class AppController {
     this.mathSession = null;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
+    this.isLatestVersion = false;
 
     this.initDOM();
     this.bindEvents();
