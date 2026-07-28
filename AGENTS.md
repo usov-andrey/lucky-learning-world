@@ -17,6 +17,7 @@ All AI agents (Antigravity, Codex, Claude Code, Windsurf, Cursor) working on thi
 👉 **[DEVELOPMENT_RULES.md](file:///d:/SD/personal/projects/lucky-learning-world/DEVELOPMENT_RULES.md)**
 
 ### Key Highlights:
+- **Mandatory Acceptance Criteria Document (`ACCEPTANCE_CRITERIA.md`)**: First step of ANY development task is creating a markdown Acceptance Criteria document (`ACCEPTANCE_CRITERIA.md`) from the spec/brief. All automated tests are written directly against these criteria. On any error or unaccounted edge case, the Acceptance Criteria document MUST be updated first.
 - **100% English Game UI**: No Russian text inside user-facing interface or modals.
 - **Mobile Touch First**: Touch targets $\ge 64\text{px} \times 64\text{px}$, `touch-action: manipulation`, `pointer-events: none` on children.
 - **Disabled Navigation Guard**: Back/Prev buttons MUST be disabled on `index === 0`.

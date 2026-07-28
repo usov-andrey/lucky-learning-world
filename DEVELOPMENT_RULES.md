@@ -4,7 +4,18 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 
 ---
 
-## 1. 🌐 Language & Curriculum Standards
+## 1. 📝 Acceptance Criteria First & Test-Driven Workflow (Mandatory)
+- **Mandatory Step 1: Acceptance Criteria Document (`ACCEPTANCE_CRITERIA.md`)**:
+  - Before writing code for ANY development task, the VERY FIRST step MUST be creating an explicit Acceptance Criteria document (`ACCEPTANCE_CRITERIA.md` or `<TASK_KEY>_ACCEPTANCE_CRITERIA.md`) in markdown (`.md`) inside the project folder based on the user's specification/brief.
+  - This document MUST enumerate explicit, unambiguous Acceptance Criteria (AC-1, AC-2, AC-3...) covering all functional flows, UI visibility rules, version edge cases, and error states.
+- **Mandatory Step 2: Automated Tests Driven by Acceptance Criteria**:
+  - Automated unit and integration tests (`tests/*.test.mjs`) MUST be written directly to cover and validate every single Acceptance Criterion defined in the `.md` document.
+- **Mandatory Step 3: Iterative Updates on Unaccounted Edge Cases / Errors**:
+  - If any error or unaccounted edge case occurs during implementation or review, the Acceptance Criteria `.md` document MUST be updated FIRST to record the new/refined criterion before adjusting code and tests.
+
+---
+
+## 2. 🌐 Language & Curriculum Standards
 - **100% English UI**: All user-facing text, buttons, modals, hints, and audio TTS MUST be 100% in English. Lucky is 10 years old and attends an international school in Thailand (Cambridge / Oxford Primary curriculum).
 - **No Russian in Game Interface**: Russian text is strictly forbidden inside the game UI or user-facing modals.
 
