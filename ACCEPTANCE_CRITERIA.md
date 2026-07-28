@@ -78,3 +78,16 @@ This document contains the official, binding Acceptance Criteria for development
 - **[AC-7.1] Disabled Back Button Guard on First Item**:
   - When viewing the very first item in Spelling Learn Mode (`learnIndex === 0`, e.g. Word 1 of 18), the Back button (`#btn-learn-prev`) MUST be disabled (`disabled = true`, `opacity: 0.35`, `pointer-events: none`).
   - When viewing any subsequent item (`learnIndex > 0`), the Back button MUST be enabled (`disabled = false`, `opacity: 1`, `pointer-events: auto`).
+
+---
+
+## 8. 🧪 Code Coverage Measurement & AC Traceability Rules
+
+- **[AC-8.1] Coverage Threshold Gate**:
+  - `npm run test:coverage:gate` MUST execute all test suites with V8 coverage excluding `tests/**`, `v1/**`, `v2/**`, `node_modules/**`.
+  - The test runner MUST exit non-zero if total coverage for core logic (`engine/**` and `content/**`) falls below **75% lines / 60% branches / 65% functions**.
+
+- **[AC-8.2] Test Traceability & Legacy Waiver**:
+  - Every `tests/*.test.mjs` file created or modified after TASK-002 MUST contain at least one `// @task TASK-XXX` annotation and one `// @ac AC-Y` (or `AC-Y.Z`) annotation matching regex `AC-\d+(\.\d+)?`.
+  - Legacy untagged test files are strictly restricted to the TASK-002 waiver list (`tasks/TASK-002-code-coverage-ac-system.md`). The waiver list MUST NOT grow.
+

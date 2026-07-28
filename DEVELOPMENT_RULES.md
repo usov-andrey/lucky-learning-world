@@ -19,11 +19,11 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 - **Mandatory Step 1: Acceptance Criteria (AC)**:
   - Before writing code for ANY task, define explicit Acceptance Criteria (`AC-1`, `AC-2`...) in `tasks/TASK-XXX.md` and `ACCEPTANCE_CRITERIA.md`.
 - **Mandatory Step 2: AC-Tagged Automated Tests**:
-  - Automated tests (`tests/*.test.mjs`) MUST be annotated with comments linking to the task and AC:
+  - Automated tests (`tests/*.test.mjs`) MUST be annotated with comments linking to the task and AC (matching `// @task TASK-XXX` and `// @ac AC-\d+(\.\d+)?`):
     ```javascript
     // @task TASK-001
-    // @ac AC-1: Toast banner visibility rule
-    test('TASK-001 AC-1: Toast banner shows only on pokemon theme', () => { ... });
+    // @ac AC-1.1: Toast banner visibility rule
+    test('TASK-001 AC-1.1: Toast banner shows only on pokemon theme', () => { ... });
     ```
 - **Mandatory Step 3: Iterative AC Updates**:
   - If unexpected edge cases or bug reports occur, update the AC in `tasks/TASK-XXX.md` FIRST before modifying code and tests.
