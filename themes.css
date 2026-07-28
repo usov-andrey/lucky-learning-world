@@ -222,6 +222,30 @@
   border: 2px solid #202020 !important;
 }
 
+[data-theme="comic"] .toast-banner {
+  background: #FFF8E8 !important;
+  border: 3px solid #202020 !important;
+  box-shadow: 5px 5px 0px #202020 !important;
+  color: #202020 !important;
+}
+
+[data-theme="comic"] .toast-message {
+  color: #202020 !important;
+}
+
+[data-theme="comic"] .toast-try-btn {
+  background: #FF9F1C !important;
+  color: #FFFFFF !important;
+  border: 2px solid #202020 !important;
+  box-shadow: 2px 2px 0px #202020 !important;
+}
+
+[data-theme="comic"] .toast-close-btn {
+  background: #FFFFFF !important;
+  color: #202020 !important;
+  border: 2px solid #202020 !important;
+}
+
 /* --------------------------------------------------------------------------
    3. Parent Settings - Appearance Section & Radio Controls
    -------------------------------------------------------------------------- */

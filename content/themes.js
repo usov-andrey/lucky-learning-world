@@ -1,4 +1,6 @@
 // ThemeManager: Single source of truth for UI theme state & presentation mappings
+import { COMIC_CHARACTERS } from './comic-characters.js';
+import { getCharacterById } from './characters.js';
 
 export const ThemeManager = {
   STORAGE_KEY: 'lucky_learning_theme',
@@ -41,9 +43,14 @@ export const ThemeManager = {
 
   getCharacterPresentation(characterId, pokemonCharacter) {
     const theme = this.getTheme();
-    if (theme === 'comic' && typeof window !== 'undefined' && window.COMIC_CHARACTERS && window.COMIC_CHARACTERS[characterId]) {
-      return window.COMIC_CHARACTERS[characterId];
+    if (theme === 'comic') {
+      if (COMIC_CHARACTERS && COMIC_CHARACTERS[characterId]) {
+        return COMIC_CHARACTERS[characterId];
+      }
+      if (typeof window !== 'undefined' && window.COMIC_CHARACTERS && window.COMIC_CHARACTERS[characterId]) {
+        return window.COMIC_CHARACTERS[characterId];
+      }
     }
-    return pokemonCharacter || (typeof window !== 'undefined' && window.POKEMON_CHARACTERS ? window.POKEMON_CHARACTERS[characterId] : null);
+    return pokemonCharacter || getCharacterById(characterId) || (typeof window !== 'undefined' && window.POKEMON_CHARACTERS ? window.POKEMON_CHARACTERS[characterId] : null);
   }
 };

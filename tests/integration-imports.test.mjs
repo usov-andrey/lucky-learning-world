@@ -98,3 +98,15 @@ test('Integration Contract: content/comic-characters.js exports COMIC_CHARACTERS
   assert.equal(typeof mod.getComicCharacterById, 'function');
 });
 
+test('Integration Contract: engine/narrative-engine.js & content/narrative-themes.js export required symbols', async () => {
+  const themesMod = await import('../content/narrative-themes.js');
+  assert.ok(themesMod.NARRATIVE_THEMES, 'NARRATIVE_THEMES must be exported');
+  assert.ok(themesMod.NARRATIVE_THEMES.pokemon);
+  assert.ok(themesMod.NARRATIVE_THEMES.comic);
+
+  const engineMod = await import('../engine/narrative-engine.js');
+  assert.ok(engineMod.NarrativeEngine, 'NarrativeEngine must be exported');
+  assert.equal(typeof engineMod.NarrativeEngine.resolveViewModel, 'function');
+});
+
+

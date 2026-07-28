@@ -23,6 +23,7 @@ All AI agents (Antigravity, Codex, Claude Code, Windsurf, Cursor) working on thi
 - **High-Contrast Active Tabs**: Bottom nav items require glowing background pill and top indicator bar.
 - **Responsive Modals**: `max-height: 85vh` (desktop) / `92vh` (mobile) with `overflow-y: auto`.
 - **4-Digit Parent PIN Gate**: Protected parent settings using customizable PIN.
+- **Project Artifact Storage**: All implementation plans, specifications, briefs, and architecture artifacts MUST be stored directly inside the project directory (`d:\SD\personal\projects\lucky-learning-world\`) rather than temporary internal folders (`.gemini/brain`).
 
 ---
 

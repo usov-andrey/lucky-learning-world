@@ -1,94 +1,159 @@
-# Implementation Plan: Lucky's Learning World (Web PWA)
+# Итоговый план реализации: Тематические нарративные механики, Toast-баннер ("Try Comic Quest ➔") и обновление PWA v19
 
-Объединение образовательной игры `math-monster` и генератора тестов `lucky-spelling-skill` в единый геймифицированный мультипредметный PWA-хаб **Lucky's Learning World** для Лаки и её одноклассников из школы с международной программой в Таиланде.
-
-## 🎯 Цели и ключевые особенности
-
-1. **Единый PWA-хаб (Math Realm + Spelling Realm)** на базе чистого JS движка `math-monster` (zero-build ES Modules, мгновенная загрузка на iPad/телефонах, PWA/офлайн поддержка, деплой на GitHub Pages).
-2. **Игровой движок Spelling**: Перенос механики боя/коллекционирования питомцев из `math-monster` на орфографию (услышал слово $\rightarrow$ собрал из букв/ввел $\rightarrow$ победил монстра $\rightarrow$ поймал покемона/питомца).
-3. **Zero-Friction Sharing**: Отправка ссылок с конкретными сетами слов/примеров и рекордами Лаки в мессенджер **LINE** (одноклассники играют в 1 клик без регистрации).
-4. **Content & OCR Pipeline**: Перенос Python CLI утилиты из `lucky-spelling-skill` в `scripts/` для автоматической генерации сетов из фото домашки (OCR) и предзагрузки MP3-аудио.
-5. **Совместимость с программой школ Таиланда**: Пресеты для Cambridge / Oxford Primary (UK/US Grade 1-5).
+<div style="background: rgba(124, 93, 250, 0.1); border-left: 4px solid #7c5dfa; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+  <strong>Учтены все 5 финальных уточнений архитектурного аудита:</strong>
+  контракт смены темы родителями, полное покрытие событий (включая <code>session.started</code>, <code>question.presented</code>, <code>correction.*</code>, <code>milestone.reached</code>), campaign-ключ баннера <code>comic-quest-v19</code>, сохранение пространства кеша <code>lucky-world-*</code> в Service Worker и динамический расчёт страниц.
+</div>
 
 ---
 
-## 🏛️ Проектная структура в `personal/projects/`
+## 🎨 1. Подтверждение темы в Parent Controls
 
-Согласно правилам [AGENTS.md](file:///d:/SD/AGENTS.md), проект будет изолирован в собственном Git-репозитории:
-
-`d:\SD\personal\projects\lucky-learning-world\`
-- `.git/` — Git репозиторий проекта
-- `AGENTS.md` — Инструкции и правила работы над проектом
-- `README.md` — Описание проекта, архитектура и инструкции по запуску
-- `index.html` — Главная PWA точка входа (выбор предмета: Math / Spelling / Pokedex / Settings)
-- `styles.css` — Единая стилизация (адаптирована под iPad Touch UI)
-- `app.js` — Инициализация и маршрутизация экранов
-- `content/` — Данные учебных программ (Math facts, Spelling decks, Characters)
-- `engine/` — Чистые модули математики, орфографии, наград и прогрессии
-- `scripts/` — Python OCR/TTS пайплайн для сборки словарей из фото и текста
-- `pokemon/` — Графика питомцев / покемонов
+- **Контракт переключения**:
+  - После успешного ввода PIN открывается окно **Parent Controls & Settings** (раздел Appearance).
+  - Родитель сам нажимает на опцию **Comic Quest** ➔ тема применяется **сразу** (`ThemeManager.setTheme("comic")`).
+  - Кнопка <code>Done / Close ✖</code> просто закрывает модальное окно.
+  - Программная установка `radio.checked = true` без родительского клика **не считает** тему подтверждённой.
 
 ---
 
-## 🛠️ Предлагаемые изменения и фазы реализации
+## 🔔 2. Жизненный цикл и кампании Toast-баннера
 
-### Фаза 1: Инициализация репозитория и базового хаба
-#### [NEW] [AGENTS.md](file:///d:/SD/personal/projects/lucky-learning-world/AGENTS.md)
-Правила проекта, стандарты кода (Vanilla ES Modules, Node tests), каналы деплоя.
-
-#### [NEW] [README.md](file:///d:/SD/personal/projects/lucky-learning-world/README.md)
-Документация по продукту, стэку, локальному запуску и деплою на GitHub Pages.
-
-#### [NEW] `index.html`, `styles.css`, `app.js`
-Базовый каркас с выбором мира:
-- 🧮 **Math Monster Realm** (Таблица умножения x2..x10)
-- 🔤 **Word Monster Realm** (Spelling & Vocabulary)
-- 🐾 **Pokédex & Pet Collection** (Общий прогресс и открытые персонажи)
+- **Условия показа баннера**:
+  - Активна тема **`pokemon`** (если уже включена `comic`, баннер не отображается).
+  - Выполнен Onboarding (`this.player != null`).
+  - Игра находится на **главном экране (Hub / Dashboard)** и нет открытых модальных окон.
+- **Campaign Key**:
+  - Фиксация в `localStorage["lucky_release_toast_seen"] = "comic-quest-v19"`.
+  - Как нажатие кнопки **"Try Comic Quest ➔"**, так и нажатие кнопки закрытия **`✖`** помечают кампанию `comic-quest-v19` как просмотренную, предотвращая повторный показ при будущих обновлениях.
+- **Доступность (A11y)**:
+  - `role="status"`, `aria-live="polite"`, сенсорная зона закрытия $\ge 64\text{px} \times 64\text{px}$, отсутствие перекрытия нижней навигации.
 
 ---
 
-### Фаза 2: Интеграция Spelling Realm & Audio TTS
-#### [NEW] `engine/spelling-engine.js`
-Чистый JS модуль логики орфографии:
-- Воспроизведение звука слова (TTS / MP3 fallback).
-- Состояния ввода: буква за буквой (для младших) / ввод слова целиком (для старших).
-- Формирование набора вариантов и подсказок без штрафов (No-Lose policy).
+## 🎮 3. Полный словарь событий и динамический расчёт страниц (`NarrativeEngine`)
 
-#### [NEW] `content/spelling-catalog.js`
-Каталог школьных словарей:
-- `UK Year 1-6 Spelling Lists`
-- `Phonics & Sight Words`
-- `Custom Decks` (переданные через URL)
+### 3.1. Полное покрытие точек вызова событий в `app.js`:
+1. `session.started` ➔ в `startMathLevelSession()`, `startMathMixSession()`, `switchSpellingMode()`.
+2. `question.presented` ➔ при фактическом переходе к новому вопросу (не вызывается при theme refresh).
+3. `answer.correct` ➔ правильный ответ на первый/последующий ввод.
+4. `answer.incorrect` ➔ неверный ответ (с атрибутом `{ requeued: true }` в контексте, не перезаписывает событие).
+5. `correction.shown` ➔ показ подсказки факт-тренажёра при ошибке.
+6. `correction.confirmed` ➔ подтверждение правильного факта после ошибки.
+7. `milestone.reached` ➔ после каждого 4-го вопроса Math (`(index + 1) % 4 === 0`) и 6-го слова Spelling (`(index + 1) % 6 === 0`).
+8. `session.completed` ➔ завершение дуэли/режима.
+9. `reward.new` / `reward.levelup` ➔ получении новой карточки/повышении уровня.
 
----
-
-### Фаза 3: Социальный шеринг (LINE / Web Share API)
-#### [NEW] `engine/share-controller.js`
-Генератор ссылок вызова для LINE/WhatsApp:
-- Кодирование ID деки и рекорда: `?deck=y3-w12&from=Lucky&time=45s`
-- Встроенное кодирование кастомных слов из фото: `?words=cactus,fungus,virus`
-- Экран вызова друга («Lucky challenged you!»).
-
----
-
-### Фаза 4: Python OCR & Content Pipeline
-#### [NEW] `scripts/generate-deck.py`
-Перенос утилиты из `lucky-spelling-skill`:
-- Генерация JSON словаря из `words.txt` или изображения (`input.jpg` via Tesseract OCR).
-- Скачивание/генерация MP3 произношений в `audio/`.
+### 3.2. Динамический вычисление страниц:
+```js
+const panelsPerPage = realm === "math" ? 4 : 6;
+const totalPages = Math.ceil(totalItems / panelsPerPage);
+const page = Math.floor(itemIndex / panelsPerPage) + 1;
+const panel = (itemIndex % panelsPerPage) + 1;
+```
+Нарративный слой не завязан на статическое число 12 вопросов.
 
 ---
 
-## 🧪 Plan по проверке (Verification Plan)
+## 🔒 4. Сохранение `lastRescuedCharacterId` и Фаза 0
 
-### Automated Tests
-- Запуск юнит-тестов движка без браузера: `node --test`
-- Проверка генерации карточек и словарей: `python -m unittest discover -s tests`
+- В `AppController` фиксируется строковый ID `this.lastRescuedCharacterId` (например, `"embercub"`).
+- Метод `refreshThemePresentation()`:
+  - Обновляет текущую графику аватаров, оппонентов и открытых модалок.
+  - Повторно запрашивает `NarrativeViewModel` по сохранённому `this.lastNarrativeEvent`.
+  - **НЕ вызывает** `renderSpellingGame()` (сохраняя набор букв `selectedLetterTiles`).
+  - **НЕ пересчитывает** таймеры и TTS-звуки.
 
-### Manual Verification
-1. **Локальный запуск**: `python -m http.server 8080` в директории проекта.
-2. **Проверка в мобильном эмуляторе / iPad**:
-   - Проверка первого тапа для разблокировки звука на iOS.
-   - Проверка кнопок размером не менее 64px для пальцев ребенка.
-   - Проверка отсутствия тупиковых экранов и "Game Over".
-3. **Проверка шеринга**: Проверка генерации ссылки и ее успешного открытия в новой приватной вкладке браузера без авторизации.
+---
+
+## ⚙️ 5. Безопасность Service Worker (`sw.js`) и версионирование v19
+
+- **Имя кеша**: `CACHE_NAME = "lucky-world-v2.0.0-v19"` (сохранён префикс `lucky-world-*`).
+- **Очистка при активации**: SW удаляет **только старые кеши собственного приложения** с префиксом `lucky-world-`, не затрагивая соседние PWA/игры на этом же домене.
+- **Синхронизация версий**: `APP_VERSION = "v2.0.0-v19"` в `app.js`, `index.html`, `sw.js` и `manifest.json`.
+
+---
+
+## 📋 Полный список изменяемых файлов
+
+<table>
+  <thead>
+    <tr>
+      <th>Тип</th>
+      <th>Файл</th>
+      <th>Назначение</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/content/themes.js">content/themes.js</a></td>
+      <td>Прямые ES-импорты каталогов персонажей</td>
+    </tr>
+    <tr>
+      <td><span style="color: #22c55e; font-weight: bold;">[NEW]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/content/narrative-themes.js">content/narrative-themes.js</a></td>
+      <td>Каталог реплик с поддержкой <code>correction.*</code> и <code>milestone.reached</code></td>
+    </tr>
+    <tr>
+      <td><span style="color: #22c55e; font-weight: bold;">[NEW]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/engine/narrative-engine.js">engine/narrative-engine.js</a></td>
+      <td>Динамический вычисление страниц и snapshot ViewModel</td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/index.html">index.html</a></td>
+      <td>Разметка Toast-баннера "Try..." и версионирование v19</td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/app.js">app.js</a></td>
+      <td>События, <code>lastRescuedCharacterId</code>, <code>lastNarrativeEvent</code> и логика баннера v19</td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/sw.js">sw.js</a></td>
+      <td>Кеш <code>lucky-world-v2.0.0-v19</code> и безопасная очистка ключей <code>lucky-world-*</code></td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/styles.css">styles.css</a></td>
+      <td>Стилизация анонсирующего баннера и нарративных баблов</td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/themes.css">themes.css</a></td>
+      <td>Тематические CSS-стили баблов и индикаторов</td>
+    </tr>
+    <tr>
+      <td><span style="color: #22c55e; font-weight: bold;">[NEW]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/tests/narrative-engine.test.mjs">tests/narrative-engine.test.mjs</a></td>
+      <td>Юнит-тесты NarrativeEngine и динамических страниц</td>
+    </tr>
+    <tr>
+      <td><span style="color: #22c55e; font-weight: bold;">[NEW]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/tests/narrative-integration.test.mjs">tests/narrative-integration.test.mjs</a></td>
+      <td>Интеграционные тесты campaign-ключа Toast и презентации</td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/tests/ui-smoke.test.mjs">tests/ui-smoke.test.mjs</a></td>
+      <td>Обновление DOM UI тестов с учётом v19 и Toast-баннера</td>
+    </tr>
+    <tr>
+      <td><span style="color: #eab308; font-weight: bold;">[MODIFY]</span></td>
+      <td><a href="file:///d:/SD/personal/projects/lucky-learning-world/tests/integration-imports.test.mjs">tests/integration-imports.test.mjs</a></td>
+      <td>Проверка экспорта <code>NarrativeEngine</code> и <code>NARRATIVE_THEMES</code></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 🧪 План проверки
+
+### Автоматические тесты
+- Выполнение `node --test tests/*.test.mjs` (прохождение всех 62+ тестов).
+- Тестирование `narrative-engine.test.mjs` на динамический расчёт страниц.
+- Интеграционный тест кампании `comic-quest-v19` и безопасной очистки SW кешей `lucky-world-*`.
+- Проверка отсутствия кириллицы в UI коде: `rg -n "[А-Яа-яЁё]" index.html app.js content/ engine/`

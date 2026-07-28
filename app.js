@@ -14,106 +14,103 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260726_v9";
+} from "./engine/math-engine.js?v=20260727_v19";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260726_v9";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260727_v19";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260726_v10";
+} from "./engine/progression.js?v=20260727_v19";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260726_v18";
+} from "./engine/reward-engine.js?v=20260727_v19";
 
-import { ShareController } from "./engine/share-controller.js?v=20260726_v18";
+import { ShareController } from "./engine/share-controller.js?v=20260727_v19";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=20260727_v19";
 
-import { LEVELS } from "./content/levels.js?v=20260726_v18";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260726_v18";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260726_v18";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260726_v18";
-import { ThemeManager } from "./content/themes.js?v=20260726_v18";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260726_v18";
+import { LEVELS } from "./content/levels.js?v=20260727_v19";
+import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260727_v19";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260727_v19";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260727_v19";
+import { ThemeManager } from "./content/themes.js?v=20260727_v19";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260727_v19";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260727_v19";
 
-const APP_VERSION = "v2.0.0-v18";
+const APP_VERSION = "v2.0.0-v19";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
-let audioUnlocked = false;
 let currentAudio = null;
+let currentSynthUtterance = null;
 
-function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-
-  if (window.speechSynthesis) {
-    const dummy = new SpeechSynthesisUtterance("");
-    dummy.volume = 0.01;
-    window.speechSynthesis.speak(dummy);
-  }
-}
-
-if (typeof window !== "undefined") {
-  window.addEventListener("pointerdown", unlockAudio, { once: true });
-  window.addEventListener("touchstart", unlockAudio, { once: true });
-}
-
-function playAudioFile(src, fallbackText) {
+function stopSpeechAndAudio() {
   if (currentAudio) {
-    currentAudio.pause();
+    try {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    } catch {}
     currentAudio = null;
   }
-
-  if (src && typeof Audio !== "undefined") {
-    const audio = new Audio(src);
-    currentAudio = audio;
-    audio.play().catch(() => {
-      if (fallbackText) speakTTS(fallbackText);
-    });
-  } else if (fallbackText) {
-    speakTTS(fallbackText);
+  if (typeof window !== "undefined" && window.speechSynthesis) {
+    try {
+      window.speechSynthesis.cancel();
+    } catch {}
+    currentSynthUtterance = null;
   }
 }
 
-function speakTTS(text, rate = 0.85) {
-  if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === "undefined") return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = rate;
-  utterance.lang = "en-US";
-  window.speechSynthesis.speak(utterance);
+function speakText(text) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  stopSpeechAndAudio();
+
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    u.rate = 0.9;
+    currentSynthUtterance = u;
+    window.speechSynthesis.speak(u);
+  } catch (e) {
+    console.warn("TTS fail:", e);
+  }
 }
 
-function speakMathFact(a, b) {
-  const product = a * b;
-  const wordA = numberToWord(a);
-  const wordB = numberToWord(b);
-  const wordProd = numberToWord(product);
-  speakTTS(`${wordA} times ${wordB} is ${wordProd}`);
+function playAudioFile(audioPath, fallbackText) {
+  stopSpeechAndAudio();
+
+  if (!audioPath) {
+    if (fallbackText) speakText(fallbackText);
+    return;
+  }
+
+  try {
+    const a = new Audio(audioPath);
+    currentAudio = a;
+    const playPromise = a.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn("Audio file play failed, fallback to TTS:", err);
+        if (fallbackText) speakText(fallbackText);
+      });
+    }
+  } catch (e) {
+    if (fallbackText) speakText(fallbackText);
+  }
 }
 
-function speakPraise() {
-  const praises = [
-    "Awesome job, Lucky!",
-    "Superstar math skills!",
-    "Brilliant answer!",
-    "You are unstoppable!",
-    "Fantastic learning!"
-  ];
-  const chosen = praises[Math.floor(Math.random() * praises.length)];
-  speakTTS(chosen, 0.95);
+function playEffectSound(effectName) {
+  // Decorative sound effects helper
+  stopSpeechAndAudio();
 }
 
 function numberToWord(n) {
-  const words = [
-    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-    "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
-  ];
-  if (n <= 20) return words[n];
+  const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                 "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];
+  if (n >= 0 && n <= 20) return words[n];
   if (n < 100) {
     const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
     const t = Math.floor(n / 10);
@@ -154,6 +151,10 @@ export class AppController {
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
 
+    this.lastRescuedCharacterId = null;
+    this.lastNarrativeEvent = null;
+    this.toastCampaignKey = "comic-quest-v19";
+
     this.initDOM();
     this.bindEvents();
     this.checkOnboarding();
@@ -162,16 +163,15 @@ export class AppController {
 
   loadPlayer() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEYS.PLAYER);
-      return raw ? JSON.parse(raw) : null;
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYER));
     } catch {
       return null;
     }
   }
 
-  savePlayer() {
-    localStorage.setItem(STORAGE_KEYS.PLAYER, JSON.stringify(this.player));
-    this.renderHeader();
+  savePlayer(playerObj) {
+    this.player = playerObj;
+    localStorage.setItem(STORAGE_KEYS.PLAYER, JSON.stringify(playerObj));
   }
 
   loadProgression() {
@@ -209,6 +209,11 @@ export class AppController {
       btnShareLine: document.getElementById("btn-share-line"),
       btnParentModeHeader: document.getElementById("btn-parent-mode-header"),
       appVersionBadge: document.getElementById("app-version-badge"),
+
+      // Toast Banner
+      toastVersionUpdate: document.getElementById("toast-version-update"),
+      btnToastTryComic: document.getElementById("btn-toast-try-comic"),
+      btnToastClose: document.getElementById("btn-toast-close"),
 
       // Screens
       screens: {
@@ -340,12 +345,11 @@ export class AppController {
       document.getElementById("modal-app-version").textContent = APP_VERSION;
     }
     if (document.getElementById("diag-build-version")) {
-      document.getElementById("diag-build-version").textContent = `${APP_VERSION} (2026-07-26)`;
+      document.getElementById("diag-build-version").textContent = `${APP_VERSION} (2026-07-27)`;
     }
   }
 
   bindEvents() {
-    // Mobile Touch & Click Unified Handler with pointerdown fallback & debouncing
     const bindTouchClick = (element, handler) => {
       if (!element) return;
       let handled = false;
@@ -364,7 +368,7 @@ export class AppController {
       element.addEventListener("click", execute);
     };
 
-    // Global Event Delegate for 100% Bulletproof Button & Card Navigation
+    // Global Event Delegate
     if (typeof document !== "undefined") {
       document.addEventListener("click", (e) => {
         const btn = e.target.closest("button, .realm-action-btn, .chip-btn, .answer-btn, .tile-btn, .nav-item, .back-btn, .header-action-btn");
@@ -384,21 +388,39 @@ export class AppController {
       });
     }
 
-    // Nav bar (mapping 'hub' -> 'dashboard')
+    // Toast Banner Listeners
+    if (this.elements.btnToastClose) {
+      bindTouchClick(this.elements.btnToastClose, () => {
+        localStorage.setItem("lucky_release_toast_seen", this.toastCampaignKey);
+        if (this.elements.toastVersionUpdate) {
+          this.elements.toastVersionUpdate.style.display = "none";
+        }
+      });
+    }
+
+    if (this.elements.btnToastTryComic) {
+      bindTouchClick(this.elements.btnToastTryComic, () => {
+        localStorage.setItem("lucky_release_toast_seen", this.toastCampaignKey);
+        if (this.elements.toastVersionUpdate) {
+          this.elements.toastVersionUpdate.style.display = "none";
+        }
+        const radioComic = document.getElementById("radio-theme-comic");
+        if (radioComic) radioComic.checked = true;
+        this.openParentGate();
+      });
+    }
+
+    // Nav bar
     Object.entries(this.elements.navBtns).forEach(([screenKey, btn]) => {
       bindTouchClick(btn, () => this.showScreen(screenKey));
     });
 
-    // Dashboard Realm Buttons (Strict button-only binding for touch scroll safety)
-    const enterMath = () => this.startMathRealm();
-    const enterWord = () => this.startWordRealm();
-    const enterPokedex = () => this.showScreen("pokedex");
+    // Dashboard Realm Buttons
+    bindTouchClick(this.elements.btnEnterMath, () => this.startMathRealm());
+    bindTouchClick(this.elements.btnEnterWord, () => this.startWordRealm());
+    bindTouchClick(this.elements.btnEnterPokedex, () => this.showScreen("pokedex"));
 
-    bindTouchClick(this.elements.btnEnterMath, enterMath);
-    bindTouchClick(this.elements.btnEnterWord, enterWord);
-    bindTouchClick(this.elements.btnEnterPokedex, enterPokedex);
-
-    // Back to Hub Buttons
+    // Back Buttons
     bindTouchClick(this.elements.btnBackMath, () => this.showScreen("dashboard"));
     bindTouchClick(this.elements.btnBackWord, () => this.showScreen("dashboard"));
     bindTouchClick(this.elements.btnBackPokedex, () => this.showScreen("dashboard"));
@@ -436,7 +458,7 @@ export class AppController {
       }
     });
 
-    // Appearance / Theme Radio Controls
+    // Theme Radio Controls
     const optionPokemon = document.getElementById("theme-option-pokemon");
     const optionComic = document.getElementById("theme-option-comic");
     const radioPokemon = document.getElementById("radio-theme-pokemon");
@@ -447,33 +469,16 @@ export class AppController {
       this.syncParentThemeRadioUi(themeId);
     };
 
-    if (optionPokemon) {
-      optionPokemon.addEventListener("click", (e) => {
-        selectTheme("pokemon");
-      });
-    }
-    if (optionComic) {
-      optionComic.addEventListener("click", (e) => {
-        selectTheme("comic");
-      });
-    }
-    if (radioPokemon) {
-      radioPokemon.addEventListener("change", () => selectTheme("pokemon"));
-    }
-    if (radioComic) {
-      radioComic.addEventListener("change", () => selectTheme("comic"));
-    }
+    if (optionPokemon) optionPokemon.addEventListener("click", () => selectTheme("pokemon"));
+    if (optionComic) optionComic.addEventListener("click", () => selectTheme("comic"));
+    if (radioPokemon) radioPokemon.addEventListener("change", () => selectTheme("pokemon"));
+    if (radioComic) radioComic.addEventListener("change", () => selectTheme("comic"));
 
     this.syncParentThemeRadioUi();
 
     if (typeof window !== "undefined") {
       window.addEventListener("lucky:themechanged", (e) => {
-        const newTheme = e?.detail?.theme || ThemeManager.getTheme();
-        this.syncParentThemeRadioUi(newTheme);
-        this.renderHeader();
-        if (this.currentScreen === "pokedex") {
-          this.renderPokedex();
-        }
+        this.refreshThemePresentation();
       });
     }
 
@@ -548,7 +553,7 @@ export class AppController {
       });
     }
 
-    // Onboarding starter buttons
+    // Onboarding starters
     const starterBtns = document.querySelectorAll(".starter-pet-btn");
     starterBtns.forEach(btn => {
       bindTouchClick(btn, () => {
@@ -651,280 +656,371 @@ export class AppController {
     });
     bindTouchClick(this.elements.btnSubmitSpelling, () => this.handleSpellingGameSubmit());
 
-    // Victory Modal
-    if (this.elements.btnShareVictoryCard) {
-      bindTouchClick(this.elements.btnShareVictoryCard, () => {
-        const pet = this.lastRescuedPet || { name: 'Pikachu', art: { src: 'pokemon/pikachu.png' } };
-        ShareController.shareVictoryCard({
-          playerName: this.player ? this.player.name : 'Lucky',
-          score: 3,
-          petName: pet.name,
-          petImgUrl: pet.art ? pet.art.src : 'pokemon/pikachu.png'
-        });
-      });
-    }
-
+    // Victory Modal Continue
     bindTouchClick(this.elements.btnVictoryContinue, () => {
       this.closeModal(this.elements.victoryModal);
-      this.showScreen("pokedex");
+      this.showScreen("dashboard");
     });
   }
 
-  // --- MODAL UTILITIES & SCROLL LOCK ---
-  openModal(modalElement) {
-    if (!modalElement) return;
-    modalElement.classList.add("active");
-    document.body.classList.add("modal-open");
-  }
+  checkToastBannerVisibility() {
+    const currentTheme = ThemeManager.getTheme();
+    const seenKey = localStorage.getItem("lucky_release_toast_seen");
+    const isOnboarded = this.player != null;
+    const isDashboard = this.elements.screens.dashboard && this.elements.screens.dashboard.classList.contains("active");
+    
+    const openModal = Array.from(document.querySelectorAll(".modal-overlay")).find(m => m.style.display === "flex" || (m.classList.contains("active") && m.style.display !== "none"));
+    const hasOpenModal = openModal != null;
 
-  closeModal(modalElement) {
-    if (!modalElement) return;
-    modalElement.classList.remove("active");
-    const activeModals = document.querySelectorAll(".modal-overlay.active");
-    if (activeModals.length === 0) {
-      document.body.classList.remove("modal-open");
+    if (currentTheme === "pokemon" && isOnboarded && isDashboard && !hasOpenModal && seenKey !== this.toastCampaignKey) {
+      if (this.elements.toastVersionUpdate) {
+        this.elements.toastVersionUpdate.style.display = "flex";
+      }
+    } else {
+      if (this.elements.toastVersionUpdate) {
+        this.elements.toastVersionUpdate.style.display = "none";
+      }
     }
   }
 
-  syncParentThemeRadioUi(currentTheme = ThemeManager.getTheme()) {
-    const radioPokemon = document.getElementById("radio-theme-pokemon");
-    const radioComic = document.getElementById("radio-theme-comic");
-    const optionPokemon = document.getElementById("theme-option-pokemon");
-    const optionComic = document.getElementById("theme-option-comic");
+  refreshThemePresentation() {
+    const currentTheme = ThemeManager.getTheme();
+    this.syncParentThemeRadioUi(currentTheme);
+    this.renderHeader();
 
-    if (radioPokemon) radioPokemon.checked = (currentTheme === "pokemon");
-    if (radioComic) radioComic.checked = (currentTheme === "comic");
-    if (optionPokemon) optionPokemon.classList.toggle("active", currentTheme === "pokemon");
-    if (optionComic) optionComic.classList.toggle("active", currentTheme === "comic");
+    // Refresh active Math monster image
+    if (this.mathSession && this.elements.mathMonsterImg) {
+      const charId = this.currentMathLevel ? this.currentMathLevel.characterId : "res_x6";
+      const defaultChar = getCharacterById(charId);
+      const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
+      if (pres) {
+        this.elements.mathMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+        this.elements.mathMonsterImg.alt = pres.name;
+        if (this.elements.mathMonsterName) this.elements.mathMonsterName.textContent = pres.name;
+      }
+    }
+
+    // Refresh active Spelling monster image
+    if (this.spellingEngine && this.spellingEngine.mode === "game" && this.elements.wordMonsterImg) {
+      const activeWordObj = this.spellingEngine.currentWord();
+      const charId = activeWordObj ? activeWordObj.monsterId || "embercub" : "embercub";
+      const defaultChar = getCharacterById(charId);
+      const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
+      if (pres) {
+        this.elements.wordMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+        this.elements.wordMonsterImg.alt = pres.name;
+        if (this.elements.wordMonsterName) this.elements.wordMonsterName.textContent = pres.name;
+      }
+    }
+
+    // Refresh narrative view model if existing
+    if (this.lastNarrativeEvent) {
+      const vm = NarrativeEngine.resolveViewModel(this.lastNarrativeEvent, currentTheme);
+      this.renderNarrativeViewModel(vm);
+    }
+
+    // Refresh Pokedex if active
+    if (this.elements.screens.pokedex && this.elements.screens.pokedex.classList.contains("active")) {
+      this.renderPokedex();
+    }
+
+    this.checkToastBannerVisibility();
   }
 
-  // --- PARENT GATE LOGIC ---
-  openParentGate() {
-    this.elements.parentGateInput.value = "";
-    this.elements.parentGateError.style.display = "none";
-    this.openModal(this.elements.parentGateModal);
+  emitNarrativeEvent(type, context = {}) {
+    const event = { type, context };
+    this.lastNarrativeEvent = event;
+    const vm = NarrativeEngine.resolveViewModel(event, ThemeManager.getTheme());
+    this.renderNarrativeViewModel(vm);
   }
 
-  verifyParentGate() {
-    const inputPin = this.elements.parentGateInput.value.trim();
-    if (inputPin === this.parentPin) {
-      this.closeModal(this.elements.parentGateModal);
-      this.syncParentThemeRadioUi();
-      this.openModal(this.elements.parentSettingsModal);
-    } else {
-      this.elements.parentGateError.style.display = "block";
+  renderNarrativeViewModel(vm) {
+    if (!vm) return;
+    let container = document.getElementById("math-narrative-banner") || document.getElementById("word-narrative-banner");
+
+    if (container) {
+      container.innerHTML = `
+        <div class="narrative-caption narrative-tone-${vm.tone}">${vm.caption}</div>
+        <div class="narrative-speech-bubble">${vm.speech}</div>
+      `;
+      container.style.display = "block";
     }
   }
 
   checkOnboarding() {
     if (!this.player) {
       this.openModal(this.elements.onboardingModal);
+    } else {
+      this.closeModal(this.elements.onboardingModal);
     }
+    this.checkToastBannerVisibility();
   }
 
   completeOnboarding() {
-    const name = this.elements.onboardingNameInput.value.trim() || "Lucky";
+    const name = this.elements.onboardingNameInput.value.trim();
+    if (!name) {
+      alert("Please enter your name!");
+      return;
+    }
+
     const activeStarter = document.querySelector(".starter-pet-btn.active");
-    const starterId = activeStarter ? activeStarter.dataset.starter : "embercub";
+    const petId = activeStarter ? activeStarter.dataset.starterPet : "embercub";
 
-    const starterPetMap = {
-      embercub: "embercub",
-      aquafox: "leafpup",
-      leafpup: "glowmoth"
-    };
-
-    const initialPetId = starterPetMap[starterId] || "embercub";
-
-    this.player = {
-      name,
-      starter: starterId,
-      spellingStars: 0,
-      createdAt: Date.now()
-    };
+    this.player = { name, starterPet: petId };
+    this.savePlayer(this.player);
 
     if (this.collection.length === 0) {
-      this.collection = [{ id: initialPetId, shiny: false, level: 1 }];
+      this.collection.push({ id: petId, shiny: false, level: 1 });
       this.saveCollection();
     }
 
-    this.savePlayer();
     this.closeModal(this.elements.onboardingModal);
+    this.renderHeader();
+    this.checkToastBannerVisibility();
   }
 
   renderHeader() {
-    if (this.elements.headerPlayerName) {
-      this.elements.headerPlayerName.textContent = this.player ? this.player.name : "Lucky";
-    }
+    if (!this.player) return;
+    this.elements.headerPlayerName.textContent = this.player.name;
 
-    let mathStars = 0;
-    if (this.progression && this.progression.levels) {
-      Object.values(this.progression.levels).forEach(lvl => {
-        mathStars += (lvl.stars || 0);
-      });
-    }
-    const totalStars = mathStars + (this.player ? (this.player.spellingStars || 0) : 0);
-    this.elements.totalStarsCount.textContent = totalStars;
+    const charId = this.player.starterPet || "embercub";
+    const defaultChar = getCharacterById(charId);
+    const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
+    const avatarPath = pres ? (pres.image || pres.assetPath) : (defaultChar ? defaultChar.image : "assets/embercub_base.svg");
 
-    if (this.elements.petsCollectedCount) {
-      this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length} Pets`;
-    }
+    this.elements.headerPlayerAvatar.src = avatarPath;
+
+    let stars = 0;
+    Object.values(this.progression.starsByLevel || {}).forEach(s => stars += (s || 0));
+    this.elements.totalStarsCount.textContent = stars;
   }
 
   showScreen(screenKey) {
-    const targetKey = screenKey === "hub" ? "dashboard" : screenKey;
+    Object.entries(this.elements.screens).forEach(([k, screen]) => {
+      if (screen) {
+        if (k === screenKey) screen.classList.add("active");
+        else screen.classList.remove("active");
+      }
+    });
 
-    Object.values(this.elements.screens).forEach(s => s.classList.remove("active"));
-    Object.values(this.elements.navBtns).forEach(b => b.classList.remove("active"));
+    Object.entries(this.elements.navBtns).forEach(([k, btn]) => {
+      if (btn) {
+        const mapped = k === "hub" ? "dashboard" : k;
+        if (mapped === screenKey) btn.classList.add("active");
+        else btn.classList.remove("active");
+      }
+    });
 
-    if (this.elements.screens[targetKey]) {
-      this.elements.screens[targetKey].classList.add("active");
-    }
-    if (this.elements.navBtns[screenKey]) {
-      this.elements.navBtns[screenKey].classList.add("active");
-    } else if (this.elements.navBtns["hub"]) {
-      this.elements.navBtns["hub"].classList.add("active");
-    }
-
-    if (targetKey === "pokedex") {
+    if (screenKey === "pokedex") {
       this.renderPokedex();
     }
+
+    this.checkToastBannerVisibility();
   }
 
-  // --- MATH REALM CONTROLLER ---
+  // --- MATH REALM ---
   startMathRealm() {
     this.showScreen("math");
+    this.renderMathChips();
     this.startMathLevelSession(LEVELS[0]);
+  }
+
+  renderMathChips() {
+    let html = "";
+    const starsByLvl = (this.progression && this.progression.starsByLevel) ? this.progression.starsByLevel : {};
+    const unlockedIds = (this.progression && this.progression.unlockedLevelIds) ? this.progression.unlockedLevelIds : ["x6"];
+
+    LEVELS.forEach((lvl) => {
+      const stars = starsByLvl[lvl.id] || 0;
+      const isUnlocked = unlockedIds.includes(lvl.id);
+      const starStr = stars > 0 ? "★".repeat(stars) : "";
+      const lockStr = isUnlocked ? "" : "🔒 ";
+      const activeClass = this.currentMathLevel && this.currentMathLevel.id === lvl.id ? "active" : "";
+
+      html += `<button class="chip-btn ${activeClass}" data-math-level="${lvl.id}" ${!isUnlocked ? 'disabled style="opacity:0.5"' : ""}>
+        ${lockStr}${lvl.title} ${starStr}
+      </button>`;
+    });
+
+    const isMixUnlocked = unlockedIds.length >= LEVELS.length;
+    html += `<button class="chip-btn" data-math-level="mix" ${!isMixUnlocked ? 'disabled style="opacity:0.5"' : ""}>
+      ${isMixUnlocked ? "" : "🔒 "}Math Mix (×6–×10)
+    </button>`;
+
+    if (this.elements.mathLevelChips) {
+      this.elements.mathLevelChips.innerHTML = html;
+    }
   }
 
   startMathLevelSession(level) {
     this.currentMathLevel = level;
-    const plan = buildLevelSessionPlan(level, {}, this.settings);
-    this.mathSession = createLevelSession(level.id, plan.questions, this.settings);
-
-    const resident = getCharacterById(level.residentId);
-    const monsterName = resident ? resident.name : `Level ${level.table} Monster`;
-    this.elements.mathMonsterName.textContent = monsterName;
-    if (resident && resident.art && resident.art.src) {
-      this.elements.mathMonsterImg.src = resident.art.src;
-    }
-
+    const settings = this.settings || DEFAULT_SETTINGS;
+    const factStats = (this.progression && this.progression.factStats) ? this.progression.factStats : {};
+    const plan = buildLevelSessionPlan(level, factStats, settings);
+    this.mathSession = createLevelSession(level.id, plan.questions, settings);
+    this.mathSession.totalQuestions = plan.questions.length;
+    this.renderMathChips();
     this.renderMathQuestion();
+
+    this.emitNarrativeEvent("session.started", { realm: "math", level: level.id, totalItems: plan.questions.length });
+    this.emitNarrativeEvent("question.presented", { realm: "math", itemIndex: 0, totalItems: plan.questions.length });
   }
 
   startMathMixSession() {
-    const unlockedTables = [6, 7, 8, 9, 10];
-    const plan = buildMixSessionPlan(unlockedTables, {}, this.settings);
-    this.mathSession = createLevelSession("mix", plan.questions, this.settings);
-
-    this.elements.mathMonsterName.textContent = "🔥 Ultimate Mix Monster";
-    this.elements.mathMonsterImg.src = "pokemon/pikachu.png";
+    this.currentMathLevel = null;
+    const settings = this.settings || DEFAULT_SETTINGS;
+    const factStats = (this.progression && this.progression.factStats) ? this.progression.factStats : {};
+    const plan = buildMixSessionPlan(LEVELS, factStats, settings);
+    this.mathSession = createLevelSession("mix", plan.questions, settings);
+    this.mathSession.totalQuestions = plan.questions.length;
+    this.renderMathChips();
     this.renderMathQuestion();
+
+    this.emitNarrativeEvent("session.started", { realm: "math", level: "mix", totalItems: plan.questions.length });
+    this.emitNarrativeEvent("question.presented", { realm: "math", itemIndex: 0, totalItems: plan.questions.length });
   }
 
   renderMathQuestion() {
-    if (!this.mathSession || this.mathSession.finished) {
-      this.finishMathSession();
-      return;
-    }
-
+    if (!this.mathSession) return;
     const q = currentQuestion(this.mathSession);
+
     if (!q) {
       this.finishMathSession();
       return;
     }
 
-    const total = this.settings.warmupCount + this.settings.scoredCount;
-    const currentNum = this.mathSession.history.length + 1;
-    this.elements.mathQuestionProgress.textContent = `Question ${Math.min(currentNum, total)} of ${total}`;
+    const charId = this.currentMathLevel ? this.currentMathLevel.characterId : "res_x6";
+    const defaultChar = getCharacterById(charId);
+    const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
 
-    // Silhouette opacity reveal
-    const revealOpacity = 0.2 + (this.mathSession.reveal / 8) * 0.8;
-    this.elements.mathMonsterImg.style.opacity = Math.min(1, revealOpacity);
-
-    if (q.type === "missing") {
-      this.elements.mathQuestionText.textContent = `${q.a} × ? = ${q.a * q.b}`;
-    } else {
-      this.elements.mathQuestionText.textContent = `${q.a} × ${q.b} = ?`;
+    if (pres && this.elements.mathMonsterImg) {
+      this.elements.mathMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+      this.elements.mathMonsterImg.alt = pres.name;
+    }
+    if (pres && this.elements.mathMonsterName) {
+      this.elements.mathMonsterName.textContent = pres.name;
     }
 
-    this.elements.mathFeedbackText.innerHTML = "&nbsp;";
-    this.elements.mathFeedbackText.classList.remove("wrong");
+    const total = this.mathSession.totalQuestions || 12;
+    const curr = Math.min(total, this.mathSession.history ? this.mathSession.history.length + 1 : 1);
+    this.elements.mathQuestionProgress.textContent = `Question ${curr} of ${total}`;
+
+    const hpPct = Math.max(0, Math.min(100, Math.round(((total - (curr - 1)) / total) * 100)));
+    this.elements.mathMonsterHpBar.style.width = `${hpPct}%`;
+
+    this.elements.mathQuestionText.textContent = q.type === "missing" ? `${q.a} × ? = ${q.a * q.b}` : `${q.a} × ${q.b} = ?`;
+    this.elements.mathFeedbackText.textContent = "";
 
     const choices = buildChoices(q);
-    this.elements.mathAnswersGrid.innerHTML = "";
-    choices.forEach(choice => {
-      const btn = document.createElement("button");
-      btn.className = "answer-btn";
-      btn.textContent = choice.value;
-      btn.addEventListener("click", () => this.handleMathAnswer(choice.value, q));
-      this.elements.mathAnswersGrid.appendChild(btn);
+    let html = "";
+    choices.forEach((c) => {
+      html += `<button class="answer-btn" data-math-choice="${c.value}">${c.value}</button>`;
     });
+
+    this.elements.mathAnswersGrid.innerHTML = html;
+
+    const btns = this.elements.mathAnswersGrid.querySelectorAll(".answer-btn");
+    btns.forEach(b => {
+      b.addEventListener("click", () => {
+        const choice = parseInt(b.dataset.mathChoice, 10);
+        this.handleMathAnswer(choice);
+      });
+    });
+
+    const currIdx = this.mathSession.history ? this.mathSession.history.length : 0;
+    this.emitNarrativeEvent("question.presented", { realm: "math", itemIndex: currIdx, totalItems: total });
   }
 
-  handleMathAnswer(value, question) {
-    const correctVal = computeAnswer(question);
-    const isCorrect = value === correctVal;
+  handleMathAnswer(choice) {
+    if (!this.mathSession) return;
+    const q = currentQuestion(this.mathSession);
+    if (!q) return;
+
+    const correctAnswer = computeAnswer(q);
+    const isCorrect = choice === correctAnswer;
+    const total = this.mathSession.totalQuestions || 12;
+    const currIdx = this.mathSession.history ? this.mathSession.history.length : 0;
 
     if (isCorrect) {
-      speakPraise();
-      this.elements.mathFeedbackText.textContent = "Correct! ⭐";
-      this.elements.mathFeedbackText.classList.remove("wrong");
+      this.elements.mathFeedbackText.textContent = "Great job! Correct! ★";
+      this.elements.mathFeedbackText.style.color = "var(--color-success)";
+      playAudioFile(null, "Great job!");
 
-      if (this.mathSession.pendingCorrection) {
-        this.mathSession = confirmCorrection(this.mathSession);
+      this.mathSession = answerFirstTry(this.mathSession);
+
+      if ((currIdx + 1) % 4 === 0) {
+        this.emitNarrativeEvent("milestone.reached", { realm: "math", itemIndex: currIdx, totalItems: total });
       } else {
-        this.mathSession = answerFirstTry(this.mathSession, value, 1000);
+        this.emitNarrativeEvent("answer.correct", { realm: "math", itemIndex: currIdx, totalItems: total });
       }
 
-      setTimeout(() => this.renderMathQuestion(), 800);
+      setTimeout(() => {
+        this.renderMathQuestion();
+      }, 800);
     } else {
-      // Wrong answer No-Lose Loop: highlight correct answer, recite full fact, requeue 2-3 steps
-      speakMathFact(question.a, question.b);
-      this.elements.mathFeedbackText.textContent = `Fact: ${question.a} × ${question.b} = ${question.a * question.b}`;
-      this.elements.mathFeedbackText.classList.add("wrong");
+      this.elements.mathFeedbackText.textContent = `Correction needed! ${q.a} × ${q.b} = ${q.answer}`;
+      this.elements.mathFeedbackText.style.color = "var(--color-error)";
 
-      const buttons = this.elements.mathAnswersGrid.querySelectorAll(".answer-btn");
-      buttons.forEach(b => {
-        if (Number(b.textContent) === correctVal) {
-          b.style.background = "#2ed573";
-          b.style.borderColor = "#2ed573";
-        } else if (Number(b.textContent) === value) {
-          b.style.background = "#ff4757";
-        }
-      });
+      speakText(`${q.a} times ${q.b} equals ${q.answer}`);
 
-      if (!this.mathSession.pendingCorrection) {
-        this.mathSession = answerFirstTry(this.mathSession, value, 1000);
-      }
+      this.emitNarrativeEvent("correction.shown", { realm: "math", requeued: true });
+
+      setTimeout(() => {
+        this.mathSession = confirmCorrection(this.mathSession);
+        this.emitNarrativeEvent("correction.confirmed", { realm: "math" });
+        this.renderMathQuestion();
+      }, 1400);
     }
   }
 
   finishMathSession() {
-    const outcome = computeLevelOutcome(this.mathSession, this.settings);
-    outcome.outcomeId = `out_${Date.now()}`;
-    outcome.levelId = this.mathSession.levelId;
-    outcome.createdAt = new Date().toISOString();
+    if (!this.mathSession) return;
 
-    this.progression = applyLevelOutcome(this.progression, outcome, LEVELS);
-    this.saveProgression();
+    let reward = null;
+    let outcome = null;
 
-    if (outcome.earnsReward) {
-      const pool = getPoolById(this.currentMathLevel.rewardPoolId) || REWARD_POOLS[0];
-      const reward = chooseReward(pool, this.collection, REWARD_POOLS);
-      const applyRes = applyReward(this.collection, reward, outcome.outcomeId);
-      this.collection = applyRes.collection;
-      this.saveCollection();
+    if (this.currentMathLevel) {
+      outcome = computeLevelOutcome(this.mathSession, this.currentMathLevel.id, this.settings);
+      this.progression = applyLevelOutcome(this.progression, outcome);
+      this.saveProgression();
 
-      const pet = getCharacterById(reward.characterId);
-      this.showVictoryModal("MATH DUEL VICTORY!", `You earned ${outcome.stars} Stars!`, pet);
+      if (outcome.rewardEligible) {
+        const pool = getPoolById(this.currentMathLevel.poolId) || REWARD_POOLS[0];
+        reward = chooseReward(pool, this.collection, outcome.outcomeId);
+        if (reward) {
+          this.collection = applyReward(this.collection, reward);
+          this.saveCollection();
+        }
+      }
     } else {
-      this.showVictoryModal("LEVEL COMPLETE!", `You scored ${outcome.points} points. Keep practicing!`, null);
+      reward = chooseMixReward(this.collection, `mix_${Date.now()}`);
+      if (reward) {
+        this.collection = applyReward(this.collection, reward);
+        this.saveCollection();
+      }
+    }
+
+    this.emitNarrativeEvent("session.completed", { realm: "math" });
+
+    if (reward && reward.character) {
+      this.lastRescuedCharacterId = reward.character.id;
+      const eventType = reward.variant === "levelup" ? "reward.levelup" : "reward.new";
+      this.emitNarrativeEvent(eventType, {
+        realm: "math",
+        characterId: reward.character.id,
+        characterName: reward.character.name,
+        level: reward.level || 1
+      });
+      this.openVictoryModal(reward);
+    } else {
+      alert("Math Duel Complete! Excellent work!");
+      this.showScreen("dashboard");
     }
 
     this.renderHeader();
   }
 
-  // --- WORD REALM CONTROLLER ---
+  // --- WORD REALM (SPELLING) ---
   startWordRealm() {
     this.showScreen("word");
     this.switchSpellingMode("learn");
@@ -933,60 +1029,43 @@ export class AppController {
   switchSpellingMode(mode) {
     this.spellingEngine.setMode(mode);
 
+    if (this.elements.spellingModeChips) {
+      this.elements.spellingModeChips.querySelectorAll(".chip-btn").forEach(c => {
+        if (c.dataset.spellingMode === mode) c.classList.add("active");
+        else c.classList.remove("active");
+      });
+    }
+
     this.elements.spellingLearnContainer.style.display = mode === "learn" ? "block" : "none";
     this.elements.spellingTestContainer.style.display = mode === "test" ? "block" : "none";
     this.elements.spellingGameContainer.style.display = mode === "game" ? "block" : "none";
 
-    if (mode === "learn") {
-      this.renderSpellingLearn();
-    } else if (mode === "test") {
-      this.renderSpellingTest();
-    } else if (mode === "game") {
-      this.renderSpellingGame();
-    }
+    this.emitNarrativeEvent("session.started", { realm: "spelling", mode, totalItems: 18 });
+
+    if (mode === "learn") this.renderSpellingLearn();
+    else if (mode === "test") this.renderSpellingTest();
+    else if (mode === "game") this.renderSpellingGame();
   }
 
-  // Learn Mode Presenter
   renderSpellingLearn() {
     const item = this.spellingEngine.getCurrentLearnItem();
     if (!item) return;
 
-    this.elements.learnProgressText.textContent = `Word ${item.index + 1} of ${item.total}`;
-    this.elements.learnWordDisplay.textContent = item.word;
+    this.elements.learnWordDisplay.textContent = item.word.toUpperCase();
+    this.elements.learnProgressText.textContent = `Word ${this.spellingEngine.learnIndex + 1} of ${PAGE_22_DECK.words.length}`;
+    this.elements.learnImage.src = item.image;
+    this.elements.learnImage.alt = item.word;
     this.elements.learnDefinition.textContent = item.definition;
-
-    // Disabled Navigation Guard: disable & dim Back button on the very 1st word (author)
-    if (this.elements.btnLearnPrev) {
-      if (item.index === 0) {
-        this.elements.btnLearnPrev.disabled = true;
-        this.elements.btnLearnPrev.style.opacity = "0.3";
-        this.elements.btnLearnPrev.style.pointerEvents = "none";
-      } else {
-        this.elements.btnLearnPrev.disabled = false;
-        this.elements.btnLearnPrev.style.opacity = "1";
-        this.elements.btnLearnPrev.style.pointerEvents = "auto";
-      }
-    }
-
-    if (item.image) {
-      this.elements.learnImage.src = item.image;
-      this.elements.learnImage.style.display = "block";
-    } else {
-      this.elements.learnImage.style.display = "none";
-    }
 
     playAudioFile(item.audio, item.word);
   }
 
-  // Test Mode Presenter
   switchTestSubmode(submode) {
-    this.spellingEngine.testSubMode = submode;
+    this.spellingEngine.setTestSubmode(submode);
     this.elements.btnSubmodeDigital.classList.toggle("active", submode === "digital");
     this.elements.btnSubmodePaper.classList.toggle("active", submode === "paper");
-
     this.elements.digitalTestBox.style.display = submode === "digital" ? "block" : "none";
     this.elements.paperTestBox.style.display = submode === "paper" ? "block" : "none";
-
     this.renderSpellingTest();
   }
 
@@ -997,52 +1076,56 @@ export class AppController {
       return;
     }
 
-    this.elements.testQuestionProgress.textContent = `Word ${q.index + 1} of ${q.totalQuestions}`;
-    this.elements.testWordHint.textContent = `Hint: "${q.hint || q.definition}"`;
+    this.elements.testQuestionProgress.textContent = `Word ${this.spellingEngine.testIndex + 1} of ${PAGE_22_DECK.words.length}`;
+    this.elements.testWordHint.textContent = `Hint: "${q.definition}"`;
     this.elements.digitalTestInput.value = "";
-    this.elements.digitalFeedbackText.innerHTML = "&nbsp;";
-    this.elements.digitalFeedbackText.classList.remove("wrong");
-
+    this.elements.digitalFeedbackText.textContent = "";
     this.elements.paperRevealedWord.style.display = "none";
 
     playAudioFile(q.audio, q.targetWord);
+    this.emitNarrativeEvent("question.presented", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
   }
 
   handleDigitalTestSubmit() {
-    const input = this.elements.digitalTestInput.value;
-    const res = this.spellingEngine.submitDigitalAnswer(input);
+    const inputVal = this.elements.digitalTestInput.value.trim();
+    if (!inputVal) return;
 
+    const res = this.spellingEngine.submitDigitalTestAnswer(inputVal);
     if (res.isCorrect) {
-      speakPraise();
-      this.elements.digitalFeedbackText.textContent = "Correct! ⭐";
-      this.elements.digitalFeedbackText.classList.remove("wrong");
+      this.elements.digitalFeedbackText.textContent = "Correct! ★";
+      this.elements.digitalFeedbackText.style.color = "var(--color-success)";
+
+      if ((this.spellingEngine.testIndex + 1) % 6 === 0) {
+        this.emitNarrativeEvent("milestone.reached", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
+      } else {
+        this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
+      }
+
       setTimeout(() => {
-        if (res.isFinished) this.finishSpellingSession();
-        else this.renderSpellingTest();
+        this.renderSpellingTest();
       }, 800);
     } else {
-      const q = this.spellingEngine.getCurrentTestQuestion();
-      if (q) playAudioFile(q.audio, q.targetWord);
-      this.elements.digitalFeedbackText.textContent = `Requeued! Target word: ${q ? q.targetWord : ""}`;
-      this.elements.digitalFeedbackText.classList.add("wrong");
-      setTimeout(() => this.renderSpellingTest(), 1400);
+      this.elements.digitalFeedbackText.textContent = `Not quite. Correct spelling: ${res.targetWord.toUpperCase()}`;
+      this.elements.digitalFeedbackText.style.color = "var(--color-error)";
+
+      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18, requeued: true });
+
+      setTimeout(() => {
+        this.renderSpellingTest();
+      }, 1400);
     }
   }
 
   handlePaperTestResult(isCorrect) {
+    this.spellingEngine.recordPaperTestResult(isCorrect);
     if (isCorrect) {
-      speakPraise();
-      this.spellingEngine.score += 10;
-    }
-    this.spellingEngine.currentIndex += 1;
-    if (this.spellingEngine.currentIndex >= this.spellingEngine.deck.words.length) {
-      this.finishSpellingSession();
+      this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
     } else {
-      this.renderSpellingTest();
+      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18, requeued: true });
     }
+    this.renderSpellingTest();
   }
 
-  // Game Mode Presenter (Letter Tiles Battle)
   renderSpellingGame() {
     const q = this.spellingEngine.getCurrentGameQuestion();
     if (!q) {
@@ -1050,177 +1133,256 @@ export class AppController {
       return;
     }
 
-    this.elements.wordQuestionProgress.textContent = `Word ${q.questionNumber} of ${q.totalQuestions}`;
-    this.elements.wordHintText.textContent = `"${q.hint || q.definition}"`;
+    const charId = q.monsterId || "embercub";
+    const defaultChar = getCharacterById(charId);
+    const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
+
+    if (pres && this.elements.wordMonsterImg) {
+      this.elements.wordMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+      this.elements.wordMonsterImg.alt = pres.name;
+    }
+    if (pres && this.elements.wordMonsterName) {
+      this.elements.wordMonsterName.textContent = pres.name;
+    }
+
+    const total = PAGE_22_DECK.words.length;
+    const curr = Math.min(total, this.spellingEngine.gameIndex + 1);
+    this.elements.wordQuestionProgress.textContent = `Monster ${curr} of ${total}`;
+
+    const hpPct = Math.max(0, Math.min(100, Math.round((this.spellingEngine.gameMonsterHp / 3) * 100)));
+    this.elements.wordMonsterHpBar.style.width = `${hpPct}%`;
+
+    this.elements.wordHintText.textContent = `Hint: "${q.definition}"`;
+    this.elements.wordFeedbackText.textContent = "";
 
     this.selectedLetterTiles = [];
     this.renderSpellingTiles();
 
-    // Render Tiles Bank
-    this.elements.letterTilesBank.innerHTML = "";
-    q.tiles.forEach(letter => {
-      const btn = document.createElement("button");
-      btn.className = "tile-btn";
-      btn.textContent = letter;
-      btn.addEventListener("click", () => {
-        this.selectedLetterTiles.push(letter);
-        this.renderSpellingTiles();
-      });
-      this.elements.letterTilesBank.appendChild(btn);
-    });
-
     playAudioFile(q.audio, q.targetWord);
+    this.emitNarrativeEvent("question.presented", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18 });
   }
 
   renderSpellingTiles() {
-    this.elements.wordSlotsRow.innerHTML = "";
-    if (this.selectedLetterTiles.length === 0) {
-      const slot = document.createElement("span");
-      slot.className = "letter-slot empty";
-      slot.textContent = "_";
-      this.elements.wordSlotsRow.appendChild(slot);
-      return;
-    }
+    const q = this.spellingEngine.getCurrentGameQuestion();
+    if (!q) return;
 
-    this.selectedLetterTiles.forEach(char => {
-      const slot = document.createElement("span");
-      slot.className = "letter-slot";
-      slot.textContent = char;
-      this.elements.wordSlotsRow.appendChild(slot);
+    let slotsHtml = "";
+    for (let i = 0; i < q.targetWord.length; i++) {
+      const letter = this.selectedLetterTiles[i] || "";
+      slotsHtml += `<div class="letter-slot ${letter ? 'filled' : ''}">${letter.toUpperCase()}</div>`;
+    }
+    this.elements.wordSlotsRow.innerHTML = slotsHtml;
+
+    let bankHtml = "";
+    q.scrambledTiles.forEach((tileObj, idx) => {
+      const isUsed = this.selectedLetterTiles.includes(tileObj);
+      bankHtml += `<button class="tile-btn" data-tile-idx="${idx}" ${isUsed ? 'disabled style="opacity:0.3"' : ''}>
+        ${tileObj.letter.toUpperCase()}
+      </button>`;
+    });
+    this.elements.letterTilesBank.innerHTML = bankHtml;
+
+    const btns = this.elements.letterTilesBank.querySelectorAll(".tile-btn");
+    btns.forEach(b => {
+      b.addEventListener("click", () => {
+        const idx = parseInt(b.dataset.tileIdx, 10);
+        const tileObj = q.scrambledTiles[idx];
+        if (tileObj && !this.selectedLetterTiles.includes(tileObj)) {
+          this.selectedLetterTiles.push(tileObj);
+          this.renderSpellingTiles();
+        }
+      });
     });
   }
 
   handleSpellingGameSubmit() {
-    const wordInput = this.selectedLetterTiles.join("");
-    const res = this.spellingEngine.submitGameAnswer(wordInput);
+    const q = this.spellingEngine.getCurrentGameQuestion();
+    if (!q) return;
+
+    const assembledWord = this.selectedLetterTiles.map(t => t.letter).join("").toLowerCase();
+    const res = this.spellingEngine.submitGameWord(assembledWord);
 
     if (res.isCorrect) {
-      speakPraise();
-      this.elements.wordFeedbackText.textContent = "Direct hit! 💥";
-      this.elements.wordFeedbackText.classList.remove("wrong");
+      this.elements.wordFeedbackText.textContent = "Direct hit on monster! ★";
+      this.elements.wordFeedbackText.style.color = "var(--color-success)";
 
-      const hpPercent = (res.monsterHp / res.monsterMaxHp) * 100;
-      this.elements.wordMonsterHpBar.style.width = `${hpPercent}%`;
+      if ((this.spellingEngine.gameIndex + 1) % 6 === 0) {
+        this.emitNarrativeEvent("milestone.reached", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18 });
+      } else {
+        this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18 });
+      }
 
       setTimeout(() => {
-        if (res.isFinished) this.finishSpellingSession();
-        else this.renderSpellingGame();
+        this.renderSpellingGame();
       }, 800);
     } else {
-      const q = this.spellingEngine.getCurrentGameQuestion();
-      if (q) playAudioFile(q.audio, q.targetWord);
-      this.elements.wordFeedbackText.textContent = `Wrong tiles! Word: ${q ? q.targetWord : ""}`;
-      this.elements.wordFeedbackText.classList.add("wrong");
-      this.selectedLetterTiles = [];
-      setTimeout(() => this.renderSpellingGame(), 1400);
+      this.elements.wordFeedbackText.textContent = `Try again! Hint: ${q.definition}`;
+      this.elements.wordFeedbackText.style.color = "var(--color-error)";
+
+      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18, requeued: true });
+
+      setTimeout(() => {
+        this.selectedLetterTiles = [];
+        this.renderSpellingTiles();
+      }, 1000);
     }
   }
 
   finishSpellingSession() {
-    const stars = this.spellingEngine.stars || 3;
-    if (this.player) {
-      this.player.spellingStars = (this.player.spellingStars || 0) + stars;
-      this.savePlayer();
+    const reward = chooseReward(REWARD_POOLS[0], this.collection, `spelling_${Date.now()}`);
+    if (reward) {
+      this.collection = applyReward(this.collection, reward);
+      this.saveCollection();
     }
 
-    // Award pet reward
-    const pool = REWARD_POOLS[0];
-    const reward = chooseReward(pool, this.collection, REWARD_POOLS);
-    const applyRes = applyReward(this.collection, reward, `spelling_${Date.now()}`);
-    this.collection = applyRes.collection;
-    this.saveCollection();
+    this.emitNarrativeEvent("session.completed", { realm: "spelling" });
 
-    const pet = getCharacterById(reward.characterId);
-    this.showVictoryModal("SPELLING BEE VICTORY!", `Page 22 Mastered! Earned ${stars} Stars!`, pet);
+    if (reward && reward.character) {
+      this.lastRescuedCharacterId = reward.character.id;
+      const eventType = reward.variant === "levelup" ? "reward.levelup" : "reward.new";
+      this.emitNarrativeEvent(eventType, {
+        realm: "spelling",
+        characterId: reward.character.id,
+        characterName: reward.character.name,
+        level: reward.level || 1
+      });
+      this.openVictoryModal(reward);
+    } else {
+      alert("Spelling Session Completed! Great job!");
+      this.showScreen("dashboard");
+    }
+
     this.renderHeader();
   }
 
-  // --- UNIFIED POKÉDEX PRESENTER ---
+  // --- POKÉDEX VIEW ---
   renderPokedex() {
-    this.elements.pokedexGrid.innerHTML = "";
-    const ownedMap = new Map(this.collection.map(item => [item.id, item]));
+    this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length}`;
 
-    // Sort Pokédex grid: Rescued/Unlocked pets first, then locked pets
-    const sorted = [...COLLECTIBLE_CHARACTERS].sort((a, b) => {
-      const aOwned = ownedMap.has(a.id) ? 1 : 0;
-      const bOwned = ownedMap.has(b.id) ? 1 : 0;
-      return bOwned - aOwned;
+    let html = "";
+    COLLECTIBLE_CHARACTERS.forEach(char => {
+      const ownedItem = this.collection.find(c => c.id === char.id);
+      const isOwned = ownedItem != null;
+      const pres = ThemeManager.getCharacterPresentation(char.id, char);
+
+      const nameStr = pres ? pres.name : char.name;
+      const imgPath = pres ? (pres.image || pres.assetPath) : char.image;
+      const levelStr = isOwned ? `Lvl ${ownedItem.level || 1}` : "Locked";
+
+      html += `<div class="pet-card ${isOwned ? 'owned' : 'locked'}">
+        <img class="pet-img" src="${isOwned ? imgPath : 'assets/silhouette_unknown.svg'}" alt="${nameStr}" />
+        <div class="pet-name">${isOwned ? nameStr : '???'}</div>
+        <div class="pet-level">${levelStr}</div>
+      </div>`;
     });
 
-    sorted.forEach(char => {
-      const isOwned = ownedMap.has(char.id);
-      const ownedData = ownedMap.get(char.id);
-
-      const presentation = ThemeManager.getCharacterPresentation(char.id, char);
-      const charName = presentation ? presentation.name : char.name;
-      const charSrc = presentation ? presentation.art.src : char.art.src;
-
-      const card = document.createElement("article");
-      card.className = `pet-card ${isOwned ? "unlocked" : "locked"}`;
-
-      const levelBadge = isOwned ? `<span style="position: absolute; top: 10px; right: 10px; background: var(--grad-primary); padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; color: white; box-shadow: 0 0 12px rgba(124, 93, 250, 0.6);">Lv. ${ownedData.level || 1}</span>` : "";
-      const shinyBadge = isOwned && ownedData.shiny ? `<span style="position: absolute; top: 10px; left: 10px; font-size: 18px;">✨</span>` : "";
-
-      card.innerHTML = `
-        ${levelBadge}
-        ${shinyBadge}
-        <img class="pet-img" src="${charSrc}" alt="${charName}">
-        <div class="pet-name">${charName}</div>
-        <div style="font-size: 12px; font-weight: 700; color: ${isOwned ? "#2ed573" : "var(--text-muted)"}; margin-top: 4px;">${isOwned ? "✨ Rescued & Leveling" : "Locked in Realm"}</div>
-      `;
-
-      this.elements.pokedexGrid.appendChild(card);
-    });
+    this.elements.pokedexGrid.innerHTML = html;
   }
 
-  showVictoryModal(title, subtitle, pet) {
-    this.elements.victoryTitle.textContent = title;
-    this.elements.victorySubtitle.textContent = subtitle;
+  // --- MODALS & PARENT GATE ---
+  openModal(modalElem) {
+    if (!modalElem) return;
+    modalElem.style.display = "flex";
+    modalElem.classList.add("active");
+  }
 
-    if (pet) {
-      const presentation = ThemeManager.getCharacterPresentation(pet.id, pet);
-      const charName = presentation ? presentation.name : pet.name;
-      const charSrc = presentation ? presentation.art.src : pet.art.src;
-      this.elements.rewardPetImg.src = charSrc;
-      this.elements.rewardPetName.textContent = `${charName} Rescued!`;
+  closeModal(modalElem) {
+    if (!modalElem) return;
+    modalElem.style.display = "none";
+    modalElem.classList.remove("active");
+    this.checkToastBannerVisibility();
+  }
+
+  openParentGate() {
+    this.elements.parentGateInput.value = "";
+    this.elements.parentGateError.style.display = "none";
+    this.openModal(this.elements.parentGateModal);
+    setTimeout(() => {
+      this.elements.parentGateInput.focus();
+    }, 100);
+  }
+
+  verifyParentGate() {
+    const inputPin = this.elements.parentGateInput.value.trim();
+    if (inputPin === this.parentPin) {
+      this.closeModal(this.elements.parentGateModal);
+      this.openModal(this.elements.parentSettingsModal);
+      this.syncParentThemeRadioUi();
     } else {
-      const fallbackPres = ThemeManager.getCharacterPresentation("res_x6");
-      this.elements.rewardPetImg.src = fallbackPres ? fallbackPres.art.src : "pokemon/pikachu.png";
-      this.elements.rewardPetName.textContent = "Great Progress!";
+      this.elements.parentGateError.style.display = "block";
+      this.elements.parentGateInput.value = "";
     }
+  }
+
+  syncParentThemeRadioUi(activeTheme) {
+    const currentTheme = activeTheme || ThemeManager.getTheme();
+    const radioPokemon = document.getElementById("radio-theme-pokemon");
+    const radioComic = document.getElementById("radio-theme-comic");
+    const cardPokemon = document.getElementById("theme-option-pokemon");
+    const cardComic = document.getElementById("theme-option-comic");
+
+    if (activeTheme) {
+      if (radioPokemon) radioPokemon.checked = (currentTheme === "pokemon");
+      if (radioComic) radioComic.checked = (currentTheme === "comic");
+    } else if (radioComic && radioComic.checked) {
+      // Preserve pre-selected radio state from Try CTA click
+    } else {
+      if (radioPokemon) radioPokemon.checked = (currentTheme === "pokemon");
+      if (radioComic) radioComic.checked = (currentTheme === "comic");
+    }
+
+    const isComicActive = radioComic ? radioComic.checked : (currentTheme === "comic");
+    const isPokemonActive = radioPokemon ? radioPokemon.checked : (currentTheme === "pokemon");
+
+    if (cardPokemon) cardPokemon.classList.toggle("active", isPokemonActive);
+    if (cardComic) cardComic.classList.toggle("active", isComicActive);
+  }
+
+  openVictoryModal(reward) {
+    const char = reward.character || getCharacterById("embercub");
+    const pres = ThemeManager.getCharacterPresentation(char.id, char);
+
+    this.elements.victoryTitle.textContent = reward.variant === "levelup" ? "Pet Level Up!" : "New Pet Rescued!";
+    this.elements.victorySubtitle.textContent = reward.variant === "levelup"
+      ? `${pres.name} powered up to Level ${reward.level}!`
+      : `${pres.name} joined your Pet Collection!`;
+
+    this.elements.rewardPetImg.src = pres.image || pres.assetPath || char.image;
+    this.elements.rewardPetName.textContent = pres.name;
 
     this.openModal(this.elements.victoryModal);
   }
 
   openQrModal() {
-    if (!this.elements.qrModal) return;
-    this.openModal(this.elements.qrModal);
+    const url = "https://usov-andrey.github.io/lucky-learning-world/";
+    this.elements.qrModalUrlInput.value = url;
 
-    const pet = this.lastRescuedPet || { name: 'Pikachu' };
-    const playerName = this.player ? this.player.name : 'Lucky';
-
-    try {
-      ShareController.renderQrModal(
-        this.elements.qrModalCanvas,
-        this.elements.qrModalUrlInput,
-        {
-          senderName: playerName,
-          score: (this.player && this.player.stars) ? this.player.stars : 3,
-          petName: pet.name
-        }
-      );
-    } catch (err) {
-      console.warn("QR rendering fallback:", err);
-      if (this.elements.qrModalUrlInput) {
-        this.elements.qrModalUrlInput.value = ShareController.createShareUrl({ senderName: playerName });
+    ShareController.generateVictoryCardBlob({
+      playerName: this.player ? this.player.name : "Lucky",
+      themeId: ThemeManager.getTheme(),
+      totalStars: parseInt(this.elements.totalStarsCount.textContent, 10) || 0
+    }).then(blob => {
+      if (blob && this.elements.qrModalCanvas) {
+        const img = new Image();
+        img.onload = () => {
+          const ctx = this.elements.qrModalCanvas.getContext("2d");
+          if (ctx) {
+            this.elements.qrModalCanvas.width = img.width;
+            this.elements.qrModalCanvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+          }
+        };
+        img.src = URL.createObjectURL(blob);
       }
-    }
+    }).catch(() => {});
+
+    this.openModal(this.elements.qrModal);
   }
 }
 
-// Bootstrap app on DOM ready
+// Auto-initialize when DOM ready
 if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
-    window.app = new AppController();
+    window.appController = new AppController();
   });
 }

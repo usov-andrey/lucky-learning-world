@@ -1,9 +1,9 @@
 /**
- * Service Worker for Lucky's Learning World v2.0.0-v5
+ * Service Worker for Lucky's Learning World v2.0.0-v19
  * Uses Network-First strategy to guarantee instant updates on production!
  */
 
-const CACHE_NAME = 'lucky-world-v2.0.0-v18';
+const CACHE_NAME = 'lucky-world-v2.0.0-v19';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -14,7 +14,7 @@ self.addEventListener('activate', (e) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (key.startsWith('lucky-world-') && key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })
