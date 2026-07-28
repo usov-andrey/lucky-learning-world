@@ -70,3 +70,11 @@ This document contains the official, binding Acceptance Criteria for development
   - The application MUST initialize an automated client telemetry logger (`telemetry.js`) on page load.
   - The telemetry module MUST capture uncaught window errors (`window.onerror`), unhandled promise rejections, console errors, and UI lifecycle events (e.g. version checks, DOM element presence).
   - Telemetry logs MUST be persisted in `localStorage["lucky_telemetry_logs"]` (sliding log buffer of last 100 entries) so full runtime logs are automatically available for inspection and diagnostic reporting without manual user intervention.
+
+---
+
+## 7. 📖 Spelling Learn Mode Navigation Guard Rules
+
+- **[AC-7.1] Disabled Back Button Guard on First Item**:
+  - When viewing the very first item in Spelling Learn Mode (`learnIndex === 0`, e.g. Word 1 of 18), the Back button (`#btn-learn-prev`) MUST be disabled (`disabled = true`, `opacity: 0.35`, `pointer-events: none`).
+  - When viewing any subsequent item (`learnIndex > 0`), the Back button MUST be enabled (`disabled = false`, `opacity: 1`, `pointer-events: auto`).

@@ -102,3 +102,39 @@ test('SpellingEngine Game Mode handles tiles, monster HP and battle victory', ()
   assert.equal(correctRes2.isCorrect, true);
   assert.equal(correctRes2.isFinished, true);
 });
+
+test('AC-7.1 Disabled Navigation Guard: btnLearnPrev is disabled on index 0 and enabled on index > 0', async () => {
+  const { JSDOM } = await import('jsdom');
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const { fileURLToPath } = await import('node:url');
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const rootDir = path.resolve(__dirname, '..');
+
+  const htmlContent = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  const dom = new JSDOM(htmlContent, { url: 'http://localhost/' });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+
+  const { AppController } = await import(`../app.js?update=${Date.now()}`);
+  const app = new AppController();
+
+  assert.ok(app.elements.btnLearnPrev, "btnLearnPrev element must exist in DOM");
+
+  app.renderSpellingLearn();
+  assert.equal(app.elements.btnLearnPrev.disabled, true, "Back button must be disabled on Word 1 (index 0)");
+  assert.equal(app.elements.btnLearnPrev.style.opacity, "0.35");
+  assert.equal(app.elements.btnLearnPrev.style.pointerEvents, "none");
+
+  app.spellingEngine.nextLearn();
+  app.renderSpellingLearn();
+  assert.equal(app.elements.btnLearnPrev.disabled, false, "Back button must be enabled on Word 2 (index 1)");
+  assert.equal(app.elements.btnLearnPrev.style.opacity, "1");
+  assert.equal(app.elements.btnLearnPrev.style.pointerEvents, "auto");
+});
+

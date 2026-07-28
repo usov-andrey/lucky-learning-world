@@ -1078,10 +1078,17 @@ export class AppController {
     if (!item) return;
 
     this.elements.learnWordDisplay.textContent = item.word.toUpperCase();
-    this.elements.learnProgressText.textContent = `Word ${this.spellingEngine.learnIndex + 1} of ${PAGE_22_DECK.words.length}`;
+    this.elements.learnProgressText.textContent = `Word ${this.spellingEngine.currentIndex + 1} of ${PAGE_22_DECK.words.length}`;
     this.elements.learnImage.src = item.image;
     this.elements.learnImage.alt = item.word;
     this.elements.learnDefinition.textContent = item.definition;
+
+    const isFirstItem = this.spellingEngine.currentIndex === 0;
+    if (this.elements.btnLearnPrev) {
+      this.elements.btnLearnPrev.disabled = isFirstItem;
+      this.elements.btnLearnPrev.style.opacity = isFirstItem ? "0.35" : "1";
+      this.elements.btnLearnPrev.style.pointerEvents = isFirstItem ? "none" : "auto";
+    }
 
     playAudioFile(item.audio, item.word);
   }
