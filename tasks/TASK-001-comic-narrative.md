@@ -4,7 +4,7 @@ title: "Themed Narrative Mechanics & Toast Announcement Banner"
 status: RELEASED
 version: v1.0.0
 created: 2026-07-28
-github_issue: null
+github_issue: "#1"
 ---
 
 # TASK-001: Themed Narrative Mechanics & Toast Announcement Banner

@@ -4,7 +4,7 @@ title: "Code Coverage Measurement & Acceptance Criteria Enforcement System"
 status: RELEASED
 version: v1.0.1
 created: 2026-07-28
-github_issue: null
+github_issue: "#2"
 ---
 
 # TASK-002: Code Coverage Measurement & Acceptance Criteria Enforcement System
