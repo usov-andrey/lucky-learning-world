@@ -212,7 +212,7 @@ export class AppController {
 
       // Toast Banner
       toastVersionUpdate: document.getElementById("toast-version-update"),
-      btnToastTryComic: document.getElementById("btn-toast-try-comic"),
+      btnToastTryVersion: document.getElementById("btn-toast-try-version") || document.getElementById("btn-toast-try-comic"),
       btnToastClose: document.getElementById("btn-toast-close"),
 
       // Screens
@@ -388,25 +388,27 @@ export class AppController {
       });
     }
 
-    // Toast Banner Listeners
+    // Toast Banner Listeners (Generic Version Update Announcement - No PIN required)
     if (this.elements.btnToastClose) {
       bindTouchClick(this.elements.btnToastClose, () => {
-        localStorage.setItem("lucky_release_toast_seen", this.toastCampaignKey);
+        localStorage.setItem("lucky_release_toast_dismissed", APP_VERSION);
         if (this.elements.toastVersionUpdate) {
           this.elements.toastVersionUpdate.style.display = "none";
         }
       });
     }
 
-    if (this.elements.btnToastTryComic) {
-      bindTouchClick(this.elements.btnToastTryComic, () => {
-        localStorage.setItem("lucky_release_toast_seen", this.toastCampaignKey);
+    if (this.elements.btnToastTryVersion) {
+      bindTouchClick(this.elements.btnToastTryVersion, () => {
+        localStorage.setItem("lucky_release_toast_dismissed", APP_VERSION);
         if (this.elements.toastVersionUpdate) {
           this.elements.toastVersionUpdate.style.display = "none";
         }
-        const radioComic = document.getElementById("radio-theme-comic");
-        if (radioComic) radioComic.checked = true;
-        this.openParentGate();
+        if (typeof window !== "undefined" && window.NEW_VERSION_URL) {
+          window.location.href = window.NEW_VERSION_URL;
+        } else if (typeof window !== "undefined") {
+          window.location.reload(true);
+        }
       });
     }
 
@@ -664,15 +666,14 @@ export class AppController {
   }
 
   checkToastBannerVisibility() {
-    const currentTheme = ThemeManager.getTheme();
-    const seenKey = localStorage.getItem("lucky_release_toast_seen");
+    const dismissedVer = localStorage.getItem("lucky_release_toast_dismissed");
     const isOnboarded = this.player != null;
     const isDashboard = this.elements.screens.dashboard && this.elements.screens.dashboard.classList.contains("active");
     
     const openModal = Array.from(document.querySelectorAll(".modal-overlay")).find(m => m.style.display === "flex" || (m.classList.contains("active") && m.style.display !== "none"));
     const hasOpenModal = openModal != null;
 
-    if (currentTheme === "pokemon" && isOnboarded && isDashboard && !hasOpenModal && seenKey !== this.toastCampaignKey) {
+    if (isOnboarded && isDashboard && !hasOpenModal && dismissedVer !== APP_VERSION) {
       if (this.elements.toastVersionUpdate) {
         this.elements.toastVersionUpdate.style.display = "flex";
       }
