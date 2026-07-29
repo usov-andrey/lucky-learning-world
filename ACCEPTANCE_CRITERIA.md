@@ -103,4 +103,31 @@ This document contains the official, binding Acceptance Criteria for development
   - Task specifications in `tasks/` MUST be indexable and syncable with GitHub Issues via `npm run task:sync -- --github`.
   - GitHub Actions workflows (`.github/workflows/sync-tasks.yml` and `.github/workflows/agent-ci.yml`) MUST automatically validate test coverage gates (`npm run test:coverage:gate`) on all pull requests and pushes to `master`.
 
+---
+
+## 10. 📚 Multi-Lesson Spelling Library Rules (TASK-005)
+
+- **[AC-10] Lesson Catalog Default and Integrity**:
+  - Page 22 and Schwa ‹er› MUST be distinct catalog lessons. Page 22 remains the default when there is no valid saved selection.
+
+- **[AC-11] Lesson Selection Consistency**:
+  - A learner-selected spelling lesson MUST persist locally and drive Game, Learn, and Test consistently.
+
+- **[AC-12] Complete Schwa ‹er› Learning Content**:
+  - Every Schwa ‹er› word MUST have local illustration, alt text, concise definition, definition audio, extended explanation, example sentence, hint, and local word audio.
+
+- **[AC-13] Explanation Experience**:
+  - Learn mode MUST show the illustration and concise definition and provide a working English **Tell me more** control on desktop, tablet, and phone.
+
+- **[AC-14] Active-Lesson Engine Behaviour**:
+  - All spelling-mode state, navigation, progress, hints, audio, and letter tiles MUST use the active lesson; Back remains disabled on the first item.
+
+- **[AC-15] Safe Selection Fallback**:
+  - An unknown stored lesson identifier MUST fall back safely to Page 22; switching lessons MUST reset unfinished spelling state.
+
+- **[AC-16] Touch and Responsive UI**:
+  - The lesson picker and extended-explanation view MUST satisfy the project's touch-target, touch-event, modal, and English-only UI rules.
+
+- **[AC-17] Local Offline Assets**:
+  - New spelling assets MUST be local, precached by the PWA strategy, and retain asset provenance or attribution.
 
