@@ -155,3 +155,37 @@ This document contains the official, binding Acceptance Criteria for development
   - TASK-006 MUST NOT duplicate share/QR implementation or coverage work.
     `engine/share-controller.js`, `engine/qr-generator.js`, and
     `tests/share-qr.test.mjs` remain owned by TASK-004.
+
+---
+
+## 12. ✨ Child-Friendly Dashboard (TASK-007)
+
+- **[AC-19] Personal, Immediate Welcome**:
+  - The dashboard MUST greet the current player by name with the fallback
+    `Hi, Lucky! ✨` and MUST use the single short prompt `Pick your quest`.
+
+- **[AC-20] Three Clear Choices**:
+  - The dashboard choices MUST be named `Math Battle`, `Word Quest`, and
+    `My Pets`.
+  - Each choice MUST contain no more than one short supporting line and one
+    explicit action button.
+
+- **[AC-21] Reduced Reading Load**:
+  - The previous long feature descriptions, multi-clause welcome copy, and
+    curriculum jargon MUST NOT appear in the dashboard view.
+
+- **[AC-22] Playful Visual Identity**:
+  - Each dashboard card MUST have a distinct colorful treatment and a large,
+    immediately recognizable icon presentation.
+
+- **[AC-23] Safe Touch Navigation**:
+  - Every dashboard action button MUST remain at least 64px tall and use
+    `touch-action: manipulation`.
+  - Realm navigation MUST remain bound only to explicit action buttons.
+
+- **[AC-24] Compact Mobile Layout**:
+  - At viewport widths up to 600px, the dashboard MUST use compact card,
+    typography, and spacing rules that reduce vertical scrolling without
+    clipping text or controls.
+  - The compact header MUST NOT force horizontal page overflow or clip its
+    action controls.

@@ -196,26 +196,59 @@ button * {
 }
 
 /* Realm Selection Grid (Dashboard View) */
+#dashboard-view {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.dashboard-intro {
+  margin: 4px 0 24px;
+  text-align: center;
+}
+
+.dashboard-intro h2 {
+  font-size: clamp(32px, 5vw, 46px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.dashboard-prompt {
+  margin-top: 8px;
+  color: #cbd5e1;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 .realms-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-top: 16px;
+  gap: 18px;
 }
 
 .realm-card {
-  background: var(--bg-card);
+  --realm-accent: #5eead4;
+  --realm-accent-strong: #0891b2;
+  --realm-surface: rgba(8, 145, 178, 0.18);
+  --realm-border: rgba(94, 234, 212, 0.36);
+  --realm-glow: rgba(34, 211, 238, 0.2);
+  --realm-button: var(--grad-math);
+  background:
+    radial-gradient(circle at 82% 14%, var(--realm-glow) 0, transparent 38%),
+    linear-gradient(150deg, rgba(30, 41, 78, 0.98), rgba(18, 23, 51, 0.98));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-glass);
+  border: 1px solid var(--realm-border);
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 280px;
+  min-height: 304px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 16px 40px rgba(3, 7, 18, 0.28);
+  isolation: isolate;
 }
 
 .realm-card::before {
@@ -225,47 +258,120 @@ button * {
   left: 0;
   right: 0;
   height: 6px;
+  background: var(--realm-button);
 }
 
-.realm-card.math-realm::before { background: var(--grad-math); }
-.realm-card.word-realm::before { background: var(--grad-word); }
-.realm-card.pokedex-realm::before { background: var(--grad-pokedex); }
+.realm-card::after {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: -78px;
+  bottom: -88px;
+  border: 24px solid var(--realm-border);
+  border-radius: 50%;
+  opacity: 0.5;
+  z-index: -1;
+}
 
-.realm-header {
+#dashboard-view .math-realm {
+  --realm-accent: #67e8f9;
+  --realm-accent-strong: #0284c7;
+  --realm-surface: rgba(14, 165, 233, 0.2);
+  --realm-border: rgba(103, 232, 249, 0.36);
+  --realm-glow: rgba(34, 211, 238, 0.22);
+  --realm-button: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+
+#dashboard-view .word-realm {
+  --realm-accent: #f9a8d4;
+  --realm-accent-strong: #db2777;
+  --realm-surface: rgba(236, 72, 153, 0.2);
+  --realm-border: rgba(249, 168, 212, 0.4);
+  --realm-glow: rgba(244, 114, 182, 0.22);
+  --realm-button: linear-gradient(135deg, #ec4899, #8b5cf6);
+}
+
+#dashboard-view .pokedex-realm {
+  --realm-accent: #fde68a;
+  --realm-accent-strong: #ea580c;
+  --realm-surface: rgba(245, 158, 11, 0.2);
+  --realm-border: rgba(253, 230, 138, 0.4);
+  --realm-glow: rgba(251, 191, 36, 0.2);
+  --realm-button: linear-gradient(135deg, #fbbf24, #f97316);
+}
+
+.realm-card-main {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.realm-visual {
+  width: 104px;
+  height: 104px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  border: 1px solid var(--realm-border);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.28), transparent 24%),
+    var(--realm-surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 12px 28px var(--realm-glow);
+  transform: rotate(-3deg);
 }
 
 .realm-icon {
-  font-size: 54px;
+  font-size: 58px;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  transform: rotate(3deg);
+}
+
+.realm-sparkles {
+  position: absolute;
+  top: 5px;
+  right: 9px;
+  color: var(--realm-accent);
+  font-size: 22px;
+  text-shadow:
+    -70px 54px 0 color-mix(in srgb, var(--realm-accent) 68%, white),
+    -61px 7px 0 rgba(255, 255, 255, 0.72);
+  animation: twinkle 2.4s ease-in-out infinite;
 }
 
 .realm-badge {
-  background: rgba(255,255,255,0.1);
-  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  background: var(--realm-surface);
+  border: 1px solid var(--realm-border);
+  color: var(--realm-accent);
+  padding: 3px 11px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .realm-content {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .realm-title {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin: 7px 0 2px;
 }
 
 .realm-desc {
-  color: var(--text-muted);
-  font-size: 15px;
-  line-height: 1.4;
+  color: #cbd5e1;
+  font-size: 16px;
+  line-height: 1.25;
 }
 
 button, .realm-action-btn, .primary-btn, .secondary-btn, .header-action-btn, .chip-btn, .answer-btn, .tile-btn, .back-btn {
@@ -281,7 +387,7 @@ button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-
 }
 
 .realm-action-btn {
-  margin-top: 20px;
+  margin-top: 18px;
   height: var(--min-touch-target);
   border-radius: var(--radius-md);
   border: none;
@@ -295,11 +401,12 @@ button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-
   gap: 8px;
   cursor: pointer;
   transition: var(--trans-smooth);
+  position: relative;
+  box-shadow: 0 10px 24px var(--realm-glow);
 }
 
-.math-realm .realm-action-btn { background: var(--grad-math); }
-.word-realm .realm-action-btn { background: var(--grad-word); }
-.pokedex-realm .realm-action-btn { background: var(--grad-pokedex); color: #2d1800; }
+.realm-action-btn { background: var(--realm-button); }
+.pokedex-realm .realm-action-btn { color: #2d1800; }
 
 .realm-action-btn:active {
   transform: scale(0.96);
@@ -831,6 +938,11 @@ body.modal-open {
   50% { transform: translateY(-4px) scale(1.05); }
 }
 
+@keyframes twinkle {
+  0%, 100% { opacity: 0.72; transform: scale(0.88) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.08) rotate(12deg); }
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .app-header {
@@ -838,6 +950,7 @@ body.modal-open {
   }
   .brand {
     gap: 6px;
+    min-width: 0;
   }
   .brand-icon {
     font-size: 24px;
@@ -850,6 +963,11 @@ body.modal-open {
     padding: 4px 8px;
     gap: 6px;
     font-size: 13px;
+    flex-shrink: 0;
+  }
+  #header-player-avatar,
+  #header-player-name {
+    display: none;
   }
   .star-count {
     font-size: 14px;
@@ -859,7 +977,73 @@ body.modal-open {
     padding: 0 8px;
     font-size: 12px;
   }
+  .main-container {
+    padding: 18px 14px 104px;
+  }
   .realms-grid { grid-template-columns: 1fr; }
+  #dashboard-view .dashboard-intro {
+    margin: 0 2px 16px;
+    text-align: left;
+  }
+  #dashboard-view .dashboard-intro h2 {
+    font-size: 30px;
+    letter-spacing: -0.6px;
+  }
+  #dashboard-view .dashboard-prompt {
+    margin-top: 4px;
+    font-size: 16px;
+  }
+  #dashboard-view .realms-grid {
+    gap: 14px;
+  }
+  #dashboard-view .realm-card {
+    min-height: 0;
+    padding: 16px;
+    border-radius: 22px;
+  }
+  #dashboard-view .realm-card-main {
+    flex-direction: row;
+    gap: 16px;
+    text-align: left;
+  }
+  #dashboard-view .realm-visual {
+    width: 74px;
+    height: 74px;
+    flex: 0 0 74px;
+    border-radius: 24px;
+  }
+  #dashboard-view .realm-icon {
+    font-size: 42px;
+  }
+  #dashboard-view .realm-sparkles {
+    top: 1px;
+    right: 5px;
+    font-size: 16px;
+    text-shadow:
+      -48px 39px 0 color-mix(in srgb, var(--realm-accent) 68%, white),
+      -43px 6px 0 rgba(255, 255, 255, 0.72);
+  }
+  #dashboard-view .realm-content {
+    min-width: 0;
+    margin-top: 0;
+  }
+  #dashboard-view .realm-badge {
+    min-height: 22px;
+    padding: 2px 9px;
+    font-size: 10px;
+  }
+  #dashboard-view .realm-title {
+    margin: 4px 0 0;
+    font-size: 23px;
+    line-height: 1.05;
+  }
+  #dashboard-view .realm-desc {
+    margin-top: 3px;
+    font-size: 14px;
+  }
+  #dashboard-view .realm-action-btn {
+    margin-top: 12px;
+  }
   .answers-grid { grid-template-columns: 1fr; }
   .modal-overlay { padding: 10px; }
   .modal-card { padding: 18px 14px; max-height: 92vh; border-radius: 20px; }

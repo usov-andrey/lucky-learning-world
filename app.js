@@ -208,6 +208,7 @@ export class AppController {
       headerPlayerName: document.getElementById("header-player-name"),
       headerPlayerAvatar: document.getElementById("header-player-avatar"),
       totalStarsCount: document.getElementById("total-stars-count"),
+      welcomeGreetingTitle: document.getElementById("welcome-greeting-title"),
       btnShareLine: document.getElementById("btn-share-line"),
       btnParentModeHeader: document.getElementById("btn-parent-mode-header"),
       appVersionBadge: document.getElementById("app-version-badge"),
@@ -803,6 +804,9 @@ export class AppController {
   renderHeader() {
     if (!this.player) return;
     this.elements.headerPlayerName.textContent = this.player.name;
+    if (this.elements.welcomeGreetingTitle) {
+      this.elements.welcomeGreetingTitle.textContent = `Hi, ${this.player.name}! ✨`;
+    }
 
     const charId = this.player.starterPet || "embercub";
     const defaultChar = getCharacterById(charId);

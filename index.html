@@ -52,7 +52,7 @@
   <header class="app-header">
     <div class="brand" id="brand-logo-btn" title="Back to Main Hub">
       <span class="brand-icon">🌟</span>
-      <h1 class="brand-title">Lucky's Learning World</h1>
+      <h1 class="brand-title">Lucky's World</h1>
     </div>
     <div class="user-profile-badge" id="user-profile-badge">
       <span id="header-player-avatar">🐾</span>
@@ -61,8 +61,8 @@
         <span>⭐</span>
         <span id="total-stars-count">0</span>
       </div>
-      <button class="header-action-btn" id="btn-show-qr-header" title="Show QR Code for Friends">📱 QR</button>
-      <button class="header-action-btn" id="btn-parent-mode-header" title="Parent Protected Settings (v1.0.2.2)">🔒 v19.2</button>
+      <button class="header-action-btn" id="btn-show-qr-header" aria-label="Share with friends" title="Share with friends">📱</button>
+      <button class="header-action-btn" id="btn-parent-mode-header" aria-label="Parent settings" title="Parent Protected Settings (v1.0.2.2)">⚙️</button>
     </div>
   </header>
 
@@ -81,54 +81,66 @@
 
     <!-- VIEW 1: Main Hub / Dashboard -->
     <section id="dashboard-view" class="view-screen active">
-      <div style="margin-bottom: 20px;">
-        <h2 style="font-size: 28px; font-weight: 800;" id="welcome-greeting-title">Welcome Adventurer! Choose Your Realm!</h2>
-        <p style="color: var(--text-muted); margin-top: 4px;">Battle monsters, earn stars, and collect pets in your Pokédex!</p>
+      <div class="dashboard-intro">
+        <h2 id="welcome-greeting-title">Hi, Lucky! ✨</h2>
+        <p class="dashboard-prompt">Pick your quest</p>
       </div>
 
       <div class="realms-grid">
         <!-- Math Realm Card -->
         <article class="realm-card math-realm" id="card-math-realm">
-          <div class="realm-header">
-            <span class="realm-icon">🧮</span>
-            <span class="realm-badge">Multiplication ×6–×10</span>
-          </div>
-          <div class="realm-content">
-            <h3 class="realm-title">Math Monster Realm</h3>
-            <p class="realm-desc">Fast mental math duels (×6, ×7, ×8, ×9, ×10). 5 level map, monster silhouettes, and audio feedback!</p>
+          <div class="realm-card-main">
+            <div class="realm-visual" aria-hidden="true">
+              <span class="realm-sparkles">✦</span>
+              <span class="realm-icon">🧮</span>
+            </div>
+            <div class="realm-content">
+              <span class="realm-badge">×6–×10</span>
+              <h3 class="realm-title">Math Battle</h3>
+              <p class="realm-desc">Beat the monsters!</p>
+            </div>
           </div>
           <button class="realm-action-btn" id="btn-enter-math">
-            <span>Enter Math Realm</span> ➔
+            <span>Play Math</span>
+            <span aria-hidden="true">➜</span>
           </button>
         </article>
 
         <!-- Word Realm Card -->
         <article class="realm-card word-realm" id="card-word-realm">
-          <div class="realm-header">
-            <span class="realm-icon">🔤</span>
-            <span class="realm-badge">Page 22 (Schwa ‹or›)</span>
-          </div>
-          <div class="realm-content">
-            <h3 class="realm-title">Word Realm (Spelling)</h3>
-            <p class="realm-desc">18 words from Page 22 (from author to opportunity). 3 modes: Learn, Test (Paper/Digital), and Game Battle!</p>
+          <div class="realm-card-main">
+            <div class="realm-visual" aria-hidden="true">
+              <span class="realm-sparkles">✦</span>
+              <span class="realm-icon">🔤</span>
+            </div>
+            <div class="realm-content">
+              <span class="realm-badge">18 words</span>
+              <h3 class="realm-title">Word Quest</h3>
+              <p class="realm-desc">Spell. Shine. Win.</p>
+            </div>
           </div>
           <button class="realm-action-btn" id="btn-enter-word">
-            <span>Enter Word Realm</span> ➔
+            <span>Play Words</span>
+            <span aria-hidden="true">➜</span>
           </button>
         </article>
 
         <!-- Pokédex Realm Card -->
         <article class="realm-card pokedex-realm" id="card-pokedex-realm">
-          <div class="realm-header">
-            <span class="realm-icon">🐾</span>
-            <span class="realm-badge" id="pets-collected-count">0 / 15 Pets</span>
-          </div>
-          <div class="realm-content">
-            <h3 class="realm-title">Unified Pokédex</h3>
-            <p class="realm-desc">Your rescued companion pets and trophy collection from both Math and Spelling victories!</p>
+          <div class="realm-card-main">
+            <div class="realm-visual" aria-hidden="true">
+              <span class="realm-sparkles">✦</span>
+              <span class="realm-icon">🐾</span>
+            </div>
+            <div class="realm-content">
+              <span class="realm-badge" id="pets-collected-count">0 / 15</span>
+              <h3 class="realm-title">My Pets</h3>
+              <p class="realm-desc">Meet your pet team!</p>
+            </div>
           </div>
           <button class="realm-action-btn" id="btn-enter-pokedex">
-            <span>Open Pokédex</span> ➔
+            <span>See My Pets</span>
+            <span aria-hidden="true">➜</span>
           </button>
         </article>
       </div>
