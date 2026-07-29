@@ -131,3 +131,27 @@ This document contains the official, binding Acceptance Criteria for development
 - **[AC-17] Local Offline Assets**:
   - New spelling assets MUST be local, precached by the PWA strategy, and retain asset provenance or attribution.
 
+---
+
+## 11. 🔁 Narrative Event and PWA Release Contract Hardening (TASK-006)
+
+- **[AC-18.1] Canonical Requeue Contract**:
+  - Runtime code MUST represent a requeued incorrect answer as
+    `answer.incorrect` with `context.requeued: true`.
+  - Runtime code MUST NOT emit a separate `item.requeued` narrative event.
+
+- **[AC-18.2] Narrative Event Idempotency**:
+  - Re-rendering, theme refresh, or duplicate delivery of the same transition
+    MUST NOT repeat narrative, milestone, reward, completion, timer, TTS, or sound
+    effects.
+  - A new item or attempt MUST remain eligible to emit its own event.
+
+- **[AC-18.3] Standards-Compliant PWA Versioning**:
+  - Release tooling MUST synchronize only real version markers and MUST NOT add a
+    non-standard `version` property to `manifest.json`.
+  - Generated release notes MUST list only version targets actually changed.
+
+- **[AC-18.4] TASK-004 Scope Ownership**:
+  - TASK-006 MUST NOT duplicate share/QR implementation or coverage work.
+    `engine/share-controller.js`, `engine/qr-generator.js`, and
+    `tests/share-qr.test.mjs` remain owned by TASK-004.

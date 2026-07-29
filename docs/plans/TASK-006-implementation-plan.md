@@ -5,10 +5,6 @@
 Proposed corrective follow-up. TASK-001 remains `RELEASED`; its historical task,
 acceptance criteria, walkthrough, and release notes are not rewritten.
 
-The permanent task-specific copy of this active plan is:
-
-`docs/plans/TASK-006-implementation-plan.md`
-
 ## Scope decisions
 
 1. `item.requeued` is not a separate runtime narrative event.
@@ -115,3 +111,4 @@ Verify:
   version rebase;
 - the release is committed under TASK-006 and documented as a new corrective
   change, not as a retroactive TASK-001 edit.
+
