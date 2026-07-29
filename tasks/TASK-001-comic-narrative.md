@@ -40,14 +40,3 @@ Integrate interactive narrative themes ("Comic Quest") into the educational real
 ## 📦 5. Release & Artifacts
 - **Version**: `v1.0.0`
 - **Release Walkthrough**: `docs/releases/v1.0.0.md`
-
-## 🧭 6. Post-release implementation clarification
-
-The original release history and acceptance criteria above remain unchanged.
-Four follow-up contracts for future agents are recorded in:
-
-- `docs/plans/TASK-001-narrative-implementation-plan-addendum.md`
-
-The addendum defines the canonical requeue event, duplicate-event protection,
-`engine/share-controller.js` coverage through TASK-004, and PWA version
-synchronization without a non-standard Web App Manifest `version` field.

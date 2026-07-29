@@ -32,11 +32,7 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 
 ## 3. 📦 Semantic Versioning, Unique Artifacts & Output Rules
 - **Clean SemVer Baseline**: Releases start from `v1.0.0` and increment via `node scripts/release.mjs --bump=minor|major|patch --task=TASK-XXX`.
-- **Unified Version Targets**: Release tooling updates actual version markers
-  synchronously across `package.json`, `app.js`, `index.html`, `sw.js`, automated
-  tests, and `CHANGELOG.md`. `manifest.json` is updated only when its real PWA
-  metadata changes; agents MUST NOT add a non-standard `version` field merely
-  for release synchronization.
+- **Unified Version Targets**: Release script updates version strings synchronously across `package.json`, `app.js`, `index.html`, `sw.js`, `manifest.json`, and `CHANGELOG.md`.
 - **Major Version Archive**: Major bumps (`v1` ➔ `v2`) snapshot the previous version in physical directories (`v1/`, `v2/`) so multiple major versions can run and be viewed simultaneously.
 - **Unique Versioned Plan & Walkthrough Storage (No Overwriting)**:
   - Every task plan MUST be saved with a unique filename: `docs/plans/<TASK_ID>-implementation-plan.md` (and copied to root `implementation_plan.md` for active reference).
@@ -93,3 +89,4 @@ This document contains mandatory rules for all AI coding agents (Antigravity, Co
 ## 10. 🏗️ Architecture & Verification Rules
 - **Zero-Build Architecture**: Standard Vanilla ES Modules (`import`/`export`). No Webpack, Vite, or npm bundlers. Static hostable on GitHub Pages.
 - **Mandatory Pre-Commit Verification**: Run `node --test tests/*.test.mjs` before committing or deploying any version.
+
