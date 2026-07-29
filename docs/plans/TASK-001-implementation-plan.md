@@ -1,117 +1,55 @@
-# TASK-006 — Narrative Event and PWA Release Contract Hardening
+# Implementation Plan: Architecture for Task Tracking, AC-Driven Tests, Semantic Release & Diagnostics
 
-## Status
+## Approved Decisions & Principles
 
-Proposed corrective follow-up. TASK-001 remains `RELEASED`; its historical task,
-acceptance criteria, walkthrough, and release notes are not rewritten.
+1. **Task & GitHub Sync**: Local-first `tasks/TASK-XXX.md` as single source of truth, synced to GitHub Issues via `scripts/sync-issues.mjs` / `gh` CLI.
+2. **Major Version Snapshots**: Physical directory snapshots (`v1/`, `v2/`, etc.) kept in project root so multiple major versions can be run, viewed, and hosted simultaneously.
+3. **Commit Convention**: Strict format `feat(TASK-XXX): ...` or `fix(TASK-XXX): ...` for exact git log searchability.
+4. **Current Version Reset**: Version baseline reset to **`v1.0.0`** (replacing confusing historical numbers).
+5. **Backfill**: Backfill existing Comic Narrative work as `TASK-001` (`tasks/TASK-001-comic-narrative.md`).
+6. **Release Notes**: Auto-generated structured Release Notes in `CHANGELOG.md`, `docs/releases/vX.Y.Z.md`, and GitHub Releases.
 
-The permanent task-specific copy of this active plan is:
+---
 
-`docs/plans/TASK-006-implementation-plan.md`
+## 🛠️ Execution Steps
 
-## Scope decisions
+### Step 1: Initialize Task Structure & Backfill TASK-001
+- Create `tasks/` directory.
+- Create `tasks/INDEX.md` master table.
+- Create `tasks/templates/TASK-TEMPLATE.md`.
+- Backfill `tasks/TASK-001-comic-narrative.md` with all ACs (AC-1 to AC-8) for the narrative update.
 
-1. `item.requeued` is not a separate runtime narrative event.
-2. Duplicate side effects are prevented at the transition boundary.
-3. `manifest.json` receives no non-standard version field.
-4. `engine/share-controller.js` remains owned by TASK-004.
+### Step 2: Update Core Rules & Diagnostic Protocol
+- Update `DEVELOPMENT_RULES.md` with:
+  - Task lifecycle rules (`tasks/TASK-XXX.md`).
+  - AC-tagging requirement in unit tests (`// @task TASK-XXX`, `// @ac AC-Y`).
+  - Git commit prefix requirement (`feat(TASK-XXX): ...`).
+  - Version bump & release notes rules.
+- Update `AGENTS.md` with the 4-step Agent Diagnostic Protocol for troubleshooting regressions.
 
-## Step 1 — Freeze acceptance criteria and baseline
+### Step 3: Implement Automation Scripts (`scripts/`)
+- Create `scripts/release.mjs`:
+  - Handles semantic version bump (`major`, `minor`, `patch`).
+  - Resets baseline to `v1.0.0`.
+  - Updates version strings across `package.json`, `app.js`, `index.html`, `sw.js`, `manifest.json`.
+  - Generates Release Notes in `CHANGELOG.md` and `docs/releases/vX.Y.Z.md`.
+  - Handles Major version physical directory archiving (`v1/`, `v2/`...).
+- Create `scripts/sync-issues.mjs`:
+  - Creates/syncs GitHub Issues from `tasks/TASK-XXX.md` via `gh` CLI or REST API.
 
-- Confirm AC-18.1 through AC-18.4 in
-  `tasks/TASK-006-harden-narrative-and-release-contracts.md`.
-- Run the current test suite and record the baseline.
-- Add failing AC-tagged tests before changing runtime code.
-- Verify TASK-004 status; do not copy its share/QR work into TASK-006.
+### Step 4: Tag Existing Tests with TASK-001 & AC Mapping
+- Annotate `tests/narrative-engine.test.mjs`, `tests/narrative-integration.test.mjs`, `tests/ui-smoke.test.mjs` with `// @task TASK-001` and `// @ac AC-X`.
 
-## Step 2 — Unify the requeue contract
+### Step 5: Update CI/CD Workflow (`.github/workflows/deploy.yml`)
+- Ensure automated test suite execution `node --test tests/*.test.mjs` runs on push before GitHub Pages deployment.
 
-Use this single runtime shape:
+---
 
-```js
-{
-  type: "answer.incorrect",
-  context: {
-    requeued: true
-  }
-}
-```
+## 🧪 Verification Plan
 
-Required changes:
-
-- keep `app.js` on the canonical shape;
-- remove the standalone `item.requeued` catalog entries and tests, unless a
-  compatibility path is explicitly documented and never emitted;
-- ensure a wrong answer produces one feedback ViewModel;
-- ensure the learning engine's queue mutation does not overwrite feedback with a
-  second narrative event.
-
-## Step 3 — Add transition-level idempotency
-
-Use a stable transition key:
-
-```text
-sessionId:itemId:attempt:eventType
-```
-
-Implementation requirements:
-
-- keep a bounded set of processed keys for the current session;
-- reject a duplicate emit for the same key;
-- clear or rotate keys only when a new session actually starts;
-- do not emit domain events from render methods;
-- `lucky:themechanged` re-resolves `lastNarrativeEvent` without emitting;
-- theme refresh cannot restart timers, TTS, sound effects, rewards, completion,
-  or Victory Card presentation;
-- a new `attempt`, `itemId`, or genuine transition remains valid.
-
-## Step 4 — Correct PWA release synchronization
-
-Synchronize actual release markers in:
-
-- `package.json`;
-- `APP_VERSION` in `app.js`;
-- visible version diagnostics and resource query strings in `index.html`;
-- service-worker registration query, when versioned;
-- `CACHE_NAME` in `sw.js`;
-- automated version assertions;
-- `CHANGELOG.md` and release artifacts.
-
-Do not add a `version` property to `manifest.json`. Update the manifest only when
-its real PWA metadata changes. Generated release notes must not claim the manifest
-was version-bumped when it was untouched.
-
-Service-worker activation must continue deleting only old cache keys with the
-known `lucky-world-` prefix.
-
-## Step 5 — Verify without duplicating TASK-004
-
-Run:
-
-```powershell
-node --test tests/*.test.mjs
-npm run test:coverage:gate
-node scripts/release.mjs --dry-run --bump=patch --task=TASK-006
-```
-
-Verify:
-
-- one incorrect/requeued transition produces one narrative event;
-- duplicate delivery and repeated render are side-effect free;
-- new items and attempts still emit;
-- theme switching preserves question, score, tiles, queue, timers, audio, and
-  rewards;
-- dry-run reports only real version targets;
-- `manifest.json` stays standards-compliant and versionless;
-- TASK-004 remains the only task changing share/QR runtime files.
-
-## Definition of Done
-
-- AC-18.1 through AC-18.4 are covered by tagged automated tests;
-- all existing tests and coverage gates pass;
-- TASK-001 remains unchanged and released;
-- TASK-004 scope is not duplicated;
-- TASK-006 walkthrough records the implementation commits, verification, and any
-  version rebase;
-- the release is committed under TASK-006 and documented as a new corrective
-  change, not as a retroactive TASK-001 edit.
+1. **Task & Test Searchability**:
+   - Run `rg "@task TASK-001" tests/` to confirm test tagging.
+2. **Release Automation**:
+   - Run `node scripts/release.mjs --dry-run` to verify version synchronization and Release Notes generation.
+3. **Test Suite Verification**:
+   - Run `node --test tests/*.test.mjs` to ensure 100% test passing.
