@@ -2,3 +2,7 @@ node_modules/
 .state/
 .DS_Store
 *.log
+# Local-only handoffs may contain personal or other sensitive data.
+docs/handoffs/local/
+# Local-only handoffs may contain personal or other sensitive data.
+docs/handoffs/local/
