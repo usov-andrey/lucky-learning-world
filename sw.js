@@ -3,7 +3,7 @@
  * Uses Network-First strategy to guarantee instant updates on production!
  */
 
-const CACHE_NAME = 'lucky-world-v2.0.2-v19.2';
+const CACHE_NAME = 'lucky-world-v2.1.0-v19.3';
 
 self.addEventListener('install', () => {
   self.skipWaiting();

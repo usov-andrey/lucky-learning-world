@@ -190,11 +190,19 @@
       </div>
     </section>
 
-    <!-- VIEW 3: Word Battle Realm Screen (Spelling Page 22) -->
+    <!-- VIEW 3: Word Battle Realm Screen (Spelling) -->
     <section id="word-view" class="view-screen">
       <div class="screen-header">
         <button class="back-btn" id="btn-back-from-word">⬅️ Hub</button>
-        <h2 style="font-size: 24px;">🔤 Word Realm — Page 22 (Schwa ‹or›)</h2>
+        <h2 style="font-size: 24px;" id="word-realm-title">🔤 Word Realm — Spelling Library</h2>
+      </div>
+
+      <!-- Lesson Picker Section -->
+      <div class="spelling-lesson-picker" id="spelling-lesson-picker" style="margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 8px;">📚 Choose Lesson:</div>
+        <div class="lesson-cards-grid" id="spelling-lesson-grid" style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <!-- Rendered dynamically by JS -->
+        </div>
       </div>
 
       <!-- 3 Modes Tabs -->
@@ -225,9 +233,14 @@
             <img id="learn-image" src="content/page-22/images/author.svg" alt="Illustration" style="width: 140px; height: 140px; object-fit: contain; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 16px; border: 1px solid var(--border-glass);">
             <div style="flex: 1; min-width: 200px;">
               <p id="learn-definition" style="font-size: 18px; line-height: 1.5; color: white;">A person who writes books, stories, or articles.</p>
-              <button class="secondary-btn" id="btn-learn-speak-def" style="margin-top: 14px; height: 48px; font-size: 14px;">
-                <span>🔊 Listen to Definition</span>
-              </button>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
+                <button class="secondary-btn" id="btn-learn-speak-def" style="height: 48px; font-size: 14px;">
+                  <span>🔊 Listen to Definition</span>
+                </button>
+                <button class="primary-btn btn-tell-me-more" id="btn-tell-me-more" style="height: 48px; font-size: 14px; background: var(--grad-primary); padding: 0 16px;">
+                  <span>💡 Tell me more...</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -516,6 +529,37 @@
       <button class="realm-action-btn" id="btn-close-qr-modal" style="background: var(--grad-primary); width: 100%;">
         Done / Back ➔
       </button>
+    </div>
+  </div>
+
+  <!-- TELL ME MORE EXPANDED EXPLANATION MODAL -->
+  <div class="modal-overlay" id="modal-tell-me-more">
+    <div class="modal-card tell-me-more-card" style="max-width: 540px; text-align: left; max-height: 85vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px; margin-bottom: 16px;">
+        <h2 style="font-size: 28px; color: var(--text-highlight); font-weight: 900; margin: 0;" id="tell-me-more-word">Word</h2>
+        <button class="secondary-btn" id="btn-close-tell-me-more-x" style="height: 44px; width: 44px; min-width: 44px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">✖</button>
+      </div>
+      <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
+        <img id="tell-me-more-img" src="" alt="" style="width: 100px; height: 100px; object-fit: contain; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 14px; border: 1px solid var(--border-glass);">
+        <div>
+          <div style="font-size: 13px; color: #a5b4fc; font-weight: 700; text-transform: uppercase;">Short Definition</div>
+          <div id="tell-me-more-short-def" style="font-size: 16px; color: white; margin-top: 4px; line-height: 1.4;"></div>
+        </div>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); padding: 16px; border-radius: 14px; border: 1px solid var(--border-glass); margin-bottom: 14px;">
+        <div style="font-size: 13px; color: #38ef7d; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Expanded Explanation</div>
+        <p id="tell-me-more-explanation" style="font-size: 16px; line-height: 1.5; color: white; margin: 0;"></p>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); padding: 16px; border-radius: 14px; border: 1px solid var(--border-glass); margin-bottom: 20px;">
+        <div style="font-size: 13px; color: #f59e0b; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Example Sentence</div>
+        <blockquote id="tell-me-more-example" style="font-size: 16px; font-style: italic; color: #fef08a; margin: 0; padding-left: 12px; border-left: 3px solid #f59e0b;"></blockquote >
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap;">
+        <button class="secondary-btn" id="btn-tell-me-more-audio" style="height: 52px; flex: 1; min-width: 180px; touch-action: manipulation;">
+          <span>🔊 Listen to Definition</span>
+        </button>
+        <button class="primary-btn" id="btn-close-tell-me-more" style="height: 52px; padding: 0 28px; touch-action: manipulation;">Got It! ➔</button>
+      </div>
     </div>
   </div>
 

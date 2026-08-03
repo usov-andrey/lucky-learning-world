@@ -1,33 +1,60 @@
+// @task TASK-005
+// @ac AC-14 Active-Lesson Engine Behaviour
+// @ac AC-15 Safe Selection Fallback
+
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { SpellingEngine } from '../engine/spelling-engine.js';
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from '../content/spelling-catalog.js';
+import { PAGE_22_LESSON, SCHWA_ER_LESSON, getSpellingLesson } from '../content/spelling-catalog.js';
 
-test('SpellingCatalog loads Page 22 canonical deck with 18 words', () => {
-  const deck = getDeckById('page-22');
-  assert.equal(deck.id, 'page-22');
-  assert.equal(deck.pageLabel, 'Page 22');
-  assert.equal(deck.topic, 'Schwa ‹or›');
-  assert.equal(deck.words.length, 18);
-  assert.equal(deck.words[0].word, 'author');
-  assert.equal(deck.words[17].word, 'opportunity');
-  assert.equal(deck.words[15].image, 'content/page-22/images/escalator.jpg');
+test('TASK-005 AC-14: SpellingCatalog loads Page 22 and Schwa ‹er› canonical decks', () => {
+  const page22 = getSpellingLesson('page-22');
+  assert.equal(page22.id, 'page-22');
+  assert.equal(page22.pageLabel, 'Page 22');
+  assert.equal(page22.topic, 'Schwa ‹or›');
+  assert.equal(page22.words.length, 18);
+  assert.equal(page22.words[0].word, 'author');
+
+  const schwaEr = getSpellingLesson('schwa-er');
+  assert.equal(schwaEr.id, 'schwa-er');
+  assert.equal(schwaEr.pageLabel, 'Schwa ‹er›');
+  assert.equal(schwaEr.topic, 'Schwa ‹er›');
+  assert.equal(schwaEr.words.length, 18);
+  assert.equal(schwaEr.words[0].word, 'pattern');
+  assert.equal(schwaEr.words[17].word, 'temperature');
 });
 
-test('SpellingEngine Learn Mode navigation works', () => {
-  const engine = new SpellingEngine(PAGE_22_DECK, 'learn');
+test('TASK-005 AC-14: SpellingEngine Learn Mode works with active lesson and first-item Back guard', () => {
+  const engine = new SpellingEngine(SCHWA_ER_LESSON, 'learn');
   let current = engine.getCurrentLearnItem();
   assert.ok(current);
-  assert.equal(current.word, 'author');
+  assert.equal(current.word, 'pattern');
   assert.equal(current.index, 0);
+  assert.equal(current.total, 18);
+  assert.ok(current.extendedExplanation.length > 0);
+  assert.ok(current.exampleSentence.length > 0);
 
   current = engine.nextLearn();
-  assert.equal(current.word, 'error');
+  assert.equal(current.word, 'referee');
   assert.equal(current.index, 1);
 
   current = engine.prevLearn();
-  assert.equal(current.word, 'author');
+  assert.equal(current.word, 'pattern');
   assert.equal(current.index, 0);
+});
+
+test('TASK-005 AC-15: setLesson dynamically switches active lesson and resets engine state', () => {
+  const engine = new SpellingEngine(PAGE_22_LESSON, 'game');
+  engine.submitGameAnswer('author');
+  assert.equal(engine.currentIndex, 1);
+  assert.equal(engine.score, 10);
+
+  engine.setLesson(SCHWA_ER_LESSON);
+  assert.equal(engine.deck.id, 'schwa-er');
+  assert.equal(engine.currentIndex, 0);
+  assert.equal(engine.score, 0);
+  assert.equal(engine.history.length, 0);
+  assert.equal(engine.queue[0].word, 'pattern');
 });
 
 test('SpellingEngine Test Mode (Digital & Paper) handles submission & requeueing', () => {
@@ -137,4 +164,3 @@ test('AC-7.1 Disabled Navigation Guard: btnLearnPrev is disabled on index 0 and 
   assert.equal(app.elements.btnLearnPrev.style.opacity, "1");
   assert.equal(app.elements.btnLearnPrev.style.pointerEvents, "auto");
 });
-

@@ -35,7 +35,17 @@ import { ShareController } from "./engine/share-controller.js?v=20260727_v19";
 import { NarrativeEngine } from "./engine/narrative-engine.js?v=20260727_v19";
 
 import { LEVELS } from "./content/levels.js?v=20260727_v19";
-import { PAGE_22_DECK, SPELLING_DECKS, getDeckById } from "./content/spelling-catalog.js?v=20260727_v19";
+import {
+  PAGE_22_LESSON,
+  SCHWA_ER_LESSON,
+  SPELLING_LESSONS,
+  getSpellingLesson,
+  getSelectedSpellingLessonId,
+  setSelectedSpellingLessonId,
+  PAGE_22_DECK,
+  SPELLING_DECKS,
+  getDeckById
+} from "./content/spelling-catalog.js?v=20260727_v19";
 import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260727_v19";
 import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260727_v19";
 import { ThemeManager } from "./content/themes.js?v=20260727_v19";
@@ -147,7 +157,9 @@ export class AppController {
     this.settings = DEFAULT_SETTINGS;
     this.parentPin = localStorage.getItem(STORAGE_KEYS.PARENT_PIN) || "1234";
 
-    this.spellingEngine = new SpellingEngine(PAGE_22_DECK, "learn");
+    this.selectedLessonId = getSelectedSpellingLessonId();
+    const activeLesson = getSpellingLesson(this.selectedLessonId);
+    this.spellingEngine = new SpellingEngine(activeLesson, "learn");
     this.mathSession = null;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
@@ -255,6 +267,8 @@ export class AppController {
 
       // Word (Spelling)
       btnBackWord: document.getElementById("btn-back-from-word"),
+      wordRealmTitle: document.getElementById("word-realm-title"),
+      spellingLessonGrid: document.getElementById("spelling-lesson-grid"),
       spellingModeChips: document.getElementById("spelling-mode-chips"),
       spellingLearnContainer: document.getElementById("spelling-learn-container"),
       spellingTestContainer: document.getElementById("spelling-test-container"),
@@ -267,8 +281,20 @@ export class AppController {
       learnImage: document.getElementById("learn-image"),
       learnDefinition: document.getElementById("learn-definition"),
       btnLearnSpeakDef: document.getElementById("btn-learn-speak-def"),
+      btnTellMeMore: document.getElementById("btn-tell-me-more"),
       btnLearnPrev: document.getElementById("btn-learn-prev"),
       btnLearnNext: document.getElementById("btn-learn-next"),
+
+      // Tell Me More Modal Elements
+      modalTellMeMore: document.getElementById("modal-tell-me-more"),
+      tellMeMoreWord: document.getElementById("tell-me-more-word"),
+      tellMeMoreImg: document.getElementById("tell-me-more-img"),
+      tellMeMoreShortDef: document.getElementById("tell-me-more-short-def"),
+      tellMeMoreExplanation: document.getElementById("tell-me-more-explanation"),
+      tellMeMoreExample: document.getElementById("tell-me-more-example"),
+      btnTellMeMoreAudio: document.getElementById("btn-tell-me-more-audio"),
+      btnCloseTellMeMore: document.getElementById("btn-close-tell-me-more"),
+      btnCloseTellMeMoreX: document.getElementById("btn-close-tell-me-more-x"),
 
       // Test Mode Elements
       btnSubmodeDigital: document.getElementById("btn-submode-digital"),
@@ -613,12 +639,36 @@ export class AppController {
       });
     }
 
+    // Lesson Library Picker Grid
+    if (this.elements.spellingLessonGrid) {
+      this.elements.spellingLessonGrid.addEventListener("click", (e) => {
+        const card = e.target.closest("[data-lesson-id]");
+        if (!card) return;
+        const lessonId = card.dataset.lessonId;
+        this.selectSpellingLesson(lessonId);
+      });
+    }
+
     // Learn Mode Controls
     bindTouchClick(this.elements.btnLearnSpeakWord, () => {
       const item = this.spellingEngine.getCurrentLearnItem();
       if (item) playAudioFile(item.audio, item.word);
     });
     bindTouchClick(this.elements.btnLearnSpeakDef, () => {
+      const item = this.spellingEngine.getCurrentLearnItem();
+      if (item) playAudioFile(item.definitionAudio, item.definition);
+    });
+    bindTouchClick(this.elements.btnTellMeMore, () => {
+      const item = this.spellingEngine.getCurrentLearnItem();
+      if (item) this.openTellMeMoreModal(item);
+    });
+    bindTouchClick(this.elements.btnCloseTellMeMore, () => {
+      this.closeModal(this.elements.modalTellMeMore);
+    });
+    bindTouchClick(this.elements.btnCloseTellMeMoreX, () => {
+      this.closeModal(this.elements.modalTellMeMore);
+    });
+    bindTouchClick(this.elements.btnTellMeMoreAudio, () => {
       const item = this.spellingEngine.getCurrentLearnItem();
       if (item) playAudioFile(item.definitionAudio, item.definition);
     });
@@ -1053,7 +1103,41 @@ export class AppController {
   // --- WORD REALM (SPELLING) ---
   startWordRealm() {
     this.showScreen("word");
+    this.renderSpellingLessonPicker();
     this.switchSpellingMode("learn");
+  }
+
+  selectSpellingLesson(lessonId) {
+    const lesson = getSpellingLesson(lessonId);
+    this.selectedLessonId = lesson.id;
+    setSelectedSpellingLessonId(lesson.id);
+    this.spellingEngine.setLesson(lesson);
+    this.renderSpellingLessonPicker();
+    this.switchSpellingMode(this.spellingEngine.mode || "learn");
+  }
+
+  renderSpellingLessonPicker() {
+    if (!this.elements.spellingLessonGrid) return;
+    let html = "";
+    SPELLING_LESSONS.forEach(lesson => {
+      const isSelected = lesson.id === this.selectedLessonId;
+      const activeClass = isSelected ? "active" : "";
+      const badgeText = isSelected ? "Selected ✓" : "Select ➔";
+
+      html += `<button type="button" class="lesson-card ${activeClass}" data-lesson-id="${lesson.id}">
+        <div class="lesson-card-header">
+          <span class="lesson-card-topic">${lesson.topic}</span>
+          <span class="lesson-card-badge">${badgeText}</span>
+        </div>
+        <div class="lesson-card-meta">${lesson.pageLabel} • ${lesson.words.length} Words</div>
+      </button>`;
+    });
+    this.elements.spellingLessonGrid.innerHTML = html;
+
+    if (this.elements.wordRealmTitle) {
+      const activeLesson = getSpellingLesson(this.selectedLessonId);
+      this.elements.wordRealmTitle.textContent = `🔤 Word Realm — ${activeLesson.pageLabel} (${activeLesson.topic})`;
+    }
   }
 
   switchSpellingMode(mode) {
@@ -1070,7 +1154,8 @@ export class AppController {
     this.elements.spellingTestContainer.style.display = mode === "test" ? "block" : "none";
     this.elements.spellingGameContainer.style.display = mode === "game" ? "block" : "none";
 
-    this.emitNarrativeEvent("session.started", { realm: "spelling", mode, totalItems: 18 });
+    const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
+    this.emitNarrativeEvent("session.started", { realm: "spelling", mode, totalItems: totalWords });
 
     if (mode === "learn") this.renderSpellingLearn();
     else if (mode === "test") this.renderSpellingTest();
@@ -1081,11 +1166,18 @@ export class AppController {
     const item = this.spellingEngine.getCurrentLearnItem();
     if (!item) return;
 
+    const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
     this.elements.learnWordDisplay.textContent = item.word.toUpperCase();
-    this.elements.learnProgressText.textContent = `Word ${this.spellingEngine.currentIndex + 1} of ${PAGE_22_DECK.words.length}`;
+    this.elements.learnProgressText.textContent = `Word ${this.spellingEngine.currentIndex + 1} of ${totalWords}`;
     this.elements.learnImage.src = item.image;
-    this.elements.learnImage.alt = item.word;
+    this.elements.learnImage.alt = item.imageAlt || item.word;
     this.elements.learnDefinition.textContent = item.definition;
+
+    const badgeElem = this.elements.spellingLearnContainer ? this.elements.spellingLearnContainer.querySelector(".realm-badge") : null;
+    if (badgeElem) {
+      const activeLesson = getSpellingLesson(this.selectedLessonId);
+      badgeElem.textContent = `${activeLesson.pageLabel} • ${activeLesson.topic}`;
+    }
 
     const isFirstItem = this.spellingEngine.currentIndex === 0;
     if (this.elements.btnLearnPrev) {
@@ -1095,6 +1187,29 @@ export class AppController {
     }
 
     playAudioFile(item.audio, item.word);
+  }
+
+  openTellMeMoreModal(item) {
+    if (!item || !this.elements.modalTellMeMore) return;
+
+    if (this.elements.tellMeMoreWord) {
+      this.elements.tellMeMoreWord.textContent = item.word.toUpperCase();
+    }
+    if (this.elements.tellMeMoreImg) {
+      this.elements.tellMeMoreImg.src = item.image;
+      this.elements.tellMeMoreImg.alt = item.imageAlt || item.word;
+    }
+    if (this.elements.tellMeMoreShortDef) {
+      this.elements.tellMeMoreShortDef.textContent = item.definition;
+    }
+    if (this.elements.tellMeMoreExplanation) {
+      this.elements.tellMeMoreExplanation.textContent = item.extendedExplanation || item.definition;
+    }
+    if (this.elements.tellMeMoreExample) {
+      this.elements.tellMeMoreExample.textContent = item.exampleSentence ? `"${item.exampleSentence}"` : "";
+    }
+
+    this.openModal(this.elements.modalTellMeMore);
   }
 
   switchTestSubmode(submode) {
@@ -1113,39 +1228,42 @@ export class AppController {
       return;
     }
 
-    this.elements.testQuestionProgress.textContent = `Word ${this.spellingEngine.testIndex + 1} of ${PAGE_22_DECK.words.length}`;
+    const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
+    this.elements.testQuestionProgress.textContent = `Word ${this.spellingEngine.testIndex + 1} of ${totalWords}`;
     this.elements.testWordHint.textContent = `Hint: "${q.definition}"`;
     this.elements.digitalTestInput.value = "";
     this.elements.digitalFeedbackText.textContent = "";
     this.elements.paperRevealedWord.style.display = "none";
 
     playAudioFile(q.audio, q.targetWord);
-    this.emitNarrativeEvent("question.presented", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
+    this.emitNarrativeEvent("question.presented", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords });
   }
 
   handleDigitalTestSubmit() {
     const inputVal = this.elements.digitalTestInput.value.trim();
     if (!inputVal) return;
 
+    const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
     const res = this.spellingEngine.submitDigitalTestAnswer(inputVal);
     if (res.isCorrect) {
       this.elements.digitalFeedbackText.textContent = "Correct! ★";
       this.elements.digitalFeedbackText.style.color = "var(--color-success)";
 
       if ((this.spellingEngine.testIndex + 1) % 6 === 0) {
-        this.emitNarrativeEvent("milestone.reached", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
+        this.emitNarrativeEvent("milestone.reached", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords });
       } else {
-        this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
+        this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords });
       }
 
       setTimeout(() => {
         this.renderSpellingTest();
       }, 800);
     } else {
-      this.elements.digitalFeedbackText.textContent = `Not quite. Correct spelling: ${res.targetWord.toUpperCase()}`;
+      const targetStr = res.targetWord ? res.targetWord.toUpperCase() : "";
+      this.elements.digitalFeedbackText.textContent = `Not quite. Correct spelling: ${targetStr}`;
       this.elements.digitalFeedbackText.style.color = "var(--color-error)";
 
-      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18, requeued: true });
+      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords, requeued: true });
 
       setTimeout(() => {
         this.renderSpellingTest();
@@ -1154,11 +1272,12 @@ export class AppController {
   }
 
   handlePaperTestResult(isCorrect) {
+    const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
     this.spellingEngine.recordPaperTestResult(isCorrect);
     if (isCorrect) {
-      this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18 });
+      this.emitNarrativeEvent("answer.correct", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords });
     } else {
-      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: 18, requeued: true });
+      this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords, requeued: true });
     }
     this.renderSpellingTest();
   }
@@ -1179,14 +1298,15 @@ export class AppController {
       this.elements.wordMonsterImg.alt = pres.name;
     }
     if (pres && this.elements.wordMonsterName) {
-      this.elements.wordMonsterName.textContent = pres.name;
+      const activeLesson = getSpellingLesson(this.selectedLessonId);
+      this.elements.wordMonsterName.textContent = `${pres.name} (${activeLesson.pageLabel})`;
     }
 
-    const total = PAGE_22_DECK.words.length;
-    const curr = Math.min(total, this.spellingEngine.gameIndex + 1);
-    this.elements.wordQuestionProgress.textContent = `Monster ${curr} of ${total}`;
+    const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
+    const curr = Math.min(totalWords, this.spellingEngine.gameIndex + 1);
+    this.elements.wordQuestionProgress.textContent = `Monster ${curr} of ${totalWords}`;
 
-    const hpPct = Math.max(0, Math.min(100, Math.round((this.spellingEngine.gameMonsterHp / 3) * 100)));
+    const hpPct = Math.max(0, Math.min(100, Math.round((this.spellingEngine.gameMonsterHp / (this.spellingEngine.monsterMaxHp || 180)) * 100)));
     this.elements.wordMonsterHpBar.style.width = `${hpPct}%`;
 
     this.elements.wordHintText.textContent = `Hint: "${q.definition}"`;

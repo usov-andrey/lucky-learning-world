@@ -7,24 +7,39 @@ import { PAGE_22_DECK } from "../content/spelling-catalog.js";
 
 export class SpellingEngine {
   constructor(deck = PAGE_22_DECK, mode = "game") {
-    this.deck = deck;
+    this.deck = deck && deck.words ? deck : PAGE_22_DECK;
     this.mode = mode; // "learn", "test", "game"
     this.testSubMode = "digital"; // "paper" | "digital"
     this.currentIndex = 0;
     this.score = 0;
     this.stars = 0;
-    this.monsterMaxHp = (deck.words ? deck.words.length : 10) * 10;
+    this.monsterMaxHp = (this.deck.words ? this.deck.words.length : 10) * 10;
     this.monsterHp = this.monsterMaxHp;
-    this.queue = deck.words ? deck.words.slice() : [];
+    this.queue = this.deck.words ? this.deck.words.slice() : [];
     this.requeuedKeys = [];
     this.history = [];
     this.revealedWords = new Set();
+  }
+
+  setLesson(lesson) {
+    if (!lesson || !lesson.words) return;
+    this.deck = lesson;
+    this.monsterMaxHp = this.deck.words.length * 10;
+    this.reset();
+  }
+
+  setDeck(deck) {
+    this.setLesson(deck);
   }
 
   setMode(mode, testSubMode = "digital") {
     this.mode = mode;
     this.testSubMode = testSubMode;
     this.reset();
+  }
+
+  setTestSubmode(submode) {
+    this.testSubMode = submode;
   }
 
   reset() {
@@ -36,6 +51,24 @@ export class SpellingEngine {
     this.requeuedKeys = [];
     this.history = [];
     this.revealedWords.clear();
+  }
+
+  get testIndex() {
+    return this.currentIndex;
+  }
+
+  get gameIndex() {
+    return this.currentIndex;
+  }
+
+  get gameMonsterHp() {
+    return this.monsterHp;
+  }
+
+  currentWord() {
+    if (this.queue.length > 0) return this.queue[0];
+    if (this.deck.words && this.deck.words.length > 0) return this.deck.words[0];
+    return null;
   }
 
   // --- Learn Mode API ---
@@ -50,8 +83,10 @@ export class SpellingEngine {
       wordObj: item,
       word: item.word,
       definition: item.definition,
+      extendedExplanation: item.extendedExplanation || item.definition,
+      exampleSentence: item.exampleSentence || "",
       image: item.image,
-      imageAlt: item.imageAlt,
+      imageAlt: item.imageAlt || item.word,
       audio: item.audio,
       definitionAudio: item.definitionAudio,
       hint: item.hint
@@ -106,7 +141,7 @@ export class SpellingEngine {
 
   submitDigitalAnswer(input) {
     if (this.queue.length === 0) {
-      return { isCorrect: false, isFinished: true };
+      return { isCorrect: false, isFinished: true, targetWord: "" };
     }
 
     const currentItem = this.queue[0];
@@ -127,6 +162,47 @@ export class SpellingEngine {
       const insertIndex = Math.min(2, this.queue.length);
       this.queue.splice(insertIndex, 0, missedItem);
       this.requeuedKeys.push(targetWord);
+    }
+
+    const isFinished = this.queue.length === 0;
+    if (isFinished) {
+      const maxPossibleScore = this.deck.words.length * 10;
+      this.stars = Math.min(3, Math.max(1, Math.ceil((this.score / maxPossibleScore) * 3)));
+    }
+
+    return {
+      isCorrect,
+      score: this.score,
+      stars: this.stars,
+      isFinished,
+      remainingInQueue: this.queue.length,
+      targetWord
+    };
+  }
+
+  submitDigitalTestAnswer(input) {
+    return this.submitDigitalAnswer(input);
+  }
+
+  recordPaperTestResult(isCorrect) {
+    if (this.queue.length === 0) {
+      return { isFinished: true };
+    }
+
+    const currentItem = this.queue[0];
+    const targetWord = currentItem.word.toLowerCase();
+
+    if (isCorrect) {
+      this.score += 10;
+      this.queue.shift();
+      this.currentIndex += 1;
+      this.history.push({ word: targetWord, correct: true });
+    } else {
+      const missedItem = this.queue.shift();
+      const insertIndex = Math.min(2, this.queue.length);
+      this.queue.splice(insertIndex, 0, missedItem);
+      this.requeuedKeys.push(targetWord);
+      this.history.push({ word: targetWord, correct: false });
     }
 
     const isFinished = this.queue.length === 0;
@@ -166,10 +242,13 @@ export class SpellingEngine {
       [letters[i], letters[j]] = [letters[j], letters[i]];
     }
 
+    const scrambledTileObjs = letters.map((l, id) => ({ id: `${l}_${id}`, letter: l }));
+
     return {
       wordObj: item,
       targetWord: targetWord,
       tiles: letters,
+      scrambledTiles: scrambledTileObjs,
       hint: item.hint,
       audio: item.audio,
       definition: item.definition,
@@ -221,5 +300,9 @@ export class SpellingEngine {
       isFinished,
       remainingInQueue: this.queue.length
     };
+  }
+
+  submitGameWord(assembledWord) {
+    return this.submitGameAnswer(assembledWord);
   }
 }

@@ -1,9 +1,10 @@
 ---
 id: TASK-005
 title: "Multi-Lesson Spelling Library and Schwa er"
-status: PROPOSED
+status: COMPLETED
 version: v1.1.0
 created: 2026-07-29
+completed: 2026-08-03
 github_issue: null
 ---
 
@@ -110,26 +111,26 @@ media from third-party websites.
 
 ## 4. Acceptance criteria
 
-- [ ] **AC-10**: The catalog exposes Page 22 and Schwa ‹er› as distinct stable lesson
+- [x] **AC-10**: The catalog exposes Page 22 and Schwa ‹er› as distinct stable lesson
   records, preserves Page 22's 18-word content, and defaults to Page 22 when no valid
   stored lesson selection exists.
-- [ ] **AC-11**: The learner can select either lesson from the Spelling landing screen;
+- [x] **AC-11**: The learner can select either lesson from the Spelling landing screen;
   the chosen lesson persists locally and is used consistently by Game, Learn, and Test.
-- [ ] **AC-12**: All 18 Schwa ‹er› records have a local illustration, meaningful English
+- [x] **AC-12**: All 18 Schwa ‹er› records have a local illustration, meaningful English
   alt text, a concise definition, definition audio, an extended explanation, an example
   sentence, and a hint. Their word and definition audio play without a network request
   after the lesson has been cached.
-- [ ] **AC-13**: In Learn mode, the illustration and short definition are immediately
+- [x] **AC-13**: In Learn mode, the illustration and short definition are immediately
   available; **Tell me more** reliably reveals the longer explanation and example on
   desktop, tablet, and phone, with no disabled or no-op control.
-- [ ] **AC-14**: Navigation, progress, question counts, hints, word audio, definition
+- [x] **AC-14**: Navigation, progress, question counts, hints, word audio, definition
   audio, and Game letter tiles all use the active lesson. The Back button is disabled on
   word 1 for both lessons.
-- [ ] **AC-15**: A stale/unknown saved lesson id safely uses Page 22; switching lessons
+- [x] **AC-15**: A stale/unknown saved lesson id safely uses Page 22; switching lessons
   resets incomplete spelling state and never causes mixed words from two lessons.
-- [ ] **AC-16**: The lesson picker and expanded-explanation UI satisfy the project's
+- [x] **AC-16**: The lesson picker and expanded-explanation UI satisfy the project's
   touch-target, touch-event, modal-height, and English-only UI requirements.
-- [ ] **AC-17**: All new lesson assets are repository-local, are included in the PWA
+- [x] **AC-17**: All new lesson assets are repository-local, are included in the PWA
   cache strategy, and retain valid provenance/credit information.
 
 ## 5. Required test coverage

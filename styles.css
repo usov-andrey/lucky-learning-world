@@ -1144,3 +1144,89 @@ body.modal-open {
   font-weight: 600;
   margin-top: 8px;
 }
+
+/* Lesson Library Picker Styling (TASK-005) */
+.spelling-lesson-picker {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.lesson-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.lesson-card {
+  min-height: 64px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid var(--border-glass);
+  color: white;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: var(--trans-bounce);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  text-align: left;
+}
+
+.lesson-card * {
+  pointer-events: none;
+}
+
+.lesson-card:hover {
+  background: rgba(124, 93, 250, 0.2);
+  border-color: #7c5dfa;
+  transform: translateY(-2px);
+}
+
+.lesson-card.active {
+  background: linear-gradient(135deg, rgba(124, 93, 250, 0.35), rgba(46, 213, 115, 0.2));
+  border: 2px solid var(--border-glow);
+  box-shadow: 0 0 16px rgba(124, 93, 250, 0.4);
+}
+
+.lesson-card-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.lesson-card-topic {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-highlight);
+}
+
+.lesson-card-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #a5b4fc;
+}
+
+.lesson-card.active .lesson-card-badge {
+  background: var(--grad-success);
+  color: white;
+}
+
+.lesson-card-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.btn-tell-me-more * {
+  pointer-events: none;
+}
+

@@ -1,0 +1,10 @@
+<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="color">
+    <path fill="#3b82f6" d="M36 10 L58 20 V38 C58 50 36 62 36 62 C36 62 14 50 14 38 V20 Z"/>
+    <polygon points="36,24 39.5,31 47,32 41.5,37.5 43,45 36,41.5 29,45 30.5,37.5 25,32 32.5,31" fill="#f59e0b"/>
+  </g>
+  <g id="line">
+    <path fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M36 10 L58 20 V38 C58 50 36 62 36 62 C36 62 14 50 14 38 V20 Z"/>
+    <polygon points="36,24 39.5,31 47,32 41.5,37.5 43,45 36,41.5 29,45 30.5,37.5 25,32 32.5,31" fill="none" stroke="#000" stroke-width="2"/>
+  </g>
+</svg>
