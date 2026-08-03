@@ -57,6 +57,9 @@ if (args.version) {
 const taskId = args.task || 'TASK-001';
 console.log(`🚀 Release Automation: ${currentVer} ➔ ${newVer} (Task: ${taskId}, Dry Run: ${dryRun})`);
 
+const now = new Date();
+const buildTimeStr = now.toISOString().replace('T', ' ').substring(0, 16) + ' UTC';
+
 // 1. Target files to update
 const updates = [
   {
@@ -81,8 +84,8 @@ const updates = [
   },
   {
     file: 'index.html',
-    regex: /v\d+\.\d+\.\d+(-v\d+)?/g,
-    replace: `v${newVer}`
+    regex: /<span id="diag-build-version"[^>]*>[^<]+<\/span>/,
+    replace: `<span id="diag-build-version" style="color: #38ef7d; font-weight: 700;">v${newVer} (${buildTimeStr})</span>`
   }
 ];
 

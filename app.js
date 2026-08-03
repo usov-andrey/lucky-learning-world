@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260803_v1.1.0";
+} from "./engine/math-engine.js?v=v1.2.0";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260803_v1.1.0";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.2.0";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260803_v1.1.0";
+} from "./engine/progression.js?v=v1.2.0";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260803_v1.1.0";
+} from "./engine/reward-engine.js?v=v1.2.0";
 
-import { ShareController } from "./engine/share-controller.js?v=20260803_v1.1.0";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=20260803_v1.1.0";
+import { ShareController } from "./engine/share-controller.js?v=v1.2.0";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.2.0";
 
-import { LEVELS } from "./content/levels.js?v=20260803_v1.1.0";
+import { LEVELS } from "./content/levels.js?v=v1.2.0";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,15 +45,15 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=20260803_v1.1.0";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260803_v1.1.0";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260803_v1.1.0";
-import { ThemeManager } from "./content/themes.js?v=20260803_v1.1.0";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260803_v1.1.0";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260803_v1.1.0";
-import { ClientTelemetry } from "./telemetry.js?v=20260803_v1.1.0";
+} from "./content/spelling-catalog.js?v=v1.2.0";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.2.0";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.2.0";
+import { ThemeManager } from "./content/themes.js?v=v1.2.0";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.2.0";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.2.0";
+import { ClientTelemetry } from "./telemetry.js?v=v1.2.0";
 
-export const APP_VERSION = "v1.1.0";
+export const APP_VERSION = "v1.2.0";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let currentAudio = null;
@@ -1200,8 +1200,12 @@ export class AppController {
   }
 
   openTellMeMoreModal(item) {
+    console.log("💡 [LLW UI] openTellMeMoreModal requested for item:", item);
     const modalElem = this.elements.modalTellMeMore || document.getElementById("modal-tell-me-more");
-    if (!item || !modalElem) return;
+    if (!item || !modalElem) {
+      console.error("❌ [LLW UI Error] Target item or modal element missing:", { item, modalElem });
+      return;
+    }
 
     const wordElem = this.elements.tellMeMoreWord || document.getElementById("tell-me-more-word");
     const imgElem = this.elements.tellMeMoreImg || document.getElementById("tell-me-more-img");
@@ -1218,6 +1222,7 @@ export class AppController {
     if (expElem) expElem.textContent = item.extendedExplanation || item.definition || "";
     if (exElem) exElem.textContent = item.exampleSentence ? `"${item.exampleSentence}"` : "";
 
+    console.log("📖 [LLW UI] Populated modal elements for word:", item.word, "extendedExp:", item.extendedExplanation);
     this.openModal(modalElem);
   }
 
@@ -1454,6 +1459,7 @@ export class AppController {
     if (!modalElem) return;
     modalElem.style.display = "flex";
     modalElem.classList.add("active");
+    console.log("✨ [LLW Modal] Modal display set to flex & active:", modalElem.id);
   }
 
   closeModal(modalElem) {
@@ -1554,5 +1560,14 @@ export class AppController {
 if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     window.appController = new AppController();
+    window.LLW_DEBUG = {
+      app: window.appController,
+      openTellMeMore: () => {
+        const item = window.appController.spellingEngine.getCurrentLearnItem();
+        console.log("🛠️ [LLW Debug] Manual trigger openTellMeMore for item:", item);
+        window.appController.openTellMeMoreModal(item);
+      }
+    };
+    console.log(`🚀 [LLW System] App initialized successfully! Version: ${APP_VERSION}`);
   });
 }
