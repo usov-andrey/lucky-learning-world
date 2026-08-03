@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=20260727_v19";
+} from "./engine/math-engine.js?v=20260803_v1.1.0";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=20260727_v19";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=20260803_v1.1.0";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=20260727_v19";
+} from "./engine/progression.js?v=20260803_v1.1.0";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=20260727_v19";
+} from "./engine/reward-engine.js?v=20260803_v1.1.0";
 
-import { ShareController } from "./engine/share-controller.js?v=20260727_v19";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=20260727_v19";
+import { ShareController } from "./engine/share-controller.js?v=20260803_v1.1.0";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=20260803_v1.1.0";
 
-import { LEVELS } from "./content/levels.js?v=20260727_v19";
+import { LEVELS } from "./content/levels.js?v=20260803_v1.1.0";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,13 +45,13 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=20260727_v19";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260727_v19";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260727_v19";
-import { ThemeManager } from "./content/themes.js?v=20260727_v19";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260727_v19";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260727_v19";
-import { ClientTelemetry } from "./telemetry.js?v=20260728_v19.2";
+} from "./content/spelling-catalog.js?v=20260803_v1.1.0";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=20260803_v1.1.0";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=20260803_v1.1.0";
+import { ThemeManager } from "./content/themes.js?v=20260803_v1.1.0";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260803_v1.1.0";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260803_v1.1.0";
+import { ClientTelemetry } from "./telemetry.js?v=20260803_v1.1.0";
 
 export const APP_VERSION = "v1.1.0";
 
