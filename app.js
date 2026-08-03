@@ -414,6 +414,16 @@ export class AppController {
         else if (id === "nav-btn-pokedex") this.showScreen("pokedex");
         else if (id === "btn-parent-mode-header") this.openParentGate();
         else if (id === "btn-show-qr-header" || id === "btn-show-qr-victory") this.openQrModal();
+        else if (id === "btn-tell-me-more" || btn.classList.contains("btn-tell-me-more")) {
+          const item = this.spellingEngine.getCurrentLearnItem();
+          if (item) this.openTellMeMoreModal(item);
+        } else if (id === "btn-close-tell-me-more" || id === "btn-close-tell-me-more-x") {
+          const modal = this.elements.modalTellMeMore || document.getElementById("modal-tell-me-more");
+          this.closeModal(modal);
+        } else if (id === "btn-tell-me-more-audio") {
+          const item = this.spellingEngine.getCurrentLearnItem();
+          if (item) playAudioFile(item.definitionAudio, item.definition);
+        }
       });
     }
 
@@ -1190,26 +1200,25 @@ export class AppController {
   }
 
   openTellMeMoreModal(item) {
-    if (!item || !this.elements.modalTellMeMore) return;
+    const modalElem = this.elements.modalTellMeMore || document.getElementById("modal-tell-me-more");
+    if (!item || !modalElem) return;
 
-    if (this.elements.tellMeMoreWord) {
-      this.elements.tellMeMoreWord.textContent = item.word.toUpperCase();
-    }
-    if (this.elements.tellMeMoreImg) {
-      this.elements.tellMeMoreImg.src = item.image;
-      this.elements.tellMeMoreImg.alt = item.imageAlt || item.word;
-    }
-    if (this.elements.tellMeMoreShortDef) {
-      this.elements.tellMeMoreShortDef.textContent = item.definition;
-    }
-    if (this.elements.tellMeMoreExplanation) {
-      this.elements.tellMeMoreExplanation.textContent = item.extendedExplanation || item.definition;
-    }
-    if (this.elements.tellMeMoreExample) {
-      this.elements.tellMeMoreExample.textContent = item.exampleSentence ? `"${item.exampleSentence}"` : "";
-    }
+    const wordElem = this.elements.tellMeMoreWord || document.getElementById("tell-me-more-word");
+    const imgElem = this.elements.tellMeMoreImg || document.getElementById("tell-me-more-img");
+    const shortDefElem = this.elements.tellMeMoreShortDef || document.getElementById("tell-me-more-short-def");
+    const expElem = this.elements.tellMeMoreExplanation || document.getElementById("tell-me-more-explanation");
+    const exElem = this.elements.tellMeMoreExample || document.getElementById("tell-me-more-example");
 
-    this.openModal(this.elements.modalTellMeMore);
+    if (wordElem) wordElem.textContent = item.word ? item.word.toUpperCase() : "";
+    if (imgElem) {
+      imgElem.src = item.image || "";
+      imgElem.alt = item.imageAlt || item.word || "";
+    }
+    if (shortDefElem) shortDefElem.textContent = item.definition || "";
+    if (expElem) expElem.textContent = item.extendedExplanation || item.definition || "";
+    if (exElem) exElem.textContent = item.exampleSentence ? `"${item.exampleSentence}"` : "";
+
+    this.openModal(modalElem);
   }
 
   switchTestSubmode(submode) {
