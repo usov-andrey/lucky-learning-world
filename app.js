@@ -53,7 +53,7 @@ import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=20260727_v19";
 import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=20260727_v19";
 import { ClientTelemetry } from "./telemetry.js?v=20260728_v19.2";
 
-export const APP_VERSION = "v1.0.2";
+export const APP_VERSION = "v1.1.0";
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let currentAudio = null;
