@@ -100,6 +100,22 @@ for (const target of updates) {
   }
 }
 
+// 1b. Automatically update all ?v=... cache busters in index.html, app.js, and sw.js
+const cacheBusterFiles = ['index.html', 'app.js', 'sw.js'];
+for (const file of cacheBusterFiles) {
+  const filePath = path.join(rootDir, file);
+  if (fs.existsSync(filePath)) {
+    let content = fs.readFileSync(filePath, 'utf8');
+    const updatedContent = content.replace(/\?v=[^\s"'`>]+/g, `?v=v${newVer}`);
+    if (updatedContent !== content) {
+      if (!dryRun) {
+        fs.writeFileSync(filePath, updatedContent, 'utf8');
+      }
+      console.log(`  ✓ Updated cache busters in ${file} -> ?v=v${newVer}`);
+    }
+  }
+}
+
 // 2. Read task details if available
 let taskTitle = "Release Update";
 let acList = [];

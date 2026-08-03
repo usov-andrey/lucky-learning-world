@@ -1,9 +1,9 @@
 /**
- * Service Worker for Lucky's Learning World v2.0.0-v19
- * Uses Network-First strategy to guarantee instant updates on production!
+ * Service Worker for Lucky's Learning World v1.1.0
+ * Uses Network-First with forced HTTP cache bypass for scripts/styles to guarantee zero stale cache issues!
  */
 
-const CACHE_NAME = 'lucky-world-v2.1.0-v19.3';
+const CACHE_NAME = 'lucky-world-v1.1.0';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -14,7 +14,7 @@ self.addEventListener('activate', (e) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.map((key) => {
-          if (key.startsWith('lucky-world-') && key !== CACHE_NAME) {
+          if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })
@@ -29,9 +29,18 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Network-First with Cache Fallback for offline play
+  const url = new URL(e.request.url);
+  const isCodeOrMarkup = url.pathname.endsWith('.html') ||
+                         url.pathname.endsWith('.js') ||
+                         url.pathname.endsWith('.css') ||
+                         url.pathname.endsWith('/') ||
+                         url.pathname === '';
+
+  // Network-First with forced HTTP cache bypass for scripts/styles/html
+  const fetchOptions = isCodeOrMarkup ? { cache: 'no-cache' } : {};
+
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, fetchOptions)
       .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
           const clone = networkResponse.clone();

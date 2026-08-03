@@ -17,14 +17,14 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="themes.css?v=20260726_v18">
-  <link rel="stylesheet" href="styles.css?v=20260726_v18">
+  <link rel="stylesheet" href="themes.css?v=v1.1.0">
+  <link rel="stylesheet" href="styles.css?v=v1.1.0">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
       endpoint: "https://lucky-games-reporter.like-to-andrey.workers.dev", 
       channel: "stable", 
-      version: "2.0.0-v18" 
+      version: "v1.1.0" 
     };
 
     // PWA Service Worker Auto-Update & Auto-Reload Snippet
@@ -37,12 +37,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20260726_v18').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=v1.1.0').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=20260726_v18"></script>
+  <script src="reporter.js?v=v1.1.0"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
