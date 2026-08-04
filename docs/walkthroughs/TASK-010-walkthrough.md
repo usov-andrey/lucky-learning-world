@@ -15,4 +15,8 @@ The incorrect system-voice WAV assets for the `or-saying-er` lesson were replace
 
 - `npm test`: 93 tests passed.
 - `npm run test:coverage:gate`: passed with 76.35% line, 71.79% branch, and 64.93% function coverage.
-- Deployment verification will be recorded after the `v1.3.2` workflow completes.
+- Release commit: `c0bb784`.
+- GitHub Pages workflow `30906202023`: passed.
+- Quality and coverage workflow `30906202110`: passed.
+- Task index workflow `30906202132`: passed.
+- Production verification: index and catalog returned HTTP 200, `01_worm.mp3` returned HTTP 200 as audio, and the removed `01_worm.wav` returned HTTP 404.
