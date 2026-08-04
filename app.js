@@ -158,6 +158,21 @@ function numberToWord(n) {
   return n.toString();
 }
 
+export function getCharacterImgSrc(pres, defaultChar) {
+  if (pres) {
+    if (pres.image) return pres.image;
+    if (pres.assetPath) return pres.assetPath;
+    if (pres.art && pres.art.src) return pres.art.src;
+  }
+  if (defaultChar) {
+    if (defaultChar.image) return defaultChar.image;
+    if (defaultChar.assetPath) return defaultChar.assetPath;
+    if (defaultChar.art && defaultChar.art.src) return defaultChar.art.src;
+    if (defaultChar.pokemon) return `pokemon/${defaultChar.pokemon}.png`;
+  }
+  return "pokemon/pikachu.png";
+}
+
 // --- STATE MANAGEMENT ---
 const STORAGE_KEYS = {
   PLAYER: "lucky_learning_player",
@@ -338,6 +353,7 @@ export class AppController {
       btnPaperReveal: document.getElementById("btn-paper-reveal"),
       btnPaperCorrect: document.getElementById("btn-paper-correct"),
       btnPaperRetry: document.getElementById("btn-paper-retry"),
+      btnTestPrev: document.getElementById("btn-test-prev"),
 
       // Game Mode Elements
       wordMonsterHpBar: document.getElementById("word-monster-hp-bar"),
@@ -351,6 +367,7 @@ export class AppController {
       letterTilesBank: document.getElementById("letter-tiles-bank"),
       btnClearSpelling: document.getElementById("btn-clear-spelling"),
       btnSubmitSpelling: document.getElementById("btn-submit-spelling"),
+      btnGamePrev: document.getElementById("btn-game-prev"),
 
       // Pokédex
       btnBackPokedex: document.getElementById("btn-back-from-pokedex"),
@@ -741,6 +758,10 @@ export class AppController {
     });
     bindTouchClick(this.elements.btnPaperCorrect, () => this.handlePaperTestResult(true));
     bindTouchClick(this.elements.btnPaperRetry, () => this.handlePaperTestResult(false));
+    bindTouchClick(this.elements.btnTestPrev, () => {
+      this.spellingEngine.prevTest();
+      this.renderSpellingTest();
+    });
 
     // Game Mode Controls
     bindTouchClick(this.elements.btnSpeakWord, () => {
@@ -752,6 +773,10 @@ export class AppController {
       this.renderSpellingTiles();
     });
     bindTouchClick(this.elements.btnSubmitSpelling, () => this.handleSpellingGameSubmit());
+    bindTouchClick(this.elements.btnGamePrev, () => {
+      this.spellingEngine.prevGame();
+      this.renderSpellingGame();
+    });
 
     // Victory Modal Continue
     bindTouchClick(this.elements.btnVictoryContinue, () => {
@@ -801,7 +826,7 @@ export class AppController {
       const defaultChar = getCharacterById(charId);
       const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
       if (pres) {
-        this.elements.mathMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+        this.elements.mathMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
         this.elements.mathMonsterImg.alt = pres.name;
         if (this.elements.mathMonsterName) this.elements.mathMonsterName.textContent = pres.name;
       }
@@ -814,7 +839,7 @@ export class AppController {
       const defaultChar = getCharacterById(charId);
       const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
       if (pres) {
-        this.elements.wordMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+        this.elements.wordMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
         this.elements.wordMonsterImg.alt = pres.name;
         if (this.elements.wordMonsterName) this.elements.wordMonsterName.textContent = pres.name;
       }
@@ -907,7 +932,7 @@ export class AppController {
     const charId = this.player.starterPet || "embercub";
     const defaultChar = getCharacterById(charId);
     const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
-    const avatarPath = pres ? (pres.image || pres.assetPath) : (defaultChar ? defaultChar.image : "assets/embercub_base.svg");
+    const avatarPath = getCharacterImgSrc(pres, defaultChar);
 
     this.elements.headerPlayerAvatar.src = avatarPath;
 
@@ -1029,7 +1054,7 @@ export class AppController {
     const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
 
     if (pres && this.elements.mathMonsterImg) {
-      this.elements.mathMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+      this.elements.mathMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
       this.elements.mathMonsterImg.alt = pres.name;
     }
     if (pres && this.elements.mathMonsterName) {
@@ -1311,6 +1336,13 @@ export class AppController {
     this.elements.digitalFeedbackText.textContent = "";
     this.elements.paperRevealedWord.style.display = "none";
 
+    const isFirstTestItem = this.spellingEngine.testIndex === 0;
+    if (this.elements.btnTestPrev) {
+      this.elements.btnTestPrev.disabled = isFirstTestItem;
+      this.elements.btnTestPrev.style.opacity = isFirstTestItem ? "0.35" : "1";
+      this.elements.btnTestPrev.style.pointerEvents = isFirstTestItem ? "none" : "auto";
+    }
+
     playAudioFile(q.audio, q.targetWord);
     this.emitNarrativeEvent("question.presented", { realm: "spelling", itemIndex: this.spellingEngine.testIndex, totalItems: totalWords });
   }
@@ -1370,12 +1402,19 @@ export class AppController {
     const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
 
     if (pres && this.elements.wordMonsterImg) {
-      this.elements.wordMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+      this.elements.wordMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
       this.elements.wordMonsterImg.alt = pres.name;
     }
     if (pres && this.elements.wordMonsterName) {
       const activeLesson = getSpellingLesson(this.selectedLessonId);
       this.elements.wordMonsterName.textContent = `${pres.name} (${activeLesson.pageLabel})`;
+    }
+
+    const isFirstGameItem = this.spellingEngine.gameIndex === 0;
+    if (this.elements.btnGamePrev) {
+      this.elements.btnGamePrev.disabled = isFirstGameItem;
+      this.elements.btnGamePrev.style.opacity = isFirstGameItem ? "0.35" : "1";
+      this.elements.btnGamePrev.style.pointerEvents = isFirstGameItem ? "none" : "auto";
     }
 
     const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;

@@ -121,6 +121,21 @@ function numberToWord(n) {
   return n.toString();
 }
 
+export function getCharacterImgSrc(pres, defaultChar) {
+  if (pres) {
+    if (pres.image) return pres.image;
+    if (pres.assetPath) return pres.assetPath;
+    if (pres.art && pres.art.src) return pres.art.src;
+  }
+  if (defaultChar) {
+    if (defaultChar.image) return defaultChar.image;
+    if (defaultChar.assetPath) return defaultChar.assetPath;
+    if (defaultChar.art && defaultChar.art.src) return defaultChar.art.src;
+    if (defaultChar.pokemon) return `pokemon/${defaultChar.pokemon}.png`;
+  }
+  return "pokemon/pikachu.png";
+}
+
 // --- STATE MANAGEMENT ---
 const STORAGE_KEYS = {
   PLAYER: "lucky_learning_player",
@@ -284,6 +299,7 @@ export class AppController {
       btnPaperReveal: document.getElementById("btn-paper-reveal"),
       btnPaperCorrect: document.getElementById("btn-paper-correct"),
       btnPaperRetry: document.getElementById("btn-paper-retry"),
+      btnTestPrev: document.getElementById("btn-test-prev"),
 
       // Game Mode Elements
       wordMonsterHpBar: document.getElementById("word-monster-hp-bar"),
@@ -297,6 +313,7 @@ export class AppController {
       letterTilesBank: document.getElementById("letter-tiles-bank"),
       btnClearSpelling: document.getElementById("btn-clear-spelling"),
       btnSubmitSpelling: document.getElementById("btn-submit-spelling"),
+      btnGamePrev: document.getElementById("btn-game-prev"),
 
       // Pokédex
       btnBackPokedex: document.getElementById("btn-back-from-pokedex"),
@@ -655,6 +672,10 @@ export class AppController {
     });
     bindTouchClick(this.elements.btnPaperCorrect, () => this.handlePaperTestResult(true));
     bindTouchClick(this.elements.btnPaperRetry, () => this.handlePaperTestResult(false));
+    bindTouchClick(this.elements.btnTestPrev, () => {
+      this.spellingEngine.prevTest();
+      this.renderSpellingTest();
+    });
 
     // Game Mode Controls
     bindTouchClick(this.elements.btnSpeakWord, () => {
@@ -666,6 +687,10 @@ export class AppController {
       this.renderSpellingTiles();
     });
     bindTouchClick(this.elements.btnSubmitSpelling, () => this.handleSpellingGameSubmit());
+    bindTouchClick(this.elements.btnGamePrev, () => {
+      this.spellingEngine.prevGame();
+      this.renderSpellingGame();
+    });
 
     // Victory Modal Continue
     bindTouchClick(this.elements.btnVictoryContinue, () => {
@@ -715,7 +740,7 @@ export class AppController {
       const defaultChar = getCharacterById(charId);
       const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
       if (pres) {
-        this.elements.mathMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+        this.elements.mathMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
         this.elements.mathMonsterImg.alt = pres.name;
         if (this.elements.mathMonsterName) this.elements.mathMonsterName.textContent = pres.name;
       }
@@ -728,7 +753,7 @@ export class AppController {
       const defaultChar = getCharacterById(charId);
       const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
       if (pres) {
-        this.elements.wordMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+        this.elements.wordMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
         this.elements.wordMonsterImg.alt = pres.name;
         if (this.elements.wordMonsterName) this.elements.wordMonsterName.textContent = pres.name;
       }
@@ -1171,11 +1196,18 @@ export class AppController {
     const pres = ThemeManager.getCharacterPresentation(charId, defaultChar);
 
     if (pres && this.elements.wordMonsterImg) {
-      this.elements.wordMonsterImg.src = pres.image || pres.assetPath || defaultChar.image;
+      this.elements.wordMonsterImg.src = getCharacterImgSrc(pres, defaultChar);
       this.elements.wordMonsterImg.alt = pres.name;
     }
     if (pres && this.elements.wordMonsterName) {
       this.elements.wordMonsterName.textContent = pres.name;
+    }
+
+    const isFirstGameItem = this.spellingEngine.gameIndex === 0;
+    if (this.elements.btnGamePrev) {
+      this.elements.btnGamePrev.disabled = isFirstGameItem;
+      this.elements.btnGamePrev.style.opacity = isFirstGameItem ? "0.35" : "1";
+      this.elements.btnGamePrev.style.pointerEvents = isFirstGameItem ? "none" : "auto";
     }
 
     const total = PAGE_22_DECK.words.length;

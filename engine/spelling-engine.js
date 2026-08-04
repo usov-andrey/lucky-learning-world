@@ -139,6 +139,14 @@ export class SpellingEngine {
     return this.getCurrentTestQuestion();
   }
 
+  prevTest() {
+    if (this.currentIndex > 0) {
+      this.currentIndex -= 1;
+      this.queue = this.deck.words ? this.deck.words.slice(this.currentIndex) : [];
+    }
+    return this.getCurrentTestQuestion();
+  }
+
   submitDigitalAnswer(input) {
     if (this.queue.length === 0) {
       return { isCorrect: false, isFinished: true, targetWord: "" };
@@ -246,6 +254,7 @@ export class SpellingEngine {
 
     return {
       wordObj: item,
+      monsterId: item.monsterId,
       targetWord: targetWord,
       tiles: letters,
       scrambledTiles: scrambledTileObjs,
@@ -259,6 +268,14 @@ export class SpellingEngine {
       monsterHp: this.monsterHp,
       monsterMaxHp: this.monsterMaxHp
     };
+  }
+
+  prevGame() {
+    if (this.currentIndex > 0) {
+      this.currentIndex -= 1;
+      this.queue = this.deck.words ? this.deck.words.slice(this.currentIndex) : [];
+    }
+    return this.getCurrentGameQuestion();
   }
 
   submitGameAnswer(input) {
