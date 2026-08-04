@@ -206,3 +206,19 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-28] Verified Release and Deployment**:
   - The test suite and coverage gate MUST pass before release `v1.3.0` is committed and pushed to `master` for GitHub Pages deployment.
+
+---
+
+## 14. Approved Spelling Voice Standard (TASK-010)
+
+- **[AC-29] Correct Sonia Audio Replacement**:
+  - The `or-saying-er` lesson MUST use 18 word tracks and 18 definition tracks generated as MP3 with `en-GB-SoniaNeural` at rate `-15%`.
+  - The catalog MUST reference the approved MP3 tracks and the incorrect system-voice WAV tracks MUST NOT remain.
+
+- **[AC-30] Persistent Voice Safety Rule**:
+  - Lucky Learning World spelling audio MUST use `en-GB-SoniaNeural` by default.
+  - Audio generation MUST fail explicitly instead of silently falling back to an unapproved system voice.
+  - A sample MUST be approved before a different voice can be released.
+
+- **[AC-31] Verified Audio Fix Release**:
+  - Automated tests MUST verify voice configuration, asset integrity, and absence of legacy WAV tracks before release `v1.3.2` is committed and deployed.

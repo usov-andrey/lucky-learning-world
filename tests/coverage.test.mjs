@@ -1,7 +1,9 @@
 // @task TASK-002
 // @task TASK-008
+// @task TASK-010
 // @ac AC-8.2: Test Traceability & Legacy Waiver Enforcement
 // @ac AC-28: Verified release and deployment
+// @ac AC-30: Persistent Sonia voice safety rule
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -83,4 +85,19 @@ test('TASK-008 AC-28: release automation discovers slugged task files', () => {
   const releaseScript = fs.readFileSync(path.resolve(process.cwd(), 'scripts', 'release.mjs'), 'utf8');
   assert.match(releaseScript, /file\.startsWith\(`\$\{taskId\}-`\)/);
   assert.match(releaseScript, /CACHE_NAME[\s\S]+\['"\]\[\^'"\]\+\['"\]/);
+});
+
+test('TASK-010 AC-30: spelling audio generator is locked to approved Sonia voice without fallback', () => {
+  const generator = fs.readFileSync(path.resolve(process.cwd(), 'scripts', 'generate-spelling-audio.py'), 'utf8');
+  const rules = fs.readFileSync(path.resolve(process.cwd(), 'DEVELOPMENT_RULES.md'), 'utf8');
+  const manifest = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), 'content', 'or-saying-er', 'audio-manifest.json'), 'utf8'));
+
+  assert.match(generator, /APPROVED_VOICE\s*=\s*"en-GB-SoniaNeural"/);
+  assert.match(generator, /APPROVED_RATE\s*=\s*"-15%"/);
+  assert.doesNotMatch(generator, /System\.Speech|pyttsx3|gTTS/i);
+  assert.match(rules, /en-GB-SoniaNeural/);
+  assert.match(rules, /No Silent Fallback/);
+  assert.equal(manifest.voice, 'en-GB-SoniaNeural');
+  assert.equal(manifest.rate, '-15%');
+  assert.match(manifest.approval, /User approved/i);
 });

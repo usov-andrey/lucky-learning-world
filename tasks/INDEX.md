@@ -13,6 +13,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-006](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-006-harden-narrative-and-release-contracts.md) | Harden Narrative Event and PWA Release Contracts | PROPOSED | v1.0.4 | 0 ACs | `tests/narrative-engine.test.mjs` | - |
 | [TASK-007](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-007-simplify-and-personalize-the-child-dashboard.md) | Simplify and personalize the child dashboard | TESTED | v1.0.5 | 6 ACs | `tests/child-dashboard.test.mjs` | - |
 | [TASK-008](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-008-add-or-saying-er-spelling-lesson.md) | Add 'or' Saying /er/ Spelling Lesson | RELEASED | v1.3.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
+| [TASK-010](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-010-replace-incorrect-audio-with-sonia-neural-voice.md) | Replace Incorrect Audio with Sonia Neural Voice | TESTED | v1.3.2 | 3 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 
 ---
 

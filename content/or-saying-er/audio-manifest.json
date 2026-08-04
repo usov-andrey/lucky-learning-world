@@ -1,0 +1,26 @@
+{
+  "lessonId": "or-saying-er",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "User approved the Sonia British female sample on 2026-08-04.",
+  "words": [
+    { "word": "worm", "definition": "A long, thin animal with no legs that often lives in soil." },
+    { "word": "word", "definition": "A sound or group of letters that has meaning." },
+    { "word": "world", "definition": "The Earth and all the people, places, and things on it." },
+    { "word": "worst", "definition": "The least good or most unpleasant of all." },
+    { "word": "worker", "definition": "A person who does a job or performs useful work." },
+    { "word": "worse", "definition": "More bad, difficult, or unpleasant than something else." },
+    { "word": "workable", "definition": "Able to be done successfully or used effectively." },
+    { "word": "worthy", "definition": "Deserving respect, attention, or support." },
+    { "word": "worship", "definition": "To show deep love, honor, or respect, especially to a god." },
+    { "word": "fireworks", "definition": "Explosive devices that make bright colors and patterns in the sky." },
+    { "word": "worksheet", "definition": "A page of questions or activities for a learner to complete." },
+    { "word": "worthless", "definition": "Having no useful purpose or value." },
+    { "word": "workmanship", "definition": "The skill and care shown in making something." },
+    { "word": "worldliness", "definition": "Experience and practical knowledge about life and the world." },
+    { "word": "workforce", "definition": "All the people who work for a company, industry, or country." },
+    { "word": "worldwide", "definition": "Happening or existing in every part of the world." },
+    { "word": "worthwhile", "definition": "Worth the time, effort, or money spent on it." },
+    { "word": "worthlessness", "definition": "The state of having no useful purpose or value." }
+  ]
+}

@@ -1,7 +1,9 @@
 // @task TASK-005
 // @task TASK-008
+// @task TASK-010
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
+// @ac AC-29 Correct Sonia audio replacement
 // @ac AC-10 Lesson Catalog Default and Integrity
 // @ac AC-12 Complete Schwa ‹er› Learning Content
 // @ac AC-15 Safe Selection Fallback
@@ -39,7 +41,7 @@ test("TASK-005 AC-10 & AC-15: getSpellingLesson returns requested lesson or safe
   assert.equal(getSpellingLesson(null).id, "page-22");
 });
 
-test("TASK-008 AC-25 & AC-26: catalog exposes the complete 'or' saying /er/ lesson in photo order", () => {
+test("TASK-008 AC-25 & AC-26 and TASK-010 AC-29: catalog exposes complete Sonia-backed lesson content", () => {
   const expectedWords = [
     "worm", "word", "world", "worst", "worker", "worse", "workable", "worthy", "worship",
     "fireworks", "worksheet", "worthless", "workmanship", "worldliness", "workforce",
@@ -58,14 +60,37 @@ test("TASK-008 AC-25 & AC-26: catalog exposes the complete 'or' saying /er/ less
     assert.ok(item.hint, `Missing hint for ${item.word}`);
     assert.ok(item.imageAlt, `Missing image alt text for ${item.word}`);
     assert.match(item.image, /^content\/or-saying-er\/images\/.+\.svg$/);
-    assert.match(item.audio, /^content\/or-saying-er\/audio\/.+\.wav$/);
-    assert.match(item.definitionAudio, /^content\/or-saying-er\/audio\/definitions\/.+\.wav$/);
+    assert.match(item.audio, /^content\/or-saying-er\/audio\/.+\.mp3$/);
+    assert.match(item.definitionAudio, /^content\/or-saying-er\/audio\/definitions\/.+\.mp3$/);
     for (const assetPath of [item.image, item.audio, item.definitionAudio]) {
       const absoluteAssetPath = fileURLToPath(new URL(`../${assetPath}`, import.meta.url));
       assert.ok(fs.existsSync(absoluteAssetPath), `Missing local asset ${assetPath}`);
       assert.ok(fs.statSync(absoluteAssetPath).size > 0, `Empty local asset ${assetPath}`);
+      if (assetPath.endsWith(".mp3")) {
+        const header = fs.readFileSync(absoluteAssetPath).subarray(0, 3);
+        const hasId3Header = header.toString("ascii") === "ID3";
+        const hasMpegFrame = header[0] === 0xff && (header[1] & 0xe0) === 0xe0;
+        assert.ok(hasId3Header || hasMpegFrame, `Invalid MP3 header for ${assetPath}`);
+      }
     }
   });
+
+  const audioDirectory = fileURLToPath(new URL("../content/or-saying-er/audio/", import.meta.url));
+  const legacyWavFiles = fs.readdirSync(audioDirectory, { recursive: true })
+    .filter(name => String(name).toLowerCase().endsWith(".wav"));
+  assert.deepEqual(legacyWavFiles, [], "Incorrect legacy WAV tracks must not remain");
+
+  const manifestPath = fileURLToPath(new URL("../content/or-saying-er/audio-manifest.json", import.meta.url));
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  assert.deepEqual(
+    manifest.words.map(item => ({ word: item.word, definition: item.definition })),
+    OR_SAYING_ER_LESSON.words.map(item => ({ word: item.word, definition: item.definition })),
+    "Audio source manifest must exactly match catalog speech text"
+  );
+  const provenance = fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8");
+  assert.match(provenance, /en-GB-SoniaNeural/);
+  assert.match(provenance, /-15%/);
+  assert.match(provenance, /User approved/i);
 });
 
 test("TASK-005 AC-12: Schwa ‹er› words match canonical order and contain all mandatory content fields", () => {

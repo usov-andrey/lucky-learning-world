@@ -438,8 +438,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "A small worm wriggled through the damp soil after the rain.",
       image: "content/or-saying-er/images/worm.svg",
       imageAlt: "A pink earthworm wriggling through soil",
-      audio: "content/or-saying-er/audio/01_worm.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/01_worm.wav",
+      audio: "content/or-saying-er/audio/01_worm.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/01_worm.mp3",
       hint: "A long, legless animal that lives in soil"
     },
     {
@@ -449,8 +449,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Lucky learned how to spell a new word in class.",
       image: "content/or-saying-er/images/word.svg",
       imageAlt: "Letter blocks forming a word",
-      audio: "content/or-saying-er/audio/02_word.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/02_word.wav",
+      audio: "content/or-saying-er/audio/02_word.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/02_word.mp3",
       hint: "Letters or sounds joined to make meaning"
     },
     {
@@ -460,8 +460,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "People around the world celebrate many different festivals.",
       image: "content/or-saying-er/images/world.svg",
       imageAlt: "Planet Earth with blue oceans and green continents",
-      audio: "content/or-saying-er/audio/03_world.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/03_world.wav",
+      audio: "content/or-saying-er/audio/03_world.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/03_world.mp3",
       hint: "Earth and everything on it"
     },
     {
@@ -471,8 +471,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The worst part of the storm was the loud thunder.",
       image: "content/or-saying-er/images/worst.svg",
       imageAlt: "Three rating cards with the lowest one highlighted",
-      audio: "content/or-saying-er/audio/04_worst.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/04_worst.wav",
+      audio: "content/or-saying-er/audio/04_worst.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/04_worst.mp3",
       hint: "The least good of all"
     },
     {
@@ -482,8 +482,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The construction worker wore a bright safety helmet.",
       image: "content/or-saying-er/images/worker.svg",
       imageAlt: "A construction worker wearing a safety helmet",
-      audio: "content/or-saying-er/audio/05_worker.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/05_worker.wav",
+      audio: "content/or-saying-er/audio/05_worker.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/05_worker.mp3",
       hint: "A person who does a job"
     },
     {
@@ -493,8 +493,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The traffic became worse when the heavy rain began.",
       image: "content/or-saying-er/images/worse.svg",
       imageAlt: "Two weather cards showing one condition becoming worse",
-      audio: "content/or-saying-er/audio/06_worse.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/06_worse.wav",
+      audio: "content/or-saying-er/audio/06_worse.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/06_worse.mp3",
       hint: "More bad or unpleasant than another"
     },
     {
@@ -504,8 +504,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The team found a workable plan for finishing the project on time.",
       image: "content/or-saying-er/images/workable.svg",
       imageAlt: "A checklist beside a working gear",
-      audio: "content/or-saying-er/audio/07_workable.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/07_workable.wav",
+      audio: "content/or-saying-er/audio/07_workable.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/07_workable.mp3",
       hint: "Practical and able to succeed"
     },
     {
@@ -515,8 +515,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Protecting sea turtles is a worthy cause.",
       image: "content/or-saying-er/images/worthy.svg",
       imageAlt: "A gold medal with a star for a worthy achievement",
-      audio: "content/or-saying-er/audio/08_worthy.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/08_worthy.wav",
+      audio: "content/or-saying-er/audio/08_worthy.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/08_worthy.mp3",
       hint: "Deserving respect or support"
     },
     {
@@ -526,8 +526,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Families gathered at the temple to worship together.",
       image: "content/or-saying-er/images/worship.svg",
       imageAlt: "Hands joined respectfully beneath a glowing heart",
-      audio: "content/or-saying-er/audio/09_worship.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/09_worship.wav",
+      audio: "content/or-saying-er/audio/09_worship.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/09_worship.mp3",
       hint: "To show deep honor or religious devotion"
     },
     {
@@ -537,8 +537,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Colorful fireworks lit up the night sky at the festival.",
       image: "content/or-saying-er/images/fireworks.svg",
       imageAlt: "Colorful fireworks bursting in a night sky",
-      audio: "content/or-saying-er/audio/10_fireworks.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/10_fireworks.wav",
+      audio: "content/or-saying-er/audio/10_fireworks.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/10_fireworks.mp3",
       hint: "Bright celebration displays in the sky"
     },
     {
@@ -548,8 +548,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Lucky completed the math worksheet before lunch.",
       image: "content/or-saying-er/images/worksheet.svg",
       imageAlt: "A worksheet page with questions and a pencil",
-      audio: "content/or-saying-er/audio/11_worksheet.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/11_worksheet.wav",
+      audio: "content/or-saying-er/audio/11_worksheet.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/11_worksheet.mp3",
       hint: "A school page with activities to complete"
     },
     {
@@ -559,8 +559,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The broken token was worthless in the arcade machine.",
       image: "content/or-saying-er/images/worthless.svg",
       imageAlt: "A broken token marked with zero value",
-      audio: "content/or-saying-er/audio/12_worthless.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/12_worthless.wav",
+      audio: "content/or-saying-er/audio/12_worthless.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/12_worthless.mp3",
       hint: "Having no use or value"
     },
     {
@@ -570,8 +570,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The smooth wooden toy showed excellent workmanship.",
       image: "content/or-saying-er/images/workmanship.svg",
       imageAlt: "Careful hands crafting a wooden object with tools",
-      audio: "content/or-saying-er/audio/13_workmanship.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/13_workmanship.wav",
+      audio: "content/or-saying-er/audio/13_workmanship.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/13_workmanship.mp3",
       hint: "Skill and care used to make something"
     },
     {
@@ -581,8 +581,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Her travels gave her a worldliness that helped her understand new customs.",
       image: "content/or-saying-er/images/worldliness.svg",
       imageAlt: "A globe surrounded by books and travel symbols",
-      audio: "content/or-saying-er/audio/14_worldliness.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/14_worldliness.wav",
+      audio: "content/or-saying-er/audio/14_worldliness.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/14_worldliness.mp3",
       hint: "Practical knowledge gained from life experience"
     },
     {
@@ -592,8 +592,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The hospital workforce includes doctors, nurses, cooks, and cleaners.",
       image: "content/or-saying-er/images/workforce.svg",
       imageAlt: "A diverse group of workers standing together",
-      audio: "content/or-saying-er/audio/15_workforce.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/15_workforce.wav",
+      audio: "content/or-saying-er/audio/15_workforce.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/15_workforce.mp3",
       hint: "All the people working for an organization"
     },
     {
@@ -603,8 +603,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The song became popular worldwide.",
       image: "content/or-saying-er/images/worldwide.svg",
       imageAlt: "Planet Earth connected by lines around the globe",
-      audio: "content/or-saying-er/audio/16_worldwide.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/16_worldwide.wav",
+      audio: "content/or-saying-er/audio/16_worldwide.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/16_worldwide.mp3",
       hint: "Across the whole world"
     },
     {
@@ -614,8 +614,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "Practising every day was worthwhile when Lucky played the song beautifully.",
       image: "content/or-saying-er/images/worthwhile.svg",
       imageAlt: "A path leading to a shining star and finish flag",
-      audio: "content/or-saying-er/audio/17_worthwhile.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/17_worthwhile.wav",
+      audio: "content/or-saying-er/audio/17_worthwhile.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/17_worthwhile.mp3",
       hint: "Worth the time or effort"
     },
     {
@@ -625,8 +625,8 @@ export const OR_SAYING_ER_LESSON = {
       exampleSentence: "The expired coupon's worthlessness became clear at the checkout.",
       image: "content/or-saying-er/images/worthlessness.svg",
       imageAlt: "An expired coupon marked with zero value",
-      audio: "content/or-saying-er/audio/18_worthlessness.wav",
-      definitionAudio: "content/or-saying-er/audio/definitions/18_worthlessness.wav",
+      audio: "content/or-saying-er/audio/18_worthlessness.mp3",
+      definitionAudio: "content/or-saying-er/audio/definitions/18_worthlessness.mp3",
       hint: "The state of having no practical value"
     }
   ]
