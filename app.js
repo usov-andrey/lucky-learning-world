@@ -1440,8 +1440,9 @@ export class AppController {
 
     let slotsHtml = "";
     for (let i = 0; i < q.targetWord.length; i++) {
-      const letter = this.selectedLetterTiles[i] || "";
-      slotsHtml += `<div class="letter-slot ${letter ? 'filled' : ''}">${letter.toUpperCase()}</div>`;
+      const item = this.selectedLetterTiles[i];
+      const letterStr = item ? (typeof item === 'string' ? item : item.letter || '') : '';
+      slotsHtml += `<div class="letter-slot ${letterStr ? 'filled' : ''}">${letterStr.toUpperCase()}</div>`;
     }
     this.elements.wordSlotsRow.innerHTML = slotsHtml;
 
@@ -1456,7 +1457,8 @@ export class AppController {
 
     const btns = this.elements.letterTilesBank.querySelectorAll(".tile-btn");
     btns.forEach(b => {
-      b.addEventListener("click", () => {
+      b.addEventListener("click", (e) => {
+        if (e && typeof e.preventDefault === "function") e.preventDefault();
         const idx = parseInt(b.dataset.tileIdx, 10);
         const tileObj = q.scrambledTiles[idx];
         if (tileObj && !this.selectedLetterTiles.includes(tileObj)) {
@@ -1471,7 +1473,7 @@ export class AppController {
     const q = this.spellingEngine.getCurrentGameQuestion();
     if (!q) return;
 
-    const assembledWord = this.selectedLetterTiles.map(t => t.letter).join("").toLowerCase();
+    const assembledWord = this.selectedLetterTiles.map(t => (typeof t === 'string' ? t : t.letter || '')).join("").toLowerCase();
     const res = this.spellingEngine.submitGameWord(assembledWord);
 
     if (res.isCorrect) {

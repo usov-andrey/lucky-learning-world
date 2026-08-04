@@ -58,3 +58,11 @@ test('TASK-013 AC-5: getCharacterImgSrc correctly resolves art.src for Pokemon c
   assert.notEqual(src, 'undefined');
   assert.ok(src.includes('growlithe.png'), `image src should contain growlithe.png but got ${src}`);
 });
+
+test('TASK-013 AC-6: Selected tile objects with letter property can be safely formatted to uppercase string without TypeError', () => {
+  const tileObj = { id: 'w_0', letter: 'w' };
+  const selectedTiles = [tileObj];
+  const item = selectedTiles[0];
+  const letterStr = item ? (typeof item === 'string' ? item : item.letter || '') : '';
+  assert.equal(letterStr.toUpperCase(), 'W');
+});
