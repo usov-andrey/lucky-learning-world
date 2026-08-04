@@ -239,3 +239,34 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-35] 100% Verified Tests**:
   - Automated tests MUST verify modal opening, content population, backdrop closing, and single event execution.
+
+---
+
+## 16. Session Observability and Daily Anomaly Analysis (TASK-011)
+
+- **[AC-36] Complete Anonymous Sessions**:
+  - Every production page lifecycle MUST have an anonymous session identifier, ordered events, lifecycle markers, version metadata, and a reconstructable server-side timeline.
+
+- **[AC-37] Action and Outcome Traceability**:
+  - Every supported control activation MUST be logged once and correlated with exactly one completed, no-op, failed, or timed-out outcome and its semantic state transition.
+
+- **[AC-38] Multi-Press Diagnosis**:
+  - Repeated activation after an action produces no result MUST be detected automatically and include a redacted reproduction timeline.
+
+- **[AC-39] Invalid Render Detection**:
+  - Visible invalid values including `undefined`, `null`, `NaN`, `[object Object]`, empty required labels, and missing catalog references MUST create privacy-safe anomaly events.
+
+- **[AC-40] Reliable Telemetry Delivery**:
+  - Ordered batching, offline persistence, idempotent retry, page-hide flush, queue limits, delivery health counters, and failure isolation MUST be verified.
+
+- **[AC-41] Durable and Secure Ingestion**:
+  - The backend MUST validate, rate-limit, deduplicate, durably store, and expire events without exposing secrets or persisting source IP addresses.
+
+- **[AC-42] Daily Analysis**:
+  - A scheduled job MUST analyze every production session from the previous `Asia/Bangkok` day and create exactly one idempotent Markdown report with totals, rates, anomaly fingerprints, regressions, and redacted timelines.
+
+- **[AC-43] Child Privacy**:
+  - Automated allowlist and redaction tests MUST prove that names, PINs, answer text, query strings, raw local storage, IP addresses, and secrets are never persisted or reported.
+
+- **[AC-44] Production Verification**:
+  - A controlled smoke session MUST demonstrate normal, no-op, repeated, invalid-render, and synthetic-error paths from browser collection through the generated daily report before general rollout.
