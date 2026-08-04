@@ -1,0 +1,15 @@
+name = "lucky-games-reporter"
+main = "worker.js"
+compatibility_date = "2026-08-04"
+
+[vars]
+ALLOWED_ORIGINS = "https://usov-andrey.github.io,http://localhost:8000,http://127.0.0.1:8000"
+GITHUB_REPO = "usov-andrey/lucky-learning-world"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lucky-learning-observability"
+database_id = "REPLACE_AFTER_WRANGLER_D1_CREATE"
+
+[triggers]
+crons = ["0 20 * * *"]

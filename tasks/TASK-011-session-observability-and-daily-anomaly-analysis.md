@@ -1,7 +1,7 @@
 ---
 id: TASK-011
 title: "Session Observability and Daily Anomaly Analysis"
-status: PROPOSED
+status: RELEASED
 version: v1.4.0
 created: 2026-08-04
 github_issue: null
@@ -137,15 +137,15 @@ Allowed state must be an explicit allowlist of technical enums, counters, boolea
 
 ## 7. Acceptance criteria
 
-- [ ] **AC-36 — Complete anonymous sessions**: Every production page lifecycle has an anonymous `session_id`, ordered sequence numbers, lifecycle events, version information, and a reconstructable server-side timeline.
-- [ ] **AC-37 — Action/result traceability**: Every supported control activation is logged once with a stable target and correlated to exactly one completed, no-op, failed, or timed-out outcome plus semantic state transitions.
-- [ ] **AC-38 — Multi-press diagnosis**: A synthetic session where the first press produces no state change and the second press succeeds is automatically classified as repeated activation after no result, with a redacted reproduction timeline.
-- [ ] **AC-39 — Invalid render detection**: Automated tests prove that visible `undefined`, `null`, `NaN`, `[object Object]`, empty required labels, and missing catalog references create anomaly events without exposing surrounding DOM text.
-- [ ] **AC-40 — Reliable delivery**: Ordered batching, offline persistence, idempotent retry, page-hide flush, queue limits, telemetry health counters, and failure isolation are covered by deterministic tests.
-- [ ] **AC-41 — Durable and secure ingestion**: The backend validates schema, origin, batch size, rate, and idempotency; stores queryable sessions/events; applies retention; and never exposes secrets to the browser.
-- [ ] **AC-42 — Daily analysis**: A scheduled job analyzes every production session from the previous Bangkok day and creates exactly one idempotent Markdown report with totals, rates, fingerprints, regressions, and redacted timelines.
-- [ ] **AC-43 — Child privacy**: Automated allowlist/redaction tests prove that names, PINs, answer text, query strings, raw local storage, IP addresses, and secrets are never persisted or included in reports.
-- [ ] **AC-44 — Production verification**: A controlled production smoke session containing one normal action, one no-op, one repeated press, one invalid render, and one synthetic error appears correctly in storage and in a manually triggered daily report before general rollout.
+- [x] **AC-36 — Complete anonymous sessions**: Every production page lifecycle has an anonymous `session_id`, ordered sequence numbers, lifecycle events, version information, and a reconstructable server-side timeline.
+- [x] **AC-37 — Action/result traceability**: Every supported control activation is logged once with a stable target and correlated to exactly one completed, no-op, failed, or timed-out outcome plus semantic state transitions.
+- [x] **AC-38 — Multi-press diagnosis**: A synthetic session where the first press produces no state change and the second press succeeds is automatically classified as repeated activation after no result, with a redacted reproduction timeline.
+- [x] **AC-39 — Invalid render detection**: Automated tests prove that visible `undefined`, `null`, `NaN`, `[object Object]`, empty required labels, and missing catalog references create anomaly events without exposing surrounding DOM text.
+- [x] **AC-40 — Reliable delivery**: Ordered batching, offline persistence, idempotent retry, page-hide flush, queue limits, telemetry health counters, and failure isolation are covered by deterministic tests.
+- [x] **AC-41 — Durable and secure ingestion**: The backend validates schema, origin, batch size, rate, and idempotency; stores queryable sessions/events; applies retention; and never exposes secrets to the browser.
+- [x] **AC-42 — Daily analysis**: A scheduled job analyzes every production session from the previous Bangkok day and creates exactly one idempotent Markdown report with totals, rates, fingerprints, regressions, and redacted timelines.
+- [x] **AC-43 — Child privacy**: Automated allowlist/redaction tests prove that names, PINs, answer text, query strings, raw local storage, IP addresses, and secrets are never persisted or included in reports.
+- [x] **AC-44 — Production verification**: A controlled production smoke session containing one normal action, one no-op, one repeated press, one invalid render, and one synthetic error appears correctly in storage and in a manually triggered daily report before general rollout.
 
 ## 8. Required tests
 

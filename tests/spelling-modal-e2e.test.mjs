@@ -70,7 +70,7 @@ test("TASK-005 Diagnostic E2E: Build version and timestamp badge element exists 
 
   const badgeElem = window.document.getElementById("diag-build-version");
   assert.ok(badgeElem, "#diag-build-version element must exist in index.html");
-  assert.ok(badgeElem.textContent.startsWith("v1."), "Badge text must start with version string v1.");
+  assert.equal(badgeElem.textContent.trim(), "Loading current build…", "Static HTML must use the non-authoritative build placeholder");
 });
 
 // @task TASK-009
@@ -124,4 +124,3 @@ test("TASK-009 E2E: Tell me more button handles single execution on touch/click,
   modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
   assert.equal(modalTellMeMore.style.display, "none", "Modal must close on backdrop overlay click");
 });
-

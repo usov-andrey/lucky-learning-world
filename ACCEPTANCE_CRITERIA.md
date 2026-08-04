@@ -270,3 +270,16 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-44] Production Verification**:
   - A controlled smoke session MUST demonstrate normal, no-op, repeated, invalid-render, and synthetic-error paths from browser collection through the generated daily report before general rollout.
+
+---
+
+## 17. Single-Source Build Version and Date (TASK-012)
+
+- **[AC-45] Single Authoritative Build Metadata**:
+  - The application MUST render its diagnostic version and build time from one authoritative module; runtime code MUST NOT overwrite the release date with a hardcoded historical value.
+
+- **[AC-46] Release Automation Synchronization**:
+  - Release automation MUST update the authoritative version and UTC build timestamp together and all cache-buster/service-worker versions MUST match the same release.
+
+- **[AC-47] Exact Diagnostic Verification**:
+  - Automated tests MUST assert the exact diagnostic version/date source and fail when HTML placeholders, application metadata, telemetry metadata, or release cache versions diverge.

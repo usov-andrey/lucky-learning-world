@@ -58,7 +58,7 @@ const taskId = args.task || 'TASK-001';
 console.log(`🚀 Release Automation: ${currentVer} ➔ ${newVer} (Task: ${taskId}, Dry Run: ${dryRun})`);
 
 const now = new Date();
-const buildTimeStr = now.toISOString().replace('T', ' ').substring(0, 16) + ' UTC';
+const buildTimestamp = now.toISOString();
 
 // 1. Target files to update
 const updates = [
@@ -68,9 +68,14 @@ const updates = [
     replace: `"version": "${newVer}"`
   },
   {
-    file: 'app.js',
-    regex: /const\s+APP_VERSION\s*=\s*"[^"]+"/,
-    replace: `const APP_VERSION = "v${newVer}"`
+    file: 'build-info.js',
+    regex: /export\s+const\s+APP_VERSION\s*=\s*"[^"]+"/,
+    replace: `export const APP_VERSION = "v${newVer}"`
+  },
+  {
+    file: 'build-info.js',
+    regex: /export\s+const\s+BUILD_TIMESTAMP\s*=\s*"[^"]+"/,
+    replace: `export const BUILD_TIMESTAMP = "${buildTimestamp}"`
   },
   {
     file: 'sw.js',
@@ -81,11 +86,6 @@ const updates = [
     file: 'manifest.json',
     regex: /"version":\s*"[^"]+"/,
     replace: `"version": "${newVer}"`
-  },
-  {
-    file: 'index.html',
-    regex: /<span id="diag-build-version"[^>]*>[^<]+<\/span>/,
-    replace: `<span id="diag-build-version" style="color: #38ef7d; font-weight: 700;">v${newVer} (${buildTimeStr})</span>`
   }
 ];
 
@@ -148,9 +148,9 @@ ${acList.length > 0 ? acList.map(ac => `- ${ac}`).join('\n') : '- Verified all c
 
 ### 💻 Target Version Files Updated:
 - \`package.json\`: \`v${newVer}\`
-- \`app.js\`: \`APP_VERSION = "v${newVer}"\`
+- \`build-info.js\`: \`APP_VERSION = "v${newVer}"\`, \`BUILD_TIMESTAMP = "${buildTimestamp}"\`
 - \`sw.js\`: \`CACHE_NAME = "lucky-world-v${newVer}"\`
-- \`index.html\` & \`manifest.json\`
+- \`index.html\` cache busters & \`manifest.json\`
 
 ---
 `;

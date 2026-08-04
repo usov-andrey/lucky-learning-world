@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.3.2";
+} from "./engine/math-engine.js?v=v1.4.0";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.3.2";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.4.0";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.3.2";
+} from "./engine/progression.js?v=v1.4.0";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.3.2";
+} from "./engine/reward-engine.js?v=v1.4.0";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.3.2";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.3.2";
+import { ShareController } from "./engine/share-controller.js?v=v1.4.0";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.4.0";
 
-import { LEVELS } from "./content/levels.js?v=v1.3.2";
+import { LEVELS } from "./content/levels.js?v=v1.4.0";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,15 +45,16 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.3.2";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.3.2";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.3.2";
-import { ThemeManager } from "./content/themes.js?v=v1.3.2";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.3.2";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.3.2";
-import { ClientTelemetry } from "./telemetry.js?v=v1.3.2";
+} from "./content/spelling-catalog.js?v=v1.4.0";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.4.0";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.4.0";
+import { ThemeManager } from "./content/themes.js?v=v1.4.0";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.4.0";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.4.0";
+import { ClientTelemetry } from "./telemetry.js?v=v1.4.0";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.4.0";
 
-export const APP_VERSION = "v1.3.2";
+export { APP_VERSION, BUILD_TIMESTAMP };
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let currentAudio = null;
@@ -76,17 +77,24 @@ function stopSpeechAndAudio() {
 }
 
 function speakText(text) {
-  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  if (typeof window === "undefined" || !window.speechSynthesis) {
+    ClientTelemetry.emit("audio.failed", { reason: "speech-synthesis-unavailable", audio_kind: "tts" });
+    ClientTelemetry.actionFailed("speech-synthesis-unavailable");
+    return;
+  }
   stopSpeechAndAudio();
 
   try {
-    const u = new SpeechSynthesisUtterance(text);
+    const u = new window.SpeechSynthesisUtterance(text);
     u.lang = "en-US";
     u.rate = 0.9;
     currentSynthUtterance = u;
     window.speechSynthesis.speak(u);
+    ClientTelemetry.transition("audio", "requested", "tts-started", { audio_kind: "tts" });
   } catch (e) {
     console.warn("TTS fail:", e);
+    ClientTelemetry.emit("audio.failed", { reason: "speech-synthesis-error", audio_kind: "tts" });
+    ClientTelemetry.actionFailed("speech-synthesis-error");
   }
 }
 
@@ -95,21 +103,40 @@ function playAudioFile(audioPath, fallbackText) {
 
   if (!audioPath) {
     if (fallbackText) speakText(fallbackText);
+    else ClientTelemetry.actionNoop("missing-audio-path");
     return;
   }
 
   try {
     const a = new Audio(audioPath);
     currentAudio = a;
+    ClientTelemetry.emit("audio.requested", {
+      audio_kind: "file",
+      resource_path: String(audioPath).split("?")[0]
+    });
+    a.addEventListener("playing", () => {
+      ClientTelemetry.transition("audio", "requested", "playing", { audio_kind: "file" });
+    }, { once: true });
+    a.addEventListener("error", () => {
+      ClientTelemetry.emit("resource.failed", {
+        resource_kind: "audio",
+        resource_path: String(audioPath).split("?")[0]
+      });
+      ClientTelemetry.actionFailed("audio-load-failed");
+    }, { once: true });
     const playPromise = a.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {
         console.warn("Audio file play failed, fallback to TTS:", err);
+        ClientTelemetry.emit("audio.failed", { reason: "play-promise-rejected", audio_kind: "file" });
         if (fallbackText) speakText(fallbackText);
+        else ClientTelemetry.actionFailed("audio-play-failed");
       });
     }
   } catch (e) {
+    ClientTelemetry.emit("audio.failed", { reason: "audio-construction-error", audio_kind: "file" });
     if (fallbackText) speakText(fallbackText);
+    else ClientTelemetry.actionFailed("audio-construction-error");
   }
 }
 
@@ -374,7 +401,7 @@ export class AppController {
       document.getElementById("modal-app-version").textContent = APP_VERSION;
     }
     if (document.getElementById("diag-build-version")) {
-      document.getElementById("diag-build-version").textContent = `${APP_VERSION} (2026-07-27)`;
+      document.getElementById("diag-build-version").textContent = formatBuildLabel();
     }
   }
 
@@ -808,8 +835,19 @@ export class AppController {
   }
 
   emitNarrativeEvent(type, context = {}) {
+    const previousType = this.lastNarrativeEvent?.type || "none";
     const event = { type, context };
     this.lastNarrativeEvent = event;
+    ClientTelemetry.transition("game-event", previousType, type, {
+      event_type: type,
+      realm: context.realm,
+      mode: context.mode,
+      level_id: context.level,
+      item_index: context.itemIndex,
+      total_items: context.totalItems,
+      requeued: Boolean(context.requeued),
+      character_id: context.characterId
+    });
     const vm = NarrativeEngine.resolveViewModel(event, ThemeManager.getTheme());
     this.renderNarrativeViewModel(vm);
   }
@@ -883,6 +921,11 @@ export class AppController {
   }
 
   showScreen(screenKey) {
+    const previousScreen = Object.entries(this.elements.screens)
+      .find(([, screen]) => screen?.classList.contains("active"))?.[0] || "unknown";
+    if (previousScreen === screenKey) {
+      ClientTelemetry.actionNoop("already-active");
+    }
     Object.entries(this.elements.screens).forEach(([k, screen]) => {
       if (screen) {
         if (k === screenKey) screen.classList.add("active");
@@ -900,6 +943,10 @@ export class AppController {
 
     if (screenKey === "pokedex") {
       this.renderPokedex();
+    }
+
+    if (previousScreen !== screenKey) {
+      ClientTelemetry.transition("screen", previousScreen, screenKey);
     }
 
     this.checkToastBannerVisibility();
@@ -1116,10 +1163,13 @@ export class AppController {
   }
 
   selectSpellingLesson(lessonId) {
+    const previousLessonId = this.selectedLessonId || "unknown";
     const lesson = getSpellingLesson(lessonId);
     this.selectedLessonId = lesson.id;
     setSelectedSpellingLessonId(lesson.id);
     this.spellingEngine.setLesson(lesson);
+    if (previousLessonId === lesson.id) ClientTelemetry.actionNoop("already-active");
+    else ClientTelemetry.transition("lesson", previousLessonId, lesson.id, { lesson_id: lesson.id });
     this.renderSpellingLessonPicker();
     this.switchSpellingMode(this.spellingEngine.mode || "learn");
   }
@@ -1149,6 +1199,7 @@ export class AppController {
   }
 
   switchSpellingMode(mode) {
+    const previousMode = this.spellingEngine.mode || "unknown";
     this.spellingEngine.setMode(mode);
 
     if (this.elements.spellingModeChips) {
@@ -1164,6 +1215,8 @@ export class AppController {
 
     const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
     this.emitNarrativeEvent("session.started", { realm: "spelling", mode, totalItems: totalWords });
+    if (previousMode === mode) ClientTelemetry.actionNoop("already-active");
+    else ClientTelemetry.transition("mode", previousMode, mode, { mode, total_items: totalWords });
 
     if (mode === "learn") this.renderSpellingLearn();
     else if (mode === "test") this.renderSpellingTest();
@@ -1175,6 +1228,8 @@ export class AppController {
     if (!item) return;
 
     const totalWords = this.spellingEngine.deck.words ? this.spellingEngine.deck.words.length : 18;
+    const previousItemIndex = this.telemetryLearnIndex ?? -1;
+    this.telemetryLearnIndex = this.spellingEngine.currentIndex;
     this.elements.learnWordDisplay.textContent = item.word.toUpperCase();
     this.elements.learnProgressText.textContent = `Word ${this.spellingEngine.currentIndex + 1} of ${totalWords}`;
     this.elements.learnImage.src = item.image;
@@ -1192,6 +1247,15 @@ export class AppController {
       this.elements.btnLearnPrev.disabled = isFirstItem;
       this.elements.btnLearnPrev.style.opacity = isFirstItem ? "0.35" : "1";
       this.elements.btnLearnPrev.style.pointerEvents = isFirstItem ? "none" : "auto";
+    }
+
+    if (previousItemIndex !== this.spellingEngine.currentIndex) {
+      ClientTelemetry.transition("item", previousItemIndex, this.spellingEngine.currentIndex, {
+        mode: "learn",
+        item_index: this.spellingEngine.currentIndex,
+        total_items: totalWords,
+        lesson_id: this.selectedLessonId
+      });
     }
 
     playAudioFile(item.audio, item.word);
@@ -1454,16 +1518,28 @@ export class AppController {
 
   // --- MODALS & PARENT GATE ---
   openModal(modalElem) {
-    if (!modalElem) return;
+    if (!modalElem) {
+      ClientTelemetry.actionFailed("missing-modal");
+      return;
+    }
+    const wasOpen = modalElem.classList.contains("active") || modalElem.style.display === "flex";
     modalElem.style.display = "flex";
     modalElem.classList.add("active");
+    if (wasOpen) ClientTelemetry.actionNoop("already-active");
+    else ClientTelemetry.transition("modal", "closed", modalElem.id || "modal");
     console.log("✨ [LLW Modal] Modal display set to flex & active:", modalElem.id);
   }
 
   closeModal(modalElem) {
-    if (!modalElem) return;
+    if (!modalElem) {
+      ClientTelemetry.actionFailed("missing-modal");
+      return;
+    }
+    const wasOpen = modalElem.classList.contains("active") || modalElem.style.display === "flex";
     modalElem.style.display = "none";
     modalElem.classList.remove("active");
+    if (wasOpen) ClientTelemetry.transition("modal", modalElem.id || "modal", "closed");
+    else ClientTelemetry.actionNoop("already-closed");
     this.checkToastBannerVisibility();
   }
 
@@ -1483,6 +1559,7 @@ export class AppController {
       this.openModal(this.elements.parentSettingsModal);
       this.syncParentThemeRadioUi();
     } else {
+      ClientTelemetry.actionNoop("invalid-state");
       this.elements.parentGateError.style.display = "block";
       this.elements.parentGateInput.value = "";
     }

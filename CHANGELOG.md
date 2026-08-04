@@ -1,5 +1,13 @@
 # Changelog & Release Notes
 
+## Release v1.4.0 (2026-08-04) — [TASK-011, TASK-012] Session Observability and Correct Build Date
+
+- Fixed the stale runtime build date with one authoritative version/timestamp module.
+- Added anonymous interaction/session telemetry, D1 storage, anomaly detection, and daily Bangkok-time reports.
+- Added privacy, ingestion, analyzer, delivery, and exact build-metadata tests.
+
+---
+
 ## Release v1.3.2 (2026-08-04) — [TASK-010] Replace Incorrect Audio with Sonia Neural Voice
 
 ### Acceptance Criteria Satisfied
