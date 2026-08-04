@@ -11,4 +11,6 @@
 
 - `npm test`: 91 tests passed.
 - `npm run test:coverage:gate`: passed with 76.35% line, 71.79% branch, and 64.93% function coverage.
-- Final release, push, and GitHub Pages deployment verification remain pending.
+- Release commit `7a1e1e9` was pushed to `master`.
+- GitHub Pages workflow run `30900859103` completed successfully.
+- Production verification returned HTTP 200 for `app.js`, the new spelling catalog, and `01_worm.wav`; the deployed catalog contains `or-saying-er` and `worthlessness`.

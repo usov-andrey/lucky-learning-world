@@ -1,7 +1,7 @@
 ---
 id: TASK-008
 title: "Add 'or' Saying /er/ Spelling Lesson"
-status: TESTED
+status: RELEASED
 version: v1.3.0
 created: 2026-08-04
 github_issue: null
@@ -20,7 +20,7 @@ Canonical word order: `worm`, `word`, `world`, `worst`, `worker`, `worse`, `work
 - [x] **AC-25**: The spelling catalog exposes a stable `or-saying-er` lesson containing exactly the 18 photographed words in the photographed order, without changing the default lesson or removing existing lessons.
 - [x] **AC-26**: Every new word has a child-friendly definition, expanded explanation, example sentence, hint, meaningful alt text, repository-local SVG illustration, local word audio, and local definition audio.
 - [x] **AC-27**: The new lesson appears in the existing lesson picker, persists when selected, and drives Learn, Game, and Test through the shared dynamic spelling engine.
-- [ ] **AC-28**: The full automated test suite and coverage gate pass, release `v1.3.0` is committed, pushed to `master`, and the GitHub Pages deployment completes successfully.
+- [x] **AC-28**: The full automated test suite and coverage gate pass, release `v1.3.0` is committed, pushed to `master`, and the GitHub Pages deployment completes successfully.
 
 ## 3. Test coverage
 
