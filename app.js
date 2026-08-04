@@ -385,7 +385,10 @@ export class AppController {
       const execute = (e) => {
         if (handled) return;
         handled = true;
-        setTimeout(() => { handled = false; }, 300);
+        setTimeout(() => { handled = false; }, 350);
+        if (e && typeof e.stopPropagation === "function") {
+          e.stopPropagation();
+        }
         handler(e);
       };
 
@@ -397,9 +400,14 @@ export class AppController {
       element.addEventListener("click", execute);
     };
 
-    // Global Event Delegate
+    // Global Event Delegate & Modal Backdrop Click Handler
     if (typeof document !== "undefined") {
       document.addEventListener("click", (e) => {
+        if (e.target && e.target.classList && e.target.classList.contains("modal-overlay")) {
+          this.closeModal(e.target);
+          return;
+        }
+
         const btn = e.target.closest("button, .realm-action-btn, .chip-btn, .answer-btn, .tile-btn, .nav-item, .back-btn, .header-action-btn");
         if (!btn) return;
 
@@ -414,16 +422,6 @@ export class AppController {
         else if (id === "nav-btn-pokedex") this.showScreen("pokedex");
         else if (id === "btn-parent-mode-header") this.openParentGate();
         else if (id === "btn-show-qr-header" || id === "btn-show-qr-victory") this.openQrModal();
-        else if (id === "btn-tell-me-more" || btn.classList.contains("btn-tell-me-more")) {
-          const item = this.spellingEngine.getCurrentLearnItem();
-          if (item) this.openTellMeMoreModal(item);
-        } else if (id === "btn-close-tell-me-more" || id === "btn-close-tell-me-more-x") {
-          const modal = this.elements.modalTellMeMore || document.getElementById("modal-tell-me-more");
-          this.closeModal(modal);
-        } else if (id === "btn-tell-me-more-audio") {
-          const item = this.spellingEngine.getCurrentLearnItem();
-          if (item) playAudioFile(item.definitionAudio, item.definition);
-        }
       });
     }
 

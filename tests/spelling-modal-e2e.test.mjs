@@ -72,3 +72,56 @@ test("TASK-005 Diagnostic E2E: Build version and timestamp badge element exists 
   assert.ok(badgeElem, "#diag-build-version element must exist in index.html");
   assert.ok(badgeElem.textContent.startsWith("v1."), "Badge text must start with version string v1.");
 });
+
+// @task TASK-009
+// @ac AC-32 Single Execution Touch & Click
+// @ac AC-33 Touch Target & Instant Response
+// @ac AC-34 Tell Me More Modal Content & Backdrop Closing
+// @ac AC-35 100% Verified Tests
+test("TASK-009 E2E: Tell me more button handles single execution on touch/click, supports backdrop click, and enforces touch-action", async () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+  localStorage.clear();
+
+  const { AppController } = await import(`../app.js?task009_modal_e2e=${Date.now()}`);
+  const app = new AppController();
+
+  app.selectSpellingLesson("or-saying-er");
+  app.switchSpellingMode("learn");
+
+  const btnTellMeMore = document.getElementById("btn-tell-me-more");
+  const modalTellMeMore = document.getElementById("modal-tell-me-more");
+  const wordElem = document.getElementById("tell-me-more-word");
+
+  assert.ok(btnTellMeMore, "btn-tell-me-more must exist");
+  assert.equal(btnTellMeMore.style.touchAction, "manipulation", "btn-tell-me-more must have touch-action: manipulation inline or in CSS");
+
+  // Track number of times openTellMeMoreModal is called
+  let callCount = 0;
+  const originalOpen = app.openTellMeMoreModal.bind(app);
+  app.openTellMeMoreModal = (item) => {
+    callCount++;
+    originalOpen(item);
+  };
+
+  // Simulate touch pointerdown followed by click event
+  const pointerEvent = new window.PointerEvent("pointerdown", { bubbles: true, cancelable: true, pointerType: "touch" });
+  const clickEvent = new window.MouseEvent("click", { bubbles: true, cancelable: true });
+
+  btnTellMeMore.dispatchEvent(pointerEvent);
+  btnTellMeMore.dispatchEvent(clickEvent);
+
+  assert.equal(callCount, 1, "openTellMeMoreModal must be called exactly ONCE despite touch pointerdown + click sequence");
+  assert.equal(modalTellMeMore.style.display, "flex", "Modal must display as flex");
+  assert.equal(wordElem.textContent, "WORM");
+
+  // Test closing via backdrop click on .modal-overlay
+  modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "none", "Modal must close on backdrop overlay click");
+});
+

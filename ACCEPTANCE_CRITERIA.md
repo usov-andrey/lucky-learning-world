@@ -222,3 +222,20 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-31] Verified Audio Fix Release**:
   - Automated tests MUST verify voice configuration, asset integrity, and absence of legacy WAV tracks before release `v1.3.2` is committed and deployed.
+
+---
+
+## 15. Fix "Tell me more..." Modal Button & Touch Latency (TASK-009)
+
+- **[AC-32] Single Execution Touch & Click**:
+  - Clicking or tapping `#btn-tell-me-more` MUST trigger `openTellMeMoreModal()` exactly ONCE without duplicate execution or event bubbling race conditions.
+
+- **[AC-33] Touch Target & Instant Response**:
+  - `#btn-tell-me-more` MUST have `touch-action: manipulation;` set in CSS/HTML and adhere to touch target size standards.
+
+- **[AC-34] Tell Me More Modal Content & Backdrop Closing**:
+  - Opening the modal MUST populate the target word, illustration image, short definition, expanded explanation, example sentence, and audio button (`#btn-tell-me-more-audio`).
+  - Tapping `#btn-close-tell-me-more`, `#btn-close-tell-me-more-x`, or tapping the backdrop overlay MUST close the modal reliably.
+
+- **[AC-35] 100% Verified Tests**:
+  - Automated tests MUST verify modal opening, content population, backdrop closing, and single event execution.

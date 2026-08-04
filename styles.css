@@ -1233,7 +1233,12 @@ body.modal-open {
   margin-top: 4px;
 }
 
+.btn-tell-me-more {
+  touch-action: manipulation;
+}
+
 .btn-tell-me-more * {
   pointer-events: none;
 }
+
 

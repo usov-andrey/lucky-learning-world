@@ -5,6 +5,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 
 | Task ID | Title | Status | Version | AC Count | Primary Test File | GitHub Issue |
 |---|---|---|---|---|---|---|
+| [TASK](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-009-fix-tell-me-more-modal-button.md) | Fix "Tell me more..." Button Interaction & Touch Latency | PROPOSED | v1.0.0 | 0 ACs | `tests/spelling-modal-e2e.test.mjs` | - |
 | [TASK-001](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-001-comic-narrative.md) | Themed Narrative Mechanics & Toast Announcement Banner | RELEASED | v1.0.0 | 8 ACs | `tests/narrative-engine.test.mjs` | "#1" |
 | [TASK-002](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-002-code-coverage-ac-system.md) | Code Coverage Measurement & Acceptance Criteria Enforcement System | RELEASED | v1.0.1 | 0 ACs | `tests/coverage.test.mjs` | "#2" |
 | [TASK-003](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-003-github-agent-ecosystem.md) | GitHub External AI Agent Ecosystem & Task Artifact Synchronization | RELEASED | v1.0.2 | 0 ACs | `tests/github-agent-ecosystem.test.mjs` | "#3" |
