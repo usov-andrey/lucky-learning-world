@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worldliness illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worldliness.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <circle cx="204" cy="144" r="78" fill="#59bff5" stroke="#225ca8" stroke-width="8"/><path d="M162 83l37 13 11 28-28 18 5 41-36 8-25-38 18-36zM235 103l26 17 9 34-26 8-8 35-30-13 13-30-7-27z" fill="#56c878"/><path d="M283 111h118v128H283c-23 0-42 16-42 36V148c0-21 19-37 42-37z" fill="#fff" stroke="#7760c5" stroke-width="9"/><path d="M307 148h70m-70 35h70" stroke="#b6a9ea" stroke-width="9"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORLDLINESS</text>
+</svg>

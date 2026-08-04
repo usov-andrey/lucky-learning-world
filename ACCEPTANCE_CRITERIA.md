@@ -189,3 +189,20 @@ This document contains the official, binding Acceptance Criteria for development
     clipping text or controls.
   - The compact header MUST NOT force horizontal page overflow or clip its
     action controls.
+
+---
+
+## 13. New 'or' Saying /er/ Spelling Lesson (TASK-008)
+
+- **[AC-25] Lesson Catalog Integrity**:
+  - The catalog MUST expose a stable `or-saying-er` lesson with exactly the 18 words from the supplied photo in the same order.
+  - Existing lessons and the Page 22 default MUST remain unchanged.
+
+- **[AC-26] Complete Local Learning Content**:
+  - Every new word MUST include a definition, expanded explanation, example sentence, hint, meaningful image alt text, local SVG illustration, local word audio, and local definition audio.
+
+- **[AC-27] Shared Lesson Experience**:
+  - The new lesson MUST appear in the lesson picker, persist when selected, and drive Learn, Game, and Test through the shared spelling engine.
+
+- **[AC-28] Verified Release and Deployment**:
+  - The test suite and coverage gate MUST pass before release `v1.3.0` is committed and pushed to `master` for GitHub Pages deployment.

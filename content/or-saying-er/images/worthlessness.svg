@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worthlessness illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worthlessness.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <rect x="126" y="70" width="260" height="181" rx="20" fill="#fff" stroke="#8995aa" stroke-width="10" stroke-dasharray="18 10"/><text x="256" y="186" font-family="Arial, sans-serif" font-size="90" font-weight="800" text-anchor="middle" fill="#8995aa">0</text><path d="M143 237L369 84" stroke="#ff6372" stroke-width="18" stroke-linecap="round"/><path d="M256 70v181" stroke="#8995aa" stroke-width="8" stroke-dasharray="12 12"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORTHLESSNESS</text>
+</svg>

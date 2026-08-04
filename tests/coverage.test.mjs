@@ -1,5 +1,7 @@
 // @task TASK-002
+// @task TASK-008
 // @ac AC-8.2: Test Traceability & Legacy Waiver Enforcement
+// @ac AC-28: Verified release and deployment
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -75,4 +77,10 @@ test('TASK-002 AC-8.2: legacy waiver table is strictly bounded', () => {
       `Waiver table contains non-existent file: ${waivedFile}`
     );
   }
+});
+
+test('TASK-008 AC-28: release automation discovers slugged task files', () => {
+  const releaseScript = fs.readFileSync(path.resolve(process.cwd(), 'scripts', 'release.mjs'), 'utf8');
+  assert.match(releaseScript, /file\.startsWith\(`\$\{taskId\}-`\)/);
+  assert.match(releaseScript, /CACHE_NAME[\s\S]+\['"\]\[\^'"\]\+\['"\]/);
 });

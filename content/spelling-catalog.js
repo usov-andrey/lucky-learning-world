@@ -424,7 +424,215 @@ export const SCHWA_ER_LESSON = {
   ]
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON];
+export const OR_SAYING_ER_LESSON = {
+  id: "or-saying-er",
+  title: "Spelling Test",
+  pageLabel: "'or' saying /er/",
+  topic: "'or' saying /er/",
+  wordCount: 18,
+  words: [
+    {
+      word: "worm",
+      definition: "A long, thin animal with no legs that often lives in soil.",
+      extendedExplanation: "A worm moves by stretching and squeezing its soft body, and many worms help keep garden soil healthy.",
+      exampleSentence: "A small worm wriggled through the damp soil after the rain.",
+      image: "content/or-saying-er/images/worm.svg",
+      imageAlt: "A pink earthworm wriggling through soil",
+      audio: "content/or-saying-er/audio/01_worm.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/01_worm.wav",
+      hint: "A long, legless animal that lives in soil"
+    },
+    {
+      word: "word",
+      definition: "A sound or group of letters that has meaning.",
+      extendedExplanation: "Words are the building blocks we join together to share ideas in speech and writing.",
+      exampleSentence: "Lucky learned how to spell a new word in class.",
+      image: "content/or-saying-er/images/word.svg",
+      imageAlt: "Letter blocks forming a word",
+      audio: "content/or-saying-er/audio/02_word.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/02_word.wav",
+      hint: "Letters or sounds joined to make meaning"
+    },
+    {
+      word: "world",
+      definition: "The Earth and all the people, places, and things on it.",
+      extendedExplanation: "The world includes every continent, ocean, living thing, and community on planet Earth.",
+      exampleSentence: "People around the world celebrate many different festivals.",
+      image: "content/or-saying-er/images/world.svg",
+      imageAlt: "Planet Earth with blue oceans and green continents",
+      audio: "content/or-saying-er/audio/03_world.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/03_world.wav",
+      hint: "Earth and everything on it"
+    },
+    {
+      word: "worst",
+      definition: "The least good or most unpleasant of all.",
+      extendedExplanation: "Worst compares three or more things and identifies the one with the lowest quality or hardest result.",
+      exampleSentence: "The worst part of the storm was the loud thunder.",
+      image: "content/or-saying-er/images/worst.svg",
+      imageAlt: "Three rating cards with the lowest one highlighted",
+      audio: "content/or-saying-er/audio/04_worst.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/04_worst.wav",
+      hint: "The least good of all"
+    },
+    {
+      word: "worker",
+      definition: "A person who does a job or performs useful work.",
+      extendedExplanation: "A worker uses effort and skills to complete tasks in places such as schools, farms, shops, or offices.",
+      exampleSentence: "The construction worker wore a bright safety helmet.",
+      image: "content/or-saying-er/images/worker.svg",
+      imageAlt: "A construction worker wearing a safety helmet",
+      audio: "content/or-saying-er/audio/05_worker.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/05_worker.wav",
+      hint: "A person who does a job"
+    },
+    {
+      word: "worse",
+      definition: "More bad, difficult, or unpleasant than something else.",
+      extendedExplanation: "Worse compares two things and tells us that one has a lower quality or a less pleasant result.",
+      exampleSentence: "The traffic became worse when the heavy rain began.",
+      image: "content/or-saying-er/images/worse.svg",
+      imageAlt: "Two weather cards showing one condition becoming worse",
+      audio: "content/or-saying-er/audio/06_worse.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/06_worse.wav",
+      hint: "More bad or unpleasant than another"
+    },
+    {
+      word: "workable",
+      definition: "Able to be done successfully or used effectively.",
+      extendedExplanation: "A workable idea is practical enough to put into action and has a good chance of succeeding.",
+      exampleSentence: "The team found a workable plan for finishing the project on time.",
+      image: "content/or-saying-er/images/workable.svg",
+      imageAlt: "A checklist beside a working gear",
+      audio: "content/or-saying-er/audio/07_workable.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/07_workable.wav",
+      hint: "Practical and able to succeed"
+    },
+    {
+      word: "worthy",
+      definition: "Deserving respect, attention, or support.",
+      extendedExplanation: "Something worthy has enough value or good qualities to deserve our time, praise, or care.",
+      exampleSentence: "Protecting sea turtles is a worthy cause.",
+      image: "content/or-saying-er/images/worthy.svg",
+      imageAlt: "A gold medal with a star for a worthy achievement",
+      audio: "content/or-saying-er/audio/08_worthy.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/08_worthy.wav",
+      hint: "Deserving respect or support"
+    },
+    {
+      word: "worship",
+      definition: "To show deep love, honor, or respect, especially to a god.",
+      extendedExplanation: "People may worship by praying, singing, gathering together, or following the traditions of their faith.",
+      exampleSentence: "Families gathered at the temple to worship together.",
+      image: "content/or-saying-er/images/worship.svg",
+      imageAlt: "Hands joined respectfully beneath a glowing heart",
+      audio: "content/or-saying-er/audio/09_worship.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/09_worship.wav",
+      hint: "To show deep honor or religious devotion"
+    },
+    {
+      word: "fireworks",
+      definition: "Explosive devices that make bright colors and patterns in the sky.",
+      extendedExplanation: "Fireworks are safely launched during celebrations and burst high above the ground into sparkling shapes.",
+      exampleSentence: "Colorful fireworks lit up the night sky at the festival.",
+      image: "content/or-saying-er/images/fireworks.svg",
+      imageAlt: "Colorful fireworks bursting in a night sky",
+      audio: "content/or-saying-er/audio/10_fireworks.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/10_fireworks.wav",
+      hint: "Bright celebration displays in the sky"
+    },
+    {
+      word: "worksheet",
+      definition: "A page of questions or activities for a learner to complete.",
+      extendedExplanation: "A worksheet gives practice with a topic by providing spaces to write answers, solve problems, or match ideas.",
+      exampleSentence: "Lucky completed the math worksheet before lunch.",
+      image: "content/or-saying-er/images/worksheet.svg",
+      imageAlt: "A worksheet page with questions and a pencil",
+      audio: "content/or-saying-er/audio/11_worksheet.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/11_worksheet.wav",
+      hint: "A school page with activities to complete"
+    },
+    {
+      word: "worthless",
+      definition: "Having no useful purpose or value.",
+      extendedExplanation: "An object may be called worthless when it cannot be used, sold, repaired, or recycled for anything helpful.",
+      exampleSentence: "The broken token was worthless in the arcade machine.",
+      image: "content/or-saying-er/images/worthless.svg",
+      imageAlt: "A broken token marked with zero value",
+      audio: "content/or-saying-er/audio/12_worthless.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/12_worthless.wav",
+      hint: "Having no use or value"
+    },
+    {
+      word: "workmanship",
+      definition: "The skill and care shown in making something.",
+      extendedExplanation: "Good workmanship can be seen in neat details, strong construction, and careful choices made by the creator.",
+      exampleSentence: "The smooth wooden toy showed excellent workmanship.",
+      image: "content/or-saying-er/images/workmanship.svg",
+      imageAlt: "Careful hands crafting a wooden object with tools",
+      audio: "content/or-saying-er/audio/13_workmanship.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/13_workmanship.wav",
+      hint: "Skill and care used to make something"
+    },
+    {
+      word: "worldliness",
+      definition: "Experience and practical knowledge about life and the world.",
+      extendedExplanation: "Worldliness can describe knowing how people and places work because of travel, reading, and many life experiences.",
+      exampleSentence: "Her travels gave her a worldliness that helped her understand new customs.",
+      image: "content/or-saying-er/images/worldliness.svg",
+      imageAlt: "A globe surrounded by books and travel symbols",
+      audio: "content/or-saying-er/audio/14_worldliness.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/14_worldliness.wav",
+      hint: "Practical knowledge gained from life experience"
+    },
+    {
+      word: "workforce",
+      definition: "All the people who work for a company, industry, or country.",
+      extendedExplanation: "A workforce includes everyone whose different jobs and skills help an organization or economy operate.",
+      exampleSentence: "The hospital workforce includes doctors, nurses, cooks, and cleaners.",
+      image: "content/or-saying-er/images/workforce.svg",
+      imageAlt: "A diverse group of workers standing together",
+      audio: "content/or-saying-er/audio/15_workforce.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/15_workforce.wav",
+      hint: "All the people working for an organization"
+    },
+    {
+      word: "worldwide",
+      definition: "Happening or existing in every part of the world.",
+      extendedExplanation: "Something worldwide reaches many countries and continents instead of staying in one local area.",
+      exampleSentence: "The song became popular worldwide.",
+      image: "content/or-saying-er/images/worldwide.svg",
+      imageAlt: "Planet Earth connected by lines around the globe",
+      audio: "content/or-saying-er/audio/16_worldwide.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/16_worldwide.wav",
+      hint: "Across the whole world"
+    },
+    {
+      word: "worthwhile",
+      definition: "Worth the time, effort, or money spent on it.",
+      extendedExplanation: "An activity is worthwhile when the benefit, learning, or enjoyment you gain makes the effort a good choice.",
+      exampleSentence: "Practising every day was worthwhile when Lucky played the song beautifully.",
+      image: "content/or-saying-er/images/worthwhile.svg",
+      imageAlt: "A path leading to a shining star and finish flag",
+      audio: "content/or-saying-er/audio/17_worthwhile.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/17_worthwhile.wav",
+      hint: "Worth the time or effort"
+    },
+    {
+      word: "worthlessness",
+      definition: "The state of having no useful purpose or value.",
+      extendedExplanation: "Worthlessness describes a lack of practical value in a thing; it should never be used to judge a person's importance.",
+      exampleSentence: "The expired coupon's worthlessness became clear at the checkout.",
+      image: "content/or-saying-er/images/worthlessness.svg",
+      imageAlt: "An expired coupon marked with zero value",
+      audio: "content/or-saying-er/audio/18_worthlessness.wav",
+      definitionAudio: "content/or-saying-er/audio/definitions/18_worthlessness.wav",
+      hint: "The state of having no practical value"
+    }
+  ]
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON];
 
 export function getSpellingLesson(id) {
   return SPELLING_LESSONS.find(l => l.id === id) || PAGE_22_LESSON;

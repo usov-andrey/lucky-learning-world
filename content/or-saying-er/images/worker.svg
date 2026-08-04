@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worker illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worker.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <circle cx="256" cy="128" r="58" fill="#d79a6b"/><path d="M186 126a70 70 0 01140 0z" fill="#ffd14a" stroke="#a46b00" stroke-width="8"/><path d="M154 272c8-70 49-99 102-99s94 29 102 99" fill="#ff8f43"/><path d="M214 178l42 54 42-54" fill="#fff3d7"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORKER</text>
+</svg>

@@ -74,8 +74,8 @@ const updates = [
   },
   {
     file: 'sw.js',
-    regex: /const\s+CACHE_NAME\s*=\s*"[^"]+"/,
-    replace: `const CACHE_NAME = "lucky-world-v${newVer}"`
+    regex: /const\s+CACHE_NAME\s*=\s*['"][^'"]+['"]/,
+    replace: `const CACHE_NAME = 'lucky-world-v${newVer}'`
   },
   {
     file: 'manifest.json',
@@ -122,9 +122,10 @@ for (const file of cacheBusterFiles) {
 // 2. Read task details if available
 let taskTitle = "Release Update";
 let acList = [];
-const taskFilePath = path.join(rootDir, 'tasks', `${taskId}-comic-narrative.md`);
-const alternativeTaskPath = path.join(rootDir, 'tasks', `${taskId}.md`);
-const effectiveTaskPath = fs.existsSync(taskFilePath) ? taskFilePath : (fs.existsSync(alternativeTaskPath) ? alternativeTaskPath : null);
+const taskFileName = fs.readdirSync(path.join(rootDir, 'tasks')).find(file =>
+  file === `${taskId}.md` || file.startsWith(`${taskId}-`)
+);
+const effectiveTaskPath = taskFileName ? path.join(rootDir, 'tasks', taskFileName) : null;
 
 if (effectiveTaskPath) {
   const taskContent = fs.readFileSync(effectiveTaskPath, 'utf8');
@@ -229,4 +230,3 @@ if (!dryRun) {
 }
 
 console.log(`🎉 Release v${newVer} completed successfully!`);
-

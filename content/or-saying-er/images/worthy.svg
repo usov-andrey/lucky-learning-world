@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worthy illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worthy.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <circle cx="256" cy="136" r="82" fill="#ffd14a" stroke="#d99917" stroke-width="12"/><path d="M256 78l18 37 41 6-30 29 7 41-36-19-36 19 7-41-30-29 41-6z" fill="#fff4b1"/><path d="M216 212l-34 76 74-30 74 30-34-76" fill="#8b6cf4"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORTHY</text>
+</svg>

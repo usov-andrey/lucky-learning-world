@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worksheet illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worksheet.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <rect x="130" y="52" width="222" height="226" rx="14" fill="#fff" stroke="#5b6b8a" stroke-width="10"/><path d="M174 105h134M174 151h134M174 197h96" stroke="#9bacce" stroke-width="10" stroke-linecap="round"/><path d="M152 99l10 10 17-24m-27 60l10 10 17-24" fill="none" stroke="#45bf73" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M323 228l70-70 19 19-70 70-29 10z" fill="#ffbf54" stroke="#855f18" stroke-width="7"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORKSHEET</text>
+</svg>

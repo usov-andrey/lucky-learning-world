@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worse illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worse.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <path d="M150 158a58 58 0 01109-25 64 64 0 0197 38H150z" fill="#7f91aa"/><path d="M184 201l-18 42m86-42l-18 42m86-42l-18 42" stroke="#59bff5" stroke-width="12" stroke-linecap="round"/><path d="M386 88v119m0 0l-34-34m34 34l34-34" stroke="#ff6b76" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORSE</text>
+</svg>

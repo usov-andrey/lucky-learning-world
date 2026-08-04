@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">workforce illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word workforce.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <g><circle cx="166" cy="121" r="39" fill="#d79a6b"/><path d="M98 252c5-60 30-92 68-92s63 32 68 92" fill="#59bff5"/><circle cx="256" cy="103" r="45" fill="#a96f4e"/><path d="M181 252c5-72 33-109 75-109s70 37 75 109" fill="#ff8f43"/><circle cx="346" cy="121" r="39" fill="#f1bc8b"/><path d="M278 252c5-60 30-92 68-92s63 32 68 92" fill="#7bd38c"/></g>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORKFORCE</text>
+</svg>

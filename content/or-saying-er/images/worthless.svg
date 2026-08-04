@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">worthless illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word worthless.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+  <circle cx="240" cy="160" r="92" fill="#aab3c5" stroke="#69758c" stroke-width="12"/><text x="240" y="184" font-family="Arial, sans-serif" font-size="74" font-weight="800" text-anchor="middle" fill="#fff">0</text><path d="M168 91l37 55-25 26 42 58" fill="none" stroke="#5b6578" stroke-width="12"/><path d="M349 83l-187 154" stroke="#ff6372" stroke-width="18" stroke-linecap="round"/>
+  <rect x="116" y="274" width="280" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">WORTHLESS</text>
+</svg>

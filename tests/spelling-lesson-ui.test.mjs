@@ -1,4 +1,6 @@
 // @task TASK-005
+// @task TASK-008
+// @ac AC-27 New lesson selection and mode reuse
 // @ac AC-11 Lesson Selection Persistence
 // @ac AC-13 Explanation Experience Tell Me More
 // @ac AC-16 Touch and Responsive UI
@@ -32,12 +34,14 @@ test("TASK-005 AC-11: Lesson picker renders Page 22 and Schwa ‹er› cards and
   app.startWordRealm();
 
   let lessonCards = app.elements.spellingLessonGrid.querySelectorAll(".lesson-card");
-  assert.equal(lessonCards.length, 2, "Picker grid must render exactly 2 lesson cards");
+  assert.equal(lessonCards.length, 3, "Picker grid must render exactly 3 lesson cards");
 
   let page22Card = Array.from(lessonCards).find(c => c.dataset.lessonId === "page-22");
   let schwaErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "schwa-er");
+  let orSayingErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "or-saying-er");
 
   assert.ok(page22Card, "Page 22 card must exist");
+  assert.ok(orSayingErCard, "'or' saying /er/ card must exist");
   assert.ok(schwaErCard, "Schwa ‹er› card must exist");
 
   assert.ok(page22Card.classList.contains("active"), "Page 22 should be active by default");
@@ -54,6 +58,10 @@ test("TASK-005 AC-11: Lesson picker renders Page 22 and Schwa ‹er› cards and
   const updatedActiveCard = app.elements.spellingLessonGrid.querySelector(".lesson-card.active");
   assert.ok(updatedActiveCard, "Active lesson card must exist after selection");
   assert.equal(updatedActiveCard.dataset.lessonId, "schwa-er", "Schwa ‹er› card must be active after selection");
+  app.selectSpellingLesson("or-saying-er");
+  assert.equal(app.selectedLessonId, "or-saying-er");
+  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "or-saying-er");
+  assert.equal(app.spellingEngine.deck.words[0].word, "worm");
 });
 
 test("TASK-005 AC-13 & AC-16: Tell me more button opens modal with extended explanation, example, and audio", async () => {

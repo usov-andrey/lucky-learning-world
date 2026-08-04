@@ -17,8 +17,8 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="themes.css?v=v1.2.0">
-  <link rel="stylesheet" href="styles.css?v=v1.2.0">
+  <link rel="stylesheet" href="themes.css?v=v1.3.0">
+  <link rel="stylesheet" href="styles.css?v=v1.3.0">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_REPORTER = { 
@@ -37,12 +37,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=v1.2.0').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=v1.3.0').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=v1.2.0"></script>
+  <script src="reporter.js?v=v1.3.0"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -414,7 +414,7 @@
         <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid var(--border-glass);">
           <div style="font-size: 13px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 6px;">System Diagnostics</div>
           <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-            <div>• <b>Build Version:</b> <span id="diag-build-version" style="color: #38ef7d; font-weight: 700;">v1.2.0 (2026-08-03 10:31 UTC)</span></div>
+            <div>• <b>Build Version:</b> <span id="diag-build-version" style="color: #38ef7d; font-weight: 700;">v1.3.0 (2026-08-04 10:28 UTC)</span></div>
             <div>• <b>Storage Namespace:</b> <code>lmm3s:</code> (stable & safe)</div>
             <div>• <b>Environment:</b> Production GitHub Pages</div>
           </div>
@@ -584,6 +584,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=v1.2.0"></script>
+  <script type="module" src="app.js?v=v1.3.0"></script>
 </body>
 </html>
