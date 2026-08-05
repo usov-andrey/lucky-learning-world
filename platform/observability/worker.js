@@ -190,29 +190,35 @@ async function githubRequest(env, path, init = {}) {
   });
 }
 
-async function ensureDailyLabel(env) {
+export async function ensureDailyLabel(env) {
   const response = await githubRequest(env, "/labels", {
     method: "POST",
     body: JSON.stringify({ name: "telemetry-daily", color: "6f42c1", description: "Automated daily session anomaly analysis" })
   });
-  if (response && !response.ok && response.status !== 422) throw new Error(`label-${response.status}`);
+  if (!response || response.ok || response.status === 422) return true;
+  console.warn(`Daily telemetry label was not applied: label-${response.status}`);
+  return false;
 }
 
-async function publishDailyIssue(env, reportDate, markdown, existingNumber = null) {
+export async function publishDailyIssue(env, reportDate, markdown, existingNumber = null) {
   if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) return null;
-  await ensureDailyLabel(env);
+  const canApplyLabel = await ensureDailyLabel(env);
   const title = `[telemetry] Daily session analysis ${reportDate}`;
   if (existingNumber) {
+    const update = { title, body: markdown };
+    if (canApplyLabel) update.labels = ["telemetry-daily"];
     const response = await githubRequest(env, `/issues/${existingNumber}`, {
       method: "PATCH",
-      body: JSON.stringify({ title, body: markdown, labels: ["telemetry-daily"] })
+      body: JSON.stringify(update)
     });
     if (!response.ok) throw new Error(`issue-update-${response.status}`);
     return existingNumber;
   }
+  const issue = { title, body: markdown };
+  if (canApplyLabel) issue.labels = ["telemetry-daily"];
   const response = await githubRequest(env, "/issues", {
     method: "POST",
-    body: JSON.stringify({ title, body: markdown, labels: ["telemetry-daily"] })
+    body: JSON.stringify(issue)
   });
   if (!response.ok) throw new Error(`issue-create-${response.status}`);
   return (await response.json()).number;

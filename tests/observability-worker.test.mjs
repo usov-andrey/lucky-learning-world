@@ -3,7 +3,7 @@
 // @ac AC-43 Child privacy
 import test from "node:test";
 import assert from "node:assert/strict";
-import { handleRequest, isOriginAllowed, validateBatch, validateEvent } from "../platform/observability/worker.js";
+import { handleRequest, isOriginAllowed, publishDailyIssue, validateBatch, validateEvent } from "../platform/observability/worker.js";
 
 function validEvent() {
   return {
@@ -94,4 +94,27 @@ test("TASK-011 AC-41: legacy reporter payloads remain accepted during rollout", 
     error_fingerprint: "window-error:legacy",
     error_kind: "legacy-client"
   }));
+});
+
+test("TASK-011 AC-42: daily report issue is still published when GitHub rejects label creation", async () => {
+  const originalFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async (url, init) => {
+    requests.push({ url: String(url), init });
+    if (String(url).endsWith("/labels")) {
+      return new Response(JSON.stringify({ message: "label creation unavailable" }), { status: 400 });
+    }
+    return new Response(JSON.stringify({ number: 73 }), { status: 201 });
+  };
+  try {
+    const issueNumber = await publishDailyIssue({ GITHUB_TOKEN: "secret", GITHUB_REPO: "owner/repo" }, "2026-08-04", "# report");
+    assert.equal(issueNumber, 73);
+    assert.equal(requests.length, 2);
+    assert.deepEqual(JSON.parse(requests[1].init.body), {
+      title: "[telemetry] Daily session analysis 2026-08-04",
+      body: "# report"
+    });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
