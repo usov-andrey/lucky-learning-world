@@ -120,3 +120,85 @@ nothing in Learn mode — a bug they said they'd already reported to another age
 - Pushed to `master` (`14c2344`); Deploy/Coverage Gate/Task Sync all green. Verified the
   fix is live: production `app.js` contains `dataset.openedAt` and the `< 400` guard,
   `build-info.js` reports `v1.5.1`.
+
+## Addendum 2: TASK-016, owner asked for an independent Opus audit before trusting TASK-015
+
+Owner, unprompted by anything I said, pushed back: "проверь, что действительно в этом
+проблема... такую задачу уже исправляли раз 5" — asked for a fresh Opus subagent with
+clean context (no priming from this conversation) to independently verify the TASK-015
+diagnosis/fix rather than accept it.
+
+**Audit findings** (agent id not recorded here; see its full report in the conversation
+if this file is read alongside it):
+
+- Real prior-fix count via `git log`: 3 attempts specifically at "Tell me more" (a
+  scattered click-handler fix on 26.07, TASK-009 on 04.08, TASK-015 today), 8 commits
+  total touching touch/click/modal handling since 26.07. Owner's "~5 times" was
+  essentially accurate.
+- **My TASK-015 walkthrough mis-attributed history**: I wrote "TASK-009 left this race
+  in place." The audit found via `git log -S 'this.closeModal(e.target)' -- app.js` that
+  TASK-009 *introduced* the backdrop-close handler that created the race — it didn't
+  exist before 04.08. TASK-015 fixed a regression from the previous "fix," not a
+  long-standing latent bug.
+- Built an honest jsdom A/B stand (real pointerdown-then-coordinate-resolved-click
+  sequence, not a single synthetic click) and ran it against pre-TASK-009, pre-TASK-015,
+  and HEAD. TASK-015's guard fixed the exact scenario it targeted (stray click on
+  `.modal-overlay`, 0ms delay) but left three real failure modes open: the same race
+  with a >400ms finger-hold, and — more importantly — a stray click landing on
+  `#btn-close-tell-me-more` or the `✕` button *inside* the modal card (structurally more
+  likely than the backdrop, since the card centers close to where the button sits).
+  Verdict: architectural problem (pointerdown mutating DOM mid-gesture, plus two
+  independent click-handling systems — `bindTouchClick` per-element and a global
+  `document` delegate), not a one-off race; recommended removing the `pointerdown`
+  trigger entirely rather than another guard.
+
+**I then queried production telemetry directly** (Cloudflare D1 via `wrangler d1
+execute --remote`, using the already-authenticated account) rather than trusting either
+the subagent's jsdom stand or my own reasoning alone:
+
+- A session at `2026-08-08T09:37:2x-28Z` — matching the phone clock "16:37" in the
+  owner's screenshot exactly (Bangkok = UTC+7) — shows 7 consecutive taps on
+  `btn-tell-me-more`, every one ending in `action.noop` (reason `already-active`, which
+  is wrong for a modal that was never actually opened) or `action.timed_out` (`reason:
+  no-semantic-outcome`). Zero `action.completed` events. `app_version: "unknown"` (older
+  page, pre-dates the build-info version tag on session start) — consistent with this
+  being the pre-fix (v1.5.0) failure as reported.
+- A session at `10:01:04Z`, `app_version: "v1.5.1"`, shows the first tap on
+  `btn-tell-me-more` producing a clean `action.completed` with `transition: modal,
+  closed → modal-tell-me-more` — the TASK-015 fix does work for the common case in real
+  production use, matching the audit's verdict that it fixed *something* real.
+
+**Fix (TASK-016)**: removed the `pointerdown` listener from `bindTouchClick` in
+`app.js` entirely — it now triggers only on `click`. Confirmed `touch-action:
+manipulation` is already applied globally to `button` (and `.primary-btn`,
+`.secondary-btn`, etc.) in `styles.css`, so this is not a responsiveness regression; it
+was the actual reason `touch-action: manipulation` needed to exist, and it already did,
+which is why removing `pointerdown` costs nothing. Left the TASK-015 `openedAt` guard in
+place as harmless defense-in-depth and fixed its comment's mis-attribution. Rewrote the
+now-obsolete TASK-015 "pointerdown opens the modal" assertion, added tests proving
+pointerdown is inert and a real click opens exactly once, plus a second-modal (Parent
+Gate) test proving the fix isn't Tell-Me-More-specific.
+
+- `npm test`: 116/116. `npm run test:coverage:gate`: passed (unchanged, 79.50/64.52/69.32).
+- Released `v1.5.2` (patch). Root plan/walkthrough written *before* `release.mjs` again
+  (no mis-mirror this time). `tests/build-metadata.test.mjs`'s hardcoded `APP_VERSION`
+  needed bumping again — third time in three releases today; still not fixing the root
+  tooling gap, out of scope for a bug-fix task.
+- Pushed to `master` (`350e9e8`); Deploy/Coverage Gate/Task Sync all green. Verified
+  live: production `app.js` has zero `pointerdown` listeners and the new click-only
+  comment marker; `build-info.js` reports `v1.5.2`.
+
+### Grabli / things worth remembering
+
+- **A subagent catching my own mistake is exactly what "second opinion with clean
+  context" is for.** I had already shipped and deployed TASK-015 to the real production
+  site Lucky uses, confident it was correct (my own jsdom repro passed, production
+  matched what I tested). The owner's insistence on an independent audit before trusting
+  it, given the bug's history, caught a real gap I would not have found by re-reviewing
+  my own reasoning.
+- **Querying the actual telemetry backend directly** (D1 via wrangler, already
+  authenticated) was decisive and cheap — it turned "the subagent's static analysis
+  says X" and "my jsdom simulation says Y" into "here is Lucky's real phone, at the
+  literal minute of the bug report, in a database." Worth doing this earlier next time
+  a live-user bug report comes with a working telemetry pipeline already in place,
+  rather than reaching for jsdom reproduction first.
