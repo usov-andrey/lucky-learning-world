@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">early illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word early.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <circle cx="220" cy="170" r="80" fill="#fff" stroke="#26324a" stroke-width="12"/>
+  <path d="M220 170V116M220 170l40 22" stroke="#26324a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M160 78l-24-20M280 78l24-20M220 62v-24" stroke="#26324a" stroke-width="8" stroke-linecap="round"/>
+  <path d="M356 132c18-24 46-30 70-16" fill="none" stroke="#f4a13a" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="392" cy="150" r="26" fill="#ffce54"/>
+  <rect x="181.0" y="274" width="150" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">EARLY</text>
+</svg>

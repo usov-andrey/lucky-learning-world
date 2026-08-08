@@ -3,10 +3,12 @@
  * Supports multi-lesson spelling decks:
  *  - Page 22 (Schwa ‹or›)
  *  - Schwa ‹er›
+ *  - 'or' saying /er/
+ *  - 'ear' saying /er/ (current default)
  */
 
 export const STORAGE_KEY_SELECTED_LESSON = "lmm3s:selected_spelling_lesson";
-export const DEFAULT_SPELLING_LESSON_ID = "page-22";
+export const DEFAULT_SPELLING_LESSON_ID = "ear-saying-er";
 
 export const PAGE_22_LESSON = {
   id: "page-22",
@@ -632,10 +634,222 @@ export const OR_SAYING_ER_LESSON = {
   ]
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON];
+export const EAR_SAYING_ER_LESSON = {
+  id: "ear-saying-er",
+  title: "Spelling Test",
+  pageLabel: "'ear' saying /er/",
+  topic: "'ear' saying /er/",
+  wordCount: 18,
+  words: [
+    {
+      word: "earn",
+      definition: "To get money or a reward by working for it.",
+      extendedExplanation: "When you earn something, you work for it first, like doing chores or a job, and then you receive money or a reward.",
+      exampleSentence: "Lucky helped water the plants every day to earn extra playtime.",
+      image: "content/ear-saying-er/images/earn.svg",
+      imageAlt: "A hand holding a shiny gold coin",
+      audio: "content/ear-saying-er/audio/01_earn.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/01_earn.mp3",
+      hint: "To get money or a reward by working"
+    },
+    {
+      word: "learn",
+      definition: "To get new knowledge or a new skill.",
+      extendedExplanation: "Learning happens when you practise, read, or listen carefully so you understand something you did not know before.",
+      exampleSentence: "Lucky wants to learn ten new spelling words every week.",
+      image: "content/ear-saying-er/images/learn.svg",
+      imageAlt: "Two open books with a glowing lightbulb",
+      audio: "content/ear-saying-er/audio/02_learn.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/02_learn.mp3",
+      hint: "To get new knowledge or a skill"
+    },
+    {
+      word: "heard",
+      definition: "Noticed a sound with your ears; the past tense of hear.",
+      extendedExplanation: "Heard describes something that already happened in the past, when a sound reached your ears and your brain noticed it.",
+      exampleSentence: "Lucky heard the school bell ring from across the playground.",
+      image: "content/ear-saying-er/images/heard.svg",
+      imageAlt: "An ear with sound waves reaching it",
+      audio: "content/ear-saying-er/audio/03_heard.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/03_heard.mp3",
+      hint: "Past tense of hear"
+    },
+    {
+      word: "earth",
+      definition: "The planet that we live on.",
+      extendedExplanation: "Earth is a huge round planet covered with oceans, land, mountains, and forests, and it is the only planet we know of with people, animals, and plants.",
+      exampleSentence: "In science class, Lucky learned that Earth travels around the Sun.",
+      image: "content/ear-saying-er/images/earth.svg",
+      imageAlt: "Planet Earth with blue oceans and green continents",
+      audio: "content/ear-saying-er/audio/04_earth.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/04_earth.mp3",
+      hint: "The planet we live on"
+    },
+    {
+      word: "search",
+      definition: "To look carefully for something.",
+      extendedExplanation: "When you search, you look in different places, one by one, until you find what you are looking for.",
+      exampleSentence: "Lucky had to search her backpack for the missing pencil case.",
+      image: "content/ear-saying-er/images/search.svg",
+      imageAlt: "A magnifying glass",
+      audio: "content/ear-saying-er/audio/05_search.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/05_search.mp3",
+      hint: "To look carefully for something"
+    },
+    {
+      word: "earnings",
+      definition: "The money that someone earns from working.",
+      extendedExplanation: "Earnings are the total amount of money a person receives after doing a job over a certain amount of time.",
+      exampleSentence: "Dad put his weekly earnings into a savings account.",
+      image: "content/ear-saying-er/images/earnings.svg",
+      imageAlt: "A stack of gold coins",
+      audio: "content/ear-saying-er/audio/06_earnings.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/06_earnings.mp3",
+      hint: "Money earned from working"
+    },
+    {
+      word: "yearn",
+      definition: "To want something very much.",
+      extendedExplanation: "When you yearn for something, you feel a strong, deep wish for it, almost like your heart is reaching out for it.",
+      exampleSentence: "During the rainy season, Lucky would yearn for a sunny day at the beach.",
+      image: "content/ear-saying-er/images/yearn.svg",
+      imageAlt: "A heart reaching toward a sparkling star",
+      audio: "content/ear-saying-er/audio/07_yearn.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/07_yearn.mp3",
+      hint: "To want something very much"
+    },
+    {
+      word: "early",
+      definition: "Before the usual or expected time.",
+      extendedExplanation: "Early means something happens sooner than planned, like waking up before the alarm or arriving before everyone else.",
+      exampleSentence: "Lucky woke up early to watch the sunrise before school.",
+      image: "content/ear-saying-er/images/early.svg",
+      imageAlt: "A clock with the sun rising beside it",
+      audio: "content/ear-saying-er/audio/08_early.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/08_early.mp3",
+      hint: "Before the usual or expected time"
+    },
+    {
+      word: "pearl",
+      definition: "A small, shiny white ball found inside some shells, used for jewellery.",
+      extendedExplanation: "A pearl forms slowly inside an oyster shell and can be strung together to make necklaces and bracelets.",
+      exampleSentence: "Grandma wore a necklace made of smooth white pearls.",
+      image: "content/ear-saying-er/images/pearl.svg",
+      imageAlt: "A shiny white pearl inside an open shell",
+      audio: "content/ear-saying-er/audio/09_pearl.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/09_pearl.mp3",
+      hint: "Shiny white gem found in a shell"
+    },
+    {
+      word: "dearth",
+      definition: "A lack of something; not having enough of something.",
+      extendedExplanation: "A dearth means there is far too little of something available, like a dearth of rain during a dry season.",
+      exampleSentence: "There was a dearth of fresh vegetables at the market after the storm.",
+      image: "content/ear-saying-er/images/dearth.svg",
+      imageAlt: "An empty plate with a question mark",
+      audio: "content/ear-saying-er/audio/10_dearth.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/10_dearth.mp3",
+      hint: "Not having enough of something"
+    },
+    {
+      word: "hearse",
+      definition: "A special car used to carry a coffin at a funeral.",
+      extendedExplanation: "A hearse is a long, quiet car that carries a coffin to a funeral so family and friends can say goodbye.",
+      exampleSentence: "The hearse moved slowly at the front of the funeral procession.",
+      image: "content/ear-saying-er/images/hearse.svg",
+      imageAlt: "A long black car used at funerals",
+      audio: "content/ear-saying-er/audio/11_hearse.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/11_hearse.mp3",
+      hint: "A car that carries a coffin"
+    },
+    {
+      word: "earnest",
+      definition: "Serious and sincere about what you say or do.",
+      extendedExplanation: "Being earnest means you truly mean what you say, without joking, and you put real effort and honesty into it.",
+      exampleSentence: "Lucky made an earnest promise to practise the piano every day.",
+      image: "content/ear-saying-er/images/earnest.svg",
+      imageAlt: "A sincere face with a hand over the heart",
+      audio: "content/ear-saying-er/audio/12_earnest.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/12_earnest.mp3",
+      hint: "Serious and sincere"
+    },
+    {
+      word: "rehearse",
+      definition: "To practise something, like a play or a speech, before doing it for real.",
+      extendedExplanation: "When you rehearse, you repeat your lines, songs, or moves so that you feel confident before the real performance.",
+      exampleSentence: "The class had to rehearse the school play every afternoon this week.",
+      image: "content/ear-saying-er/images/rehearse.svg",
+      imageAlt: "A small stage with a spotlight for practising a play",
+      audio: "content/ear-saying-er/audio/13_rehearse.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/13_rehearse.mp3",
+      hint: "To practise before the real performance"
+    },
+    {
+      word: "overheard",
+      definition: "Heard something by accident that other people were saying.",
+      extendedExplanation: "You overhear something when you were not part of the conversation but happened to catch what was said.",
+      exampleSentence: "Lucky overheard her parents planning a surprise birthday party.",
+      image: "content/ear-saying-er/images/overheard.svg",
+      imageAlt: "Two speech bubbles being listened to by an ear",
+      audio: "content/ear-saying-er/audio/14_overheard.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/14_overheard.mp3",
+      hint: "Heard something by accident"
+    },
+    {
+      word: "researcher",
+      definition: "A person who studies a subject carefully to find out new information.",
+      extendedExplanation: "A researcher asks questions, reads carefully, runs experiments, and collects facts to learn something new.",
+      exampleSentence: "The researcher studied how sea turtles find their way back to the beach.",
+      image: "content/ear-saying-er/images/researcher.svg",
+      imageAlt: "A researcher holding a magnifying glass beside a book",
+      audio: "content/ear-saying-er/audio/15_researcher.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/15_researcher.mp3",
+      hint: "A person who studies a subject carefully"
+    },
+    {
+      word: "searchlight",
+      definition: "A powerful light used to search the sky or a large area at night.",
+      extendedExplanation: "A searchlight sends out a very strong, focused beam of light that can sweep across the sky or the ground in the dark.",
+      exampleSentence: "The searchlight swept across the night sky during the festival.",
+      image: "content/ear-saying-er/images/searchlight.svg",
+      imageAlt: "A powerful searchlight beaming into the night sky",
+      audio: "content/ear-saying-er/audio/16_searchlight.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/16_searchlight.mp3",
+      hint: "A powerful light used to search in the dark"
+    },
+    {
+      word: "earthworm",
+      definition: "A long, thin worm that lives in the soil.",
+      extendedExplanation: "An earthworm wriggles through the ground, eating tiny bits of soil, and helps make the earth healthier for plants to grow.",
+      exampleSentence: "After the rain, Lucky spotted an earthworm crossing the garden path.",
+      image: "content/ear-saying-er/images/earthworm.svg",
+      imageAlt: "A pink earthworm wriggling through soil",
+      audio: "content/ear-saying-er/audio/17_earthworm.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/17_earthworm.mp3",
+      hint: "A long, thin worm that lives in soil"
+    },
+    {
+      word: "earthquake",
+      definition: "A sudden shaking of the ground caused by movement deep in the earth.",
+      extendedExplanation: "An earthquake happens when huge rocky plates deep underground suddenly shift, making the ground above shake.",
+      exampleSentence: "The small earthquake rattled the windows but nobody was hurt.",
+      image: "content/ear-saying-er/images/earthquake.svg",
+      imageAlt: "Cracked ground with houses shaking",
+      audio: "content/ear-saying-er/audio/18_earthquake.mp3",
+      definitionAudio: "content/ear-saying-er/audio/definitions/18_earthquake.mp3",
+      hint: "A sudden shaking of the ground"
+    }
+  ]
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON];
 
 export function getSpellingLesson(id) {
-  return SPELLING_LESSONS.find(l => l.id === id) || PAGE_22_LESSON;
+  return (
+    SPELLING_LESSONS.find(l => l.id === id) ||
+    SPELLING_LESSONS.find(l => l.id === DEFAULT_SPELLING_LESSON_ID) ||
+    PAGE_22_LESSON
+  );
 }
 
 export function getSelectedSpellingLessonId() {

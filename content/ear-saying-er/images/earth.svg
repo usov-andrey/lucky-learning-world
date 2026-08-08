@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">earth illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word earth.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <circle cx="256" cy="160" r="112" fill="#59bff5" stroke="#225ca8" stroke-width="10"/>
+  <path d="M190 76l48 12 18 38-32 22-4 48-47 17-26-52 18-35zM314 92l48 22 18 42-32 16-5 52-55 16-20-39 27-28-16-39z" fill="#56c878"/>
+  <rect x="181.0" y="274" width="150" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">EARTH</text>
+</svg>

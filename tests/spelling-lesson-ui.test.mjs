@@ -1,9 +1,11 @@
 // @task TASK-005
 // @task TASK-008
+// @task TASK-014
 // @ac AC-27 New lesson selection and mode reuse
 // @ac AC-11 Lesson Selection Persistence
 // @ac AC-13 Explanation Experience Tell Me More
 // @ac AC-16 Touch and Responsive UI
+// @ac AC-50 New default lesson and safe-fallback target
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -16,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
-test("TASK-005 AC-11: Lesson picker renders Page 22 and Schwa ‹er› cards and persists selection in localStorage", async () => {
+test("TASK-005 AC-11, updated by TASK-014 AC-50: Lesson picker renders all four cards, defaults to 'ear' saying /er/, and persists selection in localStorage", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
   const { window } = dom;
@@ -34,18 +36,20 @@ test("TASK-005 AC-11: Lesson picker renders Page 22 and Schwa ‹er› cards and
   app.startWordRealm();
 
   let lessonCards = app.elements.spellingLessonGrid.querySelectorAll(".lesson-card");
-  assert.equal(lessonCards.length, 3, "Picker grid must render exactly 3 lesson cards");
+  assert.equal(lessonCards.length, 4, "Picker grid must render exactly 4 lesson cards");
 
   let page22Card = Array.from(lessonCards).find(c => c.dataset.lessonId === "page-22");
   let schwaErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "schwa-er");
   let orSayingErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "or-saying-er");
+  let earSayingErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ear-saying-er");
 
   assert.ok(page22Card, "Page 22 card must exist");
   assert.ok(orSayingErCard, "'or' saying /er/ card must exist");
   assert.ok(schwaErCard, "Schwa ‹er› card must exist");
+  assert.ok(earSayingErCard, "'ear' saying /er/ card must exist");
 
-  assert.ok(page22Card.classList.contains("active"), "Page 22 should be active by default");
-  assert.equal(getSelectedSpellingLessonId(), "page-22");
+  assert.ok(earSayingErCard.classList.contains("active"), "'ear' saying /er/ should be active by default");
+  assert.equal(getSelectedSpellingLessonId(), "ear-saying-er");
 
   // Select Schwa ‹er›
   app.selectSpellingLesson("schwa-er");

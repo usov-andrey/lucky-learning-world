@@ -1,0 +1,26 @@
+{
+  "lessonId": "ear-saying-er",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04.",
+  "words": [
+    { "word": "earn", "definition": "To get money or a reward by working for it." },
+    { "word": "learn", "definition": "To get new knowledge or a new skill." },
+    { "word": "heard", "definition": "Noticed a sound with your ears; the past tense of hear." },
+    { "word": "earth", "definition": "The planet that we live on." },
+    { "word": "search", "definition": "To look carefully for something." },
+    { "word": "earnings", "definition": "The money that someone earns from working." },
+    { "word": "yearn", "definition": "To want something very much." },
+    { "word": "early", "definition": "Before the usual or expected time." },
+    { "word": "pearl", "definition": "A small, shiny white ball found inside some shells, used for jewellery." },
+    { "word": "dearth", "definition": "A lack of something; not having enough of something." },
+    { "word": "hearse", "definition": "A special car used to carry a coffin at a funeral." },
+    { "word": "earnest", "definition": "Serious and sincere about what you say or do." },
+    { "word": "rehearse", "definition": "To practise something, like a play or a speech, before doing it for real." },
+    { "word": "overheard", "definition": "Heard something by accident that other people were saying." },
+    { "word": "researcher", "definition": "A person who studies a subject carefully to find out new information." },
+    { "word": "searchlight", "definition": "A powerful light used to search the sky or a large area at night." },
+    { "word": "earthworm", "definition": "A long, thin worm that lives in the soil." },
+    { "word": "earthquake", "definition": "A sudden shaking of the ground caused by movement deep in the earth." }
+  ]
+}

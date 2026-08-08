@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">earthquake illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word earthquake.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <rect x="60" y="230" width="392" height="20" fill="#8b5a3c"/>
+  <path d="M60 230l60-30 40 46 50-58 46 40 56-52 40 42 60-28v20l-352 60z" fill="#c98a55"/>
+  <path d="M120 90h60v60h-60zM300 70h70v80h-70z" fill="#f2b6c6" stroke="#c0405f" stroke-width="6"/>
+  <path d="M150 150l10 24-16 14 12 22" fill="none" stroke="#e03b3b" stroke-width="10" stroke-linecap="round"/>
+  <rect x="160.9" y="274" width="190.2" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">EARTHQUAKE</text>
+</svg>

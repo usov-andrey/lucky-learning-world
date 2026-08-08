@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">rehearse illustration</title>
+  <desc id="desc">A child-friendly visual clue for the spelling word rehearse.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <rect x="120" y="120" width="272" height="130" rx="10" fill="#3b3f4a"/>
+  <rect x="140" y="140" width="232" height="90" rx="6" fill="#1c1f26"/>
+  <path d="M256 60l-40 60h80z" fill="#f4c542" opacity=".9"/>
+  <circle cx="200" cy="196" r="18" fill="#f2b6c6"/>
+  <circle cx="312" cy="196" r="18" fill="#8ee08a"/>
+  <path d="M256 176v34M244 210h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <rect x="173.9" y="274" width="164.2" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">REHEARSE</text>
+</svg>

@@ -31,19 +31,19 @@ test("Full E2E UI Test: Word Realm - Learn, Test (Digital/Paper), and Tiles Mode
   // 1. Enter Word Realm
   app.startWordRealm();
   assert.equal(app.spellingEngine.mode, "learn");
-  assert.equal(app.elements.learnWordDisplay.textContent, "AUTHOR");
+  assert.equal(app.elements.learnWordDisplay.textContent, "EARN");
   assert.equal(app.elements.btnLearnPrev.disabled, true, "Learn prev disabled on index 0");
 
   // Click Learn Next
   app.elements.btnLearnNext.click();
   assert.equal(app.spellingEngine.currentIndex, 1);
-  assert.equal(app.elements.learnWordDisplay.textContent, "ERROR");
+  assert.equal(app.elements.learnWordDisplay.textContent, "LEARN");
   assert.equal(app.elements.btnLearnPrev.disabled, false, "Learn prev enabled on index 1");
 
   // Click Learn Prev
   app.elements.btnLearnPrev.click();
   assert.equal(app.spellingEngine.currentIndex, 0);
-  assert.equal(app.elements.learnWordDisplay.textContent, "AUTHOR");
+  assert.equal(app.elements.learnWordDisplay.textContent, "EARN");
   assert.equal(app.elements.btnLearnPrev.disabled, true, "Learn prev disabled again on index 0");
 
   // 2. Switch to Test Mode (Digital)
@@ -52,7 +52,7 @@ test("Full E2E UI Test: Word Realm - Learn, Test (Digital/Paper), and Tiles Mode
   assert.equal(app.elements.btnTestPrev.disabled, true, "Test prev disabled on index 0");
 
   // Digital Test Submit correct word
-  app.elements.digitalTestInput.value = "author";
+  app.elements.digitalTestInput.value = "earn";
   app.elements.btnDigitalSubmit.click();
   assert.equal(app.elements.digitalFeedbackText.textContent, "Correct! ★");
 
@@ -81,7 +81,7 @@ test("Full E2E UI Test: Word Realm - Learn, Test (Digital/Paper), and Tiles Mode
 
   const q = app.spellingEngine.getCurrentGameQuestion();
   assert.ok(q, "Tiles question object must exist");
-  assert.equal(q.targetWord, "author");
+  assert.equal(q.targetWord, "earn");
 
   // Simulate user clicking letter tiles one by one
   const targetLetters = q.targetWord.split("");
@@ -96,8 +96,8 @@ test("Full E2E UI Test: Word Realm - Learn, Test (Digital/Paper), and Tiles Mode
 
   // Verify slots are filled with upper-case letters
   const filledSlots = Array.from(app.elements.wordSlotsRow.querySelectorAll(".letter-slot.filled"));
-  assert.equal(filledSlots.length, 6, "All 6 slots must be filled after clicking tile buttons");
-  assert.equal(filledSlots.map(s => s.textContent).join(""), "AUTHOR");
+  assert.equal(filledSlots.length, 4, "All 4 slots must be filled after clicking tile buttons");
+  assert.equal(filledSlots.map(s => s.textContent).join(""), "EARN");
 
   // Test Clear button
   app.elements.btnClearSpelling.click();

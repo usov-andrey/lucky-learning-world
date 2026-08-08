@@ -17,8 +17,8 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="themes.css?v=v1.4.0">
-  <link rel="stylesheet" href="styles.css?v=v1.4.0">
+  <link rel="stylesheet" href="themes.css?v=v1.5.0">
+  <link rel="stylesheet" href="styles.css?v=v1.5.0">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_TELEMETRY = {
@@ -38,12 +38,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=v1.4.0').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=v1.5.0').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=v1.4.0"></script>
+  <script src="reporter.js?v=v1.5.0"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -231,9 +231,9 @@
         <div style="background: rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-glass);">
           <h4 style="font-size: 20px; margin-bottom: 12px; color: #a5b4fc;">What does it mean?</h4>
           <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-            <img id="learn-image" src="content/page-22/images/author.svg" alt="Illustration" style="width: 140px; height: 140px; object-fit: contain; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 16px; border: 1px solid var(--border-glass);">
+            <img id="learn-image" src="content/ear-saying-er/images/earn.svg" alt="Illustration" style="width: 140px; height: 140px; object-fit: contain; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 16px; border: 1px solid var(--border-glass);">
             <div style="flex: 1; min-width: 200px;">
-              <p id="learn-definition" style="font-size: 18px; line-height: 1.5; color: white;">A person who writes books, stories, or articles.</p>
+              <p id="learn-definition" style="font-size: 18px; line-height: 1.5; color: white;">To get money or a reward by working for it.</p>
               <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
                 <button class="secondary-btn" id="btn-learn-speak-def" style="height: 48px; font-size: 14px;">
                   <span>🔊 Listen to Definition</span>
@@ -592,6 +592,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=v1.4.0"></script>
+  <script type="module" src="app.js?v=v1.5.0"></script>
 </body>
 </html>

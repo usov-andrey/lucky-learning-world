@@ -1,6 +1,7 @@
 // @task TASK-005
 // @task TASK-008
 // @task TASK-010
+// @task TASK-014
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
 // @ac AC-29 Correct Sonia audio replacement
@@ -8,6 +9,10 @@
 // @ac AC-12 Complete Schwa ‹er› Learning Content
 // @ac AC-15 Safe Selection Fallback
 // @ac AC-17 Local Offline Assets
+// @ac AC-48 'ear' saying /er/ lesson catalog integrity
+// @ac AC-49 Complete local learning content and Sonia audio for 'ear' saying /er/
+// @ac AC-50 New default lesson and safe-fallback target
+// @ac AC-51 Existing lessons preserved unchanged
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -18,6 +23,7 @@ import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
   OR_SAYING_ER_LESSON,
+  EAR_SAYING_ER_LESSON,
   SPELLING_LESSONS,
   DEFAULT_SPELLING_LESSON_ID,
   getSpellingLesson,
@@ -25,20 +31,26 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-005 AC-10: catalog exposes Page 22 and Schwa ‹er› as distinct stable lesson records", () => {
-  assert.equal(SPELLING_LESSONS.length, 3);
+test("TASK-005 AC-10 & TASK-014 AC-51: catalog exposes all four lessons as distinct stable records", () => {
+  assert.equal(SPELLING_LESSONS.length, 4);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
   assert.equal(SCHWA_ER_LESSON.id, "schwa-er");
   assert.equal(SCHWA_ER_LESSON.words.length, 18);
-  assert.equal(DEFAULT_SPELLING_LESSON_ID, "page-22");
+  assert.equal(OR_SAYING_ER_LESSON.id, "or-saying-er");
+  assert.equal(OR_SAYING_ER_LESSON.words.length, 18);
+  assert.equal(EAR_SAYING_ER_LESSON.id, "ear-saying-er");
+  assert.equal(EAR_SAYING_ER_LESSON.words.length, 18);
+  assert.equal(DEFAULT_SPELLING_LESSON_ID, "ear-saying-er");
 });
 
-test("TASK-005 AC-10 & AC-15: getSpellingLesson returns requested lesson or safely falls back to default", () => {
+test("TASK-005 AC-10 & AC-15, updated by TASK-014 AC-50: getSpellingLesson returns requested lesson or safely falls back to the current default", () => {
   assert.equal(getSpellingLesson("schwa-er").id, "schwa-er");
   assert.equal(getSpellingLesson("page-22").id, "page-22");
-  assert.equal(getSpellingLesson("unknown-lesson-id").id, "page-22");
-  assert.equal(getSpellingLesson(null).id, "page-22");
+  assert.equal(getSpellingLesson("or-saying-er").id, "or-saying-er");
+  assert.equal(getSpellingLesson("ear-saying-er").id, "ear-saying-er");
+  assert.equal(getSpellingLesson("unknown-lesson-id").id, "ear-saying-er");
+  assert.equal(getSpellingLesson(null).id, "ear-saying-er");
 });
 
 test("TASK-008 AC-25 & AC-26 and TASK-010 AC-29: catalog exposes complete Sonia-backed lesson content", () => {
@@ -123,4 +135,55 @@ test("TASK-005 AC-17: Page 22 words maintain complete fields and local audio/ima
     assert.ok(w.audio && w.audio.startsWith("content/page-22/audio/"));
     assert.ok(w.definitionAudio && w.definitionAudio.startsWith("content/page-22/audio/definitions/"));
   });
+});
+
+test("TASK-014 AC-48 & AC-49: catalog exposes complete Sonia-backed 'ear' saying /er/ lesson content", () => {
+  const expectedWords = [
+    "earn", "learn", "heard", "earth", "search", "earnings", "yearn", "early", "pearl",
+    "dearth", "hearse", "earnest", "rehearse", "overheard", "researcher", "searchlight",
+    "earthworm", "earthquake"
+  ];
+
+  assert.equal(EAR_SAYING_ER_LESSON.id, "ear-saying-er");
+  assert.equal(EAR_SAYING_ER_LESSON.topic, "'ear' saying /er/");
+  assert.deepEqual(EAR_SAYING_ER_LESSON.words.map(item => item.word), expectedWords);
+  assert.equal(EAR_SAYING_ER_LESSON.wordCount, expectedWords.length);
+
+  EAR_SAYING_ER_LESSON.words.forEach((item) => {
+    assert.ok(item.definition, `Missing definition for ${item.word}`);
+    assert.ok(item.extendedExplanation, `Missing extended explanation for ${item.word}`);
+    assert.ok(item.exampleSentence, `Missing example sentence for ${item.word}`);
+    assert.ok(item.hint, `Missing hint for ${item.word}`);
+    assert.ok(item.imageAlt, `Missing image alt text for ${item.word}`);
+    assert.match(item.image, /^content\/ear-saying-er\/images\/.+\.svg$/);
+    assert.match(item.audio, /^content\/ear-saying-er\/audio\/.+\.mp3$/);
+    assert.match(item.definitionAudio, /^content\/ear-saying-er\/audio\/definitions\/.+\.mp3$/);
+    for (const assetPath of [item.image, item.audio, item.definitionAudio]) {
+      const absoluteAssetPath = fileURLToPath(new URL(`../${assetPath}`, import.meta.url));
+      assert.ok(fs.existsSync(absoluteAssetPath), `Missing local asset ${assetPath}`);
+      assert.ok(fs.statSync(absoluteAssetPath).size > 0, `Empty local asset ${assetPath}`);
+      if (assetPath.endsWith(".mp3")) {
+        const header = fs.readFileSync(absoluteAssetPath).subarray(0, 3);
+        const hasId3Header = header.toString("ascii") === "ID3";
+        const hasMpegFrame = header[0] === 0xff && (header[1] & 0xe0) === 0xe0;
+        assert.ok(hasId3Header || hasMpegFrame, `Invalid MP3 header for ${assetPath}`);
+      }
+    }
+  });
+
+  const audioDirectory = fileURLToPath(new URL("../content/ear-saying-er/audio/", import.meta.url));
+  const legacyWavFiles = fs.readdirSync(audioDirectory, { recursive: true })
+    .filter(name => String(name).toLowerCase().endsWith(".wav"));
+  assert.deepEqual(legacyWavFiles, [], "Incorrect legacy WAV tracks must not remain");
+
+  const manifestPath = fileURLToPath(new URL("../content/ear-saying-er/audio-manifest.json", import.meta.url));
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  assert.deepEqual(
+    manifest.words.map(item => ({ word: item.word, definition: item.definition })),
+    EAR_SAYING_ER_LESSON.words.map(item => ({ word: item.word, definition: item.definition })),
+    "Audio source manifest must exactly match catalog speech text"
+  );
+  const provenance = fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8");
+  assert.match(provenance, /en-GB-SoniaNeural/);
+  assert.match(provenance, /-15%/);
 });

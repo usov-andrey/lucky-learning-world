@@ -283,3 +283,19 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-47] Exact Diagnostic Verification**:
   - Automated tests MUST assert the exact diagnostic version/date source and fail when HTML placeholders, application metadata, telemetry metadata, or release cache versions diverge.
+
+---
+
+## 18. 'ear' Saying /er/ Spelling Lesson and New Default (TASK-014)
+
+- **[AC-48] 'ear' Saying /er/ Lesson Catalog Integrity**:
+  - The spelling catalog MUST expose a stable `ear-saying-er` lesson containing exactly the 18 photographed words in the photographed order, without removing or mutating any existing lesson.
+
+- **[AC-49] Complete Local Learning Content and Sonia Audio**:
+  - Every word in `ear-saying-er` MUST have a definition, extended explanation, example sentence, hint, meaningful image alt text, a repository-local SVG illustration, and local `en-GB-SoniaNeural` (`-15%`) word and definition audio, with a provenance file recording voice, rate, and generator.
+
+- **[AC-50] New Default Lesson and Safe-Fallback Target**:
+  - `DEFAULT_SPELLING_LESSON_ID` MUST be `ear-saying-er`. The lesson picker MUST show it as active by default for a fresh selection, and `getSpellingLesson()` MUST fall back to it (not a hardcoded older lesson) for unknown or missing lesson ids.
+
+- **[AC-51] Existing Lessons Preserved**:
+  - Page 22, Schwa ‹er›, and 'or' saying /er/ MUST remain unchanged, fully selectable, and continue to drive Learn, Game, and Test through the shared dynamic spelling engine.
