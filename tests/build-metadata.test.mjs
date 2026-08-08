@@ -23,7 +23,7 @@ test("TASK-012 AC-45 and AC-47: diagnostics use the exact authoritative version 
     }).formatToParts(new Date(BUILD_TIMESTAMP)).map(part => [part.type, part.value])
   );
   const expectedBangkok = `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute} ICT`;
-  assert.equal(APP_VERSION, "v1.5.2");
+  assert.equal(APP_VERSION, "v1.5.3");
   assert.equal(packageJson.version, APP_VERSION.slice(1));
   assert.equal(formatBuildLabel(), `${APP_VERSION} (${expectedBangkok})`);
   assert.match(app, /formatBuildLabel\(\)/);
