@@ -18,6 +18,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-011](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-011-session-observability-and-daily-anomaly-analysis.md) | Session Observability and Daily Anomaly Analysis | RELEASED | v1.4.0 | 9 ACs | `tests/telemetry-observability.test.mjs` | - |
 | [TASK-013](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-013-word-realm-back-nav-and-image-fix.md) | Word Realm Test & Tiles Back Navigation & Image Rendering Fix | TESTED | v1.4.0 | 6 ACs | `tests/spelling-back-nav-and-image.test.mjs` | - |
 | [TASK-014](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-014-add-ear-saying-er-spelling-lesson.md) | Add 'ear' Saying /er/ Spelling Lesson as New Default | RELEASED | v1.5.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
+| [TASK-015](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-015-fix-modal-open-close-touch-race.md) | Fix Modal Open/Close Touch Race (Tell Me More) | RELEASED | v1.5.1 | 1 AC | `tests/spelling-modal-e2e.test.mjs` | - |
 
 ---
 

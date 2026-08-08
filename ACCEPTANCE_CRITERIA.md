@@ -299,3 +299,10 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-51] Existing Lessons Preserved**:
   - Page 22, Schwa ‹er›, and 'or' saying /er/ MUST remain unchanged, fully selectable, and continue to drive Learn, Game, and Test through the shared dynamic spelling engine.
+
+---
+
+## 19. Modal Open/Close Touch Race Fix (TASK-015)
+
+- **[AC-52] Modal Survives the Trailing Click That Opened It**:
+  - When a modal is opened by a touch (`pointerdown`), the browser's own trailing synthetic `click` event at the same coordinates MUST NOT be treated as a backdrop tap that immediately closes the same modal. A genuine backdrop tap occurring after the opening gesture MUST still close the modal.

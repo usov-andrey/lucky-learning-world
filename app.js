@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.5.0";
+} from "./engine/math-engine.js?v=v1.5.1";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.0";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.1";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.5.0";
+} from "./engine/progression.js?v=v1.5.1";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.5.0";
+} from "./engine/reward-engine.js?v=v1.5.1";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.5.0";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.0";
+import { ShareController } from "./engine/share-controller.js?v=v1.5.1";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.1";
 
-import { LEVELS } from "./content/levels.js?v=v1.5.0";
+import { LEVELS } from "./content/levels.js?v=v1.5.1";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.5.0";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.0";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.0";
-import { ThemeManager } from "./content/themes.js?v=v1.5.0";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.0";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.0";
-import { ClientTelemetry } from "./telemetry.js?v=v1.5.0";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.0";
+} from "./content/spelling-catalog.js?v=v1.5.1";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.1";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.1";
+import { ThemeManager } from "./content/themes.js?v=v1.5.1";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.1";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.1";
+import { ClientTelemetry } from "./telemetry.js?v=v1.5.1";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.1";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -448,6 +448,14 @@ export class AppController {
     if (typeof document !== "undefined") {
       document.addEventListener("click", (e) => {
         if (e.target && e.target.classList && e.target.classList.contains("modal-overlay")) {
+          // A touch that opens a modal (bindTouchClick fires on pointerdown) can land the
+          // browser's trailing synthetic click at the same screen coordinates *after* the
+          // overlay is already covering that spot, so this handler would see the newly
+          // opened overlay as e.target and close it within the same gesture (TASK-009 left
+          // this race in place: it deduped the button's own handler but not this one).
+          // Ignore backdrop clicks that land within the open animation window.
+          const openedAt = Number(e.target.dataset.openedAt || 0);
+          if (Date.now() - openedAt < 400) return;
           this.closeModal(e.target);
           return;
         }
@@ -1566,6 +1574,7 @@ export class AppController {
     const wasOpen = modalElem.classList.contains("active") || modalElem.style.display === "flex";
     modalElem.style.display = "flex";
     modalElem.classList.add("active");
+    modalElem.dataset.openedAt = String(Date.now());
     if (wasOpen) ClientTelemetry.actionNoop("already-active");
     else ClientTelemetry.transition("modal", "closed", modalElem.id || "modal");
     console.log("✨ [LLW Modal] Modal display set to flex & active:", modalElem.id);

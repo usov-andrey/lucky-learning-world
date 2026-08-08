@@ -120,7 +120,51 @@ test("TASK-009 E2E: Tell me more button handles single execution on touch/click,
   assert.equal(modalTellMeMore.style.display, "flex", "Modal must display as flex");
   assert.equal(wordElem.textContent, "WORM");
 
-  // Test closing via backdrop click on .modal-overlay
+  // Test closing via backdrop click on .modal-overlay. Backdrop clicks within the open
+  // gesture's own guard window are ignored (TASK-015 AC-52), so simulate a later, genuine
+  // tap by backdating openedAt rather than clicking immediately after opening.
+  modalTellMeMore.dataset.openedAt = String(Date.now() - 1000);
   modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
   assert.equal(modalTellMeMore.style.display, "none", "Modal must close on backdrop overlay click");
+});
+
+// @task TASK-015
+// @ac AC-52 Modal survives the trailing click that opened it
+test("TASK-015 AC-52: opening a modal on touch does not get closed by the same gesture's trailing click landing on the backdrop", async () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+  localStorage.clear();
+
+  const { AppController } = await import(`../app.js?task015_modal_race=${Date.now()}`);
+  const app = new AppController();
+
+  app.selectSpellingLesson("ear-saying-er");
+  app.switchSpellingMode("learn");
+
+  const btnTellMeMore = document.getElementById("btn-tell-me-more");
+  const modalTellMeMore = document.getElementById("modal-tell-me-more");
+
+  // Real touch devices fire pointerdown first; bindTouchClick's handler runs synchronously
+  // and opens the modal there. The button's screen position is now covered by the
+  // full-screen backdrop, so the browser's *trailing* synthetic click (fired after
+  // pointerup, at the same coordinates) resolves its target against the now-open overlay,
+  // not the button. Simulate that exact sequence: open via pointerdown, then a click whose
+  // target is the overlay itself, dispatched immediately (same gesture, no elapsed time).
+  btnTellMeMore.dispatchEvent(new window.PointerEvent("pointerdown", { bubbles: true, cancelable: true, pointerType: "touch" }));
+  assert.equal(modalTellMeMore.style.display, "flex", "Modal must be open immediately after the opening pointerdown");
+
+  modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+
+  assert.equal(modalTellMeMore.style.display, "flex", "Modal must still be open: the trailing click from the same touch that opened it must not close it");
+  assert.ok(modalTellMeMore.classList.contains("active"), "Modal must still have the active class");
+
+  // A later, genuine backdrop tap (well after the opening gesture) must still close it.
+  modalTellMeMore.dataset.openedAt = String(Date.now() - 1000);
+  modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "none", "A genuine later backdrop tap must still close the modal");
 });
