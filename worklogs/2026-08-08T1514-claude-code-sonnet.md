@@ -202,3 +202,69 @@ Gate) test proving the fix isn't Tell-Me-More-specific.
   literal minute of the bug report, in a database." Worth doing this earlier next time
   a live-user bug report comes with a working telemetry pipeline already in place,
   rather than reaching for jsdom reproduction first.
+
+## Addendum 3: TASK-017, owner tested v1.5.2 live and it still didn't work
+
+Owner: "Кнопка все еще не нажимается)" (also asked, separately, to show the build
+timestamp in Bangkok local time instead of UTC — done first, small, unrelated:
+`build-info.js`'s `formatBuildLabel` now uses `Intl.DateTimeFormat` with
+`timeZone: "Asia/Bangkok"`).
+
+Rather than guess again, queried D1 for the *very latest* session
+(`ses_9f0949cc...`, confirmed `app_version: "v1.5.2"` — genuinely post-TASK-016) before
+writing any code. Found something different from the click-race bug:
+
+- First tap on `btn-tell-me-more`: `action.completed`, `closed → modal-tell-me-more` —
+  TASK-016's fix is real, it opens correctly.
+- The modal is then **never closed** for the rest of the session — no
+  `modal-tell-me-more → closed` transition appears anywhere later. Every subsequent tap
+  on the same button logs `action.noop, reason: already-active` — technically correct
+  given the internal state, but indistinguishable from "broken" to the person tapping it.
+- Later in the *same* session, `btn-parent-mode-header` (a different button, opening a
+  different modal, Parent Gate) worked fine and opened successfully — while Tell Me More
+  was still internally marked `active`. Two modals could apparently be simultaneously
+  "active" with nothing enforcing "only one at a time" or clearing stale state on
+  navigation.
+
+Spent real effort trying to pin down *why* a full-screen `z-index: 999999` overlay
+supposedly covering the header wouldn't have blocked that tap (checked `.app-header`'s
+`position: sticky` + `z-index: 100`, checked for stacking-context-trapping properties —
+`transform`/`filter`/`opacity`/`isolation` — on every ancestor of the modal, checked the
+comic theme's `.modal-card` override, checked for a stray `body.modal-open` selector
+fighting the JS-set inline style) and could not conclusively identify the exact
+rendering mechanism from code alone, without a real device to inspect. Did find one
+real, if unrelated, gap while looking: `.modal-overlay` was missing the
+`-webkit-backdrop-filter` prefix Safari needs alongside unprefixed `backdrop-filter`
+(fixed alongside, cheap).
+
+Rather than keep chasing the exact rendering cause, fixed the structural gap the
+telemetry *did* conclusively prove: there was no single place enforcing "at most one
+modal is active, and navigating away always clears it." Added
+`closeAllModals(exceptElem)` to `app.js`, wired into `showScreen()` (unconditional — any
+screen change clears every modal) and into `openModal()` itself (closes every *other*
+modal before opening the requested one, re-opening the same one still no-ops correctly).
+This directly fixes the exact symptom: even if the underlying reason the overlay let a
+click through to the header is never fully explained, the app can no longer get stuck
+with a phantom "active" modal blocking its own button forever, nor with two modals
+simultaneously live.
+
+- `npm test`: 118/118 (two new TASK-017 tests reproducing both angles of the real
+  telemetry finding: modal survives a screen change without a proper close; a second
+  modal opens while the first is still marked active). One test needed a `400ms` real
+  wait before its second click — `bindTouchClick`'s own 350ms re-entry lockout (per
+  element, unrelated to modal state) was swallowing the second dispatch otherwise.
+- `npm run test:coverage:gate`: passed (79.52/64.59/69.46 vs 65/60/60).
+- Released `v1.5.3`. `tests/build-metadata.test.mjs`'s hardcoded `APP_VERSION` literal
+  needed bumping a fourth time today — same recurring papercut, still out of scope to
+  fix properly here.
+- Pushed to `master` (`8e7b64e`); Deploy/Coverage Gate/Task Sync all green. Verified
+  live: production `app.js` contains `closeAllModals` (3 occurrences — definition + 2
+  call sites), `styles.css` has the `-webkit-backdrop-filter` prefix, `build-info.js`
+  reports `v1.5.3` with the Bangkok-time formatter.
+
+**Not yet confirmed**: whether this actually resolves what the owner sees on the real
+phone — that requires them to test again. If it's still broken, the next step should be
+querying telemetry for a session *after* this deploy the same way, rather than another
+round of code-only guessing — that pattern (telemetry first, then a targeted fix) is
+what actually worked twice today, versus TASK-015's jsdom-only confidence, which didn't
+hold up.
