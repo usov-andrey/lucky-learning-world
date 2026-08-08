@@ -81,3 +81,42 @@ resources/audio quality across all modes.
   a browser — no screenshot/visual QA pass was done this session.
 - No GitHub Issue exists for TASK-014 (`task:sync` didn't create one on this push;
   earlier tasks have issues, this one doesn't — not investigated further).
+
+## Addendum: TASK-015, same day, later in the session
+
+Owner tested the deployed lesson on a real iPhone and reported "Tell me more..." does
+nothing in Learn mode — a bug they said they'd already reported to another agent before
+(i.e. pre-existing, not something TASK-014 introduced).
+
+- Reproduced the button/modal logic in jsdom with a direct synthetic click — worked, so
+  catalog data and `openTellMeMoreModal` were not the cause. Diffed production `app.js`/
+  `index.html` byte-for-byte against local (after stripping CRLF) — identical, so not a
+  deploy-drift or stale-cache issue either (owner also confirmed a hard relaunch didn't
+  help).
+- Root cause: `bindTouchClick` opens modals on `pointerdown` for touch. The browser's
+  trailing synthetic `click` (fired after `pointerup`) resolves its target by
+  coordinates *at click time* — by then the just-opened full-screen modal overlay
+  already covers that point, so the click's target is the overlay, and the existing
+  backdrop-click-to-close handler closes the modal within the same gesture. TASK-009
+  (weeks earlier) fixed a related but different symptom and never caught this, because
+  its own jsdom tests dispatch a single synthetic click directly on the button, which
+  never exercises the coordinate-based backdrop hit.
+- Fix: `openModal()` stamps `dataset.openedAt`; the backdrop handler ignores overlay
+  clicks within 400ms of that timestamp (mirrors the existing 350ms lockout pattern from
+  TASK-009). General fix — covers every modal opened via `bindTouchClick`, not just Tell
+  Me More.
+- Added a regression test reproducing the real sequence (open via pointerdown, then a
+  click whose target is the overlay, dispatched immediately) and confirmed a later
+  genuine backdrop tap still closes the modal. Had to backdate `openedAt` in the
+  pre-existing TASK-009 backdrop-close test, which had incidentally relied on closing
+  within the same window this fix now guards.
+- `npm test`: 114/114. `npm run test:coverage:gate`: passed (79.50/64.52/69.32 vs 65/60/60).
+- Released `v1.5.1` (patch bump). This time wrote the root `implementation_plan.md`/
+  `walkthrough.md` *before* running `release.mjs`, avoiding the TASK-014 mis-mirror
+  mistake. Still had to bump the hardcoded `APP_VERSION` literal in
+  `tests/build-metadata.test.mjs` again after the release script ran — this is a
+  recurring one-line papercut on every release, not fixed here since it's out of scope
+  for a bug-fix task and the test's strictness looks intentional (AC-47).
+- Pushed to `master` (`14c2344`); Deploy/Coverage Gate/Task Sync all green. Verified the
+  fix is live: production `app.js` contains `dataset.openedAt` and the `< 400` guard,
+  `build-info.js` reports `v1.5.1`.
