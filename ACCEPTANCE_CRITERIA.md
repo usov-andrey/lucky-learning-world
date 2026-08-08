@@ -306,3 +306,23 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-52] Modal Survives the Trailing Click That Opened It**:
   - When a modal is opened by a touch (`pointerdown`), the browser's own trailing synthetic `click` event at the same coordinates MUST NOT be treated as a backdrop tap that immediately closes the same modal. A genuine backdrop tap occurring after the opening gesture MUST still close the modal.
+  - Superseded in practice by TASK-016 (which removes the pointerdown trigger, the actual cause); this guard remains as defense-in-depth and MUST keep passing.
+
+---
+
+## 20. Remove Pointerdown-Triggered Modal Opening (TASK-016)
+
+An independent Opus review of TASK-015 found the timestamp guard closed only the
+narrowest failure mode (a stray click landing exactly on the full-screen backdrop) and
+left at least two real, reproducible failure modes open: (1) the same race with a
+longer finger-hold than the 400ms guard window, and (2) the much more likely case for
+this specific button — the stray click landing on a close button *inside* the modal
+card rather than on the backdrop, since the card centers roughly where the button sits.
+Root cause: `bindTouchClick` opened modals on `pointerdown`, mutating the DOM mid-gesture
+before the browser's own trailing `click` event resolves its target by hit-testing.
+
+- **[AC-53] Modals Open Only on `click`; `pointerdown` Is Inert**:
+  - `bindTouchClick` MUST NOT trigger its handler on `pointerdown`/`pointerup`/`touchstart`/`touchend`. It MUST trigger only on the standard `click` event, relying on the already-global `touch-action: manipulation` rule for tap responsiveness. A `pointerdown` alone MUST NOT open a modal or invoke any bound handler.
+
+- **[AC-54] No Coordinate-Resolved Click Can Leak Onto the Wrong Control**:
+  - Because no DOM mutation happens before the single `click` event's target is resolved, opening any modal (Tell Me More, Parent Gate, Parent Settings, QR) MUST NOT be capable of the click landing on a different control (backdrop or an inner close button) than the one actually tapped, for any button using `bindTouchClick`.

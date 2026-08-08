@@ -129,8 +129,8 @@ test("TASK-009 E2E: Tell me more button handles single execution on touch/click,
 });
 
 // @task TASK-015
-// @ac AC-52 Modal survives the trailing click that opened it
-test("TASK-015 AC-52: opening a modal on touch does not get closed by the same gesture's trailing click landing on the backdrop", async () => {
+// @ac AC-52 Backdrop-close guard still works as defense-in-depth
+test("TASK-015 AC-52: an artificially-immediate backdrop click is still ignored by the openedAt guard", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
   const { window } = dom;
@@ -149,22 +149,82 @@ test("TASK-015 AC-52: opening a modal on touch does not get closed by the same g
   const btnTellMeMore = document.getElementById("btn-tell-me-more");
   const modalTellMeMore = document.getElementById("modal-tell-me-more");
 
-  // Real touch devices fire pointerdown first; bindTouchClick's handler runs synchronously
-  // and opens the modal there. The button's screen position is now covered by the
-  // full-screen backdrop, so the browser's *trailing* synthetic click (fired after
-  // pointerup, at the same coordinates) resolves its target against the now-open overlay,
-  // not the button. Simulate that exact sequence: open via pointerdown, then a click whose
-  // target is the overlay itself, dispatched immediately (same gesture, no elapsed time).
-  btnTellMeMore.dispatchEvent(new window.PointerEvent("pointerdown", { bubbles: true, cancelable: true, pointerType: "touch" }));
-  assert.equal(modalTellMeMore.style.display, "flex", "Modal must be open immediately after the opening pointerdown");
+  // TASK-016 removed the actual cause of the race (opening on pointerdown), so this guard
+  // is no longer load-bearing in practice -- but it is cheap defense-in-depth, so keep a
+  // direct test of the guard itself: a click targeting the overlay right after open must
+  // still be ignored, and a later one must still close it.
+  btnTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "flex", "Modal must open on click");
 
   modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "flex", "An immediate backdrop click within the guard window must not close the modal");
 
-  assert.equal(modalTellMeMore.style.display, "flex", "Modal must still be open: the trailing click from the same touch that opened it must not close it");
-  assert.ok(modalTellMeMore.classList.contains("active"), "Modal must still have the active class");
-
-  // A later, genuine backdrop tap (well after the opening gesture) must still close it.
   modalTellMeMore.dataset.openedAt = String(Date.now() - 1000);
   modalTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
   assert.equal(modalTellMeMore.style.display, "none", "A genuine later backdrop tap must still close the modal");
+});
+
+// @task TASK-016
+// @ac AC-53 Modals open only on click; pointerdown is inert
+// @ac AC-54 A click on a button behind a modal card never leaks through
+test("TASK-016 AC-53: pointerdown alone does not open the modal; a real click does, exactly once", async () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+  localStorage.clear();
+
+  const { AppController } = await import(`../app.js?task016_no_pointerdown=${Date.now()}`);
+  const app = new AppController();
+
+  app.selectSpellingLesson("ear-saying-er");
+  app.switchSpellingMode("learn");
+
+  const btnTellMeMore = document.getElementById("btn-tell-me-more");
+  const modalTellMeMore = document.getElementById("modal-tell-me-more");
+
+  let callCount = 0;
+  const originalOpen = app.openTellMeMoreModal.bind(app);
+  app.openTellMeMoreModal = (item) => {
+    callCount++;
+    originalOpen(item);
+  };
+
+  // A touch gesture that never completes as a click (e.g. the finger drags off the
+  // element and cancels) must not open anything -- proving the handler no longer reacts
+  // to pointerdown at all.
+  btnTellMeMore.dispatchEvent(new window.PointerEvent("pointerdown", { bubbles: true, cancelable: true, pointerType: "touch" }));
+  assert.equal(callCount, 0, "pointerdown alone must not open the modal");
+  assert.notEqual(modalTellMeMore.style.display, "flex", "Modal must stay closed on pointerdown alone");
+
+  // The actual click (which is what a completed tap/click always produces, and whose
+  // target the browser resolves *before* any handler runs) opens it, exactly once.
+  btnTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(callCount, 1, "a real click must open the modal exactly once");
+  assert.equal(modalTellMeMore.style.display, "flex", "Modal must be open after the click");
+});
+
+test("TASK-016 AC-54: opening a second modal (parent gate) from a button positioned where a modal card would center is unaffected", async () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+  localStorage.clear();
+
+  const { AppController } = await import(`../app.js?task016_parent_gate=${Date.now()}`);
+  const app = new AppController();
+
+  const btnParentMode = document.getElementById("btn-parent-mode-header");
+  const parentGateModal = document.getElementById("parent-gate-modal");
+  assert.ok(btnParentMode, "btn-parent-mode-header must exist");
+  assert.ok(parentGateModal, "parent-gate-modal must exist");
+
+  btnParentMode.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(parentGateModal.style.display, "flex", "Parent gate modal must open on a single click, with no separate opening event to race against");
 });

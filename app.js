@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.5.1";
+} from "./engine/math-engine.js?v=v1.5.2";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.1";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.2";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.5.1";
+} from "./engine/progression.js?v=v1.5.2";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.5.1";
+} from "./engine/reward-engine.js?v=v1.5.2";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.5.1";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.1";
+import { ShareController } from "./engine/share-controller.js?v=v1.5.2";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.2";
 
-import { LEVELS } from "./content/levels.js?v=v1.5.1";
+import { LEVELS } from "./content/levels.js?v=v1.5.2";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.5.1";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.1";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.1";
-import { ThemeManager } from "./content/themes.js?v=v1.5.1";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.1";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.1";
-import { ClientTelemetry } from "./telemetry.js?v=v1.5.1";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.1";
+} from "./content/spelling-catalog.js?v=v1.5.2";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.2";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.2";
+import { ThemeManager } from "./content/themes.js?v=v1.5.2";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.2";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.2";
+import { ClientTelemetry } from "./telemetry.js?v=v1.5.2";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.2";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -423,6 +423,15 @@ export class AppController {
   }
 
   bindEvents() {
+    // Deliberately click-only (no pointerdown/touchstart trigger). Firing on pointerdown
+    // used to open modals mid-gesture: the browser's own trailing click for that same
+    // touch resolves its target by coordinates *at click-dispatch time*, which by then
+    // could be the just-opened overlay (or a close button under the newly-centered modal
+    // card) instead of the element the user actually touched -- closing what was just
+    // opened, or worse, invoking the wrong control. See TASK-016. `touch-action:
+    // manipulation` (applied globally to `button` and friends in styles.css) already
+    // removes the ~300ms tap delay, so there is no responsiveness reason to special-case
+    // touch here.
     const bindTouchClick = (element, handler) => {
       if (!element) return;
       let handled = false;
@@ -436,11 +445,6 @@ export class AppController {
         handler(e);
       };
 
-      element.addEventListener("pointerdown", (e) => {
-        if (e.pointerType === "touch" || e.pointerType === "pen") {
-          execute(e);
-        }
-      }, { passive: true });
       element.addEventListener("click", execute);
     };
 
@@ -448,12 +452,10 @@ export class AppController {
     if (typeof document !== "undefined") {
       document.addEventListener("click", (e) => {
         if (e.target && e.target.classList && e.target.classList.contains("modal-overlay")) {
-          // A touch that opens a modal (bindTouchClick fires on pointerdown) can land the
-          // browser's trailing synthetic click at the same screen coordinates *after* the
-          // overlay is already covering that spot, so this handler would see the newly
-          // opened overlay as e.target and close it within the same gesture (TASK-009 left
-          // this race in place: it deduped the button's own handler but not this one).
-          // Ignore backdrop clicks that land within the open animation window.
+          // Extra defense-in-depth (TASK-015): ignore a backdrop click landing within the
+          // open animation window. TASK-016 removed the actual cause (opening on
+          // pointerdown), so this should no longer trigger in practice, but it is cheap
+          // and harmless to keep.
           const openedAt = Number(e.target.dataset.openedAt || 0);
           if (Date.now() - openedAt < 400) return;
           this.closeModal(e.target);
