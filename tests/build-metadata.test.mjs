@@ -7,14 +7,25 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "../build-info.js";
 
-test("TASK-012 AC-45 and AC-47: diagnostics use the exact authoritative version and UTC timestamp", () => {
+test("TASK-012 AC-45 and AC-47: diagnostics use the exact authoritative version and Bangkok-local timestamp", () => {
   const app = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
   const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const packageJson = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"));
-  const expectedUtc = new Date(BUILD_TIMESTAMP).toISOString().slice(0, 16).replace("T", " ");
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Bangkok",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).formatToParts(new Date(BUILD_TIMESTAMP)).map(part => [part.type, part.value])
+  );
+  const expectedBangkok = `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute} ICT`;
   assert.equal(APP_VERSION, "v1.5.2");
   assert.equal(packageJson.version, APP_VERSION.slice(1));
-  assert.equal(formatBuildLabel(), `${APP_VERSION} (${expectedUtc} UTC)`);
+  assert.equal(formatBuildLabel(), `${APP_VERSION} (${expectedBangkok})`);
   assert.match(app, /formatBuildLabel\(\)/);
   assert.doesNotMatch(app, /2026-07-27/);
   assert.match(html, /id="diag-build-version"[^>]*>Loading current build…<\/span>/);

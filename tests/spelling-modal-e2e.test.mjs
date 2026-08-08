@@ -228,3 +228,81 @@ test("TASK-016 AC-54: opening a second modal (parent gate) from a button positio
   btnParentMode.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
   assert.equal(parentGateModal.style.display, "flex", "Parent gate modal must open on a single click, with no separate opening event to race against");
 });
+
+// @task TASK-017
+// @ac AC-55 Screen navigation always closes any lingering modal
+// @ac AC-56 Opening a modal always closes any other modal first
+test("TASK-017 AC-55: navigating away from a screen closes a modal left open by any other path, so the button works again", async () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+  localStorage.clear();
+
+  const { AppController } = await import(`../app.js?task017_nav_closes_modal=${Date.now()}`);
+  const app = new AppController();
+
+  app.selectSpellingLesson("ear-saying-er");
+  app.switchSpellingMode("learn");
+
+  const btnTellMeMore = document.getElementById("btn-tell-me-more");
+  const modalTellMeMore = document.getElementById("modal-tell-me-more");
+
+  btnTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "flex", "Modal must open on click");
+
+  // Real telemetry showed a session where the modal never received an explicit close and
+  // stayed "active" for the rest of the session (see TASK-017 in tasks/), so every later
+  // tap on the same button silently no-op'd forever. Simulate leaving the screen by some
+  // path other than the modal's own close controls.
+  app.showScreen("dashboard");
+  assert.notEqual(modalTellMeMore.style.display, "flex", "Screen navigation must close any modal left open");
+  assert.ok(!modalTellMeMore.classList.contains("active"), "Modal must lose the active class on navigation");
+
+  app.showScreen("word");
+  app.switchSpellingMode("learn");
+
+  // bindTouchClick has its own 350ms re-entry lockout per element (unrelated to modal
+  // state); wait it out so this second click isn't dropped as a duplicate of the first.
+  await new Promise((resolve) => setTimeout(resolve, 400));
+
+  btnTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "flex", "The button must work again after returning, not silently no-op as already-active");
+});
+
+test("TASK-017 AC-56: opening a different modal closes one left open, without a screen change", async () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
+  const { window } = dom;
+
+  globalThis.window = window;
+  globalThis.document = window.document;
+  globalThis.localStorage = window.localStorage;
+  localStorage.clear();
+
+  const { AppController } = await import(`../app.js?task017_open_closes_other=${Date.now()}`);
+  const app = new AppController();
+
+  app.selectSpellingLesson("ear-saying-er");
+  app.switchSpellingMode("learn");
+
+  const btnTellMeMore = document.getElementById("btn-tell-me-more");
+  const modalTellMeMore = document.getElementById("modal-tell-me-more");
+  const btnParentMode = document.getElementById("btn-parent-mode-header");
+  const parentGateModal = document.getElementById("parent-gate-modal");
+
+  btnTellMeMore.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(modalTellMeMore.style.display, "flex", "Tell Me More modal must open first");
+
+  // Reproduces the exact anomaly seen in production telemetry: with Tell Me More still
+  // marked active, a header button that opens a *different* modal was still reachable
+  // and worked -- two modals could be simultaneously "active" with no single source of
+  // truth. Opening the second modal must now close the first.
+  btnParentMode.dispatchEvent(new window.MouseEvent("click", { bubbles: true, cancelable: true }));
+  assert.equal(parentGateModal.style.display, "flex", "Parent gate modal must open");
+  assert.notEqual(modalTellMeMore.style.display, "flex", "Opening a second modal must close the first one instead of stacking silently");
+  assert.ok(!modalTellMeMore.classList.contains("active"), "Tell Me More must no longer be marked active");
+});

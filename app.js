@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.5.2";
+} from "./engine/math-engine.js?v=v1.5.3";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.2";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.3";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.5.2";
+} from "./engine/progression.js?v=v1.5.3";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.5.2";
+} from "./engine/reward-engine.js?v=v1.5.3";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.5.2";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.2";
+import { ShareController } from "./engine/share-controller.js?v=v1.5.3";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.3";
 
-import { LEVELS } from "./content/levels.js?v=v1.5.2";
+import { LEVELS } from "./content/levels.js?v=v1.5.3";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.5.2";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.2";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.2";
-import { ThemeManager } from "./content/themes.js?v=v1.5.2";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.2";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.2";
-import { ClientTelemetry } from "./telemetry.js?v=v1.5.2";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.2";
+} from "./content/spelling-catalog.js?v=v1.5.3";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.3";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.3";
+import { ThemeManager } from "./content/themes.js?v=v1.5.3";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.3";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.3";
+import { ClientTelemetry } from "./telemetry.js?v=v1.5.3";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.3";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -956,6 +956,7 @@ export class AppController {
   }
 
   showScreen(screenKey) {
+    this.closeAllModals();
     const previousScreen = Object.entries(this.elements.screens)
       .find(([, screen]) => screen?.classList.contains("active"))?.[0] || "unknown";
     if (previousScreen === screenKey) {
@@ -1568,11 +1569,34 @@ export class AppController {
   }
 
   // --- MODALS & PARENT GATE ---
+  // Telemetry from a real device (TASK-017) showed a modal's "active" state can outlive
+  // its visible lifetime -- e.g. the player navigates away by some path other than the
+  // modal's own close controls, leaving it marked active with no `closed` transition
+  // ever recorded, so every later tap on the button that opens it silently no-ops
+  // forever ("already-active"). There was no single place enforcing "only one modal is
+  // ever active." This makes that a real invariant instead of an assumption.
+  closeAllModals(exceptElem) {
+    [
+      this.elements.onboardingModal,
+      this.elements.parentGateModal,
+      this.elements.parentSettingsModal,
+      this.elements.victoryModal,
+      this.elements.qrModal,
+      this.elements.modalTellMeMore
+    ].forEach((modal) => {
+      if (!modal || modal === exceptElem) return;
+      if (modal.classList.contains("active") || modal.style.display === "flex") {
+        this.closeModal(modal);
+      }
+    });
+  }
+
   openModal(modalElem) {
     if (!modalElem) {
       ClientTelemetry.actionFailed("missing-modal");
       return;
     }
+    this.closeAllModals(modalElem);
     const wasOpen = modalElem.classList.contains("active") || modalElem.style.display === "flex";
     modalElem.style.display = "flex";
     modalElem.classList.add("active");

@@ -326,3 +326,21 @@ before the browser's own trailing `click` event resolves its target by hit-testi
 
 - **[AC-54] No Coordinate-Resolved Click Can Leak Onto the Wrong Control**:
   - Because no DOM mutation happens before the single `click` event's target is resolved, opening any modal (Tell Me More, Parent Gate, Parent Settings, QR) MUST NOT be capable of the click landing on a different control (backdrop or an inner close button) than the one actually tapped, for any button using `bindTouchClick`.
+
+---
+
+## 21. Modal State Never Outlives Its Visibility (TASK-017)
+
+Production telemetry (queried directly from Cloudflare D1 after TASK-016 shipped)
+showed a real session where Tell Me More opened successfully once, was never closed
+through any of its own controls, and stayed marked `active` for the rest of the
+session — every later tap on the same button correctly, but unhelpfully, no-op'd as
+"already-active." A different modal (Parent Gate) opened successfully afterward,
+meaning two modals could be simultaneously marked active with no single place
+enforcing "only one is ever open."
+
+- **[AC-55] Screen Navigation Always Closes Any Open Modal**:
+  - Calling `showScreen()` for any screen (dashboard, math, word, pokedex) MUST close every currently-open modal, regardless of how it was left open.
+
+- **[AC-56] Opening a Modal Always Closes Any Other Open Modal First**:
+  - `openModal()` MUST close every other currently-active modal before opening the requested one, so at most one modal is ever active at a time. Re-opening the same modal that is already open must still correctly no-op (not reset unnecessarily).
