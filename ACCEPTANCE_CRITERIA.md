@@ -344,3 +344,29 @@ enforcing "only one is ever open."
 
 - **[AC-56] Opening a Modal Always Closes Any Other Open Modal First**:
   - `openModal()` MUST close every other currently-active modal before opening the requested one, so at most one modal is ever active at a time. Re-opening the same modal that is already open must still correctly no-op (not reset unnecessarily).
+
+---
+
+## 22. Fix Unclosed Modal Overlay Divs Causing Zero-Size Render (TASK-018)
+
+Three earlier tasks (TASK-015, TASK-016, TASK-017) treated "Tell Me More does
+nothing" as a JavaScript problem and fixed real bugs at that layer, but the owner
+reported the button was still dead afterward — on desktop Chrome, ruling out any
+touch-race explanation. Driving real Chromium via Playwright (at the owner's
+suggestion, rather than asking them to paste console output) showed
+`#modal-tell-me-more` had `display:flex` and `.active` set exactly as intended by
+the JS, yet its own `getBoundingClientRect()` was `0×0`. The live ancestor chain
+showed it nested three levels deep inside `#victory-modal` inside
+`#parent-settings-modal` (`display:none` by default) instead of being a sibling of
+`<body>` like every other modal. `index.html` had three separate missing closing
+tags that silently absorbed everything after them into the wrong subtree for the
+rest of the file. This bug class is invisible to `jsdom`-only tests: `jsdom` does
+not lay out or paint, so `style.display` and `classList` "work" from the element's
+own perspective even while a hidden ancestor collapses it to nothing on a real
+screen.
+
+- **[AC-57] No Modal Overlay Is Nested Inside Another Element**:
+  - Every element with class `modal-overlay` in `index.html` MUST be a direct child of `<body>`. None may be nested inside another modal overlay or any other container, since a `display:none` ancestor silently renders the whole subtree at `0×0` regardless of the descendant's own CSS.
+
+- **[AC-58] An Opened Modal Renders With a Non-Zero Viewport-Covering Box**:
+  - When `#modal-tell-me-more` is opened, it MUST have a real, non-zero rendered bounding box covering the viewport, verified against an actual browser render (not just computed-style assertions, which cannot detect this failure mode).

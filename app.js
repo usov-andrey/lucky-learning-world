@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.5.3";
+} from "./engine/math-engine.js?v=v1.6.0";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.5.3";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.6.0";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.5.3";
+} from "./engine/progression.js?v=v1.6.0";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.5.3";
+} from "./engine/reward-engine.js?v=v1.6.0";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.5.3";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.5.3";
+import { ShareController } from "./engine/share-controller.js?v=v1.6.0";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.6.0";
 
-import { LEVELS } from "./content/levels.js?v=v1.5.3";
+import { LEVELS } from "./content/levels.js?v=v1.6.0";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.5.3";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.5.3";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.5.3";
-import { ThemeManager } from "./content/themes.js?v=v1.5.3";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.5.3";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.5.3";
-import { ClientTelemetry } from "./telemetry.js?v=v1.5.3";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.5.3";
+} from "./content/spelling-catalog.js?v=v1.6.0";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.6.0";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.6.0";
+import { ThemeManager } from "./content/themes.js?v=v1.6.0";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.6.0";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.6.0";
+import { ClientTelemetry } from "./telemetry.js?v=v1.6.0";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.6.0";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
