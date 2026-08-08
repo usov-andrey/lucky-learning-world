@@ -12,7 +12,7 @@ test("TASK-012 AC-45 and AC-47: diagnostics use the exact authoritative version 
   const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const packageJson = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"));
   const expectedUtc = new Date(BUILD_TIMESTAMP).toISOString().slice(0, 16).replace("T", " ");
-  assert.equal(APP_VERSION, "v1.4.0");
+  assert.equal(APP_VERSION, "v1.5.0");
   assert.equal(packageJson.version, APP_VERSION.slice(1));
   assert.equal(formatBuildLabel(), `${APP_VERSION} (${expectedUtc} UTC)`);
   assert.match(app, /formatBuildLabel\(\)/);
