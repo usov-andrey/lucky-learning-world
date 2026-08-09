@@ -480,3 +480,42 @@ network request:
     never included `art.src`, the field that actually holds a character's image in this
     codebase's data shape — used correctly by `renderPokedex()` elsewhere in the same
     file — so even after the modal could open, the pet image resolved to `undefined`.)
+
+An independent review (a second agent, clean context, Opus) of AC-59 through AC-69 found
+the fixes for AC-65 through AC-69 correct against the engine functions' real signatures,
+confirmed all seven bugs as real via `git show 86a3219`, and confirmed `npm test` /
+`npm run test:e2e` green with no audio output. It also found two further real bugs the
+first pass missed, and — by mutation-testing the suite itself (temporarily reintroducing
+the AC-67 bug and re-running) — proved AC-67 was not actually guarded by the suite as
+claimed, since the victory-modal check was conditional and the fallback `alert()` path
+was silently auto-accepted. Both gaps are fixed below.
+
+- **[AC-70] Every Starter-Pet Choice Saves a Real, Valid Character**:
+  - Completing onboarding with any of the three starter buttons selected — not just the
+    default (Embercub) — MUST save and collect a character id that actually exists in
+    `content/characters.js`. (AC-5's original fix correctly changed
+    `dataset.starterPet` → `dataset.starter`, but two of the three buttons' actual
+    `data-starter` values, `"aquafox"` and `"leafpup"`, were themselves stale — not
+    existing in the current character roster at all, a separate, older-generation content
+    mismatch AC-5's own suite never caught because it only ever exercised the default
+    Embercub button. Fixed by pointing those two buttons at the real ids for the game's
+    intended fire/water/grass starter trio — `embercub`, `bubblit`, `leafling`, the first
+    three entries in `content/characters.js`'s `POOL_CHARACTERS` — while leaving their
+    child-facing display names unchanged. Regression-guarded by a new, fast `jsdom` test,
+    `tests/onboarding-starter-pet.test.mjs`, that completes onboarding through all three
+    buttons and checks each resulting collection entry against `getCharacterById()`.)
+- **[AC-71] A Rapid Second Tap on a Math Realm Answer Is Ignored, Not Double-Processed**:
+  - Tapping a second Math Realm answer button within the 800ms (correct) / 1400ms
+    (wrong) window before the next question renders MUST be ignored — it MUST NOT throw
+    an uncaught exception, and MUST NOT silently mark a not-yet-shown question as
+    answered. (AC-65/AC-66 fixed `answerFirstTry()` being called correctly, but neither
+    `renderMathQuestion()`'s click listeners nor `handleMathAnswer()` guarded against a
+    second tap landing inside that window — a plausible real interaction on a child's
+    tablet, and, depending on timing, capable of hitting `answerFirstTry()`'s own
+    "correction already pending" guard exception. Fixed with a `mathAnswerLocked` flag
+    set for the duration of the window. Regression-guarded by
+    `tests/math-answer-lock.test.mjs`, which dispatches two rapid clicks and checks both
+    for an uncaught exception, via `window.onerror` — `EventTarget.dispatchEvent()` does
+    not propagate listener exceptions back to its caller, so `assert.doesNotThrow()`
+    around a `dispatchEvent()` call would pass vacuously regardless of what the listener
+    does internally — and for silent misprocessing of the *next* question.)

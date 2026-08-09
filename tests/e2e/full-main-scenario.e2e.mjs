@@ -59,6 +59,7 @@ test(
     const consoleErrors = [];
     const pageErrors = [];
     const failedRequests = [];
+    const unexpectedDialogs = [];
 
     try {
       const page = await browser.newPage();
@@ -89,8 +90,16 @@ test(
       page.on("pageerror", (err) => {
         pageErrors.push(err.message);
       });
-      // finishMathSession()/finishSpellingSession() alert() on the no-reward path.
-      page.on("dialog", (dialog) => dialog.accept());
+      // A dialog here means the no-reward alert() path fired — every reward in
+      // this run is deterministic (see the math-accuracy comment near the wrong-
+      // answer selection below, and finishSpellingSession() always grants one on
+      // a mostly-uncollected pool), so any dialog is unexpected and must fail the
+      // suite, not be silently swallowed. It's still accepted either way so the
+      // page doesn't hang waiting on it.
+      page.on("dialog", (dialog) => {
+        unexpectedDialogs.push(dialog.message());
+        dialog.accept();
+      });
 
       await page.addInitScript((progression) => {
         localStorage.setItem("lmm3s:progression", JSON.stringify(progression));
@@ -186,13 +195,24 @@ test(
       );
       assert.ok(progressSeen.includes(8), "math session never reached question 8");
 
+      // AC-67 (Math): the reward here is deterministic, not just likely — exactly
+      // one of the 10 scored questions was answered wrong above (question 4), so
+      // accuracy is exactly 9/10 = 0.9 = DEFAULT_SETTINGS.rewardThreshold, which
+      // starsForAccuracy() grants via `>=`. A fresh collection also guarantees
+      // chooseReward() finds an unowned pool character. So the victory modal
+      // opening (not the no-reward alert() path) is asserted unconditionally here
+      // — if finishMathSession()'s reward/outcome wiring regresses, this must fail.
       await page.waitForTimeout(500);
       const mathVictoryActive = await page.evaluate(() =>
         document.getElementById("victory-modal")?.classList.contains("active"),
       );
-      if (mathVictoryActive) {
-        await page.locator("#btn-victory-continue").click();
-      }
+      assert.equal(mathVictoryActive, true, "AC-67: math level completion must grant a reward and open the victory modal");
+      const mathRewardImgSrc = await page.evaluate(() => document.getElementById("reward-pet-img")?.getAttribute("src"));
+      const mathRewardName = (await page.locator("#reward-pet-name").textContent()).trim();
+      assert.ok(mathRewardImgSrc, "AC-69: reward pet image src must not be empty");
+      assert.ok(!mathRewardImgSrc.endsWith("/undefined"), `AC-69: reward pet image src is literal "undefined": ${mathRewardImgSrc}`);
+      assert.ok(mathRewardName.length > 0, "AC-69: reward pet name must not be empty");
+      await page.locator("#btn-victory-continue").click();
       await page.waitForTimeout(300);
       const screenAfterMath = await page.evaluate(() => document.querySelector(".view-screen.active")?.id);
       assert.equal(screenAfterMath, "dashboard-view", "did not return to the dashboard after finishing math");
@@ -291,13 +311,19 @@ test(
         await page.waitForTimeout(900);
       }
 
+      // AC-68/AC-69 (Word Realm): finishSpellingSession() grants a reward
+      // unconditionally on completion as long as the pool has an unowned
+      // character, which it does here (a near-empty fresh collection) — so, like
+      // the math path above, asserted unconditionally rather than "if granted".
       await page.waitForTimeout(500);
       const wordVictoryActive = await page.evaluate(() =>
         document.getElementById("victory-modal")?.classList.contains("active"),
       );
-      if (wordVictoryActive) {
-        await page.locator("#btn-victory-continue").click();
-      }
+      assert.equal(wordVictoryActive, true, "AC-68/AC-69: finishing Word Realm must grant a reward and open the victory modal");
+      const wordRewardImgSrc = await page.evaluate(() => document.getElementById("reward-pet-img")?.getAttribute("src"));
+      assert.ok(wordRewardImgSrc, "AC-69: reward pet image src must not be empty");
+      assert.ok(!wordRewardImgSrc.endsWith("/undefined"), `AC-69: reward pet image src is literal "undefined": ${wordRewardImgSrc}`);
+      await page.locator("#btn-victory-continue").click();
       await page.waitForTimeout(300);
       const screenAfterWord = await page.evaluate(() => document.querySelector(".view-screen.active")?.id);
       assert.equal(screenAfterWord, "dashboard-view", "did not return to the dashboard after finishing word realm");
@@ -332,5 +358,10 @@ test(
     );
     assert.deepEqual(pageErrors, [], `uncaught page errors during the run: ${JSON.stringify(pageErrors)}`);
     assert.deepEqual(consoleErrors, [], `console.error calls during the run: ${JSON.stringify(consoleErrors)}`);
+    assert.deepEqual(
+      unexpectedDialogs,
+      [],
+      `unexpected alert() dialog(s) — the no-reward path fired when a reward was expected: ${JSON.stringify(unexpectedDialogs)}`,
+    );
   },
 );

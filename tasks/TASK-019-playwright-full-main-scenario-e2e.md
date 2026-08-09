@@ -2,7 +2,7 @@
 id: TASK-019
 title: "Permanent Playwright E2E Suite + Fix the ×7 Math Realm Crash Root Cause"
 status: RELEASED
-version: v1.7.0
+version: v1.7.1
 created: 2026-08-08
 github_issue: null
 ---
@@ -97,12 +97,36 @@ github_issue: null
   image without throwing, and the image is never the literal string `"undefined"`
   (fixes missing `#reward-pet-img`/`#reward-pet-name` markup in `index.html` and an
   incomplete image-fallback chain in `openVictoryModal()` — see §6, bug 5).
+- [x] **AC-70**: Every starter-pet choice at onboarding — not just the default —
+  saves and collects a character id that actually exists in
+  `content/characters.js` (see §6, bug 6; found by independent review, not the
+  original pass).
+- [x] **AC-71**: A rapid second tap on a Math Realm answer button, inside the
+  800ms/1400ms window before the next question renders, is ignored rather than
+  double-processed or thrown on (see §6, bug 7; found by independent review).
 
 ## 🧪 3. Test Coverage
 
 - `tests/e2e/full-main-scenario.e2e.mjs` — tagged `// @task TASK-019` /
-  `// @ac AC-1` through `AC-6`; AC-65 through AC-69 are exercised (and would fail the
-  suite if regressed) by the same continuous run, not by separate test cases.
+  `// @ac AC-1` through `AC-6`. AC-67/AC-68/AC-69 assertions are unconditional
+  (the reward in this run is deterministic: exactly one of ten scored math
+  questions is answered wrong, giving exactly the `rewardThreshold` accuracy;
+  `finishSpellingSession()` always grants a reward against a near-empty pool) and
+  any unexpected `alert()` dialog fails the suite — this was tightened after an
+  independent review proved, by temporarily reintroducing the AC-67 bug and
+  re-running the suite, that the original conditional check
+  (`if (victoryModalActive) ...`) let that exact regression pass silently, since
+  the no-reward `alert()` fallback path was auto-accepted without complaint. The
+  fix was re-verified the same way: the suite now fails on that exact mutation.
+- `tests/onboarding-starter-pet.test.mjs` (`jsdom`) — AC-70: completes onboarding
+  through all three starter buttons, checks each resulting collection entry
+  against `getCharacterById()`.
+- `tests/math-answer-lock.test.mjs` (`jsdom`) — AC-71: dispatches two rapid clicks
+  on a Math Realm answer button and checks for an uncaught exception via
+  `window.onerror` (`EventTarget.dispatchEvent()` does not propagate listener
+  exceptions to its caller, so `assert.doesNotThrow()` around a `dispatchEvent()`
+  call would pass vacuously — confirmed by writing that version first and finding
+  it stayed green with the guard removed).
 
 ## 💻 4. Impacted Code Files
 
@@ -125,28 +149,42 @@ github_issue: null
   - `openVictoryModal()` — image-fallback chain now includes `art.src`, matching the
     pattern already used correctly in `renderPokedex()` (AC-69).
   - Constructor — added `this.appliedRewardOutcomeIds = []`.
-- `index.html` — added the missing `#reward-pet-img`/`#reward-pet-name` elements inside
-  `.reward-pet-preview` (there was already a `.reward-pet-img` CSS rule for an element
-  that never existed); properly closed `.reward-pet-preview` and removed the now-extra
-  trailing `</div>` (AC-69).
+  - `handleMathAnswer()` — added a `mathAnswerLocked` guard, set for the duration
+    of the 800ms/1400ms feedback window and reset by the timers that already
+    existed, plus at the start of `startMathLevelSession()`/`startMathMixSession()`
+    (AC-71).
+- `index.html`:
+  - Added the missing `#reward-pet-img`/`#reward-pet-name` elements inside
+    `.reward-pet-preview` (there was already a `.reward-pet-img` CSS rule for an
+    element that never existed); properly closed `.reward-pet-preview` and removed
+    the now-extra trailing `</div>` (AC-69).
+  - Fixed the Aquafox/Leafpup starter buttons' `data-starter` values from the
+    nonexistent `"aquafox"`/`"leafpup"` to the real `POOL_CHARACTERS` ids
+    `"bubblit"`/`"leafling"` (AC-70).
 - `tests/e2e/full-main-scenario.e2e.mjs` — new Playwright suite (AC-1 through AC-6;
-  exercises AC-65 through AC-69).
+  exercises AC-65 through AC-69, see §3 for how AC-67 specifically was tightened).
 - `tests/e2e/static-server.mjs` — small local static file server helper used only by
   the e2e suite.
+- `tests/onboarding-starter-pet.test.mjs` — new `jsdom` regression test (AC-70).
+- `tests/math-answer-lock.test.mjs` — new `jsdom` regression test (AC-71).
 - `package.json` — new `test:e2e` script; `playwright` promoted from a one-time
   diagnostic dependency (TASK-018) to a permanent one.
 
 ## 📦 5. Release & Artifacts
 
-- **Version**: `v1.7.0`
+- **Version**: `v1.7.1` (v1.7.0 shipped the original suite + fixes; v1.7.1 shipped the
+  independent-review round — AC-70, AC-71, and the AC-67 test-strengthening in §3)
 - **Release Notes / Walkthrough**: `docs/walkthroughs/TASK-019-walkthrough.md`
 
-## 🔍 6. Root-Cause Analysis: Why This Is the Crash, Not Just Bugs Found Along the Way
+## 🔍 6. Root-Cause Analysis: What This Explains, and What It Doesn't
 
-All five bugs below come from `86a3219` (2026-07-28), which rewrote three functions in
+Bugs 1–5 below come from `86a3219` (2026-07-28), which rewrote three functions in
 `app.js` as part of the narrative-engine feature and, in doing so, dropped or
 mismatched arguments the rewritten code depended on. `git show 86a3219 -- app.js` shows
-each removed line was correct; none of it was ever this broken before that commit.
+each removed line was correct; none of it was ever this broken before that commit. Bugs
+6 and 7 are older/unrelated and were found only by an independent second-pass review
+(see §3); they're included here because they're the same class of "a real tap does
+something a `jsdom` test could never see."
 
 1. **Correct answers never advanced the session.** `handleMathAnswer()`'s correct
    branch called `answerFirstTry(this.mathSession)` — without the tapped value the
@@ -195,27 +233,63 @@ each removed line was correct; none of it was ever this broken before that commi
    never checked `art.src` — the field that actually holds a character's image in this
    codebase (`renderPokedex()`, elsewhere in the same file, gets this right) — so the
    image still silently resolved to the literal string `"undefined"`.
+6. **Two of the three starter-pet choices at onboarding saved an invalid character
+   id** (found by independent review, unrelated to `86a3219`). AC-5's original fix
+   correctly changed `dataset.starterPet` → `dataset.starter`, and its own suite
+   confirmed the default (Embercub) button worked — but never exercised the other two,
+   whose `data-starter` values (`"aquafox"`, `"leafpup"`) don't correspond to any
+   character in the current `content/characters.js` roster at all. Choosing either one
+   saved a pet id that `getCharacterById()` can never resolve, breaking the Pokédex
+   count and header avatar for that player. Fixed by pointing those buttons at the
+   real ids for the game's evident fire/water/grass starter trio: `embercub`,
+   `bubblit`, `leafling` — the first three `POOL_CHARACTERS` entries.
+7. **A rapid second tap on a Math Realm answer button could still misbehave, even
+   after bugs 1–2 were fixed** (also found only by independent review). Neither
+   `renderMathQuestion()`'s click listeners nor `handleMathAnswer()` ever guarded
+   against a second tap landing inside the 800ms (correct) / 1400ms (wrong) window
+   before the next question renders — a second correct tap in that window could
+   throw `answerFirstTry()`'s own "correction already pending" guard exception, and a
+   second tap on the *same rendered buttons* after either outcome could silently
+   misprocess whatever question happened to be current by then. Fixed with a
+   `mathAnswerLocked` flag held for the duration of that window.
 
-**Why this explains "kicked back to the dashboard around question 8" specifically**:
-bug 1 makes a correct answer look successful ("Great job!") while silently not
-advancing, and the second uncaught exception it can throw aborts a click handler mid-way
-— the browser just logs it and stops that handler's execution, it does not itself
-navigate anywhere. But `unlocksNext`/mastery-driven question selection in hard-drill
-mode (bug 3) means Lucky was being served the facts she struggles with most — the
-scenario most likely to mix genuine wrong answers (which, via bug 2, can *also* throw)
-with correct answers (which, via bug 1, always risk throwing on the second tap) in close
-succession, deep into a session, long after the app has accumulated enough silently
-swallowed exceptions and stale state that *some* downstream render call — several are
-one `.property` access away from throwing on `undefined`, as bugs 3–5 each independently
-demonstrate — hits a state it cannot handle and the screen genuinely resets. This
-suite's own AC-3 (strict 1→12 progression, question 8 explicitly asserted) and AC-2
-(zero uncaught errors, zero unexpected console errors, zero unexpected failed requests)
-together are the regression guard: with all five bugs fixed, a real ×7 session —
-driven end-to-end with a genuine mix of right and wrong answers — now runs clean.
+**What this explains, and what it doesn't**: bug 1 makes a correct answer look
+successful ("Great job!") while silently not advancing, and — even after this task's
+fix — bug 7 confirms tapping too fast near a real answer remains a live, if narrower,
+source of a genuine uncaught exception mid-handler. An uncaught exception in a plain
+click listener does not itself navigate anywhere; the browser just logs it and stops
+that handler. **An earlier draft of this section additionally argued that hard-drill
+mode's "serve Lucky's weakest facts" behavior made mixed right/wrong answers, and
+therefore this bug cluster, more likely on a ×7 session — that argument does not hold
+and has been removed**: independent review found `updateFactOnAnswer()`, the function
+that would record which facts a player gets wrong, is never called anywhere in
+`app.js` — `factStats` is read but never written, so mastery-based fact selection is
+silently inert for every player, not something this task can lean on (tracked
+separately, see the note at the end of this section). A direct simulation of the
+pre-fix logic also showed that, unassisted, the only way a session could progress at
+all was via wrong answers (each of which legitimately advances the queue), while
+correct answers kept re-showing the same frozen question — meaning reaching "question
+8" the way it's displayed on screen would have required roughly seven wrong answers
+and dozens of repeats of the same visibly-stuck question, a much louder symptom than
+"the app dropped back to the dashboard." A simpler, unverified alternative this task
+has not ruled out: the bottom nav bar's Hub button and the header logo
+(`nav-btn-hub`, `brand-logo-btn`) both call `showScreen("dashboard")` directly on any
+tap, with no confirmation — a stray tap on the fixed bottom nav during a tablet session
+would produce exactly the reported symptom with no bug involved at all.
 
-This is not a certainty-of-single-root-cause claim — five real, independently-severe
-bugs were found and fixed, any one of which was worth fixing on its own, and it is not
-possible to replay Lucky's exact real session to prove which combination fired that
-day. But this is a far stronger, far more specific explanation than the previous
-draft's "maybe the tablet's browser reclaimed the tab" theory, and it is the one this
-task leaves the codebase with evidence for.
+This section is not a certainty-of-single-root-cause claim. Seven real bugs were found
+and fixed across two review passes, each worth fixing on its own merits, and it remains
+impossible to replay Lucky's exact session to prove which condition — or combination —
+actually fired that day. What can be said with evidence, not just plausibility: this
+suite's own AC-3 (strict 1→12 progression, question 8 explicitly asserted), AC-2 (zero
+uncaught errors, zero unexpected console errors, zero unexpected failed requests), and
+the unconditional AC-67/68/69 reward assertions (verified by mutation-testing the
+suite itself, see §3) together mean a real ×7 session — driven end-to-end with a
+genuine mix of right and wrong answers — now runs clean, and would fail loudly if any
+of the seven bugs, or the reward/victory-modal path specifically, regressed again.
+
+**Follow-up not fixed in this task** (filed separately, see `tasks/INDEX.md`): the dead
+`updateFactOnAnswer()`/mastery-tracking path noted above, and a second, independently
+found bug where the header/level-chip star counts read `progression.starsByLevel`, a
+field that does not exist in the progression schema (`progression.levels[id].stars`
+does) — so those counts always read `0` regardless of actual play.

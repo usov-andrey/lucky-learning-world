@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.7.0";
+} from "./engine/math-engine.js?v=v1.7.1";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.0";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.1";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.7.0";
+} from "./engine/progression.js?v=v1.7.1";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.7.0";
+} from "./engine/reward-engine.js?v=v1.7.1";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.7.0";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.0";
+import { ShareController } from "./engine/share-controller.js?v=v1.7.1";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.1";
 
-import { LEVELS } from "./content/levels.js?v=v1.7.0";
+import { LEVELS } from "./content/levels.js?v=v1.7.1";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.7.0";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.0";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.0";
-import { ThemeManager } from "./content/themes.js?v=v1.7.0";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.0";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.0";
-import { ClientTelemetry } from "./telemetry.js?v=v1.7.0";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.0";
+} from "./content/spelling-catalog.js?v=v1.7.1";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.1";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.1";
+import { ThemeManager } from "./content/themes.js?v=v1.7.1";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.1";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.1";
+import { ClientTelemetry } from "./telemetry.js?v=v1.7.1";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.1";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -204,6 +204,7 @@ export class AppController {
     const activeLesson = getSpellingLesson(this.selectedLessonId);
     this.spellingEngine = new SpellingEngine(activeLesson, "learn");
     this.mathSession = null;
+    this.mathAnswerLocked = false;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
 
@@ -1031,6 +1032,7 @@ export class AppController {
 
   startMathLevelSession(level) {
     this.currentMathLevel = level;
+    this.mathAnswerLocked = false;
     const settings = this.settings || DEFAULT_SETTINGS;
     const factStats = (this.progression && this.progression.factStats) ? this.progression.factStats : {};
     const plan = buildLevelSessionPlan(level, factStats, settings);
@@ -1045,6 +1047,7 @@ export class AppController {
 
   startMathMixSession() {
     this.currentMathLevel = null;
+    this.mathAnswerLocked = false;
     const settings = this.settings || DEFAULT_SETTINGS;
     const factStats = (this.progression && this.progression.factStats) ? this.progression.factStats : {};
     const plan = buildMixSessionPlan(LEVELS, factStats, settings);
@@ -1109,9 +1112,15 @@ export class AppController {
   }
 
   handleMathAnswer(choice) {
-    if (!this.mathSession) return;
+    // Locked between a tap and the next question actually rendering (the 800ms
+    // "correct" / 1400ms "correction" windows below): a second tap in that window
+    // would otherwise either double-process the same question (throwing, since
+    // answerFirstTry() rejects a second call while a correction is pending) or land
+    // silently on a not-yet-rendered question. Real children double-tap on tablets.
+    if (!this.mathSession || this.mathAnswerLocked) return;
     const q = currentQuestion(this.mathSession);
     if (!q) return;
+    this.mathAnswerLocked = true;
 
     const correctAnswer = computeAnswer(q);
     const isCorrect = choice === correctAnswer;
@@ -1132,6 +1141,7 @@ export class AppController {
       }
 
       setTimeout(() => {
+        this.mathAnswerLocked = false;
         this.renderMathQuestion();
       }, 800);
     } else {
@@ -1146,6 +1156,7 @@ export class AppController {
       setTimeout(() => {
         this.mathSession = confirmCorrection(this.mathSession);
         this.emitNarrativeEvent("correction.confirmed", { realm: "math" });
+        this.mathAnswerLocked = false;
         this.renderMathQuestion();
       }, 1400);
     }
