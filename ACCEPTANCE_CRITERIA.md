@@ -519,3 +519,34 @@ was silently auto-accepted. Both gaps are fixed below.
     not propagate listener exceptions back to its caller, so `assert.doesNotThrow()`
     around a `dispatchEvent()` call would pass vacuously regardless of what the listener
     does internally — and for silent misprocessing of the *next* question.)
+
+---
+
+## 24. Fix Bottom-Nav Blank Page on Hub Tap (TASK-023)
+
+A real production incident: opening the live site in a new tab, tapping Math, then
+tapping the bottom nav's Hub button produced a completely blank content area — header
+and bottom nav rendered, everything between them empty. Root cause: two competing
+click handlers on every bottom-nav button, one correct (a `document`-level delegate)
+and one wrong (a direct `bindTouchClick()` binding passing the literal object key
+`"hub"` instead of the real screen id `"dashboard"`) — and the wrong one always won,
+via `stopPropagation()`, for every bottom-nav button since the day both handlers were
+introduced (2026-07-26), predating even the `86a3219` commit TASK-019 investigated so
+thoroughly.
+
+- **[AC-72] Bottom-Nav Hub Never Blanks the Page**:
+  - Tapping `#nav-btn-hub` MUST activate the dashboard screen (`.view-screen.active`
+    with id `"dashboard-view"`) with its realm cards present. It MUST NOT result in no
+    `.view-screen` having the `.active` class.
+- **[AC-73] Bottom-Nav Math/Word Actually Start Their Realm, Not Just Switch Screens**:
+  - Tapping `#nav-btn-math` MUST call `startMathRealm()` (a real session, verified via
+    `renderMathQuestion()`'s `data-math-choice` markup, not `index.html`'s static
+    placeholder `data-answer-val` buttons), not a bare `showScreen("math")`. Tapping
+    `#nav-btn-word` MUST call `startWordRealm()` (the lesson picker rendered), not a
+    bare `showScreen("word")`.
+- **[AC-74] The Permanent E2E Suite Exercises the Bottom Nav, Closing the Coverage Gap
+  That Let This Ship**:
+  - `tests/e2e/full-main-scenario.e2e.mjs` (TASK-019) MUST include at least one
+    interaction via the bottom nav bar, not exclusively the in-panel back buttons and
+    dashboard cards it used exclusively before — that exact gap is why this bug shipped
+    unnoticed and didn't reproduce under a first, careful investigation attempt.

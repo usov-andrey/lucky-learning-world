@@ -344,6 +344,30 @@ test(
         collection.some((pet) => pet.id === "embercub"),
         "AC-5: Embercub starter pet missing from the collection",
       );
+
+      // TASK-023: the bottom nav bar (as opposed to the in-panel back buttons and
+      // dashboard cards used everywhere above) was never exercised by this suite at
+      // all — exactly the gap that let a real production bug ship: tapping the
+      // bottom nav's Hub button rendered a completely blank page, since a second,
+      // conflicting click handler on that button passed the wrong screen key.
+      console.log("[e2e] checking bottom nav bar (previously untested)");
+      await page.locator("#nav-btn-math").click();
+      await page.waitForTimeout(300);
+      assert.equal(
+        await page.evaluate(() => document.querySelector(".view-screen.active")?.id),
+        "math-view",
+        "TASK-023: bottom nav Math must activate the math screen",
+      );
+      assert.ok(
+        await page.evaluate(() => Boolean(window.appController.mathSession)),
+        "TASK-023: bottom nav Math must start a session (startMathRealm()), not just switch screens",
+      );
+      await page.locator("#nav-btn-hub").click();
+      await page.waitForTimeout(300);
+      const screenAfterNavHub = await page.evaluate(() => document.querySelector(".view-screen.active")?.id);
+      assert.equal(screenAfterNavHub, "dashboard-view", "TASK-023: bottom nav Hub must not leave every screen inactive (blank page)");
+      const realmsGridChildren = await page.evaluate(() => document.querySelector(".realms-grid")?.children.length);
+      assert.ok(realmsGridChildren > 0, "TASK-023: dashboard realm cards must be visible after bottom nav Hub");
     } finally {
       await browser.close();
       await server.close();

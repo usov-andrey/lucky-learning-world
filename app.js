@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.7.1";
+} from "./engine/math-engine.js?v=v1.7.2";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.1";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.2";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.7.1";
+} from "./engine/progression.js?v=v1.7.2";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.7.1";
+} from "./engine/reward-engine.js?v=v1.7.2";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.7.1";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.1";
+import { ShareController } from "./engine/share-controller.js?v=v1.7.2";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.2";
 
-import { LEVELS } from "./content/levels.js?v=v1.7.1";
+import { LEVELS } from "./content/levels.js?v=v1.7.2";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.7.1";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.1";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.1";
-import { ThemeManager } from "./content/themes.js?v=v1.7.1";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.1";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.1";
-import { ClientTelemetry } from "./telemetry.js?v=v1.7.1";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.1";
+} from "./content/spelling-catalog.js?v=v1.7.2";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.2";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.2";
+import { ThemeManager } from "./content/themes.js?v=v1.7.2";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.2";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.2";
+import { ClientTelemetry } from "./telemetry.js?v=v1.7.2";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.2";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -517,9 +517,24 @@ export class AppController {
       });
     }
 
-    // Nav bar
+    // Nav bar. Routes through the same handlers as their dashboard-card/back-button
+    // equivalents (startMathRealm()/startWordRealm(), not a bare showScreen()), so
+    // entering a realm from the bottom nav initializes its session/lesson the same
+    // way entering it from the dashboard does — previously this called
+    // `this.showScreen(screenKey)` directly with `screenKey` from `navBtns`'s own
+    // keys ("hub"/"math"/"word"/"pokedex"), none of which is a valid key in
+    // `this.elements.screens` (it's "dashboard", not "hub") and none of which start
+    // a Math/Word session. The Hub button's mismatch meant `showScreen("hub")`
+    // matched no screen at all, clearing `.active` from every one of them without
+    // ever setting it on another — the "click Hub, get a blank page" bug.
+    const navBarActions = {
+      hub: () => this.showScreen("dashboard"),
+      math: () => this.startMathRealm(),
+      word: () => this.startWordRealm(),
+      pokedex: () => this.showScreen("pokedex"),
+    };
     Object.entries(this.elements.navBtns).forEach(([screenKey, btn]) => {
-      bindTouchClick(btn, () => this.showScreen(screenKey));
+      bindTouchClick(btn, () => navBarActions[screenKey]());
     });
 
     // Dashboard Realm Buttons

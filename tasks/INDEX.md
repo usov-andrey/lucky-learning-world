@@ -28,6 +28,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-020](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-020-fact-mastery-tracking-never-persists.md) | Fact Mastery Tracking Never Persists (updateFactOnAnswer Is Never Called) | PROPOSED | v1.0.0 | 3 ACs | `-` | - |
 | [TASK-021](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-021-starsbylevel-field-does-not-exist.md) | Star Counts Always Read 0 (progression.starsByLevel Does Not Exist) | PROPOSED | v1.0.0 | 3 ACs | `-` | - |
 | [TASK-022](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-022-fix-build-timestamp-drift-from-untrusted-dev-clock.md) | Fix Build Timestamp Drift From Untrusted Dev Clock | PROPOSED | v1.0.0 | 2 ACs | `tests/task-xxx-*.test.mjs` | - |
+| [TASK-023](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-023-fix-bottom-nav-blank-page-on-hub-tap.md) | Fix Bottom-Nav Blank Page on Hub Tap (Duplicate, Conflicting Click Handlers) | RELEASED | v1.7.2 | 4 ACs | `tests/nav-bar-navigation.test.mjs` | - |
 
 ---
 
