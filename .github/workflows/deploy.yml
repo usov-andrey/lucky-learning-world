@@ -32,9 +32,6 @@ jobs:
       - name: Run automated test suite with coverage gate
         run: npm run test:coverage:gate
 
-      - name: Stamp accurate production build timestamp (TASK-022)
-        run: node scripts/stamp-deploy-timestamp.mjs
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
         continue-on-error: true
