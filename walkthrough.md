@@ -1,106 +1,97 @@
-# TASK-019 Walkthrough: Permanent Playwright E2E Suite + Fix the ×7 Math Realm Crash Root Cause
+# TASK-023 Walkthrough: Fix Bottom-Nav Blank Page on Hub Tap
 
 ## Result
 
-- Added a permanent Playwright suite (`tests/e2e/full-main-scenario.e2e.mjs`, run via
-  `npm run test:e2e`) that drives one continuous real-Chromium session through the
-  entire main scenario, in order: onboarding → Math Realm ×7 (all 12 questions,
-  mixing right and wrong answers, question 8 explicitly asserted) → Word Realm
-  Learn/Test(digital+paper)/Game(Tiles) played to completion → Pokédex. It fails on
-  any uncaught exception, unexpected `console.error`, or unexpected failed network
-  request, and asserts the math progress counter never skips, resets, or unexpectedly
-  drops back to the dashboard. This resolves the open decision TASK-018 explicitly
-  left unresolved: adopting Playwright permanently, not just as a one-time diagnostic.
-- Building it — by driving genuine clicks and typed input rather than calling
-  `AppController` methods directly, unlike the existing `jsdom`-based
-  `*-e2e.test.mjs` tests — surfaced **seven** real, previously-undetected bugs, all
-  now fixed. **Five trace to the exact same commit**, `86a3219` (2026-07-28, the
-  narrative-engine refactor), which rewrote `handleMathAnswer()`,
-  `finishMathSession()`, and `finishSpellingSession()` and dropped or mismatched
-  arguments each one depended on:
-  1. Correct Math Realm answers never actually advanced the session —
-     `answerFirstTry()` was called without the tapped value, so its own internal
-     correctness check always failed, silently treating every correct tap as a
-     pending correction. A second correct tap on the same (visually unchanged)
-     question then threw an uncaught exception.
-  2. Wrong answers never legitimately set up the correction `confirmCorrection()`
-     later relied on — the wrong branch never called `answerFirstTry()` at all.
-  3. Finishing a level session never scored/unlocked/rewarded correctly —
-     `computeLevelOutcome()` was called with an extra argument that shifted a level
-     ID string into its `settings` parameter (accuracy became `NaN`, stars always
-     `0`), and the reward branch checked a field name that doesn't exist on the
-     function's real return shape.
-  4. Granting *any* reward corrupted `this.collection` into a non-array wrapper
-     object — all three call sites assigned `applyReward()`'s full return value
-     directly instead of destructuring `.collection` out of it. This is what the
-     suite caught directly: the Pokédex read "undefined / 15".
-  5. The victory modal was unreachable — `index.html` never had the
-     `#reward-pet-img`/`#reward-pet-name` elements `openVictoryModal()` needed
-     (despite a CSS rule already existing for them), so it threw before opening;
-     even fixed, its image-fallback chain was missing `art.src`, the field that
-     actually holds a character's image in this codebase.
-  Two further, unrelated, real bugs were also found and fixed:
-  6. Math correction feedback and spoken audio read a `q.answer` property that is
-     never set on a question object, showing/saying "...equals undefined".
-  7. A new player's chosen starter pet was never actually saved — `completeOnboarding()`
-     read `dataset.starterPet`, but the HTML only ever sets `data-starter`.
-- **Why this is now the leading explanation for "kicked back to the dashboard around
-  question 8"**: bug 1 makes correct answers look successful while silently not
-  advancing and can throw on a second correct tap; hard-drill ×7 sessions specifically
-  serve Lucky the facts she struggles with most, so a real session mixes genuine
-  wrong answers (which, via bug 2, can *also* throw) with correct answers in close
-  succession — exactly the condition under which the accumulated silently-swallowed
-  exceptions and stale state from bugs 1–2, compounded by bugs 3–5 (each one
-  `.property` access away from throwing on `undefined`), are most likely to hit a
-  state some render call cannot handle. This is not proof of the single exact
-  trigger — it wasn't possible to replay Lucky's exact session — but it is a far
-  stronger, far more specific account than "maybe the tablet reclaimed the tab,"
-  which was this task's first-pass conclusion before the reward/progression bugs were
-  found.
+- Fixed a real production bug: on the live site (v1.7.1), tapping the bottom nav's Hub
+  button after entering Math Realm produced a completely blank content area (header and
+  bottom nav rendered, everything between empty).
+- Root cause: `app.js`'s `bindEvents()` registered **two** click handlers for every
+  bottom-nav button — a correct `document`-level delegate, and a second, direct
+  `bindTouchClick()` binding that called `this.showScreen(screenKey)` with `screenKey`
+  taken from `navBtns`'s own object keys (`"hub"`/`"math"`/`"word"`/`"pokedex"`) instead
+  of a real screen id (`this.elements.screens` only has `"dashboard"`, not `"hub"`).
+  `bindTouchClick()`'s handler calls `stopPropagation()`, so the direct binding always
+  won — for every bottom-nav tap, since both handlers were introduced the same day,
+  2026-07-26 (`379cc77`/`f3dc015`/`0612b10`), well before the narrative-engine commit
+  TASK-019 spent so much effort investigating. For Hub, `showScreen("hub")` matches no
+  screen, so `showScreen()`'s toggle loop cleared `.active` from every screen and set it
+  on none. For Math/Word, the screen *did* switch (their keys happen to be valid), but
+  `startMathRealm()`/`startWordRealm()` never ran, silently leaving the session/lesson
+  picker uninitialized behind `index.html`'s raw static placeholder markup.
+- Fixed by routing the direct binding through the same correct per-button actions the
+  (until now unreachable) delegate always intended, while keeping the debounce
+  protection `bindTouchClick()` provides.
 
-## Why `jsdom` never caught any of this
+## Investigation timeline
 
-Every one of the seven bugs requires something `jsdom` (what every other test in this
-repo runs against) cannot do: run real `setTimeout`-scheduled re-renders against real
-DOM mutations, produce a real uncaught exception from a real click event, or make a
-real (and, here, really-failing) network request. The existing `jsdom`-based
-`*-e2e.test.mjs` tests call `app.startWordRealm()`, `app.completeOnboarding()`, etc.
-directly — which exercises the methods, but never the click handlers, never the
-timers, and never a state where a genuinely wrong click could be dispatched by a real
-user through a real button. TASK-018 already established this exact gap for layout
-bugs; this task confirms it applies just as hard to state-machine/timing bugs.
+1. The owner first asked for a fresh, clean-context Sonnet agent to investigate. That
+   agent could not reproduce the bug after genuinely trying — plain navigation, the
+   live site, a simulated service-worker-mid-session-update race — and checked real
+   production telemetry (Cloudflare D1) for the deploy window with no corroborating
+   error either. It correctly declined to fabricate a fix, which was the right call
+   given what it had tried.
+2. The owner then gave a more specific repro: "open the link in a new tab, tap Math,
+   tap Hub" — which, from the screenshot, meant the **bottom nav bar** specifically,
+   not the in-panel "⬅️ Hub" back button both the first investigation and this
+   project's entire existing E2E suite (TASK-019) had exclusively exercised until now.
+3. Reproduced directly: drove real Chromium against the live production site first
+   (`https://usov-andrey.github.io/lucky-learning-world/`), then confirmed against a
+   local checkout of the current code. `document.querySelector('.view-screen.active')`
+   returned `null` after tapping `#nav-btn-hub` — every screen's `display` was `none`.
+   Traced to the duplicate-handler bug above by reading `bindEvents()`'s nav-bar
+   binding block and the global delegate side by side, then confirmed with
+   `git blame`/`git log -S` that both predate `86a3219` entirely — this was never a
+   TASK-019-era regression.
+4. Verified the fix removes the bug for all four bottom-nav buttons (Hub/Math/Word/
+   Pokédex) directly in a real browser against a local server, both via manual
+   JS-driven clicks and the new automated tests below, before writing anything up.
+
+## Why `jsdom` was the right primary test here (unlike TASK-018/TASK-019)
+
+This bug is a pure DOM-event/state-machine defect — click bubbling, `stopPropagation()`,
+and a wrong string key — not a real layout/paint issue like TASK-018's nested-modal bug
+or a real-timer-scheduling issue like several of TASK-019's. `jsdom` fully supports
+click dispatch and bubbling, so `tests/nav-bar-navigation.test.mjs` (`jsdom`) is the
+correct, fast primary regression guard; a Playwright test wasn't required to *catch*
+this class of bug, only to *have exercised the button* at all — which is why AC-74 also
+adds one bottom-nav check to the existing Playwright suite, closing the actual gap.
 
 ## Verification
 
-- `npm test`: all 119 tests green throughout every fix in this task.
-- `npm run test:e2e`: green — full main scenario, all game modes, zero console errors,
-  zero uncaught exceptions, zero unexpected failed requests, question progress
-  strictly 1→12 including question 8, victory modal opens cleanly with a real pet
-  image and name on both the math and spelling reward paths, Pokédex renders a real
-  `N / 15` count, starter pet saved correctly.
-- `tests/modal-overlay-structure.test.mjs` (TASK-018's regression guard) re-run after
-  editing `index.html`'s victory modal markup: still green — no modal ended up nested
-  inside another.
+- `npm test`: 126/126 green (was 122; +4 for the new nav-bar test file).
+- `npm run test:e2e`: green, including the new bottom-nav Math→Hub check.
+- `tests/nav-bar-navigation.test.mjs` verified red-then-green: temporarily reverted the
+  fix (`navBarActions[screenKey]()` → `this.showScreen(screenKey)`), confirmed 3 of the
+  4 new tests failed with the exact expected assertion messages (the 4th, Pokédex,
+  passes either way since `"pokedex"` happens to be a valid screen id — noted in the
+  test file itself), restored the fix, confirmed all 4 green again.
+- Manually re-verified the exact original repro (new tab → Math → Hub, bottom nav) in a
+  real browser against both the live production site (pre-fix, reproduced) and a local
+  server running the fixed code (post-fix, resolved) before writing this up.
 
-## Process notes
+## Process note
 
-- The suite is intentionally seeded with every math level pre-unlocked (mirrors a
-  real returning player's save) rather than grinding ×6 first, to go straight to the
-  exact level — ×7 — Lucky was playing.
-- Diagnosing the two silent hangs (an infinite loop in the test's own math-loop exit
-  condition, and later a genuinely stuck `answerFirstTry` state) used a small
-  throwaway debug script driving the same flow with a short per-action timeout and
-  verbose state logging — much faster to iterate on than re-running the full ~75s
-  suite blind each time. It was deleted once its job was done; it was never a
-  permanent artifact.
-- At the owner's request, all TTS/audio playback is muted for every run:
-  `--mute-audio` alone is insufficient on Windows, since `window.speechSynthesis`
-  routes through the native SAPI/OneCore engine rather than Chromium's own audio
-  pipeline — both `speechSynthesis.speak` and `HTMLMediaElement.prototype.play` are
-  stubbed to no-ops via `page.addInitScript()`.
-- `console.error` filtering for the CORS-blocked telemetry endpoint is done by
-  ignoring the browser's generic "Failed to load resource" text outright and instead
-  asserting on actual failed-request URLs (`page.on("requestfailed")`/`"response"`)
-  — the generic console text carries no URL, so text-matching it can't distinguish a
-  blocked telemetry ping from a real missing asset the way checking the request URL
-  directly can.
+The first investigation's inability to reproduce wasn't a failure of effort — it
+correctly ruled out the commit and code paths it had reason to suspect, and correctly
+refused to guess. What actually cracked this was the owner's own follow-up: a tighter,
+more specific repro description ("new tab, Math, then Hub") that pointed at a UI
+element — the bottom nav bar — no prior investigation or test in this project had ever
+touched. Worth remembering for next time: when a first pass can't reproduce a real
+report, the most useful next question isn't "try harder," it's "what exact button/
+element did you tap" — this project has three now-fixed bugs (TASK-018, several in
+TASK-019, and this one) that all trace to one specific, previously-unexercised
+interaction path, not to the code's general correctness.
+
+## Release-process note
+
+This release's own `scripts/release.mjs` "Mirrored plan"/"Mirrored walkthrough" step
+copies the root `implementation_plan.md`/`walkthrough.md` files into
+`docs/plans/`/`docs/walkthroughs/` under the *current* task's filename, regardless of
+their actual content — it does not generate them from the task file. Since this
+task's session never touched the root copies (only wrote directly under
+`docs/plans/`/`docs/walkthroughs/`), the release script silently overwrote this exact
+file and `docs/plans/TASK-023-implementation-plan.md` with TASK-019's stale content
+under TASK-023's name. Caught and fixed in a same-day follow-up commit; the corrected
+lesson for future tasks in this repo: update the root `implementation_plan.md`/
+`walkthrough.md` copies *before* running `scripts/release.mjs`, not only the
+`docs/`-prefixed ones.

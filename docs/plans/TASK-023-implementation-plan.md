@@ -1,68 +1,43 @@
-# TASK-019 Implementation Plan: Permanent Playwright E2E Suite + Fix the ×7 Math Realm Crash Root Cause
+# TASK-023 Implementation Plan: Fix Bottom-Nav Blank Page on Hub Tap
 
 ## Goal
 
-Build a permanent Playwright suite that drives one continuous real-Chromium session
-through the full main scenario — onboarding, Math Realm ×7, all three Word Realm
-modes, Pokédex — as a regression guard for the production incident where Lucky's
-Math Realm ×7 session dropped back to the dashboard around question 8. Fix whatever
-real bugs the suite finds along the way, since the whole point of driving genuine
-clicks instead of calling `AppController` methods directly (like the existing
-`jsdom`-based `*-e2e.test.mjs` tests do) is to catch exactly this class of failure.
+Fix a real production bug reported by the owner: on the live site, entering Math Realm
+and then tapping the bottom nav bar's Hub button produced a completely blank content
+area. A first investigation (a separate clean-context agent) could not reproduce it
+and found no corroborating telemetry; the owner then supplied a tighter repro ("new
+tab, tap Math, tap Hub") that pointed specifically at the bottom nav bar, a UI path
+this project's entire existing test suite (including TASK-019's Playwright suite) had
+never exercised.
 
 ## Steps
 
-1. Add `tests/e2e/static-server.mjs` — a minimal local static file server (no new
-   dependency; the project stays zero-build) so Playwright can load `index.html` over
-   `http://` the same way `python -m http.server` would.
-2. Add `tests/e2e/full-main-scenario.e2e.mjs`, seeding `localStorage` with every math
-   level unlocked (mirrors a real returning player's save) and driving: onboarding →
-   Math Realm ×7 (full 12-question session, one deliberate wrong answer at question 4)
-   → Word Realm Learn (forward/back through every word) → Test mode (one wrong +
-   correct digital submissions, paper reveal) → Game/Tiles mode played to completion →
-   Pokédex. Assert zero uncaught exceptions, zero unexpected console errors, zero
-   unexpected failed network requests, and strict 1→12 question progression with no
-   unexpected return to the dashboard.
-3. Add `npm run test:e2e`, kept separate from `npm test`/the coverage gate (needs a
-   Chromium binary, runs slower).
-4. Iterate against real failures the suite surfaces — diagnosed with a throwaway debug
-   script (`tests/e2e/debug-math-entry.mjs`, deleted once done) that traced app state
-   before/after each interaction — rather than guessing:
-   - Fix the loop-termination bug in the test itself (the app never clears
-     `#math-answers-grid` on session end, so "button count is 0" is not a valid exit
-     condition).
-   - Fix `handleMathAnswer()` calling `answerFirstTry(session)` without the tapped
-     value on both branches (correct answers never advanced; wrong answers never
-     legitimately set up their own correction).
-   - Fix `finishMathSession()`'s `computeLevelOutcome`/`applyLevelOutcome` argument
-     mismatches and the nonexistent `outcome.rewardEligible` field (level completion
-     never scored/unlocked/rewarded correctly).
-   - Fix all three reward call sites assigning `applyReward()`'s
-     `{ collection, appliedRewardOutcomeIds }` return value directly to
-     `this.collection` instead of destructuring it (corrupted the pet collection into
-     a non-array object on the first reward ever granted); add a self-healing read in
-     `loadCollection()` for already-corrupted saves.
-   - Fix the victory modal: add the missing `#reward-pet-img`/`#reward-pet-name`
-     elements to `index.html` (a `.reward-pet-img` CSS rule already existed for an
-     element that was never added), and complete `openVictoryModal()`'s image-fallback
-     chain to include `art.src`.
-   - Mute all audio (`--mute-audio` plus stubbing `speechSynthesis.speak` and
-     `HTMLMediaElement.prototype.play`) after the owner reported the suite was
-     audible — Windows routes `speechSynthesis` through native SAPI, bypassing
-     `--mute-audio` alone.
-5. Update `ACCEPTANCE_CRITERIA.md` (§23, AC-59 through AC-69) and this task file with
-   the full, accurate account of what was found — five of the seven bugs trace to the
-   same commit (`86a3219`, the narrative-engine refactor, 2026-07-28) — including the
-   root-cause analysis for why this is now the leading explanation for the reported
-   crash, not merely incidental findings.
-6. Run `npm test` (full unit suite) and `npm run test:e2e` clean before release; bump
-   version; write the walkthrough.
+1. Reproduce directly in a real browser: first against the live production site, then
+   against a local checkout of the current code, using `document.querySelector(
+   '.view-screen.active')` and `getComputedStyle(...).display` to confirm every screen
+   ends up inactive/hidden after tapping `#nav-btn-hub`.
+2. Trace the root cause by reading `app.js`'s `bindEvents()` nav-bar binding block
+   against the pre-existing global click delegate, and confirm via `git blame`/
+   `git log -S` that both predate the `86a3219` commit TASK-019 investigated — this is
+   an older, unrelated bug, not a regression from that work.
+3. Fix: route the direct `bindTouchClick()` nav-bar binding through the same
+   per-button actions (`startMathRealm()`, `startWordRealm()`, `showScreen(...)`) the
+   delegate always intended, instead of a bare `showScreen(screenKey)` using the wrong
+   key.
+4. Add `tests/nav-bar-navigation.test.mjs` (`jsdom` — this is a pure DOM-event/
+   state-machine bug, fully visible to `jsdom`, unlike TASK-018's/TASK-019's
+   layout/timing bugs) covering all four bottom-nav buttons. Verify red-then-green by
+   temporarily reverting the fix.
+5. Add one bottom-nav interaction to the existing Playwright suite
+   (`tests/e2e/full-main-scenario.e2e.mjs`), closing the actual coverage gap that let
+   this ship unnoticed — not just adding a faster test alongside an unchanged gap.
+6. Manually re-verify the exact original repro (new tab → Math → Hub) against the live
+   production site (pre-fix) and a local server (post-fix) before writing this up.
+7. `npm test` + `npm run test:e2e` clean; bump version; release.
 
 ## Files Touched
 
-- `app.js` (see TASK-019 §4 for the full per-function breakdown)
-- `index.html` (victory modal markup)
-- `tests/e2e/full-main-scenario.e2e.mjs` (new)
-- `tests/e2e/static-server.mjs` (new)
-- `package.json` (`test:e2e` script)
-- `ACCEPTANCE_CRITERIA.md`, `tasks/TASK-019-*.md`, `tasks/INDEX.md`
+- `app.js` — `bindEvents()`'s nav-bar binding block.
+- `tests/nav-bar-navigation.test.mjs` (new).
+- `tests/e2e/full-main-scenario.e2e.mjs` (bottom-nav check added).
+- `ACCEPTANCE_CRITERIA.md` §24, `tasks/TASK-023-*.md`, `tasks/INDEX.md`.
