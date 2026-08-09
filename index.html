@@ -17,8 +17,8 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="themes.css?v=v1.6.0">
-  <link rel="stylesheet" href="styles.css?v=v1.6.0">
+  <link rel="stylesheet" href="themes.css?v=v1.7.0">
+  <link rel="stylesheet" href="styles.css?v=v1.7.0">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_TELEMETRY = {
@@ -38,12 +38,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=v1.6.0').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=v1.7.0').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=v1.6.0"></script>
+  <script src="reporter.js?v=v1.7.0"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -506,6 +506,9 @@
       <p style="color: var(--text-muted); margin-top: 6px;" id="victory-subtitle">You earned 3 Stars!</p>
       
       <div class="reward-pet-preview">
+        <img class="reward-pet-img" id="reward-pet-img" src="" alt="" />
+        <div style="font-size: 22px; font-weight: 800; margin-top: 8px;" id="reward-pet-name"></div>
+      </div>
       <button class="realm-action-btn" id="btn-share-victory-card" style="background: var(--grad-primary); width: 100%; margin-top: 16px;">
         📸 Share Victory Card to LINE 📲
       </button>
@@ -518,7 +521,6 @@
         Collect Pet & Continue ➔
       </button>
     </div>
-  </div>
   </div>
 
   <!-- IN-CLASS QR CODE MODAL -->
@@ -595,6 +597,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=v1.6.0"></script>
+  <script type="module" src="app.js?v=v1.7.0"></script>
 </body>
 </html>

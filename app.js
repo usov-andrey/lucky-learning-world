@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   factKey
-} from "./engine/math-engine.js?v=v1.6.0";
+} from "./engine/math-engine.js?v=v1.7.0";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.6.0";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.0";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.6.0";
+} from "./engine/progression.js?v=v1.7.0";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.6.0";
+} from "./engine/reward-engine.js?v=v1.7.0";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.6.0";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.6.0";
+import { ShareController } from "./engine/share-controller.js?v=v1.7.0";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.0";
 
-import { LEVELS } from "./content/levels.js?v=v1.6.0";
+import { LEVELS } from "./content/levels.js?v=v1.7.0";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.6.0";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.6.0";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.6.0";
-import { ThemeManager } from "./content/themes.js?v=v1.6.0";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.6.0";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.6.0";
-import { ClientTelemetry } from "./telemetry.js?v=v1.6.0";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.6.0";
+} from "./content/spelling-catalog.js?v=v1.7.0";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.0";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.0";
+import { ThemeManager } from "./content/themes.js?v=v1.7.0";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.0";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.0";
+import { ClientTelemetry } from "./telemetry.js?v=v1.7.0";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.0";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -196,6 +196,7 @@ export class AppController {
     this.player = this.loadPlayer();
     this.progression = this.loadProgression();
     this.collection = this.loadCollection();
+    this.appliedRewardOutcomeIds = [];
     this.settings = DEFAULT_SETTINGS;
     this.parentPin = localStorage.getItem(STORAGE_KEYS.PARENT_PIN) || "1234";
 
@@ -246,7 +247,12 @@ export class AppController {
   loadCollection() {
     try {
       const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.MATH_COLLECTION));
-      return normalizeCollection(raw);
+      // Self-heal: a since-fixed bug in finishMathSession()/finishSpellingSession()
+      // once saved applyReward()'s full return value ({ collection,
+      // appliedRewardOutcomeIds }) instead of just the collection array, so an
+      // already-affected save may have this shape on disk.
+      const collectionSource = raw && !Array.isArray(raw) && Array.isArray(raw.collection) ? raw.collection : raw;
+      return normalizeCollection(collectionSource);
     } catch {
       return [];
     }
@@ -917,7 +923,7 @@ export class AppController {
     }
 
     const activeStarter = document.querySelector(".starter-pet-btn.active");
-    const petId = activeStarter ? activeStarter.dataset.starterPet : "embercub";
+    const petId = activeStarter ? activeStarter.dataset.starter : "embercub";
 
     this.player = { name, starterPet: petId };
     this.savePlayer(this.player);
@@ -1117,7 +1123,7 @@ export class AppController {
       this.elements.mathFeedbackText.style.color = "var(--color-success)";
       playAudioFile(null, "Great job!");
 
-      this.mathSession = answerFirstTry(this.mathSession);
+      this.mathSession = answerFirstTry(this.mathSession, choice);
 
       if ((currIdx + 1) % 4 === 0) {
         this.emitNarrativeEvent("milestone.reached", { realm: "math", itemIndex: currIdx, totalItems: total });
@@ -1129,11 +1135,12 @@ export class AppController {
         this.renderMathQuestion();
       }, 800);
     } else {
-      this.elements.mathFeedbackText.textContent = `Correction needed! ${q.a} × ${q.b} = ${q.answer}`;
+      this.elements.mathFeedbackText.textContent = `Correction needed! ${q.a} × ${q.b} = ${q.a * q.b}`;
       this.elements.mathFeedbackText.style.color = "var(--color-error)";
 
-      speakText(`${q.a} times ${q.b} equals ${q.answer}`);
+      speakText(`${q.a} times ${q.b} equals ${q.a * q.b}`);
 
+      this.mathSession = answerFirstTry(this.mathSession, choice);
       this.emitNarrativeEvent("correction.shown", { realm: "math", requeued: true });
 
       setTimeout(() => {
@@ -1151,23 +1158,36 @@ export class AppController {
     let outcome = null;
 
     if (this.currentMathLevel) {
-      outcome = computeLevelOutcome(this.mathSession, this.currentMathLevel.id, this.settings);
-      this.progression = applyLevelOutcome(this.progression, outcome);
+      outcome = computeLevelOutcome(this.mathSession, this.settings);
+      outcome.outcomeId = `out_${Date.now()}`;
+      outcome.levelId = this.mathSession.levelId;
+      outcome.createdAt = new Date().toISOString();
+
+      this.progression = applyLevelOutcome(this.progression, outcome, LEVELS);
       this.saveProgression();
 
-      if (outcome.rewardEligible) {
-        const pool = getPoolById(this.currentMathLevel.poolId) || REWARD_POOLS[0];
-        reward = chooseReward(pool, this.collection, outcome.outcomeId);
-        if (reward) {
-          this.collection = applyReward(this.collection, reward);
+      if (outcome.earnsReward) {
+        const pool = getPoolById(this.currentMathLevel.rewardPoolId) || REWARD_POOLS[0];
+        const chosen = chooseReward(pool, this.collection, REWARD_POOLS);
+        if (chosen) {
+          const applyRes = applyReward(this.collection, chosen, outcome.outcomeId, this.appliedRewardOutcomeIds);
+          this.collection = applyRes.collection;
+          this.appliedRewardOutcomeIds = applyRes.appliedRewardOutcomeIds;
           this.saveCollection();
+          const savedEntry = this.collection.find((entry) => entry.id === chosen.characterId);
+          reward = { ...chosen, character: getCharacterById(chosen.characterId), level: savedEntry ? savedEntry.level : 1 };
         }
       }
     } else {
-      reward = chooseMixReward(this.collection, `mix_${Date.now()}`);
-      if (reward) {
-        this.collection = applyReward(this.collection, reward);
+      const chosen = chooseMixReward(this.collection, REWARD_POOLS);
+      if (chosen) {
+        const outcomeId = `mix_${Date.now()}`;
+        const applyRes = applyReward(this.collection, chosen, outcomeId, this.appliedRewardOutcomeIds);
+        this.collection = applyRes.collection;
+        this.appliedRewardOutcomeIds = applyRes.appliedRewardOutcomeIds;
         this.saveCollection();
+        const savedEntry = this.collection.find((entry) => entry.id === chosen.characterId);
+        reward = { ...chosen, character: getCharacterById(chosen.characterId), level: savedEntry ? savedEntry.level : 1 };
       }
     }
 
@@ -1514,10 +1534,16 @@ export class AppController {
   }
 
   finishSpellingSession() {
-    const reward = chooseReward(REWARD_POOLS[0], this.collection, `spelling_${Date.now()}`);
-    if (reward) {
-      this.collection = applyReward(this.collection, reward);
+    let reward = null;
+    const chosen = chooseReward(REWARD_POOLS[0], this.collection, REWARD_POOLS);
+    if (chosen) {
+      const outcomeId = `spelling_${Date.now()}`;
+      const applyRes = applyReward(this.collection, chosen, outcomeId, this.appliedRewardOutcomeIds);
+      this.collection = applyRes.collection;
+      this.appliedRewardOutcomeIds = applyRes.appliedRewardOutcomeIds;
       this.saveCollection();
+      const savedEntry = this.collection.find((entry) => entry.id === chosen.characterId);
+      reward = { ...chosen, character: getCharacterById(chosen.characterId), level: savedEntry ? savedEntry.level : 1 };
     }
 
     this.emitNarrativeEvent("session.completed", { realm: "spelling" });
@@ -1674,7 +1700,8 @@ export class AppController {
       ? `${pres.name} powered up to Level ${reward.level}!`
       : `${pres.name} joined your Pet Collection!`;
 
-    this.elements.rewardPetImg.src = pres.image || pres.assetPath || char.image;
+    this.elements.rewardPetImg.src =
+      pres.image || pres.assetPath || (pres.art && pres.art.src) || char.image || (char.art && char.art.src) || "";
     this.elements.rewardPetName.textContent = pres.name;
 
     this.openModal(this.elements.victoryModal);

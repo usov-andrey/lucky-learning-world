@@ -24,6 +24,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-016](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-016-remove-pointerdown-modal-open.md) | Remove Pointerdown-Triggered Modal Opening (Architectural Fix) | RELEASED | v1.5.2 | 2 ACs | `tests/spelling-modal-e2e.test.mjs` | - |
 | [TASK-017](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-017-modal-state-single-source-of-truth.md) | Modal State Never Outlives Its Visibility (Single Source of Truth) | RELEASED | v1.5.3 | 2 ACs | `tests/spelling-modal-e2e.test.mjs` | - |
 | [TASK-018](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-018-fix-unclosed-modal-overlay-divs-causing-zero-size-render.md) | Fix Unclosed Modal Overlay Divs Causing Zero-Size Render | RELEASED | v1.6.0 | 2 ACs | `tests/modal-overlay-structure.test.mjs` | - |
+| [TASK-019](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-019-playwright-full-main-scenario-e2e.md) | Permanent Playwright E2E Suite + Fix the ×7 Math Realm Crash Root Cause | RELEASED | v1.7.0 | 11 ACs | `tests/e2e/full-main-scenario.e2e.mjs` | - |
 
 ---
 

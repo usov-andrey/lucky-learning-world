@@ -3,7 +3,7 @@
  * Uses Network-First with forced HTTP cache bypass for scripts/styles to guarantee zero stale cache issues!
  */
 
-const CACHE_NAME = 'lucky-world-v1.6.0';
+const CACHE_NAME = 'lucky-world-v1.7.0';
 
 self.addEventListener('install', () => {
   self.skipWaiting();

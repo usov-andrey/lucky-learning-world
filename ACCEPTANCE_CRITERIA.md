@@ -370,3 +370,113 @@ screen.
 
 - **[AC-58] An Opened Modal Renders With a Non-Zero Viewport-Covering Box**:
   - When `#modal-tell-me-more` is opened, it MUST have a real, non-zero rendered bounding box covering the viewport, verified against an actual browser render (not just computed-style assertions, which cannot detect this failure mode).
+
+---
+
+## 23. Permanent Playwright End-to-End Regression Suite for the Full Main Scenario (TASK-019)
+
+Lucky's live session in Math Realm ×7 dropped back to the dashboard mid-session
+around question 8, losing her in-progress attempt. TASK-018 had already installed
+Playwright as a "one-time diagnostic devDependency" and explicitly flagged adopting
+it *permanently* for ongoing regression coverage as an open decision, since `jsdom`
+(what every other test in this repo runs against) never lays out or paints and so
+cannot see a real render, a real uncaught exception, or a real console error. This
+section resolves that decision: Playwright becomes a permanent part of the test
+suite, driving one continuous real-Chromium session through the entire main user
+journey — every game mode, in order — exactly as a real child would use the app.
+
+- **[AC-59] Full Main Scenario Runs End-to-End in a Real Browser**:
+  - A Playwright-driven test MUST drive real Chromium through the full main scenario
+    in one continuous session — onboarding, Math Realm ×7 (all 12 questions, mixing
+    correct and incorrect answers), Word Realm Learn/Test(digital+paper)/Game(Tiles)
+    modes played to completion, and the Pokédex screen — using only real clicks and
+    typed input for every action, never calling an `AppController` action/render
+    method directly the way the existing `jsdom`-based `*-e2e.test.mjs` tests do.
+    Read-only `spellingEngine` getters may be used only as an oracle for the target
+    spelling word in Test/Game mode, since that word is deliberately never shown in
+    the DOM.
+- **[AC-60] Any Uncaught Error or Console Error Fails the Suite**:
+  - The suite MUST fail if any uncaught JS exception (`page.on("pageerror")`) or any
+    `console.error` (`page.on("console")`) occurs anywhere during the full run, except
+    `console.error` calls caused by `ClientTelemetry`'s CORS-blocked fetch to the real
+    production reporter endpoint — an artifact of running against a local static server
+    instead of the app's real origin, not an app bug.
+- **[AC-61] Math Realm Question Progress Is Monotonic Through Question 8**:
+  - The suite MUST assert `#math-question-progress` progresses through every state
+    from "Question 1 of 12" to "Question 12 of 12" in strict order, with no skip,
+    reset, or unexpected navigation back to the dashboard — explicitly covering
+    question 8, the exact point of the reported production crash.
+- **[AC-62] Math Correction Feedback Never Shows "undefined"**:
+  - The on-screen correction text and spoken correction audio for a wrong Math Realm
+    answer MUST show the actual correct product, never the literal string
+    `"undefined"`.
+- **[AC-63] A Fresh Player's Chosen Starter Pet Is Saved Correctly**:
+  - Completing onboarding with a given starter pet selected MUST save and render that
+    same starter pet (e.g. Embercub) for the new player, never `undefined`.
+- **[AC-64] The Suite Is a Permanent, Separately-Run Regression Gate**:
+  - The suite MUST run via `npm run test:e2e` against a local static file server, and
+    MUST NOT be folded into `npm test` / `test:coverage:gate` (it needs a Chromium
+    binary and runs slower than the `jsdom` suite). It is documented as permanent,
+    superseding TASK-018's "one-time diagnostic" framing of Playwright in this repo.
+
+Building AC-59 through AC-64 surfaced five further real, previously-undetected bugs, all
+introduced by the same commit (`86a3219`, 2026-07-28, the narrative-engine refactor) and
+none catchable by any `jsdom`-based test in this repo, since each requires either real
+timer scheduling, a real click producing a real uncaught exception, or a real failed
+network request:
+
+- **[AC-65] Answering Correctly Actually Advances the Math Session**:
+  - Tapping the correct Math Realm answer MUST advance the session's queue and history
+    on that same tap. (Previously, `handleMathAnswer()` called the engine's
+    `answerFirstTry(session)` without the tapped value, so the engine's own internal
+    correctness check always evaluated `undefined === computeAnswer(question)` —
+    false — silently re-marking every correct answer as a pending correction. The
+    *same* question then kept reappearing with freshly randomized wrong-choice
+    distractors, "Question N of 12" frozen, until a second correct tap on it threw an
+    uncaught `"answerFirstTry called while a correction is pending"` exception. Session
+    progress in practice came almost entirely from genuinely wrong answers — exactly
+    what a hard-drill ×7 session serves most of — which independently confirms this bug
+    as the leading explanation for the reported crash.)
+- **[AC-66] Answering Wrong Actually Sets Up the Correction It Later Confirms**:
+  - Tapping a wrong Math Realm answer MUST leave the session in a state where the
+    scheduled `confirmCorrection()` call 1400ms later succeeds. (Previously the wrong
+    branch never called `answerFirstTry()` at all, so `pendingCorrection` was never
+    legitimately set for a wrong answer — `confirmCorrection()` threw `"called with no
+    pending correction"` unless it happened to inherit stale state left over from
+    AC-65's bug.)
+- **[AC-67] Completing a Math Level Session Correctly Scores, Unlocks, and Rewards**:
+  - Finishing a Math Realm level session MUST compute real accuracy/stars from the
+    actual session and settings, MUST be able to unlock the next level and grant a
+    reward, and MUST NOT silently zero out progress. (Previously `finishMathSession()`
+    called `computeLevelOutcome(session, level.id, settings)` — an extra positional
+    argument the function's real two-parameter signature `(session, settings)` doesn't
+    accept, which shifted `level.id`, a string, into the `settings` slot. Accuracy
+    became `points / undefined` = `NaN`, so `stars` was always `0` and the
+    reward-eligibility branch — checked via a `outcome.rewardEligible` field that
+    doesn't exist on the function's actual return shape — could never run for level
+    sessions. `applyLevelOutcome()` was also called without its required `levels`
+    argument and without `outcome.outcomeId`/`outcome.levelId` ever being set, so
+    progress was recorded under an `undefined` key and only the very first-ever call
+    could apply at all.)
+- **[AC-68] Granting Any Reward Leaves `collection` an Array, Never the Internal Wrapper Object**:
+  - After any reward is granted (Math level, Math Mix, or Word Realm), `this.collection`
+    and its `localStorage` persistence MUST remain a plain array of pet entries.
+    (Previously all three call sites assigned `applyReward()`'s full return value —
+    `{ collection, appliedRewardOutcomeIds }` — directly to `this.collection` instead of
+    destructuring it, corrupting the collection into a non-array object on the very
+    first reward ever granted. This broke the Pokédex screen — `collection.length` on a
+    plain object is `undefined`, rendering "undefined / 15" — and would throw on any
+    later `collection.find()`/`.map()` call. `loadCollection()` now self-heals an
+    already-corrupted save by recovering the nested `.collection` array if present.)
+- **[AC-69] Opening the Victory Modal Never Throws and Never Shows a Broken Image**:
+  - Opening the victory modal after any reward MUST populate the reward pet's name and
+    image without throwing, and the image `src` MUST NOT be the literal string
+    `"undefined"`. (Two independent bugs: `index.html`'s `.reward-pet-preview` container
+    had no `#reward-pet-img`/`#reward-pet-name` elements at all — despite a
+    `.reward-pet-img` CSS rule already existing for them — so `openVictoryModal()`
+    threw `Cannot set properties of null` before the modal could ever open, aborting
+    the rest of `finishMathSession()`/`finishSpellingSession()` mid-function. Separately,
+    its image-resolution fallback chain (`pres.image || pres.assetPath || char.image`)
+    never included `art.src`, the field that actually holds a character's image in this
+    codebase's data shape — used correctly by `renderPokedex()` elsewhere in the same
+    file — so even after the modal could open, the pet image resolved to `undefined`.)
