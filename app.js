@@ -13,28 +13,28 @@ import {
   buildChoices,
   answerFirstTry,
   confirmCorrection,
-  factKey
-} from "./engine/math-engine.js?v=v1.7.2";
+  updateFactOnAnswer
+} from "./engine/math-engine.js?v=v1.7.3";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.2";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.7.3";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.7.2";
+} from "./engine/progression.js?v=v1.7.3";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.7.2";
+} from "./engine/reward-engine.js?v=v1.7.3";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.7.2";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.2";
+import { ShareController } from "./engine/share-controller.js?v=v1.7.3";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.7.3";
 
-import { LEVELS } from "./content/levels.js?v=v1.7.2";
+import { LEVELS } from "./content/levels.js?v=v1.7.3";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.7.2";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.2";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.2";
-import { ThemeManager } from "./content/themes.js?v=v1.7.2";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.2";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.2";
-import { ClientTelemetry } from "./telemetry.js?v=v1.7.2";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.2";
+} from "./content/spelling-catalog.js?v=v1.7.3";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.7.3";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.7.3";
+import { ThemeManager } from "./content/themes.js?v=v1.7.3";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.7.3";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.7.3";
+import { ClientTelemetry } from "./telemetry.js?v=v1.7.3";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.7.3";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -205,6 +205,8 @@ export class AppController {
     this.spellingEngine = new SpellingEngine(activeLesson, "learn");
     this.mathSession = null;
     this.mathAnswerLocked = false;
+    this.mathSessionId = 0;
+    this.mathQuestionStartedAt = null;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
 
@@ -968,8 +970,13 @@ export class AppController {
 
     this.elements.headerPlayerAvatar.src = avatarPath;
 
-    let stars = 0;
-    Object.values(this.progression.starsByLevel || {}).forEach(s => stars += (s || 0));
+    const stars = LEVELS.reduce((total, level) => {
+      const stored = Number(this.progression?.levels?.[level.id]?.stars);
+      const safeStars = Number.isFinite(stored) && stored > 0
+        ? Math.min(3, Math.floor(stored))
+        : 0;
+      return total + safeStars;
+    }, 0);
     this.elements.totalStarsCount.textContent = stars;
 
     if (this.elements.btnParentModeHeader) {
@@ -1019,11 +1026,14 @@ export class AppController {
 
   renderMathChips() {
     let html = "";
-    const starsByLvl = (this.progression && this.progression.starsByLevel) ? this.progression.starsByLevel : {};
+    const levelsState = this.progression?.levels || {};
     const unlockedIds = (this.progression && this.progression.unlockedLevelIds) ? this.progression.unlockedLevelIds : ["x6"];
 
     LEVELS.forEach((lvl) => {
-      const stars = starsByLvl[lvl.id] || 0;
+      const storedStars = Number(levelsState[lvl.id]?.stars);
+      const stars = Number.isFinite(storedStars) && storedStars > 0
+        ? Math.min(3, Math.floor(storedStars))
+        : 0;
       const isUnlocked = unlockedIds.includes(lvl.id);
       const starStr = stars > 0 ? "★".repeat(stars) : "";
       const lockStr = isUnlocked ? "" : "🔒 ";
@@ -1048,6 +1058,7 @@ export class AppController {
   startMathLevelSession(level) {
     this.currentMathLevel = level;
     this.mathAnswerLocked = false;
+    this.mathSessionId = Math.max(Date.now(), (Number(this.mathSessionId) || 0) + 1);
     const settings = this.settings || DEFAULT_SETTINGS;
     const factStats = (this.progression && this.progression.factStats) ? this.progression.factStats : {};
     const plan = buildLevelSessionPlan(level, factStats, settings);
@@ -1063,9 +1074,10 @@ export class AppController {
   startMathMixSession() {
     this.currentMathLevel = null;
     this.mathAnswerLocked = false;
+    this.mathSessionId = Math.max(Date.now(), (Number(this.mathSessionId) || 0) + 1);
     const settings = this.settings || DEFAULT_SETTINGS;
     const factStats = (this.progression && this.progression.factStats) ? this.progression.factStats : {};
-    const plan = buildMixSessionPlan(LEVELS, factStats, settings);
+    const plan = buildMixSessionPlan(LEVELS.map((level) => level.table), factStats, settings);
     this.mathSession = createLevelSession("mix", plan.questions, settings);
     this.mathSession.totalQuestions = plan.questions.length;
     this.renderMathChips();
@@ -1113,6 +1125,7 @@ export class AppController {
     });
 
     this.elements.mathAnswersGrid.innerHTML = html;
+    this.mathQuestionStartedAt = Date.now();
 
     const btns = this.elements.mathAnswersGrid.querySelectorAll(".answer-btn");
     btns.forEach(b => {
@@ -1141,6 +1154,9 @@ export class AppController {
     const isCorrect = choice === correctAnswer;
     const total = this.mathSession.totalQuestions || 12;
     const currIdx = this.mathSession.history ? this.mathSession.history.length : 0;
+    const elapsedMs = Number.isFinite(this.mathQuestionStartedAt)
+      ? Math.max(0, Date.now() - this.mathQuestionStartedAt)
+      : undefined;
 
     if (isCorrect) {
       this.elements.mathFeedbackText.textContent = "Great job! Correct! ★";
@@ -1148,6 +1164,15 @@ export class AppController {
       playAudioFile(null, "Great job!");
 
       this.mathSession = answerFirstTry(this.mathSession, choice);
+      this.progression = {
+        ...this.progression,
+        factStats: updateFactOnAnswer(this.progression?.factStats || {}, q.key, {
+          correct: true,
+          elapsedMs,
+          sessionCount: this.mathSessionId,
+        }),
+      };
+      this.saveProgression();
 
       if ((currIdx + 1) % 4 === 0) {
         this.emitNarrativeEvent("milestone.reached", { realm: "math", itemIndex: currIdx, totalItems: total });
@@ -1166,6 +1191,15 @@ export class AppController {
       speakText(`${q.a} times ${q.b} equals ${q.a * q.b}`);
 
       this.mathSession = answerFirstTry(this.mathSession, choice);
+      this.progression = {
+        ...this.progression,
+        factStats: updateFactOnAnswer(this.progression?.factStats || {}, q.key, {
+          correct: false,
+          elapsedMs,
+          sessionCount: this.mathSessionId,
+        }),
+      };
+      this.saveProgression();
       this.emitNarrativeEvent("correction.shown", { realm: "math", requeued: true });
 
       setTimeout(() => {

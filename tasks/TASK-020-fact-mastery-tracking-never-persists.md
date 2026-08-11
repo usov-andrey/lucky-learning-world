@@ -1,8 +1,8 @@
 ---
 id: TASK-020
 title: "Fact Mastery Tracking Never Persists (updateFactOnAnswer Is Never Called)"
-status: PROPOSED
-version: v1.0.0
+status: TESTED
+version: v1.7.3
 created: 2026-08-09
 github_issue: null
 ---
@@ -26,28 +26,27 @@ github_issue: null
   `engine/progression.js`'s `normalizeStoredState()` doesn't even include `factStats` in
   its returned shape, so even if something started writing it, it would need that fixed
   too to survive a reload.
-- **Proposed Solution** (not yet implemented — this task exists to track the finding,
-  scope the fix, and get Acceptance Criteria agreed before writing code, per this
-  project's task-driven model): call `updateFactOnAnswer()` from `handleMathAnswer()`
+- **Proposed Solution**: call `updateFactOnAnswer()` from `handleMathAnswer()`
   on both the correct and (post-`confirmCorrection`) wrong paths, threading the result
   into `this.progression.factStats` and persisting via the existing
   `saveProgression()`; extend `normalizeStoredState()` to round-trip `factStats`.
 
 ## 📋 2. Acceptance Criteria (AC)
 
-- [ ] **AC-1**: Answering a Math Realm question, correct or wrong, calls
+- [x] **AC-75**: Answering a Math Realm question, correct or wrong, calls
   `updateFactOnAnswer()` for that fact's key and persists the updated `factStats` to
   `localStorage` via the existing progression save path.
-- [ ] **AC-2**: `normalizeStoredState()` reads and returns `factStats` from stored
+- [x] **AC-76**: `normalizeStoredState()` reads and returns `factStats` from stored
   progression data (currently dropped), so mastery survives a reload.
-- [ ] **AC-3**: After a session where a specific fact is answered wrong repeatedly and
+- [x] **AC-77**: After a session where a specific fact is answered wrong repeatedly and
   others are answered correctly, a subsequent session for the same table measurably
   prioritizes the weak fact (covered by a unit test against
   `buildLevelSessionPlan`/`buildHardCoreBag`, not requiring a real browser).
 
 ## 🧪 3. Test Coverage
 
-- TBD once AC's above are agreed.
+- `tests/math-fact-progress.test.mjs` (`// @task TASK-020`, AC-75..AC-77).
+- `tests/engine.test.mjs` remains the lower-level planner/mastery regression suite.
 
 ## 💻 4. Impacted Code Files
 
@@ -56,4 +55,6 @@ github_issue: null
 
 ## 📦 5. Release & Artifacts
 
-- Not released. `status: PROPOSED`.
+- Target version: `v1.7.3`.
+- Plan: `docs/plans/TASK-020-implementation-plan.md`.
+- Walkthrough: `docs/walkthroughs/TASK-020-walkthrough.md`.

@@ -419,6 +419,15 @@ export function pickRecentMistakeKeys(factStats, tables, rng = Math.random) {
 // full even with a clean or blank history. Same shape as buildLevelSessionPlan:
 // `settings.warmupCount` warmups + `settings.scoredCount` scored questions.
 export function buildMixSessionPlan(tables, factStats, settings, rng = Math.random) {
+  if (!Array.isArray(tables)) {
+    throw new TypeError("buildMixSessionPlan requires an array of numeric multiplication tables");
+  }
+  const invalidTable = tables.find(
+    (table) => !Number.isInteger(table) || table < B_MIN || table > B_MAX,
+  );
+  if (invalidTable !== undefined) {
+    throw new TypeError("buildMixSessionPlan requires numeric multiplication tables between 2 and 10");
+  }
   const contextTables = tables.length > 0 ? tables : [B_MAX];
   const scoredCount = settings.scoredCount;
 

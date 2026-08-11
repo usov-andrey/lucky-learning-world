@@ -11,6 +11,7 @@ export function createInitialProgression(levels) {
     points: 0,
     unlockedLevelIds: [levels[0].id],
     levels: {},
+    factStats: {},
     appliedOutcomeIds: [],
   };
 }
@@ -31,6 +32,9 @@ export function normalizeStoredState(raw, levels) {
     points: typeof raw.points === "number" && raw.points >= 0 ? raw.points : 0,
     unlockedLevelIds: unlockedLevelIds.length > 0 ? unlockedLevelIds : base.unlockedLevelIds,
     levels: raw.levels && typeof raw.levels === "object" ? raw.levels : {},
+    factStats: raw.factStats && typeof raw.factStats === "object" && !Array.isArray(raw.factStats)
+      ? { ...raw.factStats }
+      : {},
     appliedOutcomeIds: Array.isArray(raw.appliedOutcomeIds) ? raw.appliedOutcomeIds : [],
   };
 }
@@ -136,6 +140,9 @@ export function migrateProgressionFromV2(factStats, levels, tableFactsKeys, getM
     points: 0,
     unlockedLevelIds,
     levels: levelsState,
+    factStats: factStats && typeof factStats === "object" && !Array.isArray(factStats)
+      ? { ...factStats }
+      : {},
     appliedOutcomeIds: [],
   };
 }

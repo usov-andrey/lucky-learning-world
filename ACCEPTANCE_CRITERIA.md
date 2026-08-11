@@ -550,3 +550,49 @@ thoroughly.
     interaction via the bottom nav bar, not exclusively the in-panel back buttons and
     dashboard cards it used exclusively before — that exact gap is why this bug shipped
     unnoticed and didn't reproduce under a first, careful investigation attempt.
+
+---
+
+## 25. Persistent Fact Mastery (TASK-020)
+
+- **[AC-75] Every Math Answer Updates Fact Mastery**:
+  - A correct or wrong first answer MUST update the matching canonical fact key through
+    `updateFactOnAnswer()` exactly once and persist the resulting `factStats` through
+    the existing progression storage path. A later requeued retry is a new attempt and
+    may update the fact again.
+- **[AC-76] Fact Mastery Survives Reloads and Migration**:
+  - Initial, normalized, and migrated progression states MUST contain a valid
+    `factStats` object. Valid stored mastery records MUST survive normalization and a
+    browser reload; arrays or corrupt values MUST safely become an empty object.
+- **[AC-77] Weak Facts Affect Subsequent Session Planning**:
+  - Persisted repeated mistakes MUST measurably prioritize the weak fact in a later
+    level plan instead of every player permanently receiving a blank-history shuffle.
+
+---
+
+## 26. Canonical Star Display (TASK-021)
+
+- **[AC-78] Header Shows the Real Total Star Count**:
+  - The header total MUST equal the sum of finite non-negative stars stored at
+    `progression.levels[levelId].stars`; it MUST NOT read the nonexistent
+    `progression.starsByLevel` field.
+- **[AC-79] Level Chips Show Their Own Stars**:
+  - Every Math level chip MUST render the stars stored in its canonical
+    `progression.levels[levelId]` record, while levels without stars remain blank.
+- **[AC-80] Existing Progress Appears Without Re-Earning It**:
+  - A previously saved canonical progression state MUST display its stars immediately
+    after loading; no data migration, reset, or replay is required.
+
+---
+
+## 27. Valid and Finishable Math Mix (TASK-024)
+
+- **[AC-81] Math Mix Never Renders Invalid Operands**:
+  - Starting Math Mix through the application MUST create finite numeric operands and
+    MUST never render `NaN`, `undefined`, or `null` in math question or feedback text.
+- **[AC-82] Mix Planner Rejects Invalid Table Inputs**:
+  - `buildMixSessionPlan()` MUST receive numeric multiplication tables and fail fast on
+    invalid values rather than silently creating `NaNxNaN` facts.
+- **[AC-83] Math Mix Can Reach Completion**:
+  - A full Mix session MUST remain answerable through its final question and reach the
+    existing completion/reward path without an uncaught runtime error.

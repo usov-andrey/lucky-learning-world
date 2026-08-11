@@ -1,4 +1,8 @@
 // @task TASK-019
+// @task TASK-020
+// @task TASK-021
+// @task TASK-024
+// @ac AC-75 AC-78 AC-79 AC-80 AC-81 AC-83
 // Permanent Playwright E2E regression suite: drives one continuous real-Chromium
 // session through the full main scenario, in order, across every game mode —
 // exactly as Lucky actually plays. Built after a real production incident (Math
@@ -216,7 +220,69 @@ test(
       await page.waitForTimeout(300);
       const screenAfterMath = await page.evaluate(() => document.querySelector(".view-screen.active")?.id);
       assert.equal(screenAfterMath, "dashboard-view", "did not return to the dashboard after finishing math");
+      const storedFactCount = await page.evaluate(() => {
+        const progression = JSON.parse(localStorage.getItem("lmm3s:progression") || "{}");
+        return Object.keys(progression.factStats || {}).length;
+      });
+      assert.ok(storedFactCount > 0, "TASK-020: completed math answers must persist factStats");
+      assert.equal(
+        (await page.locator("#total-stars-count").textContent()).trim(),
+        "3",
+        "TASK-021: header must show the canonical stars earned by the completed ×7 level",
+      );
       console.log("[e2e] math realm complete, back on dashboard");
+
+      // --- Math Mix: full valid session (TASK-024) --------------------------
+      await page.locator("#btn-enter-math").click();
+      await page.locator('[data-math-level="mix"]').click();
+      assert.match(
+        (await page.locator('[data-math-level="x7"]').textContent()).trim(),
+        /★★★/,
+        "TASK-021: the ×7 chip must show its saved canonical stars",
+      );
+
+      const mixProgressSeen = [];
+      for (;;) {
+        const progressText = (await page.locator("#math-question-progress").textContent()).trim();
+        const match = progressText.match(/^Question (\d+) of (\d+)$/);
+        assert.ok(match, `unparseable Math Mix progress text: "${progressText}"`);
+        const curr = Number(match[1]);
+        const total = Number(match[2]);
+        mixProgressSeen.push(curr);
+
+        const questionText = (await page.locator("#math-question-text").textContent()).trim();
+        assert.doesNotMatch(questionText, /NaN|undefined|null/, `TASK-024 invalid Mix question: "${questionText}"`);
+        const correctAnswer = parseMathCorrectAnswer(questionText);
+        const buttons = page.locator("#math-answers-grid .answer-btn");
+        const buttonCount = await buttons.count();
+        const values = [];
+        for (let i = 0; i < buttonCount; i += 1) {
+          values.push(Number(await buttons.nth(i).getAttribute("data-math-choice")));
+        }
+        await buttons.nth(values.indexOf(correctAnswer)).click();
+        await page.waitForTimeout(900);
+        if (curr === total) break;
+      }
+
+      assert.deepEqual(
+        mixProgressSeen,
+        Array.from({ length: mixProgressSeen.length }, (_, index) => index + 1),
+        `TASK-024 Math Mix did not progress sequentially: ${JSON.stringify(mixProgressSeen)}`,
+      );
+      await page.waitForTimeout(400);
+      assert.equal(
+        await page.evaluate(() => document.getElementById("victory-modal")?.classList.contains("active")),
+        true,
+        "TASK-024: a complete Math Mix session must reach the reward modal",
+      );
+      await page.locator("#btn-victory-continue").click();
+      await page.waitForTimeout(300);
+      assert.equal(
+        await page.evaluate(() => document.querySelector(".view-screen.active")?.id),
+        "dashboard-view",
+        "TASK-024: completing Math Mix must return to the dashboard",
+      );
+      console.log(`[e2e] Math Mix complete: ${JSON.stringify(mixProgressSeen)}`);
 
       // --- Word Realm: Learn mode, all words forward and back ----------------
       await page.locator("#btn-enter-word").click();
@@ -374,7 +440,22 @@ test(
     }
 
     // AC-2, checked last so every earlier assertion's own failure message wins.
-    const unexpectedFailedRequests = failedRequests.filter((r) => !r.url.includes("lucky-games-reporter"));
+    // Google Fonts is decorative and the application has local/system fallbacks;
+    // CI and sandbox runs may block it, and its CDN can independently return errors.
+    // Core local assets remain strict. Chromium also reports an image request as
+    // ERR_ABORTED when the spelling carousel
+    // replaces its <img src> before the previous local image finishes decoding.
+    // That is an intentional navigation cancellation, not a missing asset (which
+    // still arrives here as HTTP 404 and must fail the suite).
+    const unexpectedFailedRequests = failedRequests.filter((request) => {
+      const knownTelemetryNoise = request.url.includes("lucky-games-reporter");
+      const optionalRemoteFont = request.url.startsWith("https://fonts.googleapis.com/")
+        || request.url.startsWith("https://fonts.gstatic.com/");
+      const intentionalLocalImageAbort = request.reason === "net::ERR_ABORTED"
+        && request.url.startsWith(`${server.url}/content/`)
+        && /\.(?:svg|png|jpe?g|webp)$/i.test(request.url);
+      return !knownTelemetryNoise && !optionalRemoteFont && !intentionalLocalImageAbort;
+    });
     assert.deepEqual(
       unexpectedFailedRequests,
       [],
