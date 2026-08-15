@@ -5,6 +5,7 @@
  *  - Schwa ‹er›
  *  - 'or' saying /er/
  *  - 'ear' saying /er/ (current default)
+ *  - 'u' saying long /oo/
  */
 
 export const STORAGE_KEY_SELECTED_LESSON = "lmm3s:selected_spelling_lesson";
@@ -842,7 +843,215 @@ export const EAR_SAYING_ER_LESSON = {
   ]
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON];
+export const U_SAYING_OO_LESSON = {
+  id: "u-saying-oo",
+  title: "Spelling Test",
+  pageLabel: "'u' saying long /oo/",
+  topic: "'u' saying long /oo/",
+  wordCount: 18,
+  words: [
+    {
+      word: "super",
+      definition: "Amazing, wonderful, or better than usual.",
+      extendedExplanation: "People say something is super when it is very good, exciting, or impressive, often used to praise someone or something.",
+      exampleSentence: "Lucky felt super happy when she finished all her homework early.",
+      image: "content/u-saying-oo/images/super.svg",
+      imageAlt: "A large glowing gold star surrounded by small sparkles",
+      audio: "content/u-saying-oo/audio/01_super.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/01_super.mp3",
+      hint: "Amazing or better than usual"
+    },
+    {
+      word: "ruin",
+      definition: "To spoil or destroy something completely.",
+      extendedExplanation: "When something is ruined, it is damaged so badly that it can no longer be used or enjoyed the way it should be.",
+      exampleSentence: "The heavy rain nearly ruined the paper decorations for the party.",
+      image: "content/u-saying-oo/images/ruin.svg",
+      imageAlt: "A cracked stone column, broken and toppled over",
+      audio: "content/u-saying-oo/audio/02_ruin.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/02_ruin.mp3",
+      hint: "To spoil or destroy something"
+    },
+    {
+      word: "flu",
+      definition: "An illness caused by a virus that gives you a fever, cough, and aches.",
+      extendedExplanation: "The flu, short for influenza, spreads easily between people and often makes you feel tired, achy, and unwell for several days.",
+      exampleSentence: "Lucky stayed home from school because she had the flu.",
+      image: "content/u-saying-oo/images/flu.svg",
+      imageAlt: "A medical thermometer next to a box of tissues",
+      audio: "content/u-saying-oo/audio/03_flu.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/03_flu.mp3",
+      hint: "A common illness with fever and cough"
+    },
+    {
+      word: "fluid",
+      definition: "A liquid that flows and takes the shape of its container.",
+      extendedExplanation: "Fluid is any substance, like water or juice, that can flow freely and is not solid or rigid.",
+      exampleSentence: "The scientist poured the blue fluid carefully into the glass beaker.",
+      image: "content/u-saying-oo/images/fluid.svg",
+      imageAlt: "A glass laboratory beaker filled with blue liquid",
+      audio: "content/u-saying-oo/audio/04_fluid.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/04_fluid.mp3",
+      hint: "A liquid that flows"
+    },
+    {
+      word: "gnu",
+      definition: "A large African animal with horns, also called a wildebeest.",
+      extendedExplanation: "A gnu is a big, strong animal that lives in herds on the grasslands of Africa and has curved horns and a shaggy mane.",
+      exampleSentence: "The gnu ran across the plain with the rest of its herd.",
+      image: "content/u-saying-oo/images/gnu.svg",
+      imageAlt: "A gnu, a large horned African animal, standing on grassland",
+      audio: "content/u-saying-oo/audio/05_gnu.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/05_gnu.mp3",
+      hint: "A large African animal, also called a wildebeest"
+    },
+    {
+      word: "truth",
+      definition: "Something that is true and correct; not a lie.",
+      extendedExplanation: "The truth is what really happened or what is really the case, even if it is difficult to say out loud.",
+      exampleSentence: "Lucky always tells the truth, even when she makes a mistake.",
+      image: "content/u-saying-oo/images/truth.svg",
+      imageAlt: "A speech bubble with a green checkmark inside",
+      audio: "content/u-saying-oo/audio/06_truth.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/06_truth.mp3",
+      hint: "Something that is true, not a lie"
+    },
+    {
+      word: "truly",
+      definition: "In a real, sincere, or complete way.",
+      extendedExplanation: "When you do something truly, you do it with honest, genuine feeling, not just pretending.",
+      exampleSentence: "Lucky was truly grateful for the surprise birthday gift.",
+      image: "content/u-saying-oo/images/truly.svg",
+      imageAlt: "A glowing pink heart with a soft sparkle",
+      audio: "content/u-saying-oo/audio/07_truly.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/07_truly.mp3",
+      hint: "In a real or sincere way"
+    },
+    {
+      word: "cruel",
+      definition: "Unkind and causing pain or suffering on purpose.",
+      extendedExplanation: "A cruel person deliberately hurts or upsets others and shows no care about their feelings.",
+      exampleSentence: "It was cruel of the boy to laugh at his friend's mistake.",
+      image: "content/u-saying-oo/images/cruel.svg",
+      imageAlt: "A sad face beside a small broken heart",
+      audio: "content/u-saying-oo/audio/08_cruel.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/08_cruel.mp3",
+      hint: "Unkind and causing pain on purpose"
+    },
+    {
+      word: "lunar",
+      definition: "Relating to the moon.",
+      extendedExplanation: "Lunar describes anything connected to the moon, such as a lunar eclipse or a lunar calendar based on the moon's cycles.",
+      exampleSentence: "The class watched a video about the first lunar landing.",
+      image: "content/u-saying-oo/images/lunar.svg",
+      imageAlt: "A crescent moon glowing among small stars",
+      audio: "content/u-saying-oo/audio/09_lunar.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/09_lunar.mp3",
+      hint: "Relating to the moon"
+    },
+    {
+      word: "ruby",
+      definition: "A red gemstone; a precious jewel.",
+      extendedExplanation: "A ruby is a hard, sparkling red stone that is cut and polished to be used in rings, necklaces, and other jewellery.",
+      exampleSentence: "Grandma's ring has a bright red ruby in the middle.",
+      image: "content/u-saying-oo/images/ruby.svg",
+      imageAlt: "A sparkling red gemstone cut into facets",
+      audio: "content/u-saying-oo/audio/10_ruby.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/10_ruby.mp3",
+      hint: "A red gemstone"
+    },
+    {
+      word: "fluent",
+      definition: "Able to speak or write a language easily and smoothly.",
+      extendedExplanation: "Someone who is fluent in a language can talk, read, and write it quickly and correctly without having to stop and think.",
+      exampleSentence: "After years of practice, Lucky's cousin became fluent in Thai.",
+      image: "content/u-saying-oo/images/fluent.svg",
+      imageAlt: "Two speech bubbles with different flag colours, showing two languages",
+      audio: "content/u-saying-oo/audio/11_fluent.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/11_fluent.mp3",
+      hint: "Able to speak a language smoothly"
+    },
+    {
+      word: "superb",
+      definition: "Excellent; extremely good.",
+      extendedExplanation: "Something superb is of very high quality and impresses everyone who sees or experiences it.",
+      exampleSentence: "The gymnast gave a superb performance and scored top marks.",
+      image: "content/u-saying-oo/images/superb.svg",
+      imageAlt: "A gold trophy with a ribbon on a small podium",
+      audio: "content/u-saying-oo/audio/12_superb.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/12_superb.mp3",
+      hint: "Excellent; extremely good"
+    },
+    {
+      word: "crucial",
+      definition: "Extremely important; necessary.",
+      extendedExplanation: "Something crucial is so important that everything else depends on it, and things could go wrong without it.",
+      exampleSentence: "Wearing a helmet is crucial when you ride a bike.",
+      image: "content/u-saying-oo/images/crucial.svg",
+      imageAlt: "A bicycle safety helmet with an important warning mark",
+      audio: "content/u-saying-oo/audio/13_crucial.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/13_crucial.mp3",
+      hint: "Extremely important; necessary"
+    },
+    {
+      word: "frugal",
+      definition: "Careful not to waste money or resources.",
+      extendedExplanation: "A frugal person spends money wisely, saves what they can, and avoids buying things they do not really need.",
+      exampleSentence: "Dad is frugal and always compares prices before buying anything.",
+      image: "content/u-saying-oo/images/frugal.svg",
+      imageAlt: "A pink piggy bank with a coin dropping into the slot",
+      audio: "content/u-saying-oo/audio/14_frugal.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/14_frugal.mp3",
+      hint: "Careful not to waste money"
+    },
+    {
+      word: "glucose",
+      definition: "A type of sugar found in plants and used by the body for energy.",
+      extendedExplanation: "Glucose is a simple sugar that gives the body energy to move, think, and grow, and it is found in many foods like fruit.",
+      exampleSentence: "The science lesson explained how plants make glucose from sunlight.",
+      image: "content/u-saying-oo/images/glucose.svg",
+      imageAlt: "A green leaf with a bright sun and an energy spark",
+      audio: "content/u-saying-oo/audio/15_glucose.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/15_glucose.mp3",
+      hint: "A sugar that gives the body energy"
+    },
+    {
+      word: "superior",
+      definition: "Better in quality than something else.",
+      extendedExplanation: "When something is superior, it is of a higher standard or quality compared with another thing it is measured against.",
+      exampleSentence: "The new bike helmet offered superior protection compared to the old one.",
+      image: "content/u-saying-oo/images/superior.svg",
+      imageAlt: "Two shields side by side, one taller and glowing brighter than the other",
+      audio: "content/u-saying-oo/audio/16_superior.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/16_superior.mp3",
+      hint: "Better in quality than something else"
+    },
+    {
+      word: "plumage",
+      definition: "The feathers covering a bird.",
+      extendedExplanation: "Plumage is the layer of feathers that covers a bird's body, often colourful and used to attract mates or stay warm.",
+      exampleSentence: "The peacock's bright blue and green plumage caught everyone's eye.",
+      image: "content/u-saying-oo/images/plumage.svg",
+      imageAlt: "A colourful peacock feather with an eye-shaped pattern",
+      audio: "content/u-saying-oo/audio/17_plumage.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/17_plumage.mp3",
+      hint: "The feathers covering a bird"
+    },
+    {
+      word: "translucent",
+      definition: "Allowing light to pass through, but not clear enough to see through sharply.",
+      extendedExplanation: "A translucent material lets light shine through it softly, but you cannot see a clear picture of what is on the other side.",
+      exampleSentence: "Sunlight glowed through the translucent curtains in the morning.",
+      image: "content/u-saying-oo/images/translucent.svg",
+      imageAlt: "A frosted glass window pane with soft light glowing through it",
+      audio: "content/u-saying-oo/audio/18_translucent.mp3",
+      definitionAudio: "content/u-saying-oo/audio/definitions/18_translucent.mp3",
+      hint: "Lets light through but is not fully clear"
+    }
+  ]
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON];
 
 export function getSpellingLesson(id) {
   return (

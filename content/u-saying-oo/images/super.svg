@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">super illustration</title>
+  <desc id="desc">A large glowing gold star surrounded by small sparkles.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <g>
+    <path d="M256 100l22 46 51 7-37 36 9 51-45-24-45 24 9-51-37-36 51-7z" fill="#f4c542" stroke="#a9770b" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M150 130l8 16 16 3-13 12 3 16-14-8-14 8 3-16-13-12 16-3z" fill="#8fd3ff"/>
+    <path d="M352 200l6 12 12 2-10 9 2 12-10-6-10 6 2-12-10-9 12-2z" fill="#ff9fd0"/>
+  </g>
+  <rect x="187" y="274" width="138" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">SUPER</text>
+</svg>

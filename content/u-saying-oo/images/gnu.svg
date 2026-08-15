@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">gnu illustration</title>
+  <desc id="desc">A gnu, a large horned African animal, standing on grassland.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <g>
+    <ellipse cx="256" cy="200" rx="70" ry="40" fill="#8a6a4b"/>
+    <circle cx="330" cy="160" r="34" fill="#8a6a4b"/>
+    <path d="M310 140q-14-24 4-30" fill="none" stroke="#4a3722" stroke-width="8" stroke-linecap="round"/>
+    <path d="M340 140q14-24-4-30" fill="none" stroke="#4a3722" stroke-width="8" stroke-linecap="round"/>
+    <path d="M300 150q-20-6-30 6" fill="none" stroke="#4a3722" stroke-width="6" stroke-linecap="round"/>
+    <rect x="200" y="230" width="10" height="30" fill="#4a3722"/>
+    <rect x="230" y="230" width="10" height="30" fill="#4a3722"/>
+    <rect x="270" y="230" width="10" height="30" fill="#4a3722"/>
+    <rect x="300" y="230" width="10" height="30" fill="#4a3722"/>
+  </g>
+  <rect x="200.5" y="274" width="111" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">GNU</text>
+</svg>

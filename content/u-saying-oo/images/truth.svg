@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">truth illustration</title>
+  <desc id="desc">A speech bubble with a green checkmark inside.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <g>
+    <path d="M170 110h172a20 20 0 0120 20v70a20 20 0 01-20 20h-90l-30 30v-30h-52a20 20 0 01-20-20v-70a20 20 0 0120-20z" fill="#fff" stroke="#3d6fa8" stroke-width="6"/>
+    <path d="M215 175l25 25 55-55" fill="none" stroke="#3fae5a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <rect x="187" y="274" width="138" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">TRUTH</text>
+</svg>

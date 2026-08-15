@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">truly illustration</title>
+  <desc id="desc">A glowing pink heart with a soft sparkle.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7ff"/><stop offset="1" stop-color="#f4efff"/></linearGradient></defs>
+  <rect width="512" height="320" rx="32" fill="url(#bg)"/>
+
+  <g>
+    <path d="M256 220s-70-42-70-92a40 40 0 0170-26 40 40 0 0170 26c0 50-70 92-70 92z" fill="#ff8fb3" stroke="#c9557d" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M330 110l6 12 12 2-10 9 2 12-10-6-10 6 2-12-10-9 12-2z" fill="#ffd6e6"/>
+  </g>
+  <rect x="187" y="274" width="138" height="34" rx="17" fill="#26324a" opacity=".92"/>
+  <text x="256" y="298" font-family="Arial, sans-serif" font-size="21" font-weight="700" text-anchor="middle" fill="#fff">TRULY</text>
+</svg>

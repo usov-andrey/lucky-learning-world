@@ -1,0 +1,26 @@
+{
+  "lessonId": "u-saying-oo",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04.",
+  "words": [
+    { "word": "super", "definition": "Amazing, wonderful, or better than usual." },
+    { "word": "ruin", "definition": "To spoil or destroy something completely." },
+    { "word": "flu", "definition": "An illness caused by a virus that gives you a fever, cough, and aches." },
+    { "word": "fluid", "definition": "A liquid that flows and takes the shape of its container." },
+    { "word": "gnu", "definition": "A large African animal with horns, also called a wildebeest." },
+    { "word": "truth", "definition": "Something that is true and correct; not a lie." },
+    { "word": "truly", "definition": "In a real, sincere, or complete way." },
+    { "word": "cruel", "definition": "Unkind and causing pain or suffering on purpose." },
+    { "word": "lunar", "definition": "Relating to the moon." },
+    { "word": "ruby", "definition": "A red gemstone; a precious jewel." },
+    { "word": "fluent", "definition": "Able to speak or write a language easily and smoothly." },
+    { "word": "superb", "definition": "Excellent; extremely good." },
+    { "word": "crucial", "definition": "Extremely important; necessary." },
+    { "word": "frugal", "definition": "Careful not to waste money or resources." },
+    { "word": "glucose", "definition": "A type of sugar found in plants and used by the body for energy." },
+    { "word": "superior", "definition": "Better in quality than something else." },
+    { "word": "plumage", "definition": "The feathers covering a bird." },
+    { "word": "translucent", "definition": "Allowing light to pass through, but not clear enough to see through sharply." }
+  ]
+}
