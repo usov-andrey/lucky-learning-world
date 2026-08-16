@@ -596,3 +596,38 @@ thoroughly.
 - **[AC-83] Math Mix Can Reach Completion**:
   - A full Mix session MUST remain answerable through its final question and reach the
     existing completion/reward path without an uncaught runtime error.
+
+---
+
+## 28. Add 'u' Saying Long /oo/ Spelling Lesson (TASK-025)
+
+- **[AC-84] Complete Stable Lesson Catalog Entry**:
+  - The catalog MUST expose `u-saying-oo` with exactly the 18 supplied words in order,
+    preserve all existing lessons, and leave the default lesson unchanged.
+- **[AC-85] Complete Local Learning Content and Approved Audio**:
+  - Every new word MUST include complete child-friendly learning content, a local SVG,
+    local Sonia (`en-GB-SoniaNeural`, `-15%`) word and definition audio, and matching
+    audio and image provenance.
+- **[AC-86] Shared Lesson Picker and Engine Integration**:
+  - The picker MUST render a fifth selectable lesson card, persist the selection, and
+    drive Learn, Game, and Test through the shared spelling engine.
+
+---
+
+## 29. Always Award Pokémon and Sync Collection Count (TASK-026)
+
+- **[AC-87] Every Completed Math Duel Grants a Pokémon**:
+  - Finishing any valid Math Duel, including an attempt below the three-star reward
+    threshold, MUST grant a valid Pokémon reward and open the in-app reward modal.
+    It MUST NOT fall back to a browser completion alert.
+- **[AC-88] Academic Progress Remains Performance-Based**:
+  - Always granting a Pokémon MUST NOT change the existing star calculation or
+    next-level unlock threshold. A low-score attempt retains its actual star count
+    and does not unlock the next level unless the existing threshold is met.
+- **[AC-89] Saved Collection Count Renders Immediately**:
+  - On startup and after every collection change, the dashboard collection badge MUST
+    show the normalized saved collection length out of all 15 collectible Pokémon,
+    without requiring the player to open the Pokédex first.
+- **[AC-90] Collection Badge Uses Pokémon Wording**:
+  - The dashboard badge MUST identify the collected characters as Pokémon rather than
+    generic pets.

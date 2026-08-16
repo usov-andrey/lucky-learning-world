@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   updateFactOnAnswer
-} from "./engine/math-engine.js?v=v1.8.0";
+} from "./engine/math-engine.js?v=v1.8.1";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.8.0";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.8.1";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.8.0";
+} from "./engine/progression.js?v=v1.8.1";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.8.0";
+} from "./engine/reward-engine.js?v=v1.8.1";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.8.0";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.8.0";
+import { ShareController } from "./engine/share-controller.js?v=v1.8.1";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.8.1";
 
-import { LEVELS } from "./content/levels.js?v=v1.8.0";
+import { LEVELS } from "./content/levels.js?v=v1.8.1";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,14 +45,14 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.8.0";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.8.0";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.8.0";
-import { ThemeManager } from "./content/themes.js?v=v1.8.0";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.8.0";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.8.0";
-import { ClientTelemetry } from "./telemetry.js?v=v1.8.0";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.8.0";
+} from "./content/spelling-catalog.js?v=v1.8.1";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.8.1";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.8.1";
+import { ThemeManager } from "./content/themes.js?v=v1.8.1";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.8.1";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.8.1";
+import { ClientTelemetry } from "./telemetry.js?v=v1.8.1";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.8.1";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
@@ -982,6 +982,11 @@ export class AppController {
     if (this.elements.btnParentModeHeader) {
       this.elements.btnParentModeHeader.title = `Parent Protected Settings (${APP_VERSION})`;
     }
+
+    if (this.elements.petsCollectedCount) {
+      this.elements.petsCollectedCount.textContent =
+        `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length} Pokémon`;
+    }
   }
 
   showScreen(screenKey) {
@@ -1226,17 +1231,17 @@ export class AppController {
       this.progression = applyLevelOutcome(this.progression, outcome, LEVELS);
       this.saveProgression();
 
-      if (outcome.earnsReward) {
-        const pool = getPoolById(this.currentMathLevel.rewardPoolId) || REWARD_POOLS[0];
-        const chosen = chooseReward(pool, this.collection, REWARD_POOLS);
-        if (chosen) {
-          const applyRes = applyReward(this.collection, chosen, outcome.outcomeId, this.appliedRewardOutcomeIds);
-          this.collection = applyRes.collection;
-          this.appliedRewardOutcomeIds = applyRes.appliedRewardOutcomeIds;
-          this.saveCollection();
-          const savedEntry = this.collection.find((entry) => entry.id === chosen.characterId);
-          reward = { ...chosen, character: getCharacterById(chosen.characterId), level: savedEntry ? savedEntry.level : 1 };
-        }
+      // Pokémon are the motivational reward for finishing the learning loop;
+      // stars and next-level unlocking remain tied to academic performance.
+      const pool = getPoolById(this.currentMathLevel.rewardPoolId) || REWARD_POOLS[0];
+      const chosen = chooseReward(pool, this.collection, REWARD_POOLS);
+      if (chosen) {
+        const applyRes = applyReward(this.collection, chosen, outcome.outcomeId, this.appliedRewardOutcomeIds);
+        this.collection = applyRes.collection;
+        this.appliedRewardOutcomeIds = applyRes.appliedRewardOutcomeIds;
+        this.saveCollection();
+        const savedEntry = this.collection.find((entry) => entry.id === chosen.characterId);
+        reward = { ...chosen, character: getCharacterById(chosen.characterId), level: savedEntry ? savedEntry.level : 1 };
       }
     } else {
       const chosen = chooseMixReward(this.collection, REWARD_POOLS);
@@ -1264,7 +1269,6 @@ export class AppController {
       });
       this.openVictoryModal(reward);
     } else {
-      alert("Math Duel Complete! Excellent work!");
       this.showScreen("dashboard");
     }
 
@@ -1629,7 +1633,8 @@ export class AppController {
   // --- POKÉDEX VIEW ---
   renderPokedex() {
     if (this.elements.petsCollectedCount) {
-      this.elements.petsCollectedCount.textContent = `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length}`;
+      this.elements.petsCollectedCount.textContent =
+        `${this.collection.length} / ${COLLECTIBLE_CHARACTERS.length} Pokémon`;
     }
 
     let html = "";
@@ -1755,10 +1760,10 @@ export class AppController {
     const char = reward.character || getCharacterById("embercub");
     const pres = ThemeManager.getCharacterPresentation(char.id, char);
 
-    this.elements.victoryTitle.textContent = reward.variant === "levelup" ? "Pet Level Up!" : "New Pet Rescued!";
+    this.elements.victoryTitle.textContent = reward.variant === "levelup" ? "Pokémon Level Up!" : "New Pokémon Rescued!";
     this.elements.victorySubtitle.textContent = reward.variant === "levelup"
       ? `${pres.name} powered up to Level ${reward.level}!`
-      : `${pres.name} joined your Pet Collection!`;
+      : `${pres.name} joined your Pokémon Collection!`;
 
     this.elements.rewardPetImg.src =
       pres.image || pres.assetPath || (pres.art && pres.art.src) || char.image || (char.art && char.art.src) || "";

@@ -33,7 +33,7 @@ test("TASK-007 AC-20 and AC-21: choices are clear and supporting copy stays tiny
   assert.equal(cards.length, 3);
   assert.deepEqual(
     cards.map((card) => card.querySelector(".realm-title")?.textContent.trim()),
-    ["Math Battle", "Word Quest", "My Pets"]
+    ["Math Battle", "Word Quest", "My Pokémon"]
   );
 
   for (const card of cards) {

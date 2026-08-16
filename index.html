@@ -17,8 +17,8 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="themes.css?v=v1.8.0">
-  <link rel="stylesheet" href="styles.css?v=v1.8.0">
+  <link rel="stylesheet" href="themes.css?v=v1.8.1">
+  <link rel="stylesheet" href="styles.css?v=v1.8.1">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_TELEMETRY = {
@@ -38,12 +38,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=v1.8.0').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=v1.8.1').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=v1.8.0"></script>
+  <script src="reporter.js?v=v1.8.1"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -134,13 +134,13 @@
               <span class="realm-icon">🐾</span>
             </div>
             <div class="realm-content">
-              <span class="realm-badge" id="pets-collected-count">0 / 15</span>
-              <h3 class="realm-title">My Pets</h3>
-              <p class="realm-desc">Meet your pet team!</p>
+              <span class="realm-badge" id="pets-collected-count">0 / 15 Pokémon</span>
+              <h3 class="realm-title">My Pokémon</h3>
+              <p class="realm-desc">Meet your Pokémon team!</p>
             </div>
           </div>
           <button class="realm-action-btn" id="btn-enter-pokedex">
-            <span>See My Pets</span>
+            <span>See My Pokémon</span>
             <span aria-hidden="true">➜</span>
           </button>
         </article>
@@ -341,7 +341,7 @@
     <section id="pokedex-view" class="view-screen">
       <div class="screen-header">
         <button class="back-btn" id="btn-back-from-pokedex">⬅️ Hub</button>
-        <h2 style="font-size: 24px;">🐾 Unified Pokédex & Pet Sanctuary</h2>
+        <h2 style="font-size: 24px;">🐾 My Pokémon Pokédex</h2>
       </div>
 
       <div class="pokedex-grid" id="pokedex-grid">
@@ -518,7 +518,7 @@
       </button>
 
       <button class="realm-action-btn" id="btn-victory-continue" style="background: var(--grad-success); width: 100%; margin-top: 10px;">
-        Collect Pet & Continue ➔
+        Collect Pokémon & Continue ➔
       </button>
     </div>
   </div>
@@ -597,6 +597,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=v1.8.0"></script>
+  <script type="module" src="app.js?v=v1.8.1"></script>
 </body>
 </html>

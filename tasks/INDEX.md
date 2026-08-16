@@ -30,6 +30,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-023](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-023-fix-bottom-nav-blank-page-on-hub-tap.md) | Fix Bottom-Nav Blank Page on Hub Tap (Duplicate, Conflicting Click Handlers) | RELEASED | v1.7.2 | 4 ACs | `tests/e2e/full-main-scenario.e2e.mjs` | - |
 | [TASK-024](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-024-restore-math-progress-and-fix-math-mix.md) | Restore Math Progress and Fix Math Mix | TESTED | v1.7.3 | 9 ACs | `tests/math-fact-progress.test.mjs` | - |
 | [TASK-025](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-025-add-u-saying-long-oo-spelling-lesson.md) | Add 'u' Saying Long /oo/ Spelling Lesson | PROPOSED | v1.0.0 | 2 ACs | `tests/task-xxx-*.test.mjs` | - |
+| [TASK-026](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-026-always-award-pokemon-and-sync-collection-count.md) | Always Award Pokémon and Sync Collection Count | RELEASED | v1.8.1 | 4 ACs | `tests/pokemon-rewards.test.mjs` | - |
 
 ---
 

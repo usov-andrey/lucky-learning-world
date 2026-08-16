@@ -401,7 +401,8 @@ test(
       const pokedexScreen = await page.evaluate(() => document.querySelector(".view-screen.active")?.id);
       assert.equal(pokedexScreen, "pokedex-view");
       const collectedText = (await page.locator("#pets-collected-count").textContent()).trim();
-      assert.match(collectedText, /^\d+ \/ \d+$/);
+      // TASK-026 AC-89/AC-90: count stays correct and explicitly says Pokémon.
+      assert.match(collectedText, /^\d+ \/ \d+ Pokémon$/);
 
       const player = await page.evaluate(() => window.appController.player);
       assert.equal(player.starterPet, "embercub", "AC-5: starter pet was not saved correctly");
