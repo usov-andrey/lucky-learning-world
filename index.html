@@ -17,8 +17,8 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="themes.css?v=v1.8.1">
-  <link rel="stylesheet" href="styles.css?v=v1.8.1">
+  <link rel="stylesheet" href="themes.css?v=v1.8.2">
+  <link rel="stylesheet" href="styles.css?v=v1.8.2">
   <link rel="manifest" href="manifest.json">
   <script>
     window.LMM_TELEMETRY = {
@@ -38,12 +38,12 @@
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=v1.8.1').then((reg) => {
+      navigator.serviceWorker.register('./sw.js?v=v1.8.2').then((reg) => {
         reg.update();
       }).catch(() => {});
     }
   </script>
-  <script src="reporter.js?v=v1.8.1"></script>
+  <script src="reporter.js?v=v1.8.2"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
   <meta name="theme-color" content="#0f1225">
 </head>
@@ -295,42 +295,45 @@
 
       <!-- Mode 3: Game Mode Container (Letter Tiles Battle) -->
       <div id="spelling-game-container" class="arena-card" style="display: none;">
-        <div class="battle-stage">
-          <div class="fighter-box monster-fighter">
-            <div class="hp-bar-wrap">
-              <div class="hp-bar-fill" id="word-monster-hp-bar" style="width: 100%;"></div>
+        <div class="spelling-battle-layout">
+          <div class="battle-stage">
+            <div class="fighter-box monster-fighter">
+              <div class="hp-bar-wrap">
+                <div class="hp-bar-fill" id="word-monster-hp-bar" style="width: 100%;"></div>
+              </div>
+              <div class="sprite-wrapper">
+                <img id="word-monster-img" src="pokemon/eevee.png" alt="Pokémon opponent" class="battle-sprite float-anim">
+              </div>
+              <div class="fighter-name" id="word-monster-name">Spelling Pokémon (Page 22)</div>
             </div>
-            <div class="sprite-wrapper">
-              <img id="word-monster-img" src="pokemon/eevee.png" alt="Dragon" class="battle-sprite float-anim">
+            <div class="battle-result-signal" id="word-battle-feedback" role="status" aria-live="assertive" aria-atomic="true"></div>
+          </div>
+
+          <div class="question-container">
+            <div class="question-progress" id="word-question-progress">Word 1 of 18</div>
+
+            <button class="audio-pronounce-btn" id="btn-speak-word">
+              <span style="font-size: 28px;">🔊</span>
+              <span>Listen to Word</span>
+            </button>
+
+            <div class="word-hint-text" id="word-hint-text">A person who writes books</div>
+
+            <div class="word-slots-row" id="word-slots-row">
+              <span class="letter-slot empty">_</span>
             </div>
-            <div class="fighter-name" id="word-monster-name">Spelling Dragon (Page 22)</div>
-          </div>
-        </div>
 
-        <div class="question-container">
-          <div class="question-progress" id="word-question-progress">Word 1 of 18</div>
-          
-          <button class="audio-pronounce-btn" id="btn-speak-word">
-            <span style="font-size: 28px;">🔊</span>
-            <span>Listen to Word</span>
-          </button>
+            <div class="feedback-banner" id="word-feedback-text">&nbsp;</div>
 
-          <div class="word-hint-text" id="word-hint-text">A person who writes books</div>
+            <div class="letter-tiles-bank" id="letter-tiles-bank">
+            </div>
 
-          <div class="word-slots-row" id="word-slots-row">
-            <span class="letter-slot empty">_</span>
-          </div>
-
-          <div class="feedback-banner" id="word-feedback-text">&nbsp;</div>
-
-          <div class="letter-tiles-bank" id="letter-tiles-bank">
-          </div>
-
-          <div class="spelling-actions-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 12px; flex-wrap: wrap;">
-            <button class="back-btn" id="btn-game-prev" style="height: var(--min-touch-target); padding: 0 24px;">⬅️ Back</button>
-            <div style="display: flex; gap: 12px; align-items: center;">
-              <button class="secondary-btn" id="btn-clear-spelling" style="height: var(--min-touch-target); min-width: 100px;">Clear</button>
-              <button class="primary-btn" id="btn-submit-spelling" style="height: var(--min-touch-target); padding: 0 28px;">Attack with Tiles! ➔</button>
+            <div class="spelling-actions-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 12px; flex-wrap: wrap;">
+              <button class="back-btn" id="btn-game-prev" style="height: var(--min-touch-target); padding: 0 24px;">⬅️ Back</button>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <button class="secondary-btn" id="btn-clear-spelling" style="height: var(--min-touch-target); min-width: 100px;">Clear</button>
+                <button class="primary-btn" id="btn-submit-spelling" style="height: var(--min-touch-target); padding: 0 28px;">Attack! ➔</button>
+              </div>
             </div>
           </div>
         </div>
@@ -597,6 +600,6 @@
   </nav>
 
   <!-- Core App JS -->
-  <script type="module" src="app.js?v=v1.8.1"></script>
+  <script type="module" src="app.js?v=v1.8.2"></script>
 </body>
 </html>

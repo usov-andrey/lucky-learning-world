@@ -14,27 +14,27 @@ import {
   answerFirstTry,
   confirmCorrection,
   updateFactOnAnswer
-} from "./engine/math-engine.js?v=v1.8.1";
+} from "./engine/math-engine.js?v=v1.8.2";
 
-import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.8.1";
+import { SpellingEngine } from "./engine/spelling-engine.js?v=v1.8.2";
 
 import {
   normalizeStoredState,
   computeLevelOutcome,
   applyLevelOutcome
-} from "./engine/progression.js?v=v1.8.1";
+} from "./engine/progression.js?v=v1.8.2";
 
 import {
   chooseReward,
   chooseMixReward,
   applyReward,
   normalizeCollection
-} from "./engine/reward-engine.js?v=v1.8.1";
+} from "./engine/reward-engine.js?v=v1.8.2";
 
-import { ShareController } from "./engine/share-controller.js?v=v1.8.1";
-import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.8.1";
+import { ShareController } from "./engine/share-controller.js?v=v1.8.2";
+import { NarrativeEngine } from "./engine/narrative-engine.js?v=v1.8.2";
 
-import { LEVELS } from "./content/levels.js?v=v1.8.1";
+import { LEVELS } from "./content/levels.js?v=v1.8.2";
 import {
   PAGE_22_LESSON,
   SCHWA_ER_LESSON,
@@ -45,20 +45,21 @@ import {
   PAGE_22_DECK,
   SPELLING_DECKS,
   getDeckById
-} from "./content/spelling-catalog.js?v=v1.8.1";
-import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.8.1";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.8.1";
-import { ThemeManager } from "./content/themes.js?v=v1.8.1";
-import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.8.1";
-import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.8.1";
-import { ClientTelemetry } from "./telemetry.js?v=v1.8.1";
-import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.8.1";
+} from "./content/spelling-catalog.js?v=v1.8.2";
+import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.8.2";
+import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.8.2";
+import { ThemeManager } from "./content/themes.js?v=v1.8.2";
+import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.8.2";
+import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.8.2";
+import { ClientTelemetry } from "./telemetry.js?v=v1.8.2";
+import { APP_VERSION, BUILD_TIMESTAMP, formatBuildLabel } from "./build-info.js?v=v1.8.2";
 
 export { APP_VERSION, BUILD_TIMESTAMP };
 
 // --- GLOBAL AUDIO & TTS CONTROLLER ---
 let currentAudio = null;
 let currentSynthUtterance = null;
+let effectAudioContext = null;
 
 function stopSpeechAndAudio() {
   if (currentAudio) {
@@ -141,8 +142,42 @@ function playAudioFile(audioPath, fallbackText) {
 }
 
 function playEffectSound(effectName) {
-  // Decorative sound effects helper
   stopSpeechAndAudio();
+  if (typeof window === "undefined") return;
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    ClientTelemetry.emit("audio.failed", { reason: "web-audio-unavailable", audio_kind: "effect" });
+    return;
+  }
+
+  try {
+    effectAudioContext ||= new AudioContextClass();
+    if (effectAudioContext.state === "suspended") {
+      effectAudioContext.resume().catch(() => {});
+    }
+
+    const isHit = effectName === "hit";
+    const now = effectAudioContext.currentTime;
+    const duration = isHit ? 0.22 : 0.3;
+    const startPitch = isHit ? 440 : 300;
+    const endPitch = isHit ? 880 : 120;
+    const oscillator = effectAudioContext.createOscillator();
+    const gain = effectAudioContext.createGain();
+
+    oscillator.type = isHit ? "triangle" : "sawtooth";
+    oscillator.frequency.setValueAtTime(startPitch, now);
+    oscillator.frequency.exponentialRampToValueAtTime(endPitch, now + duration);
+    gain.gain.setValueAtTime(0.16, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    oscillator.connect(gain);
+    gain.connect(effectAudioContext.destination);
+    oscillator.start(now);
+    oscillator.stop(now + duration);
+  } catch (error) {
+    console.warn("Effect sound failed:", error);
+    ClientTelemetry.emit("audio.failed", { reason: "effect-sound-error", audio_kind: "effect" });
+  }
 }
 
 function numberToWord(n) {
@@ -209,6 +244,7 @@ export class AppController {
     this.mathQuestionStartedAt = null;
     this.currentMathLevel = LEVELS[0];
     this.selectedLetterTiles = [];
+    this.spellingAnswerLocked = false;
 
     this.lastRescuedCharacterId = null;
     this.lastNarrativeEvent = null;
@@ -373,6 +409,7 @@ export class AppController {
       wordHintText: document.getElementById("word-hint-text"),
       wordSlotsRow: document.getElementById("word-slots-row"),
       wordFeedbackText: document.getElementById("word-feedback-text"),
+      wordBattleFeedback: document.getElementById("word-battle-feedback"),
       letterTilesBank: document.getElementById("letter-tiles-bank"),
       btnClearSpelling: document.getElementById("btn-clear-spelling"),
       btnSubmitSpelling: document.getElementById("btn-submit-spelling"),
@@ -1521,12 +1558,44 @@ export class AppController {
 
     this.elements.wordHintText.textContent = `Hint: "${q.definition}"`;
     this.elements.wordFeedbackText.textContent = "";
+    this.spellingAnswerLocked = false;
+    if (this.elements.btnSubmitSpelling) this.elements.btnSubmitSpelling.disabled = false;
+    this.clearSpellingBattleFeedback();
 
     this.selectedLetterTiles = [];
     this.renderSpellingTiles();
 
     playAudioFile(q.audio, q.targetWord);
     this.emitNarrativeEvent("question.presented", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18 });
+  }
+
+  clearSpellingBattleFeedback() {
+    if (this.elements.wordBattleFeedback) {
+      this.elements.wordBattleFeedback.textContent = "";
+      this.elements.wordBattleFeedback.classList.remove("visible", "hit", "miss");
+    }
+    if (this.elements.wordMonsterImg) {
+      this.elements.wordMonsterImg.classList.remove("hit-anim", "miss-anim");
+    }
+  }
+
+  showSpellingBattleFeedback(result) {
+    const isHit = result === "hit";
+    const signal = this.elements.wordBattleFeedback;
+    const monster = this.elements.wordMonsterImg;
+
+    if (signal) {
+      signal.classList.remove("visible", "hit", "miss");
+      signal.textContent = isHit ? "HIT!" : "MISS!";
+      void signal.offsetWidth;
+      signal.classList.add("visible", isHit ? "hit" : "miss");
+    }
+    if (monster) {
+      monster.classList.remove("hit-anim", "miss-anim");
+      void monster.offsetWidth;
+      monster.classList.add(isHit ? "hit-anim" : "miss-anim");
+    }
+    playEffectSound(result);
   }
 
   renderSpellingTiles() {
@@ -1565,15 +1634,20 @@ export class AppController {
   }
 
   handleSpellingGameSubmit() {
+    if (this.spellingAnswerLocked) return;
     const q = this.spellingEngine.getCurrentGameQuestion();
     if (!q) return;
+
+    this.spellingAnswerLocked = true;
+    if (this.elements.btnSubmitSpelling) this.elements.btnSubmitSpelling.disabled = true;
 
     const assembledWord = this.selectedLetterTiles.map(t => (typeof t === 'string' ? t : t.letter || '')).join("").toLowerCase();
     const res = this.spellingEngine.submitGameWord(assembledWord);
 
     if (res.isCorrect) {
-      this.elements.wordFeedbackText.textContent = "Direct hit on monster! ★";
+      this.elements.wordFeedbackText.textContent = "HIT!";
       this.elements.wordFeedbackText.style.color = "var(--color-success)";
+      this.showSpellingBattleFeedback("hit");
 
       if ((this.spellingEngine.gameIndex + 1) % 6 === 0) {
         this.emitNarrativeEvent("milestone.reached", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18 });
@@ -1582,17 +1656,22 @@ export class AppController {
       }
 
       setTimeout(() => {
+        this.spellingAnswerLocked = false;
         this.renderSpellingGame();
       }, 800);
     } else {
-      this.elements.wordFeedbackText.textContent = `Try again! Hint: ${q.definition}`;
+      this.elements.wordFeedbackText.textContent = "MISS! TRY AGAIN";
       this.elements.wordFeedbackText.style.color = "var(--color-error)";
+      this.showSpellingBattleFeedback("miss");
 
       this.emitNarrativeEvent("answer.incorrect", { realm: "spelling", itemIndex: this.spellingEngine.gameIndex, totalItems: 18, requeued: true });
 
       setTimeout(() => {
         this.selectedLetterTiles = [];
         this.renderSpellingTiles();
+        this.spellingAnswerLocked = false;
+        if (this.elements.btnSubmitSpelling) this.elements.btnSubmitSpelling.disabled = false;
+        this.clearSpellingBattleFeedback();
       }, 1000);
     }
   }

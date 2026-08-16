@@ -66,7 +66,7 @@ test(
     const unexpectedDialogs = [];
 
     try {
-      const page = await browser.newPage();
+      const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 
       // AC-2: any uncaught exception or console.error fails the suite — except
       // noise caused by CORS-blocked calls to the real production telemetry
@@ -338,7 +338,21 @@ test(
       // --- Word Realm: Game (Tiles) mode, played to completion ---------------
       await page.locator('[data-spelling-mode="game"]').click();
 
+      // @task TASK-027
+      // @ac AC-91: at Lucky's landscape-tablet size, the Pokémon and controls
+      // occupy side-by-side columns with a shared vertical region.
+      const battleStageBox = await page.locator("#spelling-game-container .battle-stage").boundingBox();
+      const gameControlsBox = await page.locator("#spelling-game-container .question-container").boundingBox();
+      assert.ok(battleStageBox && gameControlsBox, "Tiles battle columns must be rendered");
+      assert.ok(battleStageBox.x + battleStageBox.width <= gameControlsBox.x, "Pokémon must sit beside, not above, the Tiles controls");
+      const sharedVerticalHeight = Math.min(
+        battleStageBox.y + battleStageBox.height,
+        gameControlsBox.y + gameControlsBox.height,
+      ) - Math.max(battleStageBox.y, gameControlsBox.y);
+      assert.ok(sharedVerticalHeight > 100, "Pokémon and Tiles controls must remain visible in the same viewport region");
+
       let usedWrongTiles = false;
+      let checkedHitFeedback = false;
       let tilesGuard = 0;
       for (;;) {
         tilesGuard += 1;
@@ -360,7 +374,8 @@ test(
           await page.locator("#btn-submit-spelling").click();
           await page.waitForTimeout(200);
           const wrongFeedback = (await page.locator("#word-feedback-text").textContent()).trim();
-          assert.ok(wrongFeedback.includes("Try again"), `expected wrong-tiles feedback, got: "${wrongFeedback}"`);
+          assert.equal(wrongFeedback, "MISS! TRY AGAIN", `expected clear wrong-tiles feedback, got: "${wrongFeedback}"`);
+          await page.locator("#word-battle-feedback.miss.visible").waitFor({ state: "visible" });
           await page.waitForTimeout(1100);
           continue;
         }
@@ -374,7 +389,15 @@ test(
           await page.locator("#letter-tiles-bank .tile-btn:not([disabled])").nth(tileIndex).click();
         }
         await page.locator("#btn-submit-spelling").click();
-        await page.waitForTimeout(900);
+        if (!checkedHitFeedback) {
+          checkedHitFeedback = true;
+          await page.waitForTimeout(100);
+          assert.equal((await page.locator("#word-feedback-text").textContent()).trim(), "HIT!");
+          await page.locator("#word-battle-feedback.hit.visible").waitFor({ state: "visible" });
+          await page.waitForTimeout(800);
+        } else {
+          await page.waitForTimeout(900);
+        }
       }
 
       // AC-68/AC-69 (Word Realm): finishSpellingSession() grants a reward

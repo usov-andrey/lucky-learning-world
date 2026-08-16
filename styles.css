@@ -546,6 +546,10 @@ button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-
   animation: hitFlash 0.4s ease-in-out;
 }
 
+.miss-anim {
+  animation: missDodge 0.5s ease-in-out;
+}
+
 @keyframes floatSprite {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -554,6 +558,12 @@ button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-
 @keyframes hitFlash {
   0%, 100% { transform: scale(1); filter: none; }
   50% { transform: scale(1.15); filter: brightness(2) drop-shadow(0 0 20px red); }
+}
+
+@keyframes missDodge {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  35% { transform: translateX(38px) rotate(7deg); }
+  70% { transform: translateX(-12px) rotate(-3deg); }
 }
 
 .fighter-name {
@@ -745,6 +755,122 @@ button *, .realm-action-btn *, .primary-btn *, .secondary-btn *, .header-action-
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
+}
+
+/* TASK-027: one-glance spelling battle feedback */
+#spelling-game-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.spelling-battle-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#spelling-game-container .battle-stage {
+  position: relative;
+  min-height: 190px;
+  margin-bottom: 0;
+}
+
+#spelling-game-container .question-container {
+  min-width: 0;
+}
+
+.battle-result-signal {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  z-index: 3;
+  min-width: 150px;
+  padding: 10px 20px;
+  border: 4px solid currentColor;
+  border-radius: 22px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.45) rotate(-8deg);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 1000;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.battle-result-signal.visible {
+  animation: battleResultPop 0.75s ease-out both;
+}
+
+.battle-result-signal.hit {
+  color: #73ff9b;
+  background: rgba(7, 86, 38, 0.92);
+}
+
+.battle-result-signal.miss {
+  color: #ff8792;
+  background: rgba(99, 10, 28, 0.94);
+}
+
+#spelling-game-container #word-feedback-text {
+  min-height: 38px;
+  font-size: 28px;
+  font-weight: 1000;
+  letter-spacing: 1px;
+}
+
+#spelling-game-container .tile-btn {
+  min-height: 64px;
+}
+
+#spelling-game-container .audio-pronounce-btn {
+  min-height: 64px;
+}
+
+#spelling-game-container button {
+  touch-action: manipulation;
+}
+
+#spelling-game-container button > * {
+  pointer-events: none;
+}
+
+#spelling-game-container button:disabled {
+  cursor: default;
+}
+
+@keyframes battleResultPop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.45) rotate(-8deg); }
+  18%, 72% { opacity: 1; transform: translate(-50%, -50%) scale(1.08) rotate(0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.22); }
+}
+
+@media (min-width: 700px) {
+  .spelling-battle-layout {
+    display: grid;
+    grid-template-columns: minmax(210px, 0.55fr) minmax(0, 1.45fr);
+    align-items: stretch;
+    gap: 22px;
+  }
+
+  #spelling-game-container .battle-stage {
+    min-height: 100%;
+    padding: 14px;
+  }
+
+  #spelling-game-container .question-container {
+    justify-content: center;
+  }
+
+  #spelling-game-container .sprite-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  #spelling-game-container .hp-bar-wrap {
+    width: min(200px, 100%);
+  }
 }
 
 /* Pokédex Sanctuary Grid */
@@ -1241,5 +1367,3 @@ body.modal-open {
 .btn-tell-me-more * {
   pointer-events: none;
 }
-
-

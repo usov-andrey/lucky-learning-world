@@ -631,3 +631,25 @@ thoroughly.
 - **[AC-90] Collection Badge Uses Pokémon Wording**:
   - The dashboard badge MUST identify the collected characters as Pokémon rather than
     generic pets.
+
+---
+
+## 30. Clear Tiles Battle Feedback on Tablets (TASK-027)
+
+- **[AC-91] Pokémon and Tiles Stay Together on Tablets**:
+  - At landscape tablet widths, the Tiles arena MUST place the Pokémon battle stage
+    beside the spelling question and tile controls so Lucky can see both in the same
+    viewport region. Narrow phones MUST retain a readable stacked layout.
+- **[AC-92] Correct Attacks Are Instantly Recognizable**:
+  - A correct Tiles submission MUST immediately show a large green `HIT!` signal,
+    visibly animate the Pokémon as hit, and play a short rising success sound.
+- **[AC-93] Wrong Attacks Are Instantly Recognizable**:
+  - A wrong Tiles submission MUST immediately show a large red `MISS!` signal,
+    visibly animate the Pokémon dodging, and play a short descending miss sound.
+- **[AC-94] Feedback Does Not Require Reading a Definition**:
+  - Persistent feedback MUST be limited to `HIT!` or `MISS! TRY AGAIN` and MUST NOT
+    repeat the word definition. The definition remains visible in the dedicated hint
+    line throughout the retry.
+- **[AC-95] Feedback Cannot Be Double-Submitted**:
+  - Submit taps during the result animation MUST be ignored, and the Tiles controls
+    MUST retain touch targets at least 64 px high and `touch-action: manipulation`.

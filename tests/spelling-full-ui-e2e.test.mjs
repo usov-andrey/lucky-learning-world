@@ -111,7 +111,7 @@ test("Full E2E UI Test: Word Realm - Learn, Test (Digital/Paper), and Tiles Mode
   });
 
   app.elements.btnSubmitSpelling.click();
-  assert.equal(app.elements.wordFeedbackText.textContent, "Direct hit on monster! ★");
+  assert.equal(app.elements.wordFeedbackText.textContent, "HIT!");
 
   // Advance game index to 1
   app.spellingEngine.currentIndex = 1;
