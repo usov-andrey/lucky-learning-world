@@ -6,6 +6,7 @@
  *  - 'or' saying /er/
  *  - 'ear' saying /er/ (current default)
  *  - 'u' saying long /oo/
+ *  - ‹ough›, ‹gh› and ‹augh›
  */
 
 export const STORAGE_KEY_SELECTED_LESSON = "lmm3s:selected_spelling_lesson";
@@ -1051,7 +1052,215 @@ export const U_SAYING_OO_LESSON = {
   ]
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON];
+export const OUGH_GH_AUGH_LESSON = {
+  id: "ough-gh-augh",
+  title: "Spelling Test",
+  pageLabel: "‹ough› ‹gh› ‹augh›",
+  topic: "‹ough›, ‹gh› and ‹augh›",
+  wordCount: 18,
+  words: [
+    {
+      word: "ought",
+      definition: "Used to say that something is the right thing to do.",
+      extendedExplanation: "Ought is similar to should. It helps us talk about a sensible action, a duty, or something we expect to happen.",
+      exampleSentence: "You ought to wear a sun hat when you play outside at lunchtime.",
+      image: "content/ough-gh-augh/images/ought.svg",
+      imageAlt: "A checklist with a green tick showing the right thing to do",
+      audio: "content/ough-gh-augh/audio/01_ought.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/01_ought.mp3",
+      hint: "Another way to say should"
+    },
+    {
+      word: "bought",
+      definition: "Paid money to get something; the past tense of buy.",
+      extendedExplanation: "If you bought something, you gave money for it in the past and it became yours.",
+      exampleSentence: "Lucky bought a new sketchbook with her birthday money.",
+      image: "content/ough-gh-augh/images/bought.svg",
+      imageAlt: "A shopping bag beside coins and a receipt",
+      audio: "content/ough-gh-augh/audio/02_bought.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/02_bought.mp3",
+      hint: "Past tense of buy"
+    },
+    {
+      word: "brought",
+      definition: "Carried or took something to a place; the past tense of bring.",
+      extendedExplanation: "Brought tells us that someone moved an object or person with them to another place in the past.",
+      exampleSentence: "Mali brought her favourite book to share with the class.",
+      image: "content/ough-gh-augh/images/brought.svg",
+      imageAlt: "A child carrying a wrapped parcel towards a school",
+      audio: "content/ough-gh-augh/audio/03_brought.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/03_brought.mp3",
+      hint: "Past tense of bring"
+    },
+    {
+      word: "fought",
+      definition: "Took part in a fight or struggled against something; the past tense of fight.",
+      extendedExplanation: "Fought can describe a physical battle, but it can also mean trying very hard to stop a problem or support a cause.",
+      exampleSentence: "The brave firefighters fought the forest fire through the night.",
+      image: "content/ough-gh-augh/images/fought.svg",
+      imageAlt: "Two padded boxing gloves meeting in a sports match",
+      audio: "content/ough-gh-augh/audio/04_fought.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/04_fought.mp3",
+      hint: "Past tense of fight"
+    },
+    {
+      word: "nought",
+      definition: "The number zero, or nothing at all.",
+      extendedExplanation: "Nought is a British word for zero. It is often used when reading numbers, scores, or years.",
+      exampleSentence: "The football score was two–nought at the end of the match.",
+      image: "content/ough-gh-augh/images/nought.svg",
+      imageAlt: "A large colourful zero on a score card",
+      audio: "content/ough-gh-augh/audio/05_nought.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/05_nought.mp3",
+      hint: "A British word for zero"
+    },
+    {
+      word: "thought",
+      definition: "An idea or picture that forms in your mind.",
+      extendedExplanation: "A thought can be an idea, memory, plan, or opinion that you are thinking about inside your mind.",
+      exampleSentence: "Lucky had a clever thought for solving the tricky puzzle.",
+      image: "content/ough-gh-augh/images/thought.svg",
+      imageAlt: "A child thinking with a glowing idea bubble overhead",
+      audio: "content/ough-gh-augh/audio/06_thought.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/06_thought.mp3",
+      hint: "An idea in your mind"
+    },
+    {
+      word: "ghostly",
+      definition: "Looking, sounding, or feeling like a ghost.",
+      extendedExplanation: "Something ghostly may look pale, move silently, make an eerie sound, or create a spooky feeling.",
+      exampleSentence: "A ghostly shape appeared when the curtain moved in the moonlight.",
+      image: "content/ough-gh-augh/images/ghostly.svg",
+      imageAlt: "A friendly pale ghost floating in moonlight",
+      audio: "content/ough-gh-augh/audio/07_ghostly.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/07_ghostly.mp3",
+      hint: "Spooky or like a ghost"
+    },
+    {
+      word: "dinghy",
+      definition: "A small open boat, often carried by a larger boat.",
+      extendedExplanation: "A dinghy can be rowed, sailed, or powered by a small motor and is useful for short trips across water.",
+      exampleSentence: "We rowed the dinghy gently from the yacht to the quiet beach.",
+      image: "content/ough-gh-augh/images/dinghy.svg",
+      imageAlt: "A small red dinghy floating on blue waves",
+      audio: "content/ough-gh-augh/audio/08_dinghy.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/08_dinghy.mp3",
+      hint: "A small open boat"
+    },
+    {
+      word: "ghoul",
+      definition: "A frightening creature from old stories that is linked with graveyards.",
+      extendedExplanation: "A ghoul is an imaginary monster from folklore. It often appears in spooky tales and Halloween stories.",
+      exampleSentence: "The costume had a green mask that made Ben look like a silly ghoul.",
+      image: "content/ough-gh-augh/images/ghoul.svg",
+      imageAlt: "A cartoon green ghoul with a surprised expression",
+      audio: "content/ough-gh-augh/audio/09_ghoul.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/09_ghoul.mp3",
+      hint: "A monster from spooky stories"
+    },
+    {
+      word: "aghast",
+      definition: "Filled with shock, fear, or horror.",
+      extendedExplanation: "If you are aghast, something has surprised or upset you so much that you may freeze or gasp.",
+      exampleSentence: "We were aghast when the tower of blocks suddenly crashed to the floor.",
+      image: "content/ough-gh-augh/images/aghast.svg",
+      imageAlt: "A shocked face with wide eyes and hands on its cheeks",
+      audio: "content/ough-gh-augh/audio/10_aghast.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/10_aghast.mp3",
+      hint: "Very shocked or horrified"
+    },
+    {
+      word: "gherkin",
+      definition: "A small cucumber, often preserved in vinegar and eaten as a pickle.",
+      extendedExplanation: "A gherkin is picked while it is small, then often placed in a jar with vinegar and herbs to give it a sharp taste.",
+      exampleSentence: "Dad added a crunchy gherkin to the sandwich.",
+      image: "content/ough-gh-augh/images/gherkin.svg",
+      imageAlt: "A small green gherkin beside an open pickle jar",
+      audio: "content/ough-gh-augh/audio/11_gherkin.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/11_gherkin.mp3",
+      hint: "A small cucumber used as a pickle"
+    },
+    {
+      word: "yoghurt",
+      definition: "A thick, creamy food made from milk using helpful bacteria.",
+      extendedExplanation: "Yoghurt is made when friendly bacteria change milk, making it thicker and giving it a slightly tangy taste.",
+      exampleSentence: "Lucky mixed mango and banana into a bowl of plain yoghurt.",
+      image: "content/ough-gh-augh/images/yoghurt.svg",
+      imageAlt: "A bowl of yoghurt topped with mango and banana pieces",
+      audio: "content/ough-gh-augh/audio/12_yoghurt.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/12_yoghurt.mp3",
+      hint: "A creamy food made from milk"
+    },
+    {
+      word: "naughty",
+      definition: "Behaving badly or not doing what you have been told.",
+      extendedExplanation: "Naughty describes behaviour that breaks a rule or causes trouble, usually in a small rather than dangerous way.",
+      exampleSentence: "The naughty puppy ran away with one of Dad's slippers.",
+      image: "content/ough-gh-augh/images/naughty.svg",
+      imageAlt: "A playful puppy holding a slipper in its mouth",
+      audio: "content/ough-gh-augh/audio/13_naughty.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/13_naughty.mp3",
+      hint: "Behaving badly or breaking a rule"
+    },
+    {
+      word: "fraught",
+      definition: "Filled with worry, difficulty, or problems.",
+      extendedExplanation: "A fraught situation feels tense and stressful because many things could go wrong or people are very worried.",
+      exampleSentence: "The journey became fraught when the storm blocked the mountain road.",
+      image: "content/ough-gh-augh/images/fraught.svg",
+      imageAlt: "A worried traveller facing a storm cloud and a blocked road",
+      audio: "content/ough-gh-augh/audio/14_fraught.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/14_fraught.mp3",
+      hint: "Full of worry or difficulty"
+    },
+    {
+      word: "caught",
+      definition: "Captured, stopped, or held something; the past tense of catch.",
+      extendedExplanation: "Caught can mean that you grabbed something moving, found someone, or became trapped in a situation.",
+      exampleSentence: "Lucky caught the bright red ball with both hands.",
+      image: "content/ough-gh-augh/images/caught.svg",
+      imageAlt: "Two hands catching a bright red ball",
+      audio: "content/ough-gh-augh/audio/15_caught.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/15_caught.mp3",
+      hint: "Past tense of catch"
+    },
+    {
+      word: "daughter",
+      definition: "A person's female child.",
+      extendedExplanation: "A daughter is a girl or woman in relation to her parents, whether she is young or grown up.",
+      exampleSentence: "Their daughter proudly showed them the medal she won at school.",
+      image: "content/ough-gh-augh/images/daughter.svg",
+      imageAlt: "A smiling girl standing between her two parents",
+      audio: "content/ough-gh-augh/audio/16_daughter.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/16_daughter.mp3",
+      hint: "A parent's female child"
+    },
+    {
+      word: "distraught",
+      definition: "Extremely worried, upset, or unable to think calmly.",
+      extendedExplanation: "Someone who is distraught feels such powerful worry or sadness that it is hard for them to focus on anything else.",
+      exampleSentence: "Mina was distraught until she found her missing kitten asleep in a box.",
+      image: "content/ough-gh-augh/images/distraught.svg",
+      imageAlt: "An upset child looking for a missing kitten",
+      audio: "content/ough-gh-augh/audio/17_distraught.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/17_distraught.mp3",
+      hint: "Extremely worried or upset"
+    },
+    {
+      word: "onslaught",
+      definition: "A strong, fierce attack or a sudden rush of difficult things.",
+      extendedExplanation: "An onslaught is a powerful attack, or a large number of things arriving with so much force that they are hard to handle.",
+      exampleSentence: "The sea wall protected the village from the onslaught of huge waves.",
+      image: "content/ough-gh-augh/images/onslaught.svg",
+      imageAlt: "Powerful ocean waves crashing against a strong sea wall",
+      audio: "content/ough-gh-augh/audio/18_onslaught.mp3",
+      definitionAudio: "content/ough-gh-augh/audio/definitions/18_onslaught.mp3",
+      hint: "A strong attack or sudden powerful rush"
+    }
+  ]
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON];
 
 export function getSpellingLesson(id) {
   return (

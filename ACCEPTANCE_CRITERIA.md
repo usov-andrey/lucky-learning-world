@@ -653,3 +653,18 @@ thoroughly.
 - **[AC-95] Feedback Cannot Be Double-Submitted**:
   - Submit taps during the result animation MUST be ignored, and the Tiles controls
     MUST retain touch targets at least 64 px high and `touch-action: manipulation`.
+
+---
+
+## 31. Add ‹ough›, ‹gh› and ‹augh› Spelling Lesson (TASK-028)
+
+- **[AC-96] Complete Stable Lesson Catalog Entry**:
+  - The catalog MUST expose `ough-gh-augh` with exactly the 18 supplied words in order,
+    preserve all existing lessons, and leave the default lesson unchanged.
+- **[AC-97] Complete Local Learning Content and Approved Audio**:
+  - Every new word MUST include child-friendly learning content, a local original SVG,
+    local Sonia (`en-GB-SoniaNeural`, `-15%`) word and definition audio, and matching
+    audio and image provenance.
+- **[AC-98] Shared Lesson Picker and Engine Integration**:
+  - The picker MUST render a sixth selectable lesson card, persist the selection, and
+    drive Learn, Game, and Test through the shared spelling engine.

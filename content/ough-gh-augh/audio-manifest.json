@@ -1,0 +1,26 @@
+{
+  "lessonId": "ough-gh-augh",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04.",
+  "words": [
+    { "word": "ought", "definition": "Used to say that something is the right thing to do." },
+    { "word": "bought", "definition": "Paid money to get something; the past tense of buy." },
+    { "word": "brought", "definition": "Carried or took something to a place; the past tense of bring." },
+    { "word": "fought", "definition": "Took part in a fight or struggled against something; the past tense of fight." },
+    { "word": "nought", "definition": "The number zero, or nothing at all." },
+    { "word": "thought", "definition": "An idea or picture that forms in your mind." },
+    { "word": "ghostly", "definition": "Looking, sounding, or feeling like a ghost." },
+    { "word": "dinghy", "definition": "A small open boat, often carried by a larger boat." },
+    { "word": "ghoul", "definition": "A frightening creature from old stories that is linked with graveyards." },
+    { "word": "aghast", "definition": "Filled with shock, fear, or horror." },
+    { "word": "gherkin", "definition": "A small cucumber, often preserved in vinegar and eaten as a pickle." },
+    { "word": "yoghurt", "definition": "A thick, creamy food made from milk using helpful bacteria." },
+    { "word": "naughty", "definition": "Behaving badly or not doing what you have been told." },
+    { "word": "fraught", "definition": "Filled with worry, difficulty, or problems." },
+    { "word": "caught", "definition": "Captured, stopped, or held something; the past tense of catch." },
+    { "word": "daughter", "definition": "A person's female child." },
+    { "word": "distraught", "definition": "Extremely worried, upset, or unable to think calmly." },
+    { "word": "onslaught", "definition": "A strong, fierce attack or a sudden rush of difficult things." }
+  ]
+}

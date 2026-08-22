@@ -3,6 +3,7 @@
 // @task TASK-010
 // @task TASK-014
 // @task TASK-025
+// @task TASK-028
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
 // @ac AC-29 Correct Sonia audio replacement
@@ -16,6 +17,8 @@
 // @ac AC-51 Existing lessons preserved unchanged
 // @ac AC-84 'u' saying long /oo/ lesson catalog integrity, default unchanged
 // @ac AC-85 Complete local learning content and Sonia audio for 'u' saying long /oo/
+// @ac AC-96 ‹ough›, ‹gh› and ‹augh› lesson catalog integrity, default unchanged
+// @ac AC-97 Complete local learning content and Sonia audio for ‹ough›, ‹gh› and ‹augh›
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -28,6 +31,7 @@ import {
   OR_SAYING_ER_LESSON,
   EAR_SAYING_ER_LESSON,
   U_SAYING_OO_LESSON,
+  OUGH_GH_AUGH_LESSON,
   SPELLING_LESSONS,
   DEFAULT_SPELLING_LESSON_ID,
   getSpellingLesson,
@@ -35,8 +39,8 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-005 AC-10, TASK-014 AC-51 & TASK-025 AC-84: catalog exposes all five lessons as distinct stable records", () => {
-  assert.equal(SPELLING_LESSONS.length, 5);
+test("TASK-005 AC-10, TASK-014 AC-51, TASK-025 AC-84 & TASK-028 AC-96: catalog exposes all six lessons as distinct stable records", () => {
+  assert.equal(SPELLING_LESSONS.length, 6);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
   assert.equal(SCHWA_ER_LESSON.id, "schwa-er");
@@ -47,6 +51,8 @@ test("TASK-005 AC-10, TASK-014 AC-51 & TASK-025 AC-84: catalog exposes all five 
   assert.equal(EAR_SAYING_ER_LESSON.words.length, 18);
   assert.equal(U_SAYING_OO_LESSON.id, "u-saying-oo");
   assert.equal(U_SAYING_OO_LESSON.words.length, 18);
+  assert.equal(OUGH_GH_AUGH_LESSON.id, "ough-gh-augh");
+  assert.equal(OUGH_GH_AUGH_LESSON.words.length, 18);
   assert.equal(DEFAULT_SPELLING_LESSON_ID, "ear-saying-er");
 });
 
@@ -56,6 +62,7 @@ test("TASK-005 AC-10 & AC-15, updated by TASK-014 AC-50: getSpellingLesson retur
   assert.equal(getSpellingLesson("or-saying-er").id, "or-saying-er");
   assert.equal(getSpellingLesson("ear-saying-er").id, "ear-saying-er");
   assert.equal(getSpellingLesson("u-saying-oo").id, "u-saying-oo");
+  assert.equal(getSpellingLesson("ough-gh-augh").id, "ough-gh-augh");
   assert.equal(getSpellingLesson("unknown-lesson-id").id, "ear-saying-er");
   assert.equal(getSpellingLesson(null).id, "ear-saying-er");
 });
@@ -247,4 +254,59 @@ test("TASK-025 AC-84 & AC-85: catalog exposes complete Sonia-backed 'u' saying l
   const imagesDirectory = fileURLToPath(new URL("../content/u-saying-oo/images/", import.meta.url));
   const imageProvenance = fs.readFileSync(`${imagesDirectory}/PROVENANCE.md`, "utf8");
   assert.match(imageProvenance, /TASK-025/);
+});
+
+test("TASK-028 AC-96 & AC-97: catalog exposes complete Sonia-backed ‹ough›, ‹gh› and ‹augh› lesson content", () => {
+  const expectedWords = [
+    "ought", "bought", "brought", "fought", "nought", "thought", "ghostly", "dinghy",
+    "ghoul", "aghast", "gherkin", "yoghurt", "naughty", "fraught", "caught", "daughter",
+    "distraught", "onslaught"
+  ];
+
+  assert.equal(OUGH_GH_AUGH_LESSON.id, "ough-gh-augh");
+  assert.equal(OUGH_GH_AUGH_LESSON.topic, "‹ough›, ‹gh› and ‹augh›");
+  assert.deepEqual(OUGH_GH_AUGH_LESSON.words.map(item => item.word), expectedWords);
+  assert.equal(OUGH_GH_AUGH_LESSON.wordCount, expectedWords.length);
+
+  OUGH_GH_AUGH_LESSON.words.forEach((item) => {
+    assert.ok(item.definition, `Missing definition for ${item.word}`);
+    assert.ok(item.extendedExplanation, `Missing extended explanation for ${item.word}`);
+    assert.ok(item.exampleSentence, `Missing example sentence for ${item.word}`);
+    assert.ok(item.hint, `Missing hint for ${item.word}`);
+    assert.ok(item.imageAlt, `Missing image alt text for ${item.word}`);
+    assert.match(item.image, /^content\/ough-gh-augh\/images\/.+\.svg$/);
+    assert.match(item.audio, /^content\/ough-gh-augh\/audio\/.+\.mp3$/);
+    assert.match(item.definitionAudio, /^content\/ough-gh-augh\/audio\/definitions\/.+\.mp3$/);
+    for (const assetPath of [item.image, item.audio, item.definitionAudio]) {
+      const absoluteAssetPath = fileURLToPath(new URL(`../${assetPath}`, import.meta.url));
+      assert.ok(fs.existsSync(absoluteAssetPath), `Missing local asset ${assetPath}`);
+      assert.ok(fs.statSync(absoluteAssetPath).size > 0, `Empty local asset ${assetPath}`);
+      if (assetPath.endsWith(".mp3")) {
+        const header = fs.readFileSync(absoluteAssetPath).subarray(0, 3);
+        const hasId3Header = header.toString("ascii") === "ID3";
+        const hasMpegFrame = header[0] === 0xff && (header[1] & 0xe0) === 0xe0;
+        assert.ok(hasId3Header || hasMpegFrame, `Invalid MP3 header for ${assetPath}`);
+      }
+    }
+  });
+
+  const audioDirectory = fileURLToPath(new URL("../content/ough-gh-augh/audio/", import.meta.url));
+  const legacyWavFiles = fs.readdirSync(audioDirectory, { recursive: true })
+    .filter(name => String(name).toLowerCase().endsWith(".wav"));
+  assert.deepEqual(legacyWavFiles, [], "Incorrect legacy WAV tracks must not remain");
+
+  const manifestPath = fileURLToPath(new URL("../content/ough-gh-augh/audio-manifest.json", import.meta.url));
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  assert.deepEqual(
+    manifest.words.map(item => ({ word: item.word, definition: item.definition })),
+    OUGH_GH_AUGH_LESSON.words.map(item => ({ word: item.word, definition: item.definition })),
+    "Audio source manifest must exactly match catalog speech text"
+  );
+  const provenance = fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8");
+  assert.match(provenance, /en-GB-SoniaNeural/);
+  assert.match(provenance, /-15%/);
+
+  const imagesDirectory = fileURLToPath(new URL("../content/ough-gh-augh/images/", import.meta.url));
+  const imageProvenance = fs.readFileSync(`${imagesDirectory}/PROVENANCE.md`, "utf8");
+  assert.match(imageProvenance, /TASK-028/);
 });
