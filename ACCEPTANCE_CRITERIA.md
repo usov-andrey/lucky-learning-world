@@ -668,3 +668,18 @@ thoroughly.
 - **[AC-98] Shared Lesson Picker and Engine Integration**:
   - The picker MUST render a sixth selectable lesson card, persist the selection, and
     drive Learn, Game, and Test through the shared spelling engine.
+
+---
+
+## 32. Prioritize Wanted Pokémon in Spelling Tests (TASK-029)
+
+- **[AC-99] Digital and Paper Tests Persist Pokémon Rewards**:
+  - Completing either spelling-test submode MUST award a valid Pokémon and persist the
+    updated collection through the existing local collection storage path.
+- **[AC-100] Requested Pokémon Are Earned Before General Fallbacks**:
+  - While Glaceon, Geodude, Butterfree, or Mew remains unowned, spelling tests MUST
+    award an unowned member of that requested set without duplicates. Once all four are
+    owned, selection MUST fall back to the standard full reward roster.
+- **[AC-101] Tiles Reward Behaviour Is Preserved**:
+  - Completing Tiles Game MUST retain its existing reward-pool behaviour and MUST NOT
+    be redirected to the spelling-test priority pool.

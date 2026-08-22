@@ -47,7 +47,7 @@ import {
   getDeckById
 } from "./content/spelling-catalog.js?v=v1.9.0";
 import { CHARACTERS, COLLECTIBLE_CHARACTERS, getCharacterById } from "./content/characters.js?v=v1.9.0";
-import { REWARD_POOLS, getPoolById } from "./content/reward-pools.js?v=v1.9.0";
+import { REWARD_POOLS, SPELLING_TEST_REWARD_POOL, getPoolById } from "./content/reward-pools.js?v=v1.9.0";
 import { ThemeManager } from "./content/themes.js?v=v1.9.0";
 import { COMIC_CHARACTERS } from "./content/comic-characters.js?v=v1.9.0";
 import { NARRATIVE_THEMES } from "./content/narrative-themes.js?v=v1.9.0";
@@ -1678,7 +1678,10 @@ export class AppController {
 
   finishSpellingSession() {
     let reward = null;
-    const chosen = chooseReward(REWARD_POOLS[0], this.collection, REWARD_POOLS);
+    const rewardPool = this.spellingEngine.mode === "test"
+      ? SPELLING_TEST_REWARD_POOL
+      : REWARD_POOLS[0];
+    const chosen = chooseReward(rewardPool, this.collection, REWARD_POOLS);
     if (chosen) {
       const outcomeId = `spelling_${Date.now()}`;
       const applyRes = applyReward(this.collection, chosen, outcomeId, this.appliedRewardOutcomeIds);

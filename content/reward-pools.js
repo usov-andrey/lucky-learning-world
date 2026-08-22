@@ -9,6 +9,13 @@ export const REWARD_POOLS = [
   { id: "x10", characterIds: ["starhorn", "aurelio", "moonkit"] },
 ];
 
+// Lucky's requested Word Realm test rewards. Spelling tests exhaust this pool
+// before chooseReward() falls back to the complete standard roster above.
+export const SPELLING_TEST_REWARD_POOL = {
+  id: "spelling-tests",
+  characterIds: ["frosty", "pebblin", "glowmoth", "aurelio"],
+};
+
 export function getPoolById(poolId) {
   return REWARD_POOLS.find(p => p.id === poolId) || REWARD_POOLS[0];
 }
