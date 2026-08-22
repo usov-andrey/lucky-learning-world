@@ -1,7 +1,7 @@
 ---
 id: TASK-029
 title: "Prioritize Wanted Pokémon in Spelling Tests"
-status: TESTED
+status: RELEASED
 version: v1.9.1
 created: 2026-08-22
 github_issue: null
