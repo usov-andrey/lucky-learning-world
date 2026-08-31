@@ -1,7 +1,7 @@
 ---
 id: TASK-030
 title: "Add ‹ive› Saying /iv/ Spelling Lesson"
-status: IN_PROGRESS
+status: RELEASED
 version: v1.10.0
 created: 2026-08-31
 github_issue: null
