@@ -683,3 +683,17 @@ thoroughly.
 - **[AC-101] Tiles Reward Behaviour Is Preserved**:
   - Completing Tiles Game MUST retain its existing reward-pool behaviour and MUST NOT
     be redirected to the spelling-test priority pool.
+
+## 33. Add ‹ive› Saying /iv/ Spelling Lesson (TASK-030)
+
+- **[AC-103] Complete Stable Lesson Catalog Entry**:
+  - The catalog MUST expose `ive-saying-iv` with exactly the 18 supplied words in order,
+    preserve all existing lessons, and leave the default lesson unchanged.
+- **[AC-104] Complete Local Learning Content and Approved Audio**:
+  - Every new word MUST include child-friendly learning content, a local original SVG,
+    local Sonia (`en-GB-SoniaNeural`, `-15%`) word and definition audio, and provenance.
+- **[AC-105] Shared Lesson Picker and Engine Integration**:
+  - The picker MUST render a seventh selectable lesson card, persist the selection, and
+    drive Learn, Game, and Test through the shared spelling engine.
+- **[AC-106] Release and Deployment**:
+  - The complete automated suite MUST pass and release `v1.10.0` MUST be deployed from `master`.

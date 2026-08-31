@@ -1,0 +1,26 @@
+{
+  "lessonId": "ive-saying-iv",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04.",
+  "words": [
+    { "word": "festive", "definition": "Cheerful and connected with a celebration." },
+    { "word": "positive", "definition": "Showing hopefulness or saying yes." },
+    { "word": "active", "definition": "Moving around or taking part in something." },
+    { "word": "massive", "definition": "Very large and heavy." },
+    { "word": "negative", "definition": "Saying no, or showing an unpleasant idea." },
+    { "word": "motive", "definition": "The reason why someone does something." },
+    { "word": "adjective", "definition": "A word that describes a person, place, thing, or idea." },
+    { "word": "impressive", "definition": "Making people admire or feel surprised." },
+    { "word": "explosive", "definition": "Able to burst or cause a sudden blast." },
+    { "word": "elusive", "definition": "Difficult to find, catch, or understand." },
+    { "word": "expensive", "definition": "Costing a lot of money." },
+    { "word": "superlative", "definition": "The form of an adjective that shows the highest degree." },
+    { "word": "constructive", "definition": "Useful and helpful for improving something." },
+    { "word": "destructive", "definition": "Causing damage or destruction." },
+    { "word": "exclusive", "definition": "Limited to a particular person or group." },
+    { "word": "inclusive", "definition": "Making sure everyone can join or be included." },
+    { "word": "alliterative", "definition": "Using words that start with the same sound." },
+    { "word": "imaginative", "definition": "Having exciting and creative ideas." }
+  ]
+}

@@ -34,6 +34,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-027](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-027-make-tiles-battle-feedback-obvious-on-tablets.md) | Make Tiles Battle Feedback Obvious on Tablets | RELEASED | v1.8.2 | 5 ACs | `tests/spelling-tiles-feedback.test.mjs` | - |
 | [TASK-028](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-028-add-ough-gh-augh-spelling-lesson.md) | Add ‹ough›, ‹gh› and ‹augh› Spelling Lesson | RELEASED | v1.9.0 | 3 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-029](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-029-prioritize-wanted-pokemon-in-spelling-tests.md) | Prioritize Wanted Pokémon in Spelling Tests | RELEASED | v1.9.1 | 3 ACs | `tests/spelling-pokemon-rewards.test.mjs` | - |
+| [TASK-030](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-030-add-ive-saying-iv-spelling-lesson.md) | Add ‹ive› Saying /iv/ Spelling Lesson | RELEASED | v1.10.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 
 ---
 

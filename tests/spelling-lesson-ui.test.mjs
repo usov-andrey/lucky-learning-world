@@ -3,6 +3,7 @@
 // @task TASK-014
 // @task TASK-025
 // @task TASK-028
+// @task TASK-030
 // @ac AC-27 New lesson selection and mode reuse
 // @ac AC-11 Lesson Selection Persistence
 // @ac AC-13 Explanation Experience Tell Me More
@@ -10,6 +11,7 @@
 // @ac AC-50 New default lesson and safe-fallback target
 // @ac AC-86 Fifth lesson card renders, selects, and drives the shared engine
 // @ac AC-98 Sixth lesson card renders, selects, and drives the shared engine
+// @ac AC-105 Seventh lesson card renders, selects, and drives the shared engine
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -22,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
-test("TASK-005 AC-11, updated by TASK-014 AC-50 and TASK-028 AC-98: Lesson picker renders all six cards, defaults to 'ear' saying /er/, and persists selection in localStorage", async () => {
+test("TASK-005 AC-11, updated by TASK-014 AC-50, TASK-028 AC-98 and TASK-030 AC-105: Lesson picker renders all seven cards, defaults to 'ear' saying /er/, and persists selection in localStorage", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
   const { window } = dom;
@@ -40,7 +42,7 @@ test("TASK-005 AC-11, updated by TASK-014 AC-50 and TASK-028 AC-98: Lesson picke
   app.startWordRealm();
 
   let lessonCards = app.elements.spellingLessonGrid.querySelectorAll(".lesson-card");
-  assert.equal(lessonCards.length, 6, "Picker grid must render exactly 6 lesson cards");
+  assert.equal(lessonCards.length, 7, "Picker grid must render exactly 7 lesson cards");
 
   let page22Card = Array.from(lessonCards).find(c => c.dataset.lessonId === "page-22");
   let schwaErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "schwa-er");
@@ -48,6 +50,7 @@ test("TASK-005 AC-11, updated by TASK-014 AC-50 and TASK-028 AC-98: Lesson picke
   let earSayingErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ear-saying-er");
   let uSayingOoCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "u-saying-oo");
   let oughGhAughCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ough-gh-augh");
+  let iveSayingIvCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ive-saying-iv");
 
   assert.ok(page22Card, "Page 22 card must exist");
   assert.ok(orSayingErCard, "'or' saying /er/ card must exist");
@@ -55,6 +58,7 @@ test("TASK-005 AC-11, updated by TASK-014 AC-50 and TASK-028 AC-98: Lesson picke
   assert.ok(earSayingErCard, "'ear' saying /er/ card must exist");
   assert.ok(uSayingOoCard, "'u' saying long /oo/ card must exist");
   assert.ok(oughGhAughCard, "‹ough›, ‹gh› and ‹augh› card must exist");
+  assert.ok(iveSayingIvCard, "‹ive› saying /iv/ card must exist");
 
   assert.ok(earSayingErCard.classList.contains("active"), "'ear' saying /er/ should be active by default");
   assert.equal(getSelectedSpellingLessonId(), "ear-saying-er");
@@ -94,6 +98,12 @@ test("TASK-005 AC-11, updated by TASK-014 AC-50 and TASK-028 AC-98: Lesson picke
 
   const oughGhAughActiveCard = app.elements.spellingLessonGrid.querySelector(".lesson-card.active");
   assert.equal(oughGhAughActiveCard.dataset.lessonId, "ough-gh-augh", "‹ough›, ‹gh› and ‹augh› card must be active after selection");
+
+  app.selectSpellingLesson("ive-saying-iv");
+  assert.equal(app.selectedLessonId, "ive-saying-iv");
+  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "ive-saying-iv");
+  assert.equal(app.spellingEngine.deck.id, "ive-saying-iv");
+  assert.equal(app.spellingEngine.deck.words[0].word, "festive");
 });
 
 test("TASK-005 AC-13 & AC-16: Tell me more button opens modal with extended explanation, example, and audio", async () => {

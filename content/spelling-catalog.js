@@ -1260,7 +1260,40 @@ export const OUGH_GH_AUGH_LESSON = {
   ]
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON];
+export const IVE_SAYING_IV_LESSON = {
+  id: "ive-saying-iv",
+  title: "Spelling Test",
+  pageLabel: "‹ive› saying /iv/",
+  topic: "‹ive› saying /iv/",
+  wordCount: 18,
+  words: [
+    ["festive", "Cheerful and connected with a celebration.", "Festive things help make a special day feel bright, happy, and exciting.", "The festive lights sparkled around the school hall.", "Cheerful and ready for a celebration", "A party hat and colourful lights"],
+    ["positive", "Showing hopefulness or saying yes.", "A positive person looks for good possibilities and uses encouraging words.", "Lucky kept a positive attitude when the puzzle was tricky.", "Hopeful or saying yes", "A smiling face with a bright sun"],
+    ["active", "Moving around or taking part in something.", "Someone active enjoys moving, playing, helping, or joining in with activities.", "Lucky stayed active by running and jumping in the playground.", "Busy moving or joining in", "A child running with a ball"],
+    ["massive", "Very large and heavy.", "Massive describes something much bigger and heavier than most things of the same kind.", "A massive whale rose gently beside the boat.", "Very big and heavy", "A huge whale beside a tiny boat"],
+    ["negative", "Saying no, or showing an unpleasant idea.", "A negative answer says no, while a negative idea focuses on problems instead of possibilities.", "The sign gave a negative answer to the question.", "Saying no or focusing on problems", "A red no symbol"],
+    ["motive", "The reason why someone does something.", "A motive is the purpose or reason behind an action.", "Her motive for helping was to make her friend feel better.", "The reason for an action", "A question mark beside a thought bubble"],
+    ["adjective", "A word that describes a person, place, thing, or idea.", "Adjectives add detail by telling us what something is like, such as bright, soft, or enormous.", "In 'the blue kite', the word blue is an adjective.", "A describing word", "A word card with colourful describing labels"],
+    ["impressive", "Making people admire or feel surprised.", "Something impressive is so skilful, beautiful, or excellent that it catches people's attention.", "The gymnast made an impressive jump above the mat.", "Amazing enough to admire", "A gymnast receiving a gold star"],
+    ["explosive", "Able to burst or cause a sudden blast.", "Explosive materials can release energy quickly, so they must be handled by trained adults.", "The science teacher showed an explosive reaction safely behind a screen.", "Able to burst suddenly", "A safe science flask with a burst star"],
+    ["elusive", "Difficult to find, catch, or understand.", "Something elusive keeps getting away or remains hard to discover.", "The elusive butterfly disappeared behind a leaf.", "Hard to find or catch", "A butterfly hiding behind leaves"],
+    ["expensive", "Costing a lot of money.", "An expensive item needs more money to buy than a cheaper item of the same kind.", "The expensive telescope was carefully kept in its case.", "Costing lots of money", "A price tag with many coins"],
+    ["superlative", "The form of an adjective that shows the highest degree.", "A superlative compares three or more things and shows the greatest amount, such as biggest or fastest.", "Fastest is the superlative form of fast.", "The highest form of a describing word", "A winners podium with a number one badge"],
+    ["constructive", "Useful and helpful for improving something.", "Constructive ideas or comments help build, repair, or improve rather than simply complain.", "Mia gave constructive advice that improved the group project.", "Helpful for making something better", "A child building with colourful blocks"],
+    ["destructive", "Causing damage or destruction.", "Destructive actions break, harm, or knock down things instead of caring for them.", "The strong storm was destructive to the old wooden fence.", "Causing damage", "A fallen wall beside a warning sign"],
+    ["exclusive", "Limited to a particular person or group.", "Exclusive means that something is reserved for certain people and others cannot join or use it.", "The winners received an exclusive golden badge.", "For a special group only", "A golden ticket behind a velvet rope"],
+    ["inclusive", "Making sure everyone can join or be included.", "An inclusive group welcomes people with different skills, ideas, and backgrounds.", "Our inclusive team made sure every player had a turn.", "Welcoming everyone", "Children of different backgrounds holding hands"],
+    ["alliterative", "Using words that start with the same sound.", "Alliterative phrases repeat an opening sound, like 'silly snakes slide'.", "'Friendly frogs fly' is an alliterative phrase.", "Repeating the first sound", "Three word cards sharing the same first letter"],
+    ["imaginative", "Having exciting and creative ideas.", "An imaginative person can invent unusual stories, pictures, games, and solutions.", "Lucky told an imaginative story about a castle on the Moon.", "Full of creative ideas", "A child imagining a colourful moon castle"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => ({
+    word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+    image: `content/ive-saying-iv/images/${String(index + 1).padStart(2, "0")}_${word}.svg`,
+    audio: `content/ive-saying-iv/audio/${String(index + 1).padStart(2, "0")}_${word}.mp3`,
+    definitionAudio: `content/ive-saying-iv/audio/definitions/${String(index + 1).padStart(2, "0")}_${word}.mp3`
+  }))
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON];
 
 export function getSpellingLesson(id) {
   return (
