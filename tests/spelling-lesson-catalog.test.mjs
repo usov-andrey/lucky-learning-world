@@ -5,6 +5,7 @@
 // @task TASK-025
 // @task TASK-028
 // @task TASK-030
+// @task TASK-031
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
 // @ac AC-29 Correct Sonia audio replacement
@@ -22,6 +23,8 @@
 // @ac AC-97 Complete local learning content and Sonia audio for ‹ough›, ‹gh› and ‹augh›
 // @ac AC-103 ‹ive› saying /iv/ lesson catalog integrity, default unchanged
 // @ac AC-104 Complete local learning content and Sonia audio for ‹ive› saying /iv/
+// @ac AC-107 ‹-ic› lesson catalog integrity, default unchanged
+// @ac AC-108 Complete local learning content and Sonia audio for ‹-ic›
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -36,6 +39,7 @@ import {
   U_SAYING_OO_LESSON,
   OUGH_GH_AUGH_LESSON,
   IVE_SAYING_IV_LESSON,
+  IC_ENDING_LESSON,
   SPELLING_LESSONS,
   DEFAULT_SPELLING_LESSON_ID,
   getSpellingLesson,
@@ -43,8 +47,8 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-005 AC-10, TASK-014 AC-51, TASK-025 AC-84, TASK-028 AC-96 & TASK-030 AC-103: catalog exposes all seven lessons as distinct stable records", () => {
-  assert.equal(SPELLING_LESSONS.length, 7);
+test("TASK-005 AC-10 through TASK-031 AC-107: catalog exposes all eight lessons as distinct stable records", () => {
+  assert.equal(SPELLING_LESSONS.length, 8);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
   assert.equal(SCHWA_ER_LESSON.id, "schwa-er");
@@ -59,6 +63,8 @@ test("TASK-005 AC-10, TASK-014 AC-51, TASK-025 AC-84, TASK-028 AC-96 & TASK-030 
   assert.equal(OUGH_GH_AUGH_LESSON.words.length, 18);
   assert.equal(IVE_SAYING_IV_LESSON.id, "ive-saying-iv");
   assert.equal(IVE_SAYING_IV_LESSON.words.length, 18);
+  assert.equal(IC_ENDING_LESSON.id, "ic-ending");
+  assert.equal(IC_ENDING_LESSON.words.length, 18);
   assert.equal(DEFAULT_SPELLING_LESSON_ID, "ear-saying-er");
 });
 
@@ -70,6 +76,7 @@ test("TASK-005 AC-10 & AC-15, updated by TASK-014 AC-50: getSpellingLesson retur
   assert.equal(getSpellingLesson("u-saying-oo").id, "u-saying-oo");
   assert.equal(getSpellingLesson("ough-gh-augh").id, "ough-gh-augh");
   assert.equal(getSpellingLesson("ive-saying-iv").id, "ive-saying-iv");
+  assert.equal(getSpellingLesson("ic-ending").id, "ic-ending");
   assert.equal(getSpellingLesson("unknown-lesson-id").id, "ear-saying-er");
   assert.equal(getSpellingLesson(null).id, "ear-saying-er");
 });
@@ -338,4 +345,26 @@ test("TASK-030 AC-103 & AC-104: catalog exposes complete Sonia-backed ‹ive› 
   assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /en-GB-SoniaNeural/);
   assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /-15%/);
   assert.match(fs.readFileSync(fileURLToPath(new URL("../content/ive-saying-iv/images/PROVENANCE.md", import.meta.url)), "utf8"), /TASK-030/);
+});
+
+test("TASK-031 AC-107 & AC-108: catalog exposes complete Sonia-backed ‹-ic› lesson content", () => {
+  const expectedWords = ["epic", "comic", "hectic", "toxic", "classic", "exotic", "heroic", "poetic", "athletic", "dramatic", "fantastic", "lunatic", "chaotic", "rhythmic", "scientific", "sympathetic", "monosyllabic", "characteristic"];
+  assert.deepEqual(IC_ENDING_LESSON.words.map(item => item.word), expectedWords);
+  assert.equal(IC_ENDING_LESSON.topic, "Words ending in ‹-ic›");
+  for (const item of IC_ENDING_LESSON.words) {
+    for (const field of ["definition", "extendedExplanation", "exampleSentence", "hint", "imageAlt", "image", "audio", "definitionAudio"]) assert.ok(item[field], `Missing ${field} for ${item.word}`);
+    for (const assetPath of [item.image, item.audio, item.definitionAudio]) {
+      const absoluteAssetPath = fileURLToPath(new URL(`../${assetPath}`, import.meta.url));
+      assert.ok(fs.existsSync(absoluteAssetPath), `Missing local asset ${assetPath}`);
+      assert.ok(fs.statSync(absoluteAssetPath).size > 0, `Empty local asset ${assetPath}`);
+    }
+  }
+  const audioDirectory = fileURLToPath(new URL("../content/ic-ending/audio/", import.meta.url));
+  const manifest = JSON.parse(fs.readFileSync(fileURLToPath(new URL("../content/ic-ending/audio-manifest.json", import.meta.url)), "utf8"));
+  assert.deepEqual(manifest.words, IC_ENDING_LESSON.words.map(({ word, definition }) => ({ word, definition })));
+  assert.equal(manifest.voice, "en-GB-SoniaNeural");
+  assert.equal(manifest.rate, "-15%");
+  assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /en-GB-SoniaNeural/);
+  assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /-15%/);
+  assert.match(fs.readFileSync(fileURLToPath(new URL("../content/ic-ending/images/PROVENANCE.md", import.meta.url)), "utf8"), /TASK-031/);
 });

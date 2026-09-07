@@ -697,3 +697,18 @@ thoroughly.
     drive Learn, Game, and Test through the shared spelling engine.
 - **[AC-106] Release and Deployment**:
   - The complete automated suite MUST pass and release `v1.10.0` MUST be deployed from `master`.
+
+## 34. Add ‹-ic› Spelling Lesson (TASK-031)
+
+- **[AC-107] Complete Stable Lesson Catalog Entry**:
+  - The catalog MUST expose `ic-ending` with exactly the 18 supplied words in order,
+    preserve all existing lessons, and leave the default lesson unchanged.
+- **[AC-108] Complete Local Learning Content and Approved Audio**:
+  - Every new word MUST include child-friendly learning content, a local original SVG,
+    local Sonia (`en-GB-SoniaNeural`, `-15%`) word and definition audio, and matching
+    audio and image provenance.
+- **[AC-109] Shared Lesson Picker and Engine Integration**:
+  - The picker MUST render an eighth selectable lesson card, persist the selection, and
+    drive Learn, Game, and Test through the shared spelling engine.
+- **[AC-110] Release and Deployment**:
+  - The complete automated suite MUST pass and release `v1.11.0` MUST be deployed from `master`.

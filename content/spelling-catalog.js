@@ -7,6 +7,7 @@
  *  - 'ear' saying /er/ (current default)
  *  - 'u' saying long /oo/
  *  - ‹ough›, ‹gh› and ‹augh›
+ *  - ‹-ic›
  */
 
 export const STORAGE_KEY_SELECTED_LESSON = "lmm3s:selected_spelling_lesson";
@@ -1293,7 +1294,40 @@ export const IVE_SAYING_IV_LESSON = {
   }))
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON];
+export const IC_ENDING_LESSON = {
+  id: "ic-ending",
+  title: "Spelling Test",
+  pageLabel: "‹-ic›",
+  topic: "Words ending in ‹-ic›",
+  wordCount: 18,
+  words: [
+    ["epic", "Very impressive, exciting, or heroic.", "Epic describes something grand and memorable, such as a brave adventure or an enormous achievement.", "Lucky read an epic story about a voyage across the stars.", "Grand, exciting, and memorable", "A brave explorer looking across a vast starry landscape"],
+    ["comic", "Funny, or connected with comedy.", "Something comic makes people laugh; a comic can also be a book that tells a story with pictures and speech bubbles.", "The comic scene made the whole audience laugh.", "Funny or made to cause laughter", "A colourful comic book with a laughing speech bubble"],
+    ["hectic", "Very busy and full of activity.", "A hectic time has many things happening quickly, which can make it feel rushed or difficult to organise.", "The classroom was hectic before the school show began.", "Extremely busy and rushed", "A busy classroom preparing costumes and props"],
+    ["toxic", "Poisonous or harmful.", "A toxic substance can harm living things, so it should only be handled safely by trained adults.", "The warning sign told everyone to keep away from the toxic liquid.", "Poisonous or dangerous", "A sealed bottle with a clear warning symbol"],
+    ["classic", "Recognised as an excellent example that stays popular.", "A classic book, song, or design is admired for a long time and is often used as a model of its kind.", "The family enjoyed watching a classic animated film together.", "An excellent and lasting example", "A treasured storybook with a gold star"],
+    ["exotic", "Unusual and interesting because it comes from a faraway place.", "Exotic plants, animals, or foods may seem exciting because they are not commonly found where you live.", "The garden contained exotic flowers from tropical islands.", "Unusual and from far away", "Bright tropical flowers and a colourful bird"],
+    ["heroic", "Very brave and worthy of admiration.", "A heroic person acts courageously to help others, especially when the situation is difficult or dangerous.", "The firefighter made a heroic rescue from the flooded house.", "Extremely brave", "A firefighter helping someone to safety"],
+    ["poetic", "Expressed in an imaginative and beautiful way.", "Poetic language uses carefully chosen words, rhythm, and images to make ideas or feelings vivid.", "Her poetic description made the moon seem like a silver boat.", "Beautiful and imaginative in words", "A moonlit page with a feather pen"],
+    ["athletic", "Strong, fit, and good at physical activities.", "An athletic person practises movement, speed, balance, or strength through sports and exercise.", "The athletic student trained hard for the running race.", "Fit and good at sport", "A young runner crossing a finish line"],
+    ["dramatic", "Sudden, exciting, or full of strong emotion.", "Dramatic events or performances attract attention because they create suspense, surprise, or powerful feelings.", "The play ended with a dramatic rescue on the castle steps.", "Exciting and full of emotion", "Actors performing a surprising castle rescue"],
+    ["fantastic", "Extremely good, wonderful, or imaginative.", "Fantastic can describe something excellent, or something created by imagination that seems magical or impossible.", "Lucky had a fantastic day exploring the science museum.", "Wonderful or amazingly good", "A delighted child exploring a glowing science display"],
+    ["lunatic", "An old and unkind word for someone thought to behave wildly.", "Lunatic is an outdated label for a person and can be hurtful. It is better to describe the actual behaviour, such as reckless or wild.", "The teacher explained why calling someone a lunatic is disrespectful.", "An outdated, hurtful word for a person", "A crossed-out unkind label beside a kindness heart"],
+    ["chaotic", "Completely disorganised or confusing.", "A chaotic place or situation has so much disorder that it is hard to know what is happening or what to do next.", "The art table looked chaotic after everyone finished painting.", "Very messy and disorganised", "A messy art table covered with brushes and paper"],
+    ["rhythmic", "Having a regular repeated beat or pattern.", "Rhythmic sounds and movements follow a steady pattern that can be clapped, tapped, danced, or played.", "The dancers moved to the rhythmic beat of the drums.", "Following a repeated beat", "Drums and dancers moving to a steady beat"],
+    ["scientific", "Connected with science or its careful methods.", "Scientific work uses observations, evidence, testing, and clear reasoning to learn how the world works.", "The class used a scientific test to compare how quickly ice melted.", "Using the methods of science", "Children measuring ice during a classroom experiment"],
+    ["sympathetic", "Showing that you understand and care about someone's feelings.", "A sympathetic person listens kindly and offers comfort when another person is sad, worried, or having trouble.", "Nina was sympathetic when her friend lost his favourite pencil.", "Kind and understanding about feelings", "One child comforting a worried friend"],
+    ["monosyllabic", "Having only one syllable.", "A monosyllabic word is spoken with one beat, like cat, moon, or bright.", "The word 'storm' is monosyllabic because it has one spoken beat.", "Made of one syllable", "One large sound beat beside the word storm"],
+    ["characteristic", "A typical feature or quality of someone or something.", "A characteristic helps identify or describe a person, animal, object, or group.", "Its long neck is a characteristic that helps us recognise a giraffe.", "A typical identifying feature", "A giraffe with its long neck highlighted"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => ({
+    word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+    image: `content/ic-ending/images/${String(index + 1).padStart(2, "0")}_${word}.svg`,
+    audio: `content/ic-ending/audio/${String(index + 1).padStart(2, "0")}_${word}.mp3`,
+    definitionAudio: `content/ic-ending/audio/definitions/${String(index + 1).padStart(2, "0")}_${word}.mp3`
+  }))
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON];
 
 export function getSpellingLesson(id) {
   return (

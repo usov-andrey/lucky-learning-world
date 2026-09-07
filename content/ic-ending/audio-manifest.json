@@ -1,0 +1,26 @@
+{
+  "lessonId": "ic-ending",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04.",
+  "words": [
+    { "word": "epic", "definition": "Very impressive, exciting, or heroic." },
+    { "word": "comic", "definition": "Funny, or connected with comedy." },
+    { "word": "hectic", "definition": "Very busy and full of activity." },
+    { "word": "toxic", "definition": "Poisonous or harmful." },
+    { "word": "classic", "definition": "Recognised as an excellent example that stays popular." },
+    { "word": "exotic", "definition": "Unusual and interesting because it comes from a faraway place." },
+    { "word": "heroic", "definition": "Very brave and worthy of admiration." },
+    { "word": "poetic", "definition": "Expressed in an imaginative and beautiful way." },
+    { "word": "athletic", "definition": "Strong, fit, and good at physical activities." },
+    { "word": "dramatic", "definition": "Sudden, exciting, or full of strong emotion." },
+    { "word": "fantastic", "definition": "Extremely good, wonderful, or imaginative." },
+    { "word": "lunatic", "definition": "An old and unkind word for someone thought to behave wildly." },
+    { "word": "chaotic", "definition": "Completely disorganised or confusing." },
+    { "word": "rhythmic", "definition": "Having a regular repeated beat or pattern." },
+    { "word": "scientific", "definition": "Connected with science or its careful methods." },
+    { "word": "sympathetic", "definition": "Showing that you understand and care about someone's feelings." },
+    { "word": "monosyllabic", "definition": "Having only one syllable." },
+    { "word": "characteristic", "definition": "A typical feature or quality of someone or something." }
+  ]
+}
