@@ -1,7 +1,7 @@
 ---
 id: TASK-031
 title: "Add ‹-ic› Spelling Lesson"
-status: IN_PROGRESS
+status: RELEASED
 version: v1.11.0
 created: 2026-09-07
 github_issue: null
