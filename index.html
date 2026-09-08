@@ -199,10 +199,15 @@
       </div>
 
       <!-- Lesson Picker Section -->
-      <div class="spelling-lesson-picker" id="spelling-lesson-picker" style="margin-bottom: 20px;">
-        <div style="font-size: 14px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 8px;">📚 Choose Lesson:</div>
-        <div class="lesson-cards-grid" id="spelling-lesson-grid" style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <!-- Rendered dynamically by JS -->
+      <div class="spelling-lesson-picker" id="spelling-lesson-picker">
+        <label class="lesson-picker-label" for="spelling-lesson-select">
+          <span aria-hidden="true">📚</span> Choose Lesson
+        </label>
+        <div class="lesson-select-shell">
+          <select class="lesson-select" id="spelling-lesson-select" aria-label="Choose spelling lesson">
+            <!-- Rendered dynamically by JS -->
+          </select>
+          <span class="lesson-select-chevron" aria-hidden="true">▼</span>
         </div>
       </div>
 

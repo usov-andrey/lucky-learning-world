@@ -5,6 +5,7 @@
 // @task TASK-028
 // @task TASK-030
 // @task TASK-031
+// @task TASK-032
 // @ac AC-27 New lesson selection and mode reuse
 // @ac AC-11 Lesson Selection Persistence
 // @ac AC-13 Explanation Experience Tell Me More
@@ -14,6 +15,9 @@
 // @ac AC-98 Sixth lesson card renders, selects, and drives the shared engine
 // @ac AC-105 Seventh lesson card renders, selects, and drives the shared engine
 // @ac AC-109 Eighth lesson card renders, selects, and drives the shared engine
+// @ac AC-111 One compact lesson control
+// @ac AC-112 Newest default and persistent choice
+// @ac AC-113 Immediate touch-friendly integration
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -26,8 +30,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
-test("TASK-005 AC-11 through TASK-031 AC-109: Lesson picker renders all eight cards, keeps the default, and persists selection", async () => {
+test("TASK-032 AC-111 through AC-113: compact picker defaults to newest lesson and persists dropdown changes", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
+  const cssContent = fs.readFileSync(path.join(rootDir, "styles.css"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
   const { window } = dom;
 
@@ -38,84 +43,35 @@ test("TASK-005 AC-11 through TASK-031 AC-109: Lesson picker renders all eight ca
   localStorage.clear();
 
   const { AppController } = await import(`../app.js?update_ui1=${Date.now()}`);
-  const { getSelectedSpellingLessonId } = await import(`../content/spelling-catalog.js?update_cat1=${Date.now()}`);
   const app = new AppController();
 
   app.startWordRealm();
 
-  let lessonCards = app.elements.spellingLessonGrid.querySelectorAll(".lesson-card");
-  assert.equal(lessonCards.length, 8, "Picker grid must render exactly 8 lesson cards");
+  const picker = app.elements.spellingLessonSelect;
+  assert.equal(picker.tagName, "SELECT");
+  assert.equal(picker.options.length, 8, "Dropdown must contain every catalog lesson exactly once");
+  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 8);
+  assert.equal(document.querySelectorAll(".lesson-card").length, 0, "The expanding card grid must be removed");
+  assert.equal(picker.value, "ic-ending", "The newest catalog lesson must be selected without saved state");
+  assert.equal(app.selectedLessonId, "ic-ending");
+  assert.equal(app.spellingEngine.deck.id, "ic-ending");
+  assert.equal(app.elements.learnWordDisplay.textContent, "EPIC");
+  assert.equal(picker.getAttribute("aria-label"), "Choose spelling lesson");
+  assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?min-height:\s*var\(--min-touch-target\)/);
+  assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?touch-action:\s*manipulation/);
 
-  let page22Card = Array.from(lessonCards).find(c => c.dataset.lessonId === "page-22");
-  let schwaErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "schwa-er");
-  let orSayingErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "or-saying-er");
-  let earSayingErCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ear-saying-er");
-  let uSayingOoCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "u-saying-oo");
-  let oughGhAughCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ough-gh-augh");
-  let iveSayingIvCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ive-saying-iv");
-  let icEndingCard = Array.from(lessonCards).find(c => c.dataset.lessonId === "ic-ending");
-
-  assert.ok(page22Card, "Page 22 card must exist");
-  assert.ok(orSayingErCard, "'or' saying /er/ card must exist");
-  assert.ok(schwaErCard, "Schwa ‹er› card must exist");
-  assert.ok(earSayingErCard, "'ear' saying /er/ card must exist");
-  assert.ok(uSayingOoCard, "'u' saying long /oo/ card must exist");
-  assert.ok(oughGhAughCard, "‹ough›, ‹gh› and ‹augh› card must exist");
-  assert.ok(iveSayingIvCard, "‹ive› saying /iv/ card must exist");
-  assert.ok(icEndingCard, "‹-ic› card must exist");
-
-  assert.ok(earSayingErCard.classList.contains("active"), "'ear' saying /er/ should be active by default");
-  assert.equal(getSelectedSpellingLessonId(), "ear-saying-er");
-
-  // Select Schwa ‹er›
-  app.selectSpellingLesson("schwa-er");
-
+  picker.value = "schwa-er";
+  picker.dispatchEvent(new window.Event("change", { bubbles: true }));
   assert.equal(app.selectedLessonId, "schwa-er");
   assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "schwa-er");
   assert.equal(app.spellingEngine.deck.id, "schwa-er");
+  assert.equal(app.elements.learnWordDisplay.textContent, "PATTERN", "Current mode content must refresh immediately");
+  assert.match(app.elements.wordRealmTitle.textContent, /Schwa ‹er›/);
+  assert.equal(picker.value, "schwa-er");
 
-  // Re-query updated DOM nodes after re-render
-  const updatedActiveCard = app.elements.spellingLessonGrid.querySelector(".lesson-card.active");
-  assert.ok(updatedActiveCard, "Active lesson card must exist after selection");
-  assert.equal(updatedActiveCard.dataset.lessonId, "schwa-er", "Schwa ‹er› card must be active after selection");
-  app.selectSpellingLesson("or-saying-er");
-  assert.equal(app.selectedLessonId, "or-saying-er");
-  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "or-saying-er");
-  assert.equal(app.spellingEngine.deck.words[0].word, "worm");
-
-  // Select 'u' saying long /oo/
-  app.selectSpellingLesson("u-saying-oo");
-  assert.equal(app.selectedLessonId, "u-saying-oo");
-  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "u-saying-oo");
-  assert.equal(app.spellingEngine.deck.id, "u-saying-oo");
-  assert.equal(app.spellingEngine.deck.words[0].word, "super");
-
-  const uSayingOoActiveCard = app.elements.spellingLessonGrid.querySelector(".lesson-card.active");
-  assert.equal(uSayingOoActiveCard.dataset.lessonId, "u-saying-oo", "'u' saying long /oo/ card must be active after selection");
-
-  // Select ‹ough›, ‹gh› and ‹augh›
-  app.selectSpellingLesson("ough-gh-augh");
-  assert.equal(app.selectedLessonId, "ough-gh-augh");
-  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "ough-gh-augh");
-  assert.equal(app.spellingEngine.deck.id, "ough-gh-augh");
-  assert.equal(app.spellingEngine.deck.words[0].word, "ought");
-
-  const oughGhAughActiveCard = app.elements.spellingLessonGrid.querySelector(".lesson-card.active");
-  assert.equal(oughGhAughActiveCard.dataset.lessonId, "ough-gh-augh", "‹ough›, ‹gh› and ‹augh› card must be active after selection");
-
-  app.selectSpellingLesson("ive-saying-iv");
-  assert.equal(app.selectedLessonId, "ive-saying-iv");
-  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "ive-saying-iv");
-  assert.equal(app.spellingEngine.deck.id, "ive-saying-iv");
-  assert.equal(app.spellingEngine.deck.words[0].word, "festive");
-
-  app.selectSpellingLesson("ic-ending");
-  assert.equal(app.selectedLessonId, "ic-ending");
-  assert.equal(localStorage.getItem("lmm3s:selected_spelling_lesson"), "ic-ending");
-  assert.equal(app.spellingEngine.deck.id, "ic-ending");
-  assert.equal(app.spellingEngine.deck.words[0].word, "epic");
-  const icEndingActiveCard = app.elements.spellingLessonGrid.querySelector(".lesson-card.active");
-  assert.equal(icEndingActiveCard.dataset.lessonId, "ic-ending", "‹-ic› card must be active after selection");
+  const restoredApp = new AppController();
+  assert.equal(restoredApp.selectedLessonId, "schwa-er", "A new app instance must restore the saved choice");
+  assert.equal(restoredApp.spellingEngine.deck.id, "schwa-er");
 });
 
 test("TASK-005 AC-13 & AC-16: Tell me more button opens modal with extended explanation, example, and audio", async () => {

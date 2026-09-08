@@ -1,5 +1,7 @@
 // @task TASK-013
+// @task TASK-032
 // @ac AC-6 Full E2E UI Test Suite for Word Realm across Learn, Test, and Tiles Modes
+// @ac AC-112 Explicit saved lesson choices still override the newest default
 import test from "node:test";
 import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
@@ -24,6 +26,7 @@ test("Full E2E UI Test: Word Realm - Learn, Test (Digital/Paper), and Tiles Mode
 
   const { AppController } = await import(`../app.js?full_e2e=${Date.now()}`);
   const app = new AppController();
+  app.selectSpellingLesson("ear-saying-er");
 
   // Complete onboarding
   app.completeOnboarding();

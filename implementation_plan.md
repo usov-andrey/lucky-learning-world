@@ -1,9 +1,13 @@
-# TASK-031 Implementation Plan
+# TASK-032 Implementation Plan
 
-1. Add the photographed 18-word `‹-ic›` lesson and child-friendly learning content to the catalog.
-2. Add local SVG illustrations and approved Sonia word/definition audio with provenance.
-3. Extend catalog and picker regression tests for the eighth lesson.
-4. Run the complete automated checks, publish `v1.11.0`, commit, and push to `master`.
+1. Replace the expanding lesson-card grid with one polished native dropdown that keeps
+   every lesson visible on demand while occupying only one compact row.
+2. Use the final catalog entry as the no-storage default and retain the existing saved
+   selection for returning learners.
+3. Wire dropdown changes through the existing shared lesson-selection path so Learn,
+   Test, and Tiles modes remain synchronized.
+4. Update TASK-032-tagged UI tests, run the complete automated suite, write the
+   walkthrough, and commit the verified patch release.
 
 ---
 

@@ -4,14 +4,13 @@
  *  - Page 22 (Schwa ‹or›)
  *  - Schwa ‹er›
  *  - 'or' saying /er/
- *  - 'ear' saying /er/ (current default)
+ *  - 'ear' saying /er/
  *  - 'u' saying long /oo/
  *  - ‹ough›, ‹gh› and ‹augh›
  *  - ‹-ic›
  */
 
 export const STORAGE_KEY_SELECTED_LESSON = "lmm3s:selected_spelling_lesson";
-export const DEFAULT_SPELLING_LESSON_ID = "ear-saying-er";
 
 export const PAGE_22_LESSON = {
   id: "page-22",
@@ -1328,6 +1327,7 @@ export const IC_ENDING_LESSON = {
 };
 
 export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON];
+export const DEFAULT_SPELLING_LESSON_ID = SPELLING_LESSONS.at(-1)?.id || PAGE_22_LESSON.id;
 
 export function getSpellingLesson(id) {
   return (

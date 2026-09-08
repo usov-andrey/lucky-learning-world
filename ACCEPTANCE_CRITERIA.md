@@ -296,6 +296,8 @@ This document contains the official, binding Acceptance Criteria for development
 
 - **[AC-50] New Default Lesson and Safe-Fallback Target**:
   - `DEFAULT_SPELLING_LESSON_ID` MUST be `ear-saying-er`. The lesson picker MUST show it as active by default for a fresh selection, and `getSpellingLesson()` MUST fall back to it (not a hardcoded older lesson) for unknown or missing lesson ids.
+  - Historical note: TASK-032 AC-112 supersedes this default-selection target; the
+    newest catalog lesson is now the fresh-install and safe-fallback default.
 
 - **[AC-51] Existing Lessons Preserved**:
   - Page 22, Schwa ‹er›, and 'or' saying /er/ MUST remain unchanged, fully selectable, and continue to drive Learn, Game, and Test through the shared dynamic spelling engine.
@@ -712,3 +714,17 @@ thoroughly.
     drive Learn, Game, and Test through the shared spelling engine.
 - **[AC-110] Release and Deployment**:
   - The complete automated suite MUST pass and release `v1.11.0` MUST be deployed from `master`.
+
+## 35. Compact Spelling Lesson Picker (TASK-032)
+
+- **[AC-111] One Compact Lesson Control**:
+  - The Word Realm MUST render one styled dropdown containing every spelling lesson
+    exactly once. It MUST NOT render the former vertically expanding lesson-card grid.
+- **[AC-112] Newest Default and Persistent Choice**:
+  - With no valid saved selection, the active lesson MUST be the final (newest) catalog
+    entry. A valid choice made in the dropdown MUST persist and be restored by a new app
+    instance.
+- **[AC-113] Immediate, Touch-Friendly Integration**:
+  - Changing the dropdown MUST immediately update the shared spelling engine, Word Realm
+    title, and active mode content. The control MUST expose English-only accessible text,
+    have a minimum 64 px touch height, and use `touch-action: manipulation`.

@@ -92,7 +92,7 @@ test("TASK-023 AC-1: bottom-nav Word actually starts the lesson, not just switch
 
   assert.equal(document.querySelector(".view-screen.active")?.id, "word-view");
   assert.ok(
-    document.getElementById("spelling-lesson-grid").children.length > 0,
+    document.getElementById("spelling-lesson-select").options.length > 0,
     "nav-btn-word must call startWordRealm(), which renders the lesson picker",
   );
 });

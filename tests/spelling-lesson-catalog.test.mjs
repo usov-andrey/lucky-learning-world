@@ -6,6 +6,7 @@
 // @task TASK-028
 // @task TASK-030
 // @task TASK-031
+// @task TASK-032
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
 // @ac AC-29 Correct Sonia audio replacement
@@ -25,6 +26,7 @@
 // @ac AC-104 Complete local learning content and Sonia audio for ‹ive› saying /iv/
 // @ac AC-107 ‹-ic› lesson catalog integrity, default unchanged
 // @ac AC-108 Complete local learning content and Sonia audio for ‹-ic›
+// @ac AC-112 Newest catalog lesson is the safe default
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -47,7 +49,7 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-005 AC-10 through TASK-031 AC-107: catalog exposes all eight lessons as distinct stable records", () => {
+test("TASK-005 AC-10 through TASK-032 AC-112: catalog exposes all eight lessons and defaults to the newest record", () => {
   assert.equal(SPELLING_LESSONS.length, 8);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
@@ -65,10 +67,10 @@ test("TASK-005 AC-10 through TASK-031 AC-107: catalog exposes all eight lessons 
   assert.equal(IVE_SAYING_IV_LESSON.words.length, 18);
   assert.equal(IC_ENDING_LESSON.id, "ic-ending");
   assert.equal(IC_ENDING_LESSON.words.length, 18);
-  assert.equal(DEFAULT_SPELLING_LESSON_ID, "ear-saying-er");
+  assert.equal(DEFAULT_SPELLING_LESSON_ID, "ic-ending");
 });
 
-test("TASK-005 AC-10 & AC-15, updated by TASK-014 AC-50: getSpellingLesson returns requested lesson or safely falls back to the current default", () => {
+test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson returns requested lesson or safely falls back to the newest lesson", () => {
   assert.equal(getSpellingLesson("schwa-er").id, "schwa-er");
   assert.equal(getSpellingLesson("page-22").id, "page-22");
   assert.equal(getSpellingLesson("or-saying-er").id, "or-saying-er");
@@ -77,8 +79,8 @@ test("TASK-005 AC-10 & AC-15, updated by TASK-014 AC-50: getSpellingLesson retur
   assert.equal(getSpellingLesson("ough-gh-augh").id, "ough-gh-augh");
   assert.equal(getSpellingLesson("ive-saying-iv").id, "ive-saying-iv");
   assert.equal(getSpellingLesson("ic-ending").id, "ic-ending");
-  assert.equal(getSpellingLesson("unknown-lesson-id").id, "ear-saying-er");
-  assert.equal(getSpellingLesson(null).id, "ear-saying-er");
+  assert.equal(getSpellingLesson("unknown-lesson-id").id, "ic-ending");
+  assert.equal(getSpellingLesson(null).id, "ic-ending");
 });
 
 test("TASK-008 AC-25 & AC-26 and TASK-010 AC-29: catalog exposes complete Sonia-backed lesson content", () => {

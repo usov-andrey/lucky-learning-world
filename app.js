@@ -355,7 +355,7 @@ export class AppController {
       // Word (Spelling)
       btnBackWord: document.getElementById("btn-back-from-word"),
       wordRealmTitle: document.getElementById("word-realm-title"),
-      spellingLessonGrid: document.getElementById("spelling-lesson-grid"),
+      spellingLessonSelect: document.getElementById("spelling-lesson-select"),
       spellingModeChips: document.getElementById("spelling-mode-chips"),
       spellingLearnContainer: document.getElementById("spelling-learn-container"),
       spellingTestContainer: document.getElementById("spelling-test-container"),
@@ -762,13 +762,10 @@ export class AppController {
       });
     }
 
-    // Lesson Library Picker Grid
-    if (this.elements.spellingLessonGrid) {
-      this.elements.spellingLessonGrid.addEventListener("click", (e) => {
-        const card = e.target.closest("[data-lesson-id]");
-        if (!card) return;
-        const lessonId = card.dataset.lessonId;
-        this.selectSpellingLesson(lessonId);
+    // Compact Lesson Library Picker
+    if (this.elements.spellingLessonSelect) {
+      this.elements.spellingLessonSelect.addEventListener("change", (e) => {
+        this.selectSpellingLesson(e.target.value);
       });
     }
 
@@ -1332,22 +1329,16 @@ export class AppController {
   }
 
   renderSpellingLessonPicker() {
-    if (!this.elements.spellingLessonGrid) return;
-    let html = "";
+    if (!this.elements.spellingLessonSelect) return;
+    const fragment = document.createDocumentFragment();
     SPELLING_LESSONS.forEach(lesson => {
-      const isSelected = lesson.id === this.selectedLessonId;
-      const activeClass = isSelected ? "active" : "";
-      const badgeText = isSelected ? "Selected ✓" : "Select ➔";
-
-      html += `<button type="button" class="lesson-card ${activeClass}" data-lesson-id="${lesson.id}">
-        <div class="lesson-card-header">
-          <span class="lesson-card-topic">${lesson.topic}</span>
-          <span class="lesson-card-badge">${badgeText}</span>
-        </div>
-        <div class="lesson-card-meta">${lesson.pageLabel} • ${lesson.words.length} Words</div>
-      </button>`;
+      const option = document.createElement("option");
+      option.value = lesson.id;
+      option.textContent = `${lesson.topic} — ${lesson.pageLabel} • ${lesson.words.length} Words`;
+      option.selected = lesson.id === this.selectedLessonId;
+      fragment.appendChild(option);
     });
-    this.elements.spellingLessonGrid.innerHTML = html;
+    this.elements.spellingLessonSelect.replaceChildren(fragment);
 
     if (this.elements.wordRealmTitle) {
       const activeLesson = getSpellingLesson(this.selectedLessonId);
