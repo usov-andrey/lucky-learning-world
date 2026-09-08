@@ -19,7 +19,8 @@
 ## Release
 
 - Target version: `v1.11.1`.
-- Task state after verification: `TESTED`.
+- Released locally as `v1.11.1`.
+- Task state: `RELEASED`.
 
 ---
 

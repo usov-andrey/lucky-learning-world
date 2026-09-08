@@ -1,7 +1,7 @@
 ---
 id: TASK-032
 title: "Compact Spelling Lesson Picker"
-status: TESTED
+status: RELEASED
 version: v1.11.1
 created: 2026-09-08
 github_issue: null
