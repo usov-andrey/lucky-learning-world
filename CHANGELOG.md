@@ -1,5 +1,13 @@
 # Changelog & Release Notes
 
+## Release v1.12.0 (2026-09-12) — [TASK-033] Add ‹st› Saying /s/ Spelling Lesson
+
+- Added all 18 supplied words in the new default `st-saying-s` lesson.
+- Added complete learning copy, 18 local SVG illustrations, and 36 approved Sonia audio tracks.
+- Verified the nine-lesson picker, complete automated suite, coverage gate, and real-browser scenario.
+
+---
+
 
 ## 📦 Release v1.5.0 (2026-08-08) — [TASK-014] Add 'ear' Saying /er/ Spelling Lesson as New Default
 

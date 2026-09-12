@@ -1,7 +1,7 @@
 ---
 id: TASK-033
 title: "Add ‹st› Saying /s/ Spelling Lesson"
-status: IN_PROGRESS
+status: RELEASED
 version: v1.12.0
 created: 2026-09-12
 github_issue: null

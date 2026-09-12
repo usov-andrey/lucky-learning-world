@@ -13,7 +13,7 @@
 
 - Focused catalog and picker tests: 13/13 passed.
 - `npm test`: 147/147 passed.
-- `npm run test:coverage:gate`: passed; 82.75% lines, 65.85% branches, 74.32% functions.
+- `npm run test:coverage:gate`: passed; 82.81% lines, 66.14% branches, 74.53% functions.
 - `npm run test:e2e`: 1/1 full real-Chromium scenario passed.
 - Asset inventory: 18 SVG files and 36 non-empty MP3 files.
 
@@ -21,6 +21,7 @@
 
 - Target version: `v1.12.0`.
 - Deployment source: `master` via the repository's GitHub Pages workflow.
+- Task state: `RELEASED`.
 
 ---
 

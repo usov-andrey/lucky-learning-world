@@ -37,7 +37,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-030](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-030-add-ive-saying-iv-spelling-lesson.md) | Add ‹ive› Saying /iv/ Spelling Lesson | RELEASED | v1.10.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-031](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-031-add-ic-spelling-lesson.md) | Add ‹-ic› Spelling Lesson | RELEASED | v1.11.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-032](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-032-compact-spelling-lesson-picker.md) | Compact Spelling Lesson Picker | RELEASED | v1.11.1 | 3 ACs | `tests/spelling-lesson-ui.test.mjs` | - |
-| [TASK-033](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-033-add-st-saying-s-spelling-lesson.md) | Add ‹st› Saying /s/ Spelling Lesson | IN_PROGRESS | v1.12.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
+| [TASK-033](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-033-add-st-saying-s-spelling-lesson.md) | Add ‹st› Saying /s/ Spelling Lesson | RELEASED | v1.12.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 
 ---
 
