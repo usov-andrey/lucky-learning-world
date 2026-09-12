@@ -728,3 +728,20 @@ thoroughly.
   - Changing the dropdown MUST immediately update the shared spelling engine, Word Realm
     title, and active mode content. The control MUST expose English-only accessible text,
     have a minimum 64 px touch height, and use `touch-action: manipulation`.
+
+## 36. Add ‹st› Saying /s/ Spelling Lesson (TASK-033)
+
+- **[AC-114] Complete Stable Lesson Catalog Entry and New Default**:
+  - The catalog MUST expose `st-saying-s` with exactly the 18 supplied words in order,
+    preserve every existing lesson, and use the final catalog entry as the default when
+    no valid saved choice exists.
+- **[AC-115] Complete Local Learning Content and Approved Audio**:
+  - Every new word MUST include child-friendly learning content, meaningful alt text, a
+    local original SVG, local Sonia (`en-GB-SoniaNeural`, `-15%`) word and definition
+    audio, and matching audio and image provenance.
+- **[AC-116] Compact Picker and Shared Engine Integration**:
+  - The compact picker MUST show all nine lessons exactly once and the new lesson MUST
+    drive Learn, Game, and Test through the shared spelling engine.
+- **[AC-117] Release and Deployment**:
+  - The complete automated suite MUST pass and release `v1.12.0` MUST be deployed from
+    `master`.

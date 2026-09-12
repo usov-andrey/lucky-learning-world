@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">bristle</title>
+  <desc id="desc">A paintbrush showing a neat row of bristles.</desc>
+  <rect width="512" height="320" rx="36" fill="#eef8ff"/>
+  <circle cx="149" cy="152" r="72" fill="#9c6644" opacity=".18"/>
+  <path d="M94 207 Q149 62 204 207 Z" fill="#9c6644"/>
+  <circle cx="149" cy="132" r="28" fill="#ffd166"/>
+  <path d="M119 174h60M132 194h34" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <rect x="222" y="88" width="250" height="144" rx="28" fill="#9c6644"/>
+  <text x="347" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="white">bristle</text>
+  <text x="347" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="white">st → /s/</text>
+</svg>

@@ -6,6 +6,7 @@
 // @task TASK-030
 // @task TASK-031
 // @task TASK-032
+// @task TASK-033
 // @ac AC-27 New lesson selection and mode reuse
 // @ac AC-11 Lesson Selection Persistence
 // @ac AC-13 Explanation Experience Tell Me More
@@ -18,6 +19,7 @@
 // @ac AC-111 One compact lesson control
 // @ac AC-112 Newest default and persistent choice
 // @ac AC-113 Immediate touch-friendly integration
+// @ac AC-116 Ninth lesson appears once and drives the shared engine
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -30,7 +32,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
-test("TASK-032 AC-111 through AC-113: compact picker defaults to newest lesson and persists dropdown changes", async () => {
+test("TASK-032 AC-111 through TASK-033 AC-116: compact picker defaults to newest lesson and persists dropdown changes", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
   const cssContent = fs.readFileSync(path.join(rootDir, "styles.css"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
@@ -49,13 +51,13 @@ test("TASK-032 AC-111 through AC-113: compact picker defaults to newest lesson a
 
   const picker = app.elements.spellingLessonSelect;
   assert.equal(picker.tagName, "SELECT");
-  assert.equal(picker.options.length, 8, "Dropdown must contain every catalog lesson exactly once");
-  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 8);
+  assert.equal(picker.options.length, 9, "Dropdown must contain every catalog lesson exactly once");
+  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 9);
   assert.equal(document.querySelectorAll(".lesson-card").length, 0, "The expanding card grid must be removed");
-  assert.equal(picker.value, "ic-ending", "The newest catalog lesson must be selected without saved state");
-  assert.equal(app.selectedLessonId, "ic-ending");
-  assert.equal(app.spellingEngine.deck.id, "ic-ending");
-  assert.equal(app.elements.learnWordDisplay.textContent, "EPIC");
+  assert.equal(picker.value, "st-saying-s", "The newest catalog lesson must be selected without saved state");
+  assert.equal(app.selectedLessonId, "st-saying-s");
+  assert.equal(app.spellingEngine.deck.id, "st-saying-s");
+  assert.equal(app.elements.learnWordDisplay.textContent, "CASTLE");
   assert.equal(picker.getAttribute("aria-label"), "Choose spelling lesson");
   assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?min-height:\s*var\(--min-touch-target\)/);
   assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?touch-action:\s*manipulation/);

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">chasten</title>
+  <desc id="desc">A player reflecting thoughtfully after a game.</desc>
+  <rect width="512" height="320" rx="36" fill="#eef8ff"/>
+  <circle cx="137" cy="172" r="72" fill="#ffb703" opacity=".18"/>
+  <path d="M82 227 Q137 82 192 227 Z" fill="#ffb703"/>
+  <circle cx="137" cy="152" r="28" fill="#ffd166"/>
+  <path d="M107 194h60M120 214h34" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <rect x="222" y="88" width="250" height="144" rx="28" fill="#ffb703"/>
+  <text x="347" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="white">chasten</text>
+  <text x="347" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="white">st → /s/</text>
+</svg>

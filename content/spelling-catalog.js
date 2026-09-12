@@ -1326,7 +1326,40 @@ export const IC_ENDING_LESSON = {
   }))
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON];
+export const ST_SAYING_S_LESSON = {
+  id: "st-saying-s",
+  title: "Spelling Test",
+  pageLabel: "‹st› saying /s/",
+  topic: "‹st› saying /s/",
+  wordCount: 18,
+  words: [
+    ["castle", "A large strong building where a ruler or noble family may live.", "Castles often have thick stone walls, towers, and gates that helped protect the people inside.", "The old castle stood high above the river.", "A strong building with towers", "A stone castle with towers and flags"],
+    ["bustle", "To move around busily and energetically.", "When people bustle, they hurry from place to place because there is plenty to do.", "Families bustle through the market on Saturday morning.", "Move about in a busy way", "Busy shoppers moving through a colourful market"],
+    ["listen", "To pay attention to a sound.", "Listening means using your ears and attention to notice what someone says or what is happening around you.", "Lucky stopped to listen to the birds singing.", "Pay attention with your ears", "A child listening to birds in a tree"],
+    ["thistle", "A wild plant with prickly leaves and purple flowers.", "A thistle protects itself with sharp prickles, but bees and butterflies still visit its bright flowers.", "A bee landed carefully on the purple thistle.", "A prickly purple-flowered plant", "A purple thistle flower with a visiting bee"],
+    ["jostle", "To bump or push against someone in a crowd.", "People may jostle when a busy space is so crowded that they accidentally knock against one another.", "The excited crowd began to jostle near the parade route.", "Bump against someone in a crowd", "A friendly crowd carefully making space at a parade"],
+    ["glisten", "To shine with small flashes of reflected light.", "Wet, icy, or polished surfaces can glisten when light sparkles across them.", "Raindrops glisten on the leaves after the storm.", "Shine with tiny flashes", "Sparkling raindrops on green leaves"],
+    ["bristle", "A short, stiff hair or fibre.", "Bristles can grow on animals or be grouped together to make the working part of a brush.", "The paintbrush has soft bristles for smooth lines.", "A short stiff hair or fibre", "A paintbrush showing a neat row of bristles"],
+    ["fasten", "To close or attach something securely.", "You fasten something when you join its parts so it stays safely closed or in place.", "Please fasten your seat belt before the car moves.", "Close or attach securely", "Hands fastening a seat belt safely"],
+    ["hasten", "To hurry or make something happen sooner.", "If you hasten, you move more quickly; an action can also hasten an event by helping it arrive sooner.", "We hasten indoors when the rain begins.", "Hurry or make faster", "Children hurrying indoors before rain"],
+    ["moisten", "To make something slightly wet.", "Moistening adds a small amount of water or other liquid without soaking the object completely.", "Moisten the cloth before wiping the table.", "Make slightly wet", "A damp cloth beside a few water drops"],
+    ["whistle", "To make a clear high sound by blowing air through your lips or a small instrument.", "People whistle tunes with their lips, while referees and guards may use a whistle to send a clear signal.", "The referee blew the whistle to start the match.", "Make a clear high sound", "A referee blowing a silver whistle"],
+    ["gristle", "Tough, chewy tissue found in some meat.", "Gristle is a firm part of an animal's body, like cartilage, and it can be difficult to chew.", "Dad carefully trimmed the gristle from the meat.", "Tough tissue in meat", "A cooking board with tough tissue being trimmed safely"],
+    ["christmas", "A Christian festival celebrated on 25 December.", "Christmas celebrates the birth of Jesus, and many families mark it with traditions, decorations, gifts, or special meals.", "The family decorated a tree together for Christmas.", "A festival on 25 December", "A decorated Christmas tree with a bright star"],
+    ["mistletoe", "A green plant with white berries that grows on trees.", "Mistletoe stays green through winter and is often used as a Christmas decoration.", "A sprig of mistletoe hung above the doorway.", "A green plant with white berries", "A sprig of green mistletoe with white berries"],
+    ["chestnut", "A shiny brown nut that grows inside a prickly case.", "Chestnuts grow on chestnut trees and some kinds can be roasted and eaten after an adult prepares them safely.", "A smooth chestnut rolled out of its prickly case.", "A shiny brown nut", "A brown chestnut beside its prickly green case"],
+    ["nestle", "To settle closely and comfortably beside or inside something.", "A person or animal may nestle into a warm, safe space and rest snugly there.", "The kitten likes to nestle into the soft blanket.", "Settle closely and comfortably", "A kitten nestled in a soft blanket"],
+    ["wrestle", "To struggle with someone by gripping and trying to gain control.", "Wrestling is also a sport with rules, trained moves, and a mat designed to keep competitors safe.", "The two athletes wrestle on the padded mat.", "Grapple in a controlled struggle", "Two young athletes wrestling safely on a padded mat"],
+    ["chasten", "To make someone calmer or more thoughtful after a mistake.", "An experience may chasten a person by helping them become less proud and more careful about their choices.", "The lost game seemed to chasten the boastful player.", "Make humbler or more thoughtful", "A player reflecting thoughtfully after a game"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => ({
+    word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+    image: `content/st-saying-s/images/${String(index + 1).padStart(2, "0")}_${word}.svg`,
+    audio: `content/st-saying-s/audio/${String(index + 1).padStart(2, "0")}_${word}.mp3`,
+    definitionAudio: `content/st-saying-s/audio/definitions/${String(index + 1).padStart(2, "0")}_${word}.mp3`
+  }))
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON];
 export const DEFAULT_SPELLING_LESSON_ID = SPELLING_LESSONS.at(-1)?.id || PAGE_22_LESSON.id;
 
 export function getSpellingLesson(id) {

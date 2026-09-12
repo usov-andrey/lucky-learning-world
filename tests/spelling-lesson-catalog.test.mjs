@@ -7,6 +7,7 @@
 // @task TASK-030
 // @task TASK-031
 // @task TASK-032
+// @task TASK-033
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
 // @ac AC-29 Correct Sonia audio replacement
@@ -27,6 +28,8 @@
 // @ac AC-107 ‹-ic› lesson catalog integrity, default unchanged
 // @ac AC-108 Complete local learning content and Sonia audio for ‹-ic›
 // @ac AC-112 Newest catalog lesson is the safe default
+// @ac AC-114 ‹st› saying /s/ lesson catalog integrity and newest default
+// @ac AC-115 Complete local learning content and Sonia audio for ‹st› saying /s/
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -42,6 +45,7 @@ import {
   OUGH_GH_AUGH_LESSON,
   IVE_SAYING_IV_LESSON,
   IC_ENDING_LESSON,
+  ST_SAYING_S_LESSON,
   SPELLING_LESSONS,
   DEFAULT_SPELLING_LESSON_ID,
   getSpellingLesson,
@@ -49,8 +53,8 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-005 AC-10 through TASK-032 AC-112: catalog exposes all eight lessons and defaults to the newest record", () => {
-  assert.equal(SPELLING_LESSONS.length, 8);
+test("TASK-005 AC-10 through TASK-033 AC-114: catalog exposes all nine lessons and defaults to the newest record", () => {
+  assert.equal(SPELLING_LESSONS.length, 9);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
   assert.equal(SCHWA_ER_LESSON.id, "schwa-er");
@@ -67,7 +71,9 @@ test("TASK-005 AC-10 through TASK-032 AC-112: catalog exposes all eight lessons 
   assert.equal(IVE_SAYING_IV_LESSON.words.length, 18);
   assert.equal(IC_ENDING_LESSON.id, "ic-ending");
   assert.equal(IC_ENDING_LESSON.words.length, 18);
-  assert.equal(DEFAULT_SPELLING_LESSON_ID, "ic-ending");
+  assert.equal(ST_SAYING_S_LESSON.id, "st-saying-s");
+  assert.equal(ST_SAYING_S_LESSON.words.length, 18);
+  assert.equal(DEFAULT_SPELLING_LESSON_ID, "st-saying-s");
 });
 
 test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson returns requested lesson or safely falls back to the newest lesson", () => {
@@ -79,8 +85,9 @@ test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson retu
   assert.equal(getSpellingLesson("ough-gh-augh").id, "ough-gh-augh");
   assert.equal(getSpellingLesson("ive-saying-iv").id, "ive-saying-iv");
   assert.equal(getSpellingLesson("ic-ending").id, "ic-ending");
-  assert.equal(getSpellingLesson("unknown-lesson-id").id, "ic-ending");
-  assert.equal(getSpellingLesson(null).id, "ic-ending");
+  assert.equal(getSpellingLesson("st-saying-s").id, "st-saying-s");
+  assert.equal(getSpellingLesson("unknown-lesson-id").id, "st-saying-s");
+  assert.equal(getSpellingLesson(null).id, "st-saying-s");
 });
 
 test("TASK-008 AC-25 & AC-26 and TASK-010 AC-29: catalog exposes complete Sonia-backed lesson content", () => {
@@ -369,4 +376,26 @@ test("TASK-031 AC-107 & AC-108: catalog exposes complete Sonia-backed ‹-ic› 
   assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /en-GB-SoniaNeural/);
   assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /-15%/);
   assert.match(fs.readFileSync(fileURLToPath(new URL("../content/ic-ending/images/PROVENANCE.md", import.meta.url)), "utf8"), /TASK-031/);
+});
+
+test("TASK-033 AC-114 & AC-115: catalog exposes complete Sonia-backed ‹st› saying /s/ lesson content", () => {
+  const expectedWords = ["castle", "bustle", "listen", "thistle", "jostle", "glisten", "bristle", "fasten", "hasten", "moisten", "whistle", "gristle", "christmas", "mistletoe", "chestnut", "nestle", "wrestle", "chasten"];
+  assert.deepEqual(ST_SAYING_S_LESSON.words.map(item => item.word), expectedWords);
+  assert.equal(ST_SAYING_S_LESSON.topic, "‹st› saying /s/");
+  for (const item of ST_SAYING_S_LESSON.words) {
+    for (const field of ["definition", "extendedExplanation", "exampleSentence", "hint", "imageAlt", "image", "audio", "definitionAudio"]) assert.ok(item[field], `Missing ${field} for ${item.word}`);
+    for (const assetPath of [item.image, item.audio, item.definitionAudio]) {
+      const absoluteAssetPath = fileURLToPath(new URL(`../${assetPath}`, import.meta.url));
+      assert.ok(fs.existsSync(absoluteAssetPath), `Missing local asset ${assetPath}`);
+      assert.ok(fs.statSync(absoluteAssetPath).size > 0, `Empty local asset ${assetPath}`);
+    }
+  }
+  const audioDirectory = fileURLToPath(new URL("../content/st-saying-s/audio/", import.meta.url));
+  const manifest = JSON.parse(fs.readFileSync(fileURLToPath(new URL("../content/st-saying-s/audio-manifest.json", import.meta.url)), "utf8"));
+  assert.deepEqual(manifest.words, ST_SAYING_S_LESSON.words.map(({ word, definition }) => ({ word, definition })));
+  assert.equal(manifest.voice, "en-GB-SoniaNeural");
+  assert.equal(manifest.rate, "-15%");
+  assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /en-GB-SoniaNeural/);
+  assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /-15%/);
+  assert.match(fs.readFileSync(fileURLToPath(new URL("../content/st-saying-s/images/PROVENANCE.md", import.meta.url)), "utf8"), /TASK-033/);
 });

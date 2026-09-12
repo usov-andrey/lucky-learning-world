@@ -1,0 +1,80 @@
+{
+  "lessonId": "st-saying-s",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04.",
+  "words": [
+    {
+      "word": "castle",
+      "definition": "A large strong building where a ruler or noble family may live."
+    },
+    {
+      "word": "bustle",
+      "definition": "To move around busily and energetically."
+    },
+    {
+      "word": "listen",
+      "definition": "To pay attention to a sound."
+    },
+    {
+      "word": "thistle",
+      "definition": "A wild plant with prickly leaves and purple flowers."
+    },
+    {
+      "word": "jostle",
+      "definition": "To bump or push against someone in a crowd."
+    },
+    {
+      "word": "glisten",
+      "definition": "To shine with small flashes of reflected light."
+    },
+    {
+      "word": "bristle",
+      "definition": "A short, stiff hair or fibre."
+    },
+    {
+      "word": "fasten",
+      "definition": "To close or attach something securely."
+    },
+    {
+      "word": "hasten",
+      "definition": "To hurry or make something happen sooner."
+    },
+    {
+      "word": "moisten",
+      "definition": "To make something slightly wet."
+    },
+    {
+      "word": "whistle",
+      "definition": "To make a clear high sound by blowing air through your lips or a small instrument."
+    },
+    {
+      "word": "gristle",
+      "definition": "Tough, chewy tissue found in some meat."
+    },
+    {
+      "word": "christmas",
+      "definition": "A Christian festival celebrated on 25 December."
+    },
+    {
+      "word": "mistletoe",
+      "definition": "A green plant with white berries that grows on trees."
+    },
+    {
+      "word": "chestnut",
+      "definition": "A shiny brown nut that grows inside a prickly case."
+    },
+    {
+      "word": "nestle",
+      "definition": "To settle closely and comfortably beside or inside something."
+    },
+    {
+      "word": "wrestle",
+      "definition": "To struggle with someone by gripping and trying to gain control."
+    },
+    {
+      "word": "chasten",
+      "definition": "To make someone calmer or more thoughtful after a mistake."
+    }
+  ]
+}
