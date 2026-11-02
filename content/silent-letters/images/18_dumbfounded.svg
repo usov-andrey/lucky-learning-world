@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">dumbfounded</title>
+  <desc id="desc">A surprised child looking at a bright rainbow beside a waterfall</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M315 62h117v178H315Z" fill="#bfd2ce"/><path d="M331 62h71v178h-71Z" fill="#8ccde2"/><path d="M345 76v146M371 77v145M390 79v143" fill="none" stroke="#e6f8ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M249 177a91 91 0 0 1 182 0" fill="none" stroke="#df8e88" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M249 175a81 81 0 0 1 162 0" fill="none" stroke="#ebc57d" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M249 173a71 71 0 0 1 142 0" fill="none" stroke="#9ec39a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M249 171a61 61 0 0 1 122 0" fill="none" stroke="#8bafce" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="154" cy="170" r="28" fill="#ffd4a3"/><circle cx="145" cy="167" r="3" fill="#35446b"/><circle cx="163" cy="167" r="3" fill="#35446b"/><circle cx="154" cy="182" r="7" fill="#35446b"/><rect x="115" y="201" width="78" height="46" rx="12" fill="#8c9bd5"/><path d="M120 206l-21-28M189 206l25-28" fill="none" stroke="#ffd4a3" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">dumbfounded</text>
+</svg>

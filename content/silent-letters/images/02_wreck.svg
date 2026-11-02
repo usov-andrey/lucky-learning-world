@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">wreck</title>
+  <desc id="desc">The broken hull of an old ship resting on the seabed</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <rect x="48" y="42" width="416" height="210" rx="30" fill="#c7e8f5"/><path d="M48 226q130-25 216 0t200 0v26H48Z" fill="#e9cd8b"/><path d="M120 156h100l16 28 22-28h125l-38 65H155Z" fill="#a86c4d"/><path d="M256 155V66" fill="none" stroke="#795548" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M246 75v65h-73Z" fill="#f4f2db"/><path d="M268 84l60 50h-60Z" fill="#b5d2da"/><path d="M176 181l36 17M299 198l38-18M110 233l43 3" fill="none" stroke="#795548" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="395" cy="97" r="9" fill="#fff"/><circle cx="408" cy="67" r="5" fill="#fff"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">wreck</text>
+</svg>

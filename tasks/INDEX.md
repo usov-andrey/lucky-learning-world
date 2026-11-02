@@ -29,7 +29,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-021](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-021-starsbylevel-field-does-not-exist.md) | Star Counts Always Read 0 (progression.starsByLevel Does Not Exist) | TESTED | v1.7.3 | 3 ACs | `tests/math-star-display.test.mjs` | - |
 | [TASK-023](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-023-fix-bottom-nav-blank-page-on-hub-tap.md) | Fix Bottom-Nav Blank Page on Hub Tap (Duplicate, Conflicting Click Handlers) | RELEASED | v1.7.2 | 4 ACs | `tests/e2e/full-main-scenario.e2e.mjs` | - |
 | [TASK-024](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-024-restore-math-progress-and-fix-math-mix.md) | Restore Math Progress and Fix Math Mix | TESTED | v1.7.3 | 9 ACs | `tests/math-fact-progress.test.mjs` | - |
-| [TASK-025](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-025-add-u-saying-long-oo-spelling-lesson.md) | Add 'u' Saying Long /oo/ Spelling Lesson | PROPOSED | v1.0.0 | 2 ACs | `tests/task-xxx-*.test.mjs` | - |
+| [TASK-025](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-025-add-u-saying-long-oo-spelling-lesson.md) | Add 'u' Saying Long /oo/ Spelling Lesson | RELEASED | v1.8.0 | 3 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-026](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-026-always-award-pokemon-and-sync-collection-count.md) | Always Award Pokémon and Sync Collection Count | RELEASED | v1.8.1 | 4 ACs | `tests/pokemon-rewards.test.mjs` | - |
 | [TASK-027](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-027-make-tiles-battle-feedback-obvious-on-tablets.md) | Make Tiles Battle Feedback Obvious on Tablets | RELEASED | v1.8.2 | 5 ACs | `tests/spelling-tiles-feedback.test.mjs` | - |
 | [TASK-028](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-028-add-ough-gh-augh-spelling-lesson.md) | Add ‹ough›, ‹gh› and ‹augh› Spelling Lesson | RELEASED | v1.9.0 | 3 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
@@ -38,6 +38,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-031](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-031-add-ic-spelling-lesson.md) | Add ‹-ic› Spelling Lesson | RELEASED | v1.11.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-032](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-032-compact-spelling-lesson-picker.md) | Compact Spelling Lesson Picker | RELEASED | v1.11.1 | 3 ACs | `tests/spelling-lesson-ui.test.mjs` | - |
 | [TASK-033](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-033-add-st-saying-s-spelling-lesson.md) | Add ‹st› Saying /s/ Spelling Lesson | RELEASED | v1.12.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
+| [TASK-034](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-034-add-silent-letters-spelling-lesson.md) | Add Silent Letters Spelling Lesson | TESTED | v1.13.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 
 ---
 

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">descend</title>
+  <desc id="desc">Steps leading downwards with an arrow pointing to the bottom</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <rect x="95" y="92" width="90" height="150" rx="12" fill="#7284cd"/><rect x="185" y="142" width="90" height="100" rx="12" fill="#8e9edb"/><rect x="275" y="192" width="90" height="50" rx="12" fill="#aab7e6"/><path d="M119 53l225 110" fill="none" stroke="#de8964" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M318 169l44 12-15-43Z" fill="#de8964"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">descend</text>
+</svg>

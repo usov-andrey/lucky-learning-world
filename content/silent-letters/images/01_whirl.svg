@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">whirl</title>
+  <desc id="desc">Autumn leaves whirling around in a spiral of wind</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M100 163C54 67 216 34 318 72S442 197 329 231 144 211 177 151 311 112 330 156 262 196 240 167" fill="none" stroke="#8bbbdc" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(118 100) rotate(-35)"><path d="M-27 0Q0-38 32 0Q0 38-27 0" fill="#f5aa42"/><path d="M-20 0h48" fill="none" stroke="#9b6349" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(343 87) rotate(40)"><path d="M-27 0Q0-38 32 0Q0 38-27 0" fill="#df6b52"/><path d="M-20 0h48" fill="none" stroke="#9b6349" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(386 188) rotate(120)"><path d="M-27 0Q0-38 32 0Q0 38-27 0" fill="#e8b93d"/><path d="M-20 0h48" fill="none" stroke="#9b6349" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(182 232) rotate(-50)"><path d="M-27 0Q0-38 32 0Q0 38-27 0" fill="#df6b52"/><path d="M-20 0h48" fill="none" stroke="#9b6349" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">whirl</text>
+</svg>

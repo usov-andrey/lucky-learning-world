@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">kneel</title>
+  <desc id="desc">A child kneeling on a cushion beside a small seedling</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <rect x="111" y="225" width="218" height="22" rx="12" fill="#c4b5ed"/><circle cx="221" cy="89" r="28" fill="#ffd4a3"/><circle cx="212" cy="86" r="3" fill="#35446b"/><circle cx="230" cy="86" r="3" fill="#35446b"/><path d="M213 99q8 9 16 0" fill="none" stroke="#a1534c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M222 121l-12 62 55 13v31h-63l-36-34" fill="none" stroke="#6877ce" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/><path d="M214 142l55 26 37-16" fill="none" stroke="#ffd4a3" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M346 210h65l-10 37h-45Z" fill="#c78558"/><path d="M377 209v-53" fill="none" stroke="#55986b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M377 182q-42-36-46-7 12 27 46 7M378 174q40-44 48-14-11 25-48 14" fill="#72b984"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">kneel</text>
+</svg>

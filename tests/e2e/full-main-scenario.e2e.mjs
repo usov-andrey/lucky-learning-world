@@ -2,6 +2,9 @@
 // @task TASK-020
 // @task TASK-021
 // @task TASK-024
+// @task TASK-034
+// @ac AC-120 Silent Letters in Learn, Digital Test, Paper Test, and Game
+// @ac AC-121 Real-browser release regression
 // @ac AC-75 AC-78 AC-79 AC-80 AC-81 AC-83
 // Permanent Playwright E2E regression suite: drives one continuous real-Chromium
 // session through the full main scenario, in order, across every game mode —
@@ -286,6 +289,9 @@ test(
 
       // --- Word Realm: Learn mode, all words forward and back ----------------
       await page.locator("#btn-enter-word").click();
+      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "silent-letters");
+      assert.equal(await page.locator("#spelling-lesson-select option").count(), 10);
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "WHIRL");
       const totalWords = await page.evaluate(() => window.appController.spellingEngine.deck.words.length);
       assert.ok(totalWords > 1, "expected a spelling lesson with more than one word");
 

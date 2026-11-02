@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">plumbing</title>
+  <desc id="desc">A sink with a tap and connected water and drain pipes</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M124 118h264l-23 46H148Z" fill="#b7d6e4"/><path d="M239 116V81q0-28 27-28t27 28v6" fill="none" stroke="#7b94ae" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M201 166v39q0 31 35 31t35-31v-19h85v66" fill="none" stroke="#a1b6c5" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><path d="M293 55h60v196" fill="none" stroke="#729cd1" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="353" cy="188" r="13" fill="#da8a72"/><path d="M345 180l16 16M345 196l16-16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M294 96v13" fill="none" stroke="#74c3e2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 119h288" fill="none" stroke="#7b94ae" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">plumbing</text>
+</svg>

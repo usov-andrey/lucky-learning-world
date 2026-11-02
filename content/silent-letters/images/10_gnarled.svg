@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">gnarled</title>
+  <desc id="desc">An old tree with a twisted trunk, knots, and winding roots</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M204 242q48-54 26-94t22-87l24 3q-41 41-8 83t-5 95Z" fill="#a57858"/><path d="M246 151l-55-47-35-3M263 109l54-32 14-26M237 221l-57 28M258 227l52 21M240 174q-12 18 3 29" fill="none" stroke="#795840" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="251" cy="135" rx="9" ry="17" fill="none" stroke="#795840" stroke-width="5"/><circle cx="164" cy="79" r="38" fill="#7baf84"/><circle cx="222" cy="60" r="47" fill="#7baf84"/><circle cx="279" cy="49" r="40" fill="#7baf84"/><circle cx="337" cy="64" r="44" fill="#7baf84"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">gnarled</text>
+</svg>

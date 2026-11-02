@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">ghoulish</title>
+  <desc id="desc">A playful spooky mask with wide eyes and a wavy outline</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M145 220V112q0-70 111-70t111 70v108l-37-19-36 27-38-24-38 24-36-27Z" fill="#b7b7e4"/><ellipse cx="215" cy="119" rx="22" ry="29" fill="#4f537c"/><ellipse cx="297" cy="119" rx="22" ry="29" fill="#4f537c"/><circle cx="220" cy="109" r="6" fill="#fff"/><circle cx="302" cy="109" r="6" fill="#fff"/><ellipse cx="256" cy="175" rx="21" ry="25" fill="#4f537c"/><path d="M111 72l-8-13M393 83l12-8M118 176l-17 3" fill="none" stroke="#b59bd5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">ghoulish</text>
+</svg>

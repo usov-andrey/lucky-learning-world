@@ -7,6 +7,8 @@
 // @task TASK-031
 // @task TASK-032
 // @task TASK-033
+// @task TASK-034
+// @ac AC-120 Tenth lesson picker entry, shared modes, and saved choice
 // @ac AC-27 New lesson selection and mode reuse
 // @ac AC-11 Lesson Selection Persistence
 // @ac AC-13 Explanation Experience Tell Me More
@@ -32,7 +34,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
-test("TASK-032 AC-111 through TASK-033 AC-116: compact picker defaults to newest lesson and persists dropdown changes", async () => {
+test("TASK-032 AC-111 through TASK-034 AC-120: compact picker defaults to newest lesson and persists dropdown changes", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
   const cssContent = fs.readFileSync(path.join(rootDir, "styles.css"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
@@ -51,13 +53,13 @@ test("TASK-032 AC-111 through TASK-033 AC-116: compact picker defaults to newest
 
   const picker = app.elements.spellingLessonSelect;
   assert.equal(picker.tagName, "SELECT");
-  assert.equal(picker.options.length, 9, "Dropdown must contain every catalog lesson exactly once");
-  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 9);
+  assert.equal(picker.options.length, 10, "Dropdown must contain every catalog lesson exactly once");
+  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 10);
   assert.equal(document.querySelectorAll(".lesson-card").length, 0, "The expanding card grid must be removed");
-  assert.equal(picker.value, "st-saying-s", "The newest catalog lesson must be selected without saved state");
-  assert.equal(app.selectedLessonId, "st-saying-s");
-  assert.equal(app.spellingEngine.deck.id, "st-saying-s");
-  assert.equal(app.elements.learnWordDisplay.textContent, "CASTLE");
+  assert.equal(picker.value, "silent-letters", "The newest catalog lesson must be selected without saved state");
+  assert.equal(app.selectedLessonId, "silent-letters");
+  assert.equal(app.spellingEngine.deck.id, "silent-letters");
+  assert.equal(app.elements.learnWordDisplay.textContent, "WHIRL");
   assert.equal(picker.getAttribute("aria-label"), "Choose spelling lesson");
   assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?min-height:\s*var\(--min-touch-target\)/);
   assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?touch-action:\s*manipulation/);

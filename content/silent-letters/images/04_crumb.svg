@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">crumb</title>
+  <desc id="desc">A slice of toast on a plate with a tiny crumb highlighted</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <ellipse cx="256" cy="199" rx="182" ry="52" fill="#b6dbec"/><path d="M152 183V102q-15-39 15-47t70-5q45 0 57 29 5 17-10 28v76Z" fill="#bd7849"/><path d="M166 170V98q-16-30 15-34t53-2q35-4 45 21l-10 19v68Z" fill="#ffe0a0"/><circle cx="217" cy="108" r="5" fill="#edbf74"/><circle cx="193" cy="146" r="6" fill="#edbf74"/><path d="M326 177l15-8 11 16-21 7Z" fill="#c78c53"/><circle cx="367" cy="196" r="5" fill="#dfaa68"/><circle cx="339" cy="180" r="29" fill="none" stroke="#f0a131" stroke-width="4"/><path d="M361 157l24-24" fill="none" stroke="#f0a131" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">crumb</text>
+</svg>

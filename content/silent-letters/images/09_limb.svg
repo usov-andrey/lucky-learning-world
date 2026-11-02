@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">limb</title>
+  <desc id="desc">A tree with a large branch highlighted and a squirrel resting on it</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M227 244l12-97-33-66 22-8 33 65 49-57 18 16-53 69 15 78Z" fill="#966744"/><path d="M261 159l89-26 49-31" fill="none" stroke="#e3a149" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/><path d="M213 82l-52-23M314 84l37-35" fill="none" stroke="#966744" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle cx="175" cy="54" r="40" fill="#7cb584"/><circle cx="230" cy="51" r="39" fill="#7cb584"/><circle cx="302" cy="51" r="42" fill="#7cb584"/><circle cx="365" cy="59" r="43" fill="#7cb584"/><circle cx="404" cy="85" r="30" fill="#7cb584"/><circle cx="350" cy="111" r="13" fill="#c28051"/><circle cx="361" cy="92" r="10" fill="#c28051"/><circle cx="365" cy="90" r="2" fill="#35446b"/><path d="M340 113q-35-40-14-43t15 21" fill="none" stroke="#c28051" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">limb</text>
+</svg>

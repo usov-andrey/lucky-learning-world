@@ -745,3 +745,21 @@ thoroughly.
 - **[AC-117] Release and Deployment**:
   - The complete automated suite MUST pass and release `v1.12.0` MUST be deployed from
     `master`.
+
+## 37. Add Silent Letters Spelling Lesson (TASK-034)
+
+- **[AC-118] Complete Catalog and New Default**:
+  - `silent-letters` MUST contain all 18 photographed words in order, preserve all
+    nine existing lessons, and be the default when no valid saved selection exists.
+- **[AC-119] Complete Local Learning Content and Approved Audio**:
+  - Each word MUST have child-friendly English learning copy, meaningful alt text,
+    a distinct original local SVG, and valid Sonia (`en-GB-SoniaNeural`, `-15%`)
+    word and definition MP3s with matching manifest and provenance.
+  - If the installed generator cannot connect, use a compatible project-local version,
+    record its exact version, and retain the approved voice without fallback.
+- **[AC-120] Compact Picker and Shared Modes**:
+  - All ten lessons MUST appear exactly once; valid saved choices MUST survive.
+    The new lesson MUST work in Learn, Game, Digital Test, and Paper Test.
+- **[AC-121] Verified Release and Deployment**:
+  - Unit tests, coverage gate, and real-browser main-scenario checks MUST pass.
+    `v1.13.0` MUST be committed and deployed from `master`, with verification recorded.

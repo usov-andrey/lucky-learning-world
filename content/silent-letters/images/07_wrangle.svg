@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">wrangle</title>
+  <desc id="desc">Two children disagreeing over whose turn it is in a board game</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <circle cx="130" cy="126" r="28" fill="#ffd4a3"/><circle cx="121" cy="123" r="3" fill="#35446b"/><circle cx="139" cy="123" r="3" fill="#35446b"/><path d="M122 136q8 9 16 0" fill="none" stroke="#a1534c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="382" cy="126" r="28" fill="#ffd4a3"/><circle cx="373" cy="123" r="3" fill="#35446b"/><circle cx="391" cy="123" r="3" fill="#35446b"/><path d="M374 136q8 9 16 0" fill="none" stroke="#a1534c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="91" y="157" width="78" height="75" rx="12" fill="#7a84d0"/><rect x="343" y="157" width="78" height="75" rx="12" fill="#65b9ad"/><rect x="190" y="193" width="132" height="49" rx="12" fill="#e2bd84"/><path d="M220 197v41M253 197v41M286 197v41M196 217h120" fill="none" stroke="#fff0ce" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M88 42h115v44h-35l-20 18V86H88Z" fill="#e9e2ff"/><path d="M309 42h115v44h-48l-20 18V86h-47Z" fill="#d5f1e9"/><path d="M110 65h63M333 65h63" fill="none" stroke="#a87574" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M165 174l43-18M348 174l-43-18" fill="none" stroke="#ffd4a3" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">wrangle</text>
+</svg>

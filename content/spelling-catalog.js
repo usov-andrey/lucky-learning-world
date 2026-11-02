@@ -1359,7 +1359,40 @@ export const ST_SAYING_S_LESSON = {
   }))
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON];
+export const SILENT_LETTERS_LESSON = {
+  id: "silent-letters",
+  title: "Spelling Test",
+  pageLabel: "Silent Letters",
+  topic: "Silent Letters",
+  wordCount: 18,
+  words: [
+    ["whirl", "To spin or turn around quickly.", "A whirl is a fast turning movement, like leaves circling in the wind or a spinning top.", "The autumn leaves whirl around the playground.", "Spin around quickly", "Autumn leaves whirling around in a spiral of wind"],
+    ["wreck", "Something badly damaged or destroyed, such as a ship or car.", "A wreck is what remains after something has been badly damaged. The word can also mean to damage something very badly.", "The divers spotted the wreck of an old ship on the seabed.", "The remains of something badly damaged", "The broken hull of an old ship resting on the seabed"],
+    ["kneel", "To rest on one or both knees.", "When you kneel, you bend your legs and put your knees on the ground instead of standing or sitting.", "I kneel on a cushion to look closely at the seedlings.", "Rest on your knees", "A child kneeling on a cushion beside a small seedling"],
+    ["crumb", "A very small piece of bread, cake, or biscuit.", "Crumbs often break away when you cut or eat food, leaving tiny pieces on your plate or the table.", "A tiny crumb of toast fell onto the plate.", "A tiny piece of bread or cake", "A slice of toast on a plate with a tiny crumb highlighted"],
+    ["ascend", "To go or move upwards.", "You ascend when you climb stairs, walk up a hill, or rise higher into the air.", "We ascend the steps to the top of the tower.", "Go upwards", "Steps leading upwards with an arrow pointing to the top"],
+    ["descend", "To go or move downwards.", "You descend when you walk down steps, travel down a hill, or move from a higher place to a lower one.", "We descend the hill slowly after our picnic.", "Go downwards", "Steps leading downwards with an arrow pointing to the bottom"],
+    ["wrangle", "To argue or disagree noisily for a long time.", "People may wrangle over a decision when each person wants something different and they keep arguing about it.", "The players began to wrangle over whose turn it was.", "Argue noisily over a disagreement", "Two children disagreeing over whose turn it is in a board game"],
+    ["knuckle", "One of the joints where your fingers bend, especially where they meet your hand.", "Knuckles let your fingers bend so you can grip things or make a fist. You can see them clearly when you curl your hand.", "I bent my finger and pointed to the knuckle.", "A joint where a finger bends", "A hand with one finger joint circled to show a knuckle"],
+    ["limb", "An arm or leg of a person or animal, or a large branch of a tree.", "People use their limbs to move and reach. A tree limb is a thick branch that grows out from the trunk.", "The squirrel balanced on a strong limb of the oak tree.", "An arm, a leg, or a large tree branch", "A tree with a large branch highlighted and a squirrel resting on it"],
+    ["gnarled", "Rough, twisted, and knobbly.", "Old tree trunks and roots can become gnarled as they grow into uneven, twisting shapes over many years.", "The ancient tree had a thick, gnarled trunk.", "Rough and twisted", "An old tree with a twisted trunk, knots, and winding roots"],
+    ["plumbing", "The system of pipes that carries water into and out of a building.", "Plumbing brings clean water to taps and carries used water away from sinks, baths, and toilets.", "The plumber repaired the plumbing beneath the kitchen sink.", "A building's water pipes", "A sink with a tap and connected water and drain pipes"],
+    ["elsewhere", "In, at, or to another place.", "If something is not here, it may be elsewhere. You can also go elsewhere to look for it in a different place.", "The library was closed, so we looked elsewhere for a quiet place to read.", "In or to another place", "A signpost pointing towards another place beyond the nearby house"],
+    ["ghoulish", "Strange and frightening, like something from a spooky story.", "A ghoulish face or costume can look ghostly and scary. The word can also describe an unpleasant interest in frightening things.", "The actor wore a ghoulish mask for the school play.", "Spooky and ghostlike", "A playful spooky mask with wide eyes and a wavy outline"],
+    ["succumb", "To stop resisting something or give in to it.", "When you succumb to something, you can no longer resist its effect, such as sleepiness after a very busy day.", "After the long walk, I succumb to sleep on the sofa.", "Give in or stop resisting", "A sleepy child giving in to sleep on a comfortable sofa"],
+    ["fascinate", "To interest someone very much.", "Something can fascinate you when it is so interesting that you want to keep watching, listening, or learning about it.", "The colourful patterns on butterfly wings fascinate Lucky.", "Make someone very interested", "A curious child studying a colourful butterfly through a magnifying glass"],
+    ["wrinkliest", "Having the most wrinkles or small folds.", "Wrinkliest compares three or more things and describes the one with the greatest number of wrinkles, such as a very creased shirt.", "Of all the shirts in the basket, this one is the wrinkliest.", "Having the most wrinkles", "Three shirts, with the shirt covered in the most creases highlighted"],
+    ["overwhelm", "To affect someone so strongly that it feels hard to cope.", "A very strong feeling or too many things happening at once can overwhelm someone. Taking a break or asking for help can make things easier.", "Too many instructions at once can overwhelm a new player.", "Feel too much to manage at once", "A child facing a jumble of task cards while a friend offers help"],
+    ["dumbfounded", "So surprised that you do not know what to say.", "When something completely unexpected happens, you may feel dumbfounded and stay quiet for a moment while you take it in.", "We were dumbfounded when a rainbow appeared beside the waterfall.", "Too surprised to speak", "A surprised child looking at a bright rainbow beside a waterfall"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => ({
+    word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+    image: `content/silent-letters/images/${String(index + 1).padStart(2, "0")}_${word}.svg`,
+    audio: `content/silent-letters/audio/${String(index + 1).padStart(2, "0")}_${word}.mp3`,
+    definitionAudio: `content/silent-letters/audio/definitions/${String(index + 1).padStart(2, "0")}_${word}.mp3`
+  }))
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON];
 export const DEFAULT_SPELLING_LESSON_ID = SPELLING_LESSONS.at(-1)?.id || PAGE_22_LESSON.id;
 
 export function getSpellingLesson(id) {

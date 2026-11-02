@@ -8,6 +8,9 @@
 // @task TASK-031
 // @task TASK-032
 // @task TASK-033
+// @task TASK-034
+// @ac AC-118 Silent Letters catalog integrity and newest default
+// @ac AC-119 Complete local content and approved Sonia audio
 // @ac AC-25 New lesson catalog integrity
 // @ac AC-26 Complete local learning content
 // @ac AC-29 Correct Sonia audio replacement
@@ -35,6 +38,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
+import { JSDOM } from "jsdom";
 
 import {
   PAGE_22_LESSON,
@@ -46,6 +50,7 @@ import {
   IVE_SAYING_IV_LESSON,
   IC_ENDING_LESSON,
   ST_SAYING_S_LESSON,
+  SILENT_LETTERS_LESSON,
   SPELLING_LESSONS,
   DEFAULT_SPELLING_LESSON_ID,
   getSpellingLesson,
@@ -53,8 +58,8 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-005 AC-10 through TASK-033 AC-114: catalog exposes all nine lessons and defaults to the newest record", () => {
-  assert.equal(SPELLING_LESSONS.length, 9);
+test("TASK-005 AC-10 through TASK-034 AC-118: catalog exposes all ten lessons and defaults to the newest record", () => {
+  assert.equal(SPELLING_LESSONS.length, 10);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
   assert.equal(SCHWA_ER_LESSON.id, "schwa-er");
@@ -73,7 +78,9 @@ test("TASK-005 AC-10 through TASK-033 AC-114: catalog exposes all nine lessons a
   assert.equal(IC_ENDING_LESSON.words.length, 18);
   assert.equal(ST_SAYING_S_LESSON.id, "st-saying-s");
   assert.equal(ST_SAYING_S_LESSON.words.length, 18);
-  assert.equal(DEFAULT_SPELLING_LESSON_ID, "st-saying-s");
+  assert.equal(SILENT_LETTERS_LESSON.id, "silent-letters");
+  assert.equal(SILENT_LETTERS_LESSON.words.length, 18);
+  assert.equal(DEFAULT_SPELLING_LESSON_ID, "silent-letters");
 });
 
 test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson returns requested lesson or safely falls back to the newest lesson", () => {
@@ -86,8 +93,9 @@ test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson retu
   assert.equal(getSpellingLesson("ive-saying-iv").id, "ive-saying-iv");
   assert.equal(getSpellingLesson("ic-ending").id, "ic-ending");
   assert.equal(getSpellingLesson("st-saying-s").id, "st-saying-s");
-  assert.equal(getSpellingLesson("unknown-lesson-id").id, "st-saying-s");
-  assert.equal(getSpellingLesson(null).id, "st-saying-s");
+  assert.equal(getSpellingLesson("silent-letters").id, "silent-letters");
+  assert.equal(getSpellingLesson("unknown-lesson-id").id, "silent-letters");
+  assert.equal(getSpellingLesson(null).id, "silent-letters");
 });
 
 test("TASK-008 AC-25 & AC-26 and TASK-010 AC-29: catalog exposes complete Sonia-backed lesson content", () => {
@@ -398,4 +406,39 @@ test("TASK-033 AC-114 & AC-115: catalog exposes complete Sonia-backed ‹st› s
   assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /en-GB-SoniaNeural/);
   assert.match(fs.readFileSync(`${audioDirectory}/PROVENANCE.md`, "utf8"), /-15%/);
   assert.match(fs.readFileSync(fileURLToPath(new URL("../content/st-saying-s/images/PROVENANCE.md", import.meta.url)), "utf8"), /TASK-033/);
+});
+
+test("TASK-034 AC-118 & AC-119: photographed Silent Letters words have complete local content and valid approved audio", () => {
+  const expected = ["whirl", "wreck", "kneel", "crumb", "ascend", "descend", "wrangle", "knuckle", "limb", "gnarled", "plumbing", "elsewhere", "ghoulish", "succumb", "fascinate", "wrinkliest", "overwhelm", "dumbfounded"];
+  assert.equal(SILENT_LETTERS_LESSON.topic, "Silent Letters");
+  assert.equal(SILENT_LETTERS_LESSON.wordCount, expected.length);
+  assert.deepEqual(SILENT_LETTERS_LESSON.words.map(item => item.word), expected);
+  const read = asset => fs.readFileSync(new URL(`../${asset}`, import.meta.url));
+  for (const item of SILENT_LETTERS_LESSON.words) {
+    for (const field of ["definition", "extendedExplanation", "exampleSentence", "hint", "imageAlt"]) {
+      assert.ok(item[field]?.trim(), `${item.word}: missing ${field}`);
+      assert.doesNotMatch(item[field], /[\u0400-\u04ff]/, `${item.word}: English content required`);
+    }
+    assert.match(item.image, /^content\/silent-letters\/images\/\d{2}_[a-z]+\.svg$/);
+    const svg = new JSDOM(read(item.image).toString(), { contentType: "image/svg+xml" });
+    assert.equal(svg.window.document.querySelector("title").textContent, item.word);
+    assert.equal(svg.window.document.querySelector("desc").textContent, item.imageAlt);
+    svg.window.close();
+    for (const asset of [item.audio, item.definitionAudio]) {
+      assert.match(asset, /^content\/silent-letters\/audio\/(definitions\/)?\d{2}_[a-z]+\.mp3$/);
+      const bytes = read(asset);
+      assert.ok(bytes.length > 1000, `${asset}: missing audio data`);
+      assert.ok(bytes.toString("ascii", 0, 3) === "ID3" || (bytes[0] === 0xff && (bytes[1] & 0xe0) === 0xe0), `${asset}: invalid MP3`);
+    }
+  }
+  const manifest = JSON.parse(read("content/silent-letters/audio-manifest.json"));
+  assert.equal(manifest.lessonId, "silent-letters");
+  assert.equal(manifest.voice, "en-GB-SoniaNeural");
+  assert.equal(manifest.rate, "-15%");
+  assert.deepEqual(manifest.words, SILENT_LETTERS_LESSON.words.map(({ word, definition }) => ({ word, definition })));
+  const provenance = read("content/silent-letters/audio/PROVENANCE.md").toString();
+  assert.match(provenance, /en-GB-SoniaNeural/);
+  assert.match(provenance, /-15%/);
+  assert.match(provenance, /edge-tts \d+\.\d+\.\d+/);
+  assert.match(read("content/silent-letters/images/PROVENANCE.md").toString(), /TASK-034/);
 });

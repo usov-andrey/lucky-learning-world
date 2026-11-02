@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">knuckle</title>
+  <desc id="desc">A hand with one finger joint circled to show a knuckle</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <path d="M192 245l-27-74q-8-24 10-29 16-3 26 26l-7-97q-1-21 14-21 15 0 17 21l6 64-1-87q0-21 16-21t18 21l3 86 5-70q2-20 17-17 15 1 14 22l-2 75 9-43q5-18 20-12 13 6 7 25l-12 70q-3 34-25 56Z" fill="#ffd4a3"/><path d="M236 95h25M236 143h26M201 112h19M275 111h23" fill="none" stroke="#c58c6e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="250" cy="143" r="24" fill="none" stroke="#c76a86" stroke-width="5"/><path d="M281 143h66l22-20" fill="none" stroke="#c76a86" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">knuckle</text>
+</svg>

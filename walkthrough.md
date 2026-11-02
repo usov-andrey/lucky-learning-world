@@ -1,82 +1,41 @@
-# TASK-033 Walkthrough
+# TASK-034 Walkthrough
 
 ## Result
 
-- Added the `st-saying-s` lesson with all 18 photographed words in their original order.
-- Added child-friendly definitions, explanations, examples, hints, and meaningful alt text.
-- Added 18 original local SVG learning illustrations.
-- Generated 18 word tracks and 18 definition tracks with `en-GB-SoniaNeural` at `-15%`.
-- Added matching audio/image provenance and a speech-source manifest.
-- Extended catalog and compact-picker coverage for the ninth selectable lesson and newest default.
+- Added `silent-letters` with all 18 photographed words in order: whirl, wreck,
+  kneel, crumb, ascend, descend, wrangle, knuckle, limb, gnarled, plumbing,
+  elsewhere, ghoulish, succumb, fascinate, wrinkliest, overwhelm, dumbfounded.
+- Added English definitions, explanations, example sentences, hints, and alt text.
+- Created 18 distinct original SVG scenes illustrating the word meanings.
+- Generated 36 local MP3s with `en-GB-SoniaNeural` at `-15%` and recorded provenance.
+- Extended catalog and compact-picker regression coverage for ten lessons.
+- New players default to Silent Letters; existing valid saved choices are restored.
 
 ## Verification
 
-- Focused catalog and picker tests: 13/13 passed.
-- `npm test`: 147/147 passed.
-- `npm run test:coverage:gate`: passed; 82.81% lines, 66.14% branches, 74.53% functions.
-- `npm run test:e2e`: 1/1 full real-Chromium scenario passed.
-- Asset inventory: 18 SVG files and 36 non-empty MP3 files.
+- Catalog checks: 12/12 passed. Picker checks: 2/2 passed.
+- `npm test`: 148/148 passed.
+- `npm run test:coverage:gate`: passed; 82.94% lines, 66.20% branches, 74.63% functions.
+- Chromium audio QA decoded all 36 MP3s and checked non-silent audio data.
+- Rendered and visually inspected all 18 SVG illustrations in a preview grid.
+- `npm run test:e2e`: 1/1 full Chromium main scenario passed (85 seconds), including
+  Silent Letters Learn navigation, Digital Test, Paper Test, and a complete Tiles game.
+
+## Audio compatibility
+
+Preinstalled edge-tts 7.2.8 returned HTTP 403 during the service handshake.
+Installed official edge-tts 7.3.1 under project-local `.state/outputs` and used the
+existing Sonia-only generator successfully. No global installation or voice change.
+The source manifest and generated audio provenance record the exact speech input,
+voice, rate, generator version, and existing voice approval.
 
 ## Release
 
-- Target version: `v1.12.0`.
-- Deployment source: `master` via the repository's GitHub Pages workflow.
-- Task state: `RELEASED`.
+- Target version: `v1.13.0`.
+- Deployment source: `master` via the repository GitHub Pages workflow.
+- Deployment verification: pending.
 
----
+## Rollback
 
-# Previous TASK-032 Walkthrough
-
-## Result
-
-- Replaced the eight large lesson cards with one compact styled dropdown.
-- Kept the existing glass, violet, green, and gold visual language.
-- Made the newest catalog lesson the automatic default when no valid choice is saved.
-- Preserved each learner's valid saved lesson selection across app instances.
-- Kept all eight lessons selectable and synchronized with Learn, Test, and Tiles modes.
-- Preserved the required 64 px touch target and added an English accessible label.
-
-## Verification
-
-- Focused lesson-picker/catalog/navigation tests: 16/16 passed.
-- `npm test`: 146/146 passed.
-- `npm run test:coverage:gate`: passed; 82.62% lines, 65.85% branches, 74.21% functions.
-- `npm run test:e2e`: 1/1 full real-Chromium scenario passed.
-
-## Release
-
-- Target version: `v1.11.1`.
-- Released locally as `v1.11.1`.
-- Task state: `RELEASED`.
-
----
-
-# Previous TASK-029 Walkthrough: Wanted Pokémon from Spelling Tests
-
-## Result
-
-Lucky can now earn Glaceon, Geodude, Butterfree, and Mew by completing Word Realm
-spelling tests. Both Digital Test and Paper Test use the new priority reward pool.
-
-## Reward behaviour
-
-- Each completed spelling test awards one unowned Pokémon from the requested set.
-- No requested Pokémon is repeated while another requested Pokémon remains locked.
-- After all four are collected, later spelling tests return to the standard full-roster
-  reward fallback.
-- Tiles Game retains its previous ×6-first reward behaviour.
-- Math Duel reward pools and academic progression are unchanged.
-
-## Verification
-
-- TASK-029 focused tests: 4/4 passed.
-- `npm test`: 144/144 passed.
-- `npm run test:coverage:gate`: passed; 84.54% lines, 65.88% branches, 73.42% functions.
-- `npm run test:e2e`: 1/1 full real-Chromium scenario passed, including digital and
-  paper spelling tests plus Tiles mode.
-# TASK-030 Walkthrough
-
-- Added the `ive-saying-iv` lesson with the 18 photographed words in order.
-- Added child-friendly definitions, explanations, examples, hints, alt text, and local SVG art.
-- Generated 36 MP3 tracks with `en-GB-SoniaNeural` at `-15%` and recorded provenance.
-- Extended catalog and lesson-picker regression coverage; full suite passed before release.
+Revert the TASK-034 release commit on `master` and let GitHub Pages redeploy.
+No learner storage schema or prior lesson data was changed.

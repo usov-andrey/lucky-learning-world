@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">fascinate</title>
+  <desc id="desc">A curious child studying a colourful butterfly through a magnifying glass</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <circle cx="138" cy="158" r="28" fill="#ffd4a3"/><circle cx="129" cy="155" r="3" fill="#35446b"/><circle cx="147" cy="155" r="3" fill="#35446b"/><path d="M130 168q8 9 16 0" fill="none" stroke="#a1534c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="100" y="188" width="77" height="58" rx="12" fill="#8e9edb"/><path d="M170 202l72-25" fill="none" stroke="#ffd4a3" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle cx="302" cy="122" r="69" fill="#d7edf7" fill-opacity=".6" stroke="#8299bc" stroke-width="11"/><path d="M254 175l-39 48" fill="none" stroke="#8299bc" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="279" cy="107" rx="24" ry="30" fill="#c79bde"/><ellipse cx="328" cy="107" rx="24" ry="30" fill="#e7b36f"/><ellipse cx="280" cy="145" rx="18" ry="21" fill="#e7b36f"/><ellipse cx="327" cy="145" rx="18" ry="21" fill="#c79bde"/><path d="M303 95v62M303 95l-9-12M303 95l9-12" fill="none" stroke="#555378" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">fascinate</text>
+</svg>

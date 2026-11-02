@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">elsewhere</title>
+  <desc id="desc">A signpost pointing towards another place beyond the nearby house</desc>
+  <rect width="512" height="320" rx="30" fill="#eef6fb"/>
+  <circle cx="420" cy="65" r="65" fill="#e6e1f5"/>
+  <rect x="74" y="155" width="95" height="80" rx="12" fill="#b0c7e5"/><path d="M63 158l58-50 60 50Z" fill="#7d87ba"/><rect x="111" y="192" width="25" height="43" rx="3" fill="#fff0cf"/><path d="M253 114v130" fill="none" stroke="#947356" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 91h103l36 24-36 24H209Z" fill="#68b29e"/><path d="M230 115h77M297 105l12 10-12 10" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M285 245q44-49 112-16" fill="none" stroke="#dbbc82" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="408" cy="183" r="28" fill="#a7c3a0"/><path d="M408 187v48" fill="none" stroke="#8a7959" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#35446b">elsewhere</text>
+</svg>

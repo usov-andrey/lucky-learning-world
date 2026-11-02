@@ -1,0 +1,80 @@
+{
+  "lessonId": "silent-letters",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04, as required by DEVELOPMENT_RULES.md section 11.",
+  "words": [
+    {
+      "word": "whirl",
+      "definition": "To spin or turn around quickly."
+    },
+    {
+      "word": "wreck",
+      "definition": "Something badly damaged or destroyed, such as a ship or car."
+    },
+    {
+      "word": "kneel",
+      "definition": "To rest on one or both knees."
+    },
+    {
+      "word": "crumb",
+      "definition": "A very small piece of bread, cake, or biscuit."
+    },
+    {
+      "word": "ascend",
+      "definition": "To go or move upwards."
+    },
+    {
+      "word": "descend",
+      "definition": "To go or move downwards."
+    },
+    {
+      "word": "wrangle",
+      "definition": "To argue or disagree noisily for a long time."
+    },
+    {
+      "word": "knuckle",
+      "definition": "One of the joints where your fingers bend, especially where they meet your hand."
+    },
+    {
+      "word": "limb",
+      "definition": "An arm or leg of a person or animal, or a large branch of a tree."
+    },
+    {
+      "word": "gnarled",
+      "definition": "Rough, twisted, and knobbly."
+    },
+    {
+      "word": "plumbing",
+      "definition": "The system of pipes that carries water into and out of a building."
+    },
+    {
+      "word": "elsewhere",
+      "definition": "In, at, or to another place."
+    },
+    {
+      "word": "ghoulish",
+      "definition": "Strange and frightening, like something from a spooky story."
+    },
+    {
+      "word": "succumb",
+      "definition": "To stop resisting something or give in to it."
+    },
+    {
+      "word": "fascinate",
+      "definition": "To interest someone very much."
+    },
+    {
+      "word": "wrinkliest",
+      "definition": "Having the most wrinkles or small folds."
+    },
+    {
+      "word": "overwhelm",
+      "definition": "To affect someone so strongly that it feels hard to cope."
+    },
+    {
+      "word": "dumbfounded",
+      "definition": "So surprised that you do not know what to say."
+    }
+  ]
+}
