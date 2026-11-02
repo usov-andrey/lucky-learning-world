@@ -763,3 +763,5 @@ thoroughly.
 - **[AC-121] Verified Release and Deployment**:
   - Unit tests, coverage gate, and real-browser main-scenario checks MUST pass.
     `v1.13.0` MUST be committed and deployed from `master`, with verification recorded.
+  - Verify the live build and all 54 new image/audio assets; bounded retries for
+    transient CDN errors are allowed, but deployment success alone is insufficient.

@@ -38,7 +38,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-031](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-031-add-ic-spelling-lesson.md) | Add ‹-ic› Spelling Lesson | RELEASED | v1.11.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-032](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-032-compact-spelling-lesson-picker.md) | Compact Spelling Lesson Picker | RELEASED | v1.11.1 | 3 ACs | `tests/spelling-lesson-ui.test.mjs` | - |
 | [TASK-033](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-033-add-st-saying-s-spelling-lesson.md) | Add ‹st› Saying /s/ Spelling Lesson | RELEASED | v1.12.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
-| [TASK-034](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-034-add-silent-letters-spelling-lesson.md) | Add Silent Letters Spelling Lesson | TESTED | v1.13.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
+| [TASK-034](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-034-add-silent-letters-spelling-lesson.md) | Add Silent Letters Spelling Lesson | RELEASED | v1.13.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 
 ---
 

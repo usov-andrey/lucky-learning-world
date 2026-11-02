@@ -4,6 +4,7 @@
 ## 📦 Release v1.13.0 (2026-11-02) — [TASK-034] Add Silent Letters Spelling Lesson
 
 ### 📋 Acceptance Criteria Satisfied:
+- **AC-121**: All 148 tests, coverage gate, and Chromium main scenario passed; GitHub Pages deployed successfully and all 54 live image/audio assets matched the release.
 - **AC-118**: A stable `silent-letters` catalog lesson contains exactly the 18 photographed words in order, preserves all nine existing lessons, and becomes the default when no valid choice is saved.
 - **AC-119**: Each word has child-friendly English learning copy, meaningful alt text, a distinct original local SVG, and valid local Sonia (`en-GB-SoniaNeural`, `-15%`) word and definition MP3s with matching manifest and provenance.
 - **AC-120**: The compact picker exposes all ten lessons exactly once, preserves valid saved choices, and the new lesson works in Learn, Game, Digital Test, and Paper Test through the shared engine.

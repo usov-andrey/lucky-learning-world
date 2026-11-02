@@ -31,9 +31,19 @@ voice, rate, generator version, and existing voice approval.
 
 ## Release
 
-- Target version: `v1.13.0`.
+- Released version: `v1.13.0`.
+- Implementation commit: `7131070dce97111cc3d386117a9dff64c7e868b9`.
 - Deployment source: `master` via the repository GitHub Pages workflow.
-- Deployment verification: pending.
+- Workflow: https://github.com/usov-andrey/lucky-learning-world/actions/runs/41431109610
+  completed successfully, including the actual GitHub Pages deployment step.
+- Live site: https://usov-andrey.github.io/lucky-learning-world/
+- Verified the live version and manifest, then downloaded all 18 SVGs and 36 MP3s
+  and compared them with the local release (SVG line endings normalised).
+  Temporary CDN HTTP 503 responses cleared on bounded retries.
+- Repeated all 148 unit tests after the version bump: passed.
+- Task state: `RELEASED`; all AC-118–121 satisfied.
+- Local QA logs, illustration grid, audio decoding results, and live asset hashes
+  are retained under `.state/outputs/TASK-034-*` (not versioned).
 
 ## Rollback
 
