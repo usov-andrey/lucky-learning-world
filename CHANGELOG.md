@@ -4,6 +4,7 @@
 ## 📦 Release v1.14.0 (2026-11-10) — [TASK-035] Add ‹-ically› Spelling Lesson
 
 ### 📋 Acceptance Criteria Satisfied:
+- **AC-125**: All 149 tests, the coverage gate, and the Chromium main scenario passed. GitHub Pages serves v1.14.0, and all 54 new media files match the release.
 - **AC-122**: The stable lesson ID is ically-ending. Its 18 words match the photograph in order, and it is the default for players without a valid saved lesson.
 - **AC-123**: Each word has child-friendly English learning copy, an original SVG with meaningful alt text, and approved Sonia word and definition MP3s at -15% with matching manifest and provenance.
 - **AC-124**: The dropdown lists all eleven lessons exactly once, restores valid saved choices, and supports the new lesson in Learn, Tiles, Digital Test, and Paper Test.
@@ -12,7 +13,8 @@
 - `package.json`: `v1.14.0`
 - `build-info.js`: `APP_VERSION = "v1.14.0"`, `BUILD_TIMESTAMP = "2026-11-10T11:39:29.526Z"`
 - `sw.js`: `CACHE_NAME = "lucky-world-v1.14.0"`
-- `index.html` cache busters & `manifest.json`
+- `app.js` and `index.html` cache busters
+- `package-lock.json` synced to v1.14.0
 
 ---
 
