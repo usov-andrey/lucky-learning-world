@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">majestically</title>
+  <desc id="desc">An eagle with outstretched wings above mountain peaks</desc>
+  <rect width="512" height="320" rx="30" fill="#e5f2fa"/>
+  <circle cx="391" cy="73" r="35" fill="#ffdc8b"/>
+    <path d="M47 249 161 127l60 67 73-105 171 160Z" fill="#799cbb"/>
+    <path d="m124 167 37-40 38 42-38-12Zm132-24 38-54 58 54-57-18Z" fill="#f9fcfe"/>
+    <path d="M185 102q-50-7-93-47 27 55 62 68l-25 5 69 12 27-15 17 13 11-5-13-9 28 1q55-13 102-57-70 31-123 27l-25 8Z" fill="#765245"/>
+    <path d="M223 113q12-7 22 7l15 3-11 8-23-2" fill="#fff7e7"/><circle cx="241" cy="120" r="2.5" fill="#263853"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">majestically</text>
+</svg>

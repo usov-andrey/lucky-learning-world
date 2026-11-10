@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">vertically</title>
+  <desc id="desc">Upright books on a shelf beside an up-and-down arrow</desc>
+  <rect width="512" height="320" rx="30" fill="#e7f5f0"/>
+  <rect x="101" y="97" width="32" height="124" rx="5" fill="#557fb3"/><path d="M107 112h20m-20 94h20" stroke="#fff" stroke-width="3"/><rect x="138" y="73" width="38" height="148" rx="5" fill="#d27858"/><path d="M144 88h26m-26 118h26" stroke="#fff" stroke-width="3"/><rect x="181" y="112" width="32" height="109" rx="5" fill="#8162a9"/><path d="M187 127h20m-20 79h20" stroke="#fff" stroke-width="3"/>
+    <rect x="218" y="86" width="38" height="135" rx="5" fill="#5f9d87"/><path d="M224 101h26m-26 105h26" stroke="#fff" stroke-width="3"/><rect x="261" y="62" width="34" height="159" rx="5" fill="#dc9a4f"/><path d="M267 77h22m-22 129h22" stroke="#fff" stroke-width="3"/>
+    <rect x="78" y="221" width="244" height="14" rx="5" fill="#8a5a49"/>
+    <path d="M381 66v162m-17-143 17-19 17 19m-34 124 17 19 17-19" fill="none" stroke="#426b9d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">vertically</text>
+</svg>

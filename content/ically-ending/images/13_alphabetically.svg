@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">alphabetically</title>
+  <desc id="desc">Books sorted on a shelf under the letters A, B and C</desc>
+  <rect width="512" height="320" rx="30" fill="#fff2df"/>
+  <rect x="83" y="78" width="346" height="158" rx="10" fill="#f6d6a6" stroke="#9a6552" stroke-width="7"/>
+    <path d="M200 87v146m112-146v146" stroke="#9a6552" stroke-width="5"/>
+    <text x="142" y="115" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#283554">A</text><text x="256" y="115" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#283554">B</text><text x="370" y="115" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#283554">C</text>
+    <rect x="103" y="145" width="25" height="84" rx="5" fill="#6d90bb"/><path d="M109 160h13m-13 54h13" stroke="#fff" stroke-width="3"/><rect x="133" y="131" width="25" height="98" rx="5" fill="#8572aa"/><path d="M139 146h13m-13 68h13" stroke="#fff" stroke-width="3"/><rect x="163" y="151" width="24" height="78" rx="5" fill="#619888"/><path d="M169 166h12m-12 48h12" stroke="#fff" stroke-width="3"/>
+    <rect x="215" y="138" width="24" height="91" rx="5" fill="#c97557"/><path d="M221 153h12m-12 61h12" stroke="#fff" stroke-width="3"/><rect x="244" y="147" width="25" height="82" rx="5" fill="#7697be"/><path d="M250 162h13m-13 52h13" stroke="#fff" stroke-width="3"/><rect x="274" y="130" width="23" height="99" rx="5" fill="#619888"/><path d="M280 145h11m-11 69h11" stroke="#fff" stroke-width="3"/>
+    <rect x="326" y="154" width="25" height="75" rx="5" fill="#8569a5"/><path d="M332 169h13m-13 45h13" stroke="#fff" stroke-width="3"/><rect x="356" y="137" width="25" height="92" rx="5" fill="#bd6c53"/><path d="M362 152h13m-13 62h13" stroke="#fff" stroke-width="3"/><rect x="386" y="146" width="25" height="83" rx="5" fill="#629787"/><path d="M392 161h13m-13 53h13" stroke="#fff" stroke-width="3"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">alphabetically</text>
+</svg>

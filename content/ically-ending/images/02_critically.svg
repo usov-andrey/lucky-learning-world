@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">critically</title>
+  <desc id="desc">A magnifying glass inspecting a weak joint in a paper bridge</desc>
+  <rect width="512" height="320" rx="30" fill="#e7f1fa"/>
+  <path d="M72 204h366M112 201v-49m283 49v-49M100 149h310M110 145l50-62 52 62 50-62 50 62 55-62 37 62M160 82h207" fill="none" stroke="#a56e4e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="260" cy="89" r="54" fill="#f5fbff" fill-opacity=".9" stroke="#406c91" stroke-width="9"/>
+    <path d="M299 128l59 59" stroke="#406c91" stroke-width="18" stroke-linecap="round"/>
+    <path d="m227 92 21-18 8 17 12-11 16 12" fill="none" stroke="#bd5b56" stroke-width="7" stroke-linecap="round"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">critically</text>
+</svg>

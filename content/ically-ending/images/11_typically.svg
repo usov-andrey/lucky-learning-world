@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">typically</title>
+  <desc id="desc">Three weekly calendars showing a library book on each Friday</desc>
+  <rect width="512" height="320" rx="30" fill="#e9f2f8"/>
+  <g transform="translate(63 71)"><rect width="122" height="157" rx="10" fill="#fff" stroke="#7795b6" stroke-width="4"/>
+      <path d="M0 12Q0 0 12 0h98q12 0 12 12v32H0Z" fill="#6287af"/>
+      <text x="61" y="29" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">Week 1</text><text x="61" y="75" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#283554">Friday</text>
+      <rect x="33" y="91" width="56" height="41" rx="6" fill="#e1f1e8"/><path d="M61 124q-8-9-20-6v-21q13-2 20 7 7-9 20-7v21q-12-3-20 6Z" fill="#7bb19c" stroke="#467c71" stroke-width="3"/>
+    </g><g transform="translate(195 71)"><rect width="122" height="157" rx="10" fill="#fff" stroke="#7795b6" stroke-width="4"/>
+      <path d="M0 12Q0 0 12 0h98q12 0 12 12v32H0Z" fill="#6287af"/>
+      <text x="61" y="29" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">Week 2</text><text x="61" y="75" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#283554">Friday</text>
+      <rect x="33" y="91" width="56" height="41" rx="6" fill="#e1f1e8"/><path d="M61 124q-8-9-20-6v-21q13-2 20 7 7-9 20-7v21q-12-3-20 6Z" fill="#7bb19c" stroke="#467c71" stroke-width="3"/>
+    </g><g transform="translate(327 71)"><rect width="122" height="157" rx="10" fill="#fff" stroke="#7795b6" stroke-width="4"/>
+      <path d="M0 12Q0 0 12 0h98q12 0 12 12v32H0Z" fill="#6287af"/>
+      <text x="61" y="29" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">Week 3</text><text x="61" y="75" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#283554">Friday</text>
+      <rect x="33" y="91" width="56" height="41" rx="6" fill="#e1f1e8"/><path d="M61 124q-8-9-20-6v-21q13-2 20 7 7-9 20-7v21q-12-3-20 6Z" fill="#7bb19c" stroke="#467c71" stroke-width="3"/>
+    </g>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">typically</text>
+</svg>

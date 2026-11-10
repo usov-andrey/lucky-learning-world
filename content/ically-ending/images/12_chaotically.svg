@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">chaotically</title>
+  <desc id="desc">Loose papers swirling in different directions from an open window</desc>
+  <rect width="512" height="320" rx="30" fill="#edf5fb"/>
+  <rect x="56" y="48" width="143" height="156" rx="5" fill="#c6e9f8" stroke="#4c7594" stroke-width="8"/>
+    <path d="M66 52l69 27v151l-69-27Z" fill="#e9f6fd" stroke="#4c7594" stroke-width="6"/><path d="M101 64v152m-33-93 66 26" stroke="#7fa7be" stroke-width="4"/>
+    <path d="M158 124q81-38 151 2t129-9m-272 34q45 2 72 45t87 16m-109-119q55-32 127-8" fill="none" stroke="#94b4d5" stroke-width="6" stroke-linecap="round"/>
+    <g transform="translate(220 73) rotate(-28)"><rect x="-23" y="-28" width="46" height="56" rx="4" fill="#fff"/><path d="M-13-13h26m-26 12h26m-26 12h17" stroke="#8897af" stroke-width="3"/></g><g transform="translate(291 171) rotate(34)"><rect x="-23" y="-28" width="46" height="56" rx="4" fill="#fff"/><path d="M-13-13h26m-26 12h26m-26 12h17" stroke="#8897af" stroke-width="3"/></g><g transform="translate(369 64) rotate(24)"><rect x="-23" y="-28" width="46" height="56" rx="4" fill="#fff"/><path d="M-13-13h26m-26 12h26m-26 12h17" stroke="#8897af" stroke-width="3"/></g><g transform="translate(415 151) rotate(-40)"><rect x="-23" y="-28" width="46" height="56" rx="4" fill="#fff"/><path d="M-13-13h26m-26 12h26m-26 12h17" stroke="#8897af" stroke-width="3"/></g><g transform="translate(365 223) rotate(13)"><rect x="-23" y="-28" width="46" height="56" rx="4" fill="#fff"/><path d="M-13-13h26m-26 12h26m-26 12h17" stroke="#8897af" stroke-width="3"/></g>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">chaotically</text>
+</svg>

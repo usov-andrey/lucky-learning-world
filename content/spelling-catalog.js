@@ -1392,7 +1392,43 @@ export const SILENT_LETTERS_LESSON = {
   }))
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON];
+export const ICALLY_ENDING_LESSON = {
+  id: "ically-ending",
+  title: "Spelling Test",
+  pageLabel: "‹-ically›",
+  topic: "Words ending in ‹-ically›",
+  wordCount: 18,
+  words: [
+    ["artistically", "In a creative way that shows skill or imagination.", "You can arrange ordinary shapes and colours artistically to make something beautiful or interesting.", "Lucky arranged the paper leaves artistically to make a picture of a bird.", "With creativity and skill", "A colourful bird collage made from paper leaves"],
+    ["critically", "By looking closely at what works well and what could be better.", "Thinking critically means looking for reasons and evidence before deciding what you think.", "We looked critically at our paper bridge and decided which parts needed more support.", "By checking strengths and weaknesses carefully", "A magnifying glass inspecting a weak joint in a paper bridge"],
+    ["logically", "In a sensible way, using reasons that fit together.", "When you think logically, each clue helps you decide what follows from it.", "Lucky worked logically through the clues to find the missing puzzle piece.", "Using reasons that fit together", "Three puzzle pieces in a row leading to the missing space"],
+    ["quizzically", "In a way that shows you are puzzled or curious.", "A tilted head or a raised eyebrow can show you are wondering what is going on.", "The cat tilted its head quizzically when the toy started to beep.", "With a puzzled or curious look", "A puzzled cat tilting its head at a beeping toy"],
+    ["basically", "In simple terms, with just the main idea.", "You can say basically before explaining the most important part and leaving out the extra details.", "Basically, the game is a race to collect three stars.", "With just the main idea", "A busy set of game rules reduced to three stars and a finish flag"],
+    ["vertically", "In an up-and-down direction.", "A vertical line runs straight up and down, like the side of a tall building.", "We stood the books vertically on the shelf.", "Straight up and down", "Upright books on a shelf beside an up-and-down arrow"],
+    ["historically", "In the past or in the history of a place or subject.", "You can use historically to talk about how people lived or did things in earlier times.", "Historically, people used sailing ships to carry goods across the sea.", "In earlier times", "An old sailing ship carrying crates across the sea"],
+    ["politically", "In a way that relates to government or public decisions.", "When people are politically active, they take part in decisions about how their town or country is run.", "People can get involved politically by voting in local elections.", "In a way connected with government", "A hand putting a ballot into a voting box"],
+    ["romantically", "In a way that shows love or affection between people in a relationship.", "A romantic gesture can be as simple as leaving a thoughtful note or giving someone flowers.", "They celebrated their anniversary romantically with flowers and a candlelit dinner.", "In a way that expresses romantic love", "Two place settings, a candle and a vase of roses"],
+    ["technically", "If you follow the exact rules or meaning.", "People say technically when a detail is true according to a rule or a precise definition.", "Technically, a square is a rectangle because all four of its corners are right angles.", "According to the exact rule", "A square and a rectangle with their right angles marked"],
+    ["typically", "In the usual or expected way.", "Typically tells you what usually happens, even though there can be exceptions.", "Our class typically visits the library on Friday.", "Usually or as you would expect", "Three weekly calendars showing a library book on each Friday"],
+    ["chaotically", "In a very confused and messy way.", "Things move chaotically when they go in many directions without a clear order.", "The papers flew chaotically around the room when the window blew open.", "In a confused, disorganised way", "Loose papers swirling in different directions from an open window"],
+    ["alphabetically", "In the order of the letters of the alphabet.", "To put words in alphabetical order, compare the first letters. If they match, compare the next letters.", "We arranged the books alphabetically by the authors' surnames.", "In A-to-Z order", "Books sorted on a shelf under the letters A, B and C"],
+    ["traumatically", "In a way that causes lasting distress or serious injury.", "A very frightening event can affect someone for a long time. Care and support can help them feel safe again.", "The loss of their home affected the family traumatically, and neighbours helped them feel safe again.", "In a way that causes serious or lasting harm", "A family receiving a blanket and support after losing their home"],
+    ["majestically", "In a grand, impressive and dignified way.", "Something that moves majestically often looks powerful, calm and graceful.", "The eagle soared majestically above the mountains.", "With impressive grace and dignity", "An eagle with outstretched wings above mountain peaks"],
+    ["rhythmically", "With a regular pattern of beats or movements.", "A sound or movement is rhythmic when its pattern repeats steadily, like clapping to music.", "Lucky tapped the drum rhythmically while her friends clapped along.", "With a steady, repeating beat", "A drum with a repeating row of beat marks"],
+    ["sarcastically", "By saying one thing while meaning something different, often the opposite, to tease or criticise.", "Tone can help you spot sarcasm. Someone might say that a mess looks tidy while clearly meaning it looks messy.", "Looking at the muddy floor, Ben said sarcastically, 'Well, that's spotless!'", "By saying the opposite to tease or criticise", "A speech bubble saying “That’s spotless!” above muddy footprints on a floor"],
+    ["catastrophically", "In a way that causes very serious damage or failure.", "If something fails catastrophically, the damage is so severe that the whole thing may stop working.", "The model tower failed catastrophically when its base broke and the whole structure fell.", "With very serious damage or failure", "A model tower collapsing after its base snaps"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => {
+    const stem = `${String(index + 1).padStart(2, "0")}_${word}`;
+    return {
+      word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+      image: `content/ically-ending/images/${stem}.svg`,
+      audio: `content/ically-ending/audio/${stem}.mp3`,
+      definitionAudio: `content/ically-ending/audio/definitions/${stem}.mp3`
+    };
+  })
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON, ICALLY_ENDING_LESSON];
 export const DEFAULT_SPELLING_LESSON_ID = SPELLING_LESSONS.at(-1)?.id || PAGE_22_LESSON.id;
 
 export function getSpellingLesson(id) {

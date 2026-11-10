@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">artistically</title>
+  <desc id="desc">A colourful bird collage made from paper leaves</desc>
+  <rect width="512" height="320" rx="30" fill="#fff0dc"/>
+  <rect x="109" y="32" width="294" height="222" rx="12" fill="#fffdf7" stroke="#e8bb82" stroke-width="7"/>
+    <path transform="translate(203 153) rotate(-29)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#e06b53"/><path transform="translate(223 175) rotate(2)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#eb9a4b"/>
+    <path transform="translate(255 145) rotate(28)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#6ca8a0"/><path transform="translate(258 161) rotate(-34)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#3b8b8c"/>
+    <path transform="translate(286 134) rotate(-57)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#7259a6"/><path transform="translate(300 107) rotate(-38)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#408a9e"/>
+    <circle cx="322" cy="82" r="24" fill="#408a9e"/><path d="m341 76 31 12-30 11" fill="#e59a41"/>
+    <circle cx="328" cy="76" r="4" fill="#233754"/><path d="M249 176l-3 30m28-38 5 32" stroke="#aa663e" stroke-width="6"/>
+    <path d="M183 208h146" stroke="#88a466" stroke-width="6"/>
+    <path transform="translate(177 71) rotate(16)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#ffc962"/><path transform="translate(351 216) rotate(-21)" d="M-40 0Q-12-37 41 0Q-12 37-40 0Z" fill="#a6b78a"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">artistically</text>
+</svg>

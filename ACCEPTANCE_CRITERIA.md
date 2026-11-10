@@ -765,3 +765,19 @@ thoroughly.
     `v1.13.0` MUST be committed and deployed from `master`, with verification recorded.
   - Verify the live build and all 54 new image/audio assets; bounded retries for
     transient CDN errors are allowed, but deployment success alone is insufficient.
+
+## 38. Add ‹-ically› Spelling Lesson (TASK-035)
+
+- **[AC-122] Catalog and New Default**
+  - The `ically-ending` lesson contains all 18 photographed words in order and is
+    the default when the saved selection is missing or invalid.
+- **[AC-123] English Content and Local Media**
+  - Every word has child-friendly English learning content, a distinct original
+    SVG with meaningful alt text, and valid local Sonia (`en-GB-SoniaNeural`,
+    `-15%`) word and definition MP3s with matching manifest and provenance.
+- **[AC-124] Picker and Shared Modes**
+  - The picker shows all eleven lessons exactly once and restores valid saved
+    selections. Learn, Tiles, Digital Test, and Paper Test use the new lesson.
+- **[AC-125] Verified Release and Deployment**
+  - Unit tests, coverage gate, and Chromium main scenario pass. GitHub Pages
+    serves v1.14.0 from master. All 54 new image and audio assets match the release.

@@ -1,0 +1,80 @@
+{
+  "lessonId": "ically-ending",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04, as required by DEVELOPMENT_RULES.md section 11.",
+  "words": [
+    {
+      "word": "artistically",
+      "definition": "In a creative way that shows skill or imagination."
+    },
+    {
+      "word": "critically",
+      "definition": "By looking closely at what works well and what could be better."
+    },
+    {
+      "word": "logically",
+      "definition": "In a sensible way, using reasons that fit together."
+    },
+    {
+      "word": "quizzically",
+      "definition": "In a way that shows you are puzzled or curious."
+    },
+    {
+      "word": "basically",
+      "definition": "In simple terms, with just the main idea."
+    },
+    {
+      "word": "vertically",
+      "definition": "In an up-and-down direction."
+    },
+    {
+      "word": "historically",
+      "definition": "In the past or in the history of a place or subject."
+    },
+    {
+      "word": "politically",
+      "definition": "In a way that relates to government or public decisions."
+    },
+    {
+      "word": "romantically",
+      "definition": "In a way that shows love or affection between people in a relationship."
+    },
+    {
+      "word": "technically",
+      "definition": "If you follow the exact rules or meaning."
+    },
+    {
+      "word": "typically",
+      "definition": "In the usual or expected way."
+    },
+    {
+      "word": "chaotically",
+      "definition": "In a very confused and messy way."
+    },
+    {
+      "word": "alphabetically",
+      "definition": "In the order of the letters of the alphabet."
+    },
+    {
+      "word": "traumatically",
+      "definition": "In a way that causes lasting distress or serious injury."
+    },
+    {
+      "word": "majestically",
+      "definition": "In a grand, impressive and dignified way."
+    },
+    {
+      "word": "rhythmically",
+      "definition": "With a regular pattern of beats or movements."
+    },
+    {
+      "word": "sarcastically",
+      "definition": "By saying one thing while meaning something different, often the opposite, to tease or criticise."
+    },
+    {
+      "word": "catastrophically",
+      "definition": "In a way that causes very serious damage or failure."
+    }
+  ]
+}

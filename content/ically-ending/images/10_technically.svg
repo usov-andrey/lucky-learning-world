@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">technically</title>
+  <desc id="desc">A square and a rectangle with their right angles marked</desc>
+  <rect width="512" height="320" rx="30" fill="#eef0fd"/>
+  <rect x="89" y="70" width="125" height="125" rx="5" fill="#bcdacb" stroke="#427d77" stroke-width="5"/>
+    <rect x="256" y="70" width="169" height="125" rx="5" fill="#c7d9ee" stroke="#516e9e" stroke-width="5"/>
+    <path d="M101 97h16V81m69 0v16h16m-101 71h16v16m69 0v-16h16m66-71h16V81m113 0v16h16m-145 71h16v16m113 0v-16h16" fill="none" stroke="#43496b" stroke-width="4"/>
+    <text x="151" y="231" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#283554">Square</text><text x="341" y="231" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#283554">Rectangle</text>
+    <text x="151" y="144" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#283554">90°</text><text x="341" y="144" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#283554">90°</text>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">technically</text>
+</svg>

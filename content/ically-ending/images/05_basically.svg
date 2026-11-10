@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">basically</title>
+  <desc id="desc">A busy set of game rules reduced to three stars and a finish flag</desc>
+  <rect width="512" height="320" rx="30" fill="#fff3dc"/>
+  <rect x="72" y="61" width="135" height="167" rx="12" fill="#fff" stroke="#d9a16a" stroke-width="6"/>
+    <path d="M99 88h80m-80 27h61m-61 27h83m-83 27h55m-55 27h74" stroke="#9aa3ba" stroke-width="7" stroke-linecap="round"/>
+    <path d="M225 142h57l-15-12m15 12-15 12" fill="none" stroke="#8366a5" stroke-width="7" stroke-linecap="round"/>
+    <path transform="translate(320 117) scale(0.63)" d="M0-22 6-7 22-7 10 3 14 19 0 10-14 19-10 3-22-7-6-7Z" fill="#ffc45c" stroke="#a9612e" stroke-width="2.5"/><path transform="translate(364 117) scale(0.63)" d="M0-22 6-7 22-7 10 3 14 19 0 10-14 19-10 3-22-7-6-7Z" fill="#ffc45c" stroke="#a9612e" stroke-width="2.5"/><path transform="translate(408 117) scale(0.63)" d="M0-22 6-7 22-7 10 3 14 19 0 10-14 19-10 3-22-7-6-7Z" fill="#ffc45c" stroke="#a9612e" stroke-width="2.5"/>
+    <path d="M365 213v-69" stroke="#314565" stroke-width="5"/>
+    <path d="M368 145h66l-18 18 18 18h-66Z" fill="#579e8d"/>
+    <path d="M346 217h38" stroke="#314565" stroke-width="6" stroke-linecap="round"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">basically</text>
+</svg>

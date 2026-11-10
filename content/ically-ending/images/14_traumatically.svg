@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">traumatically</title>
+  <desc id="desc">A family receiving a blanket and support after losing their home</desc>
+  <rect width="512" height="320" rx="30" fill="#ebf2f5"/>
+  <path d="M62 185v-55l69-61 68 61v55Z" fill="#e4d3ca" stroke="#9b7c74" stroke-width="4"/>
+    <path d="m54 135 77-68 27 24-13 7 11 10-13 9 18 7m12-18 35 29" fill="none" stroke="#ab8076" stroke-width="8" stroke-linecap="round"/>
+    <rect x="115" y="143" width="32" height="42" fill="#aa8f88"/>
+    <path d="M55 202h402" stroke="#b4c9cf" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="249" cy="109" r="24" fill="#b17856"/><circle cx="297" cy="141" r="19" fill="#c88c65"/>
+    <path d="M213 196v-35q0-29 35-29t35 29v35m-16 0v-21q0-17 30-17t30 17v21" fill="#7a8ab4"/>
+    <circle cx="394" cy="100" r="25" fill="#e3ad86"/><path d="M356 198v-37q0-34 38-34t38 34v37" fill="#569789"/>
+    <path d="M371 152 326 174" stroke="#e3ad86" stroke-width="15" stroke-linecap="round"/>
+    <path d="M233 161q47 15 96 0v67h-96Z" fill="#eab76e" stroke="#b58155" stroke-width="4"/>
+    <path d="M245 179h72m-72 15h72m-72 15h72" stroke="#c88e58" stroke-width="4"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">traumatically</text>
+</svg>

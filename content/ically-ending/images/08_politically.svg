@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">politically</title>
+  <desc id="desc">A hand putting a ballot into a voting box</desc>
+  <rect width="512" height="320" rx="30" fill="#e9effb"/>
+  <rect x="148" y="151" width="217" height="103" rx="12" fill="#7796c5"/>
+    <path d="m146 154 29-34h164l29 34Z" fill="#9db6dd" stroke="#486a9f" stroke-width="5"/>
+    <path d="M215 139h82" stroke="#304971" stroke-width="7" stroke-linecap="round"/>
+    <g transform="rotate(-13 248 103)"><rect x="220" y="67" width="57" height="69" rx="5" fill="#fff" stroke="#506c97" stroke-width="4"/>
+      <path d="m235 104 10 10 18-23" fill="none" stroke="#4f9c86" stroke-width="6" stroke-linecap="round"/></g>
+    <path d="M358 25h-65q-17 0-30 10l-35 25q-12 9-5 19 6 8 16 4l35-14 23 13q20 10 47-7h14" fill="#eab286" stroke="#b27864" stroke-width="4"/>
+    <path d="M350 23h72v61h-72Z" fill="#7468a2"/>
+    <text x="256" y="218" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#fff">VOTE</text>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">politically</text>
+</svg>

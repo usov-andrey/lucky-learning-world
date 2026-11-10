@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">sarcastically</title>
+  <desc id="desc">A speech bubble saying “That’s spotless!” above muddy footprints on a floor</desc>
+  <rect width="512" height="320" rx="30" fill="#f7efd9"/>
+  <path d="M64 141h385v106H64Z" fill="#dfc39d"/><path d="M64 172h385m-385 37h385m-280-67v29m148-29v29m-70 2v36m-122 1v37m245-37v37" fill="none" stroke="#c7a981" stroke-width="4"/>
+    <g transform="translate(127 209) rotate(62)"><ellipse rx="12" ry="19" fill="#8d644f"/><ellipse cy="24" rx="8" ry="9" fill="#8d644f"/></g><g transform="translate(190 227) rotate(62)"><ellipse rx="12" ry="19" fill="#8d644f"/><ellipse cy="24" rx="8" ry="9" fill="#8d644f"/></g><g transform="translate(253 209) rotate(62)"><ellipse rx="12" ry="19" fill="#8d644f"/><ellipse cy="24" rx="8" ry="9" fill="#8d644f"/></g><g transform="translate(316 227) rotate(62)"><ellipse rx="12" ry="19" fill="#8d644f"/><ellipse cy="24" rx="8" ry="9" fill="#8d644f"/></g><g transform="translate(379 209) rotate(62)"><ellipse rx="12" ry="19" fill="#8d644f"/><ellipse cy="24" rx="8" ry="9" fill="#8d644f"/></g>
+    <path d="M122 48h268q20 0 20 20v40q0 20-20 20H241l-34 26 5-26h-90q-20 0-20-20V68q0-20 20-20Z" fill="#fffdf7" stroke="#9e7397" stroke-width="5"/>
+    <text x="256" y="99" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#283554">“That’s spotless!”</text>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">sarcastically</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">historically</title>
+  <desc id="desc">An old sailing ship carrying crates across the sea</desc>
+  <rect width="512" height="320" rx="30" fill="#e2f0fb"/>
+  <circle cx="392" cy="70" r="34" fill="#ffd27d"/>
+    <path d="M46 220q31-12 62 0t62 0 62 0 62 0 62 0 62 0 62 0v35H46Z" fill="#659fbf"/>
+    <path d="M123 183h267l-36 43H164Z" fill="#925941"/><path d="M133 193h246" stroke="#e8b983" stroke-width="6"/>
+    <path d="M235 55v130m64-106v106" stroke="#795749" stroke-width="7"/>
+    <path d="M230 62q-1 49-70 91h70Zm12 3v89h48q-33-44-48-89Zm63 17v69h58q-31-18-58-69Z" fill="#fff9e8" stroke="#b28f70" stroke-width="3"/>
+    <path d="M239 55h44l-13 12h-31" fill="#dc795e"/>
+    <rect x="171" y="161" width="35" height="22" fill="#d7a26d" stroke="#925941" stroke-width="3"/>
+    <rect x="316" y="162" width="32" height="22" fill="#d7a26d" stroke="#925941" stroke-width="3"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">historically</text>
+</svg>

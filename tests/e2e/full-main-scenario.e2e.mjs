@@ -287,11 +287,13 @@ test(
       );
       console.log(`[e2e] Math Mix complete: ${JSON.stringify(mixProgressSeen)}`);
 
+      // @task TASK-035
+      // @ac AC-124: The -ically lesson works across Learn, Digital, Paper and Tiles.
       // --- Word Realm: Learn mode, all words forward and back ----------------
       await page.locator("#btn-enter-word").click();
-      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "silent-letters");
-      assert.equal(await page.locator("#spelling-lesson-select option").count(), 10);
-      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "WHIRL");
+      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "ically-ending");
+      assert.equal(await page.locator("#spelling-lesson-select option").count(), 11);
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "ARTISTICALLY");
       const totalWords = await page.evaluate(() => window.appController.spellingEngine.deck.words.length);
       assert.ok(totalWords > 1, "expected a spelling lesson with more than one word");
 
@@ -303,6 +305,7 @@ test(
       }
       let learnText = (await page.locator("#learn-progress-text").textContent()).trim();
       assert.equal(learnText, `Word ${totalWords} of ${totalWords}`);
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "CATASTROPHICALLY");
 
       for (let i = 1; i < totalWords; i += 1) {
         await page.locator("#btn-learn-prev").click();

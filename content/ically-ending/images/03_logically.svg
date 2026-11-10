@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">logically</title>
+  <desc id="desc">Three puzzle pieces in a row leading to the missing space</desc>
+  <rect width="512" height="320" rx="30" fill="#e8f5ee"/>
+  <path d="M74 82h41q-9-26 13-26t13 26h35v39q26-10 26 12t-26 12v40H74v-39q26 10 26-12T74 121Z" fill="#4b9d90"/>
+    <path d="M204 82h41q-9-26 13-26t13 26h35v39q26-10 26 12t-26 12v40H204v-39q26 10 26-12t-26-13Z" fill="#598ec0"/>
+    <path d="M334 82h41q-9-26 13-26t13 26h35v39q26-10 26 12t-26 12v40H334v-39q26 10 26-12t-26-13Z" fill="#fff" stroke="#8164a9" stroke-width="5" stroke-dasharray="8 6"/>
+    <path d="M114 221h280l-18-12m18 12-18 12" fill="none" stroke="#547084" stroke-width="6" stroke-linecap="round"/>
+    <text x="124" y="143" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#fff">1</text><text x="254" y="143" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#fff">2</text><text x="386" y="143" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#283554">?</text>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">logically</text>
+</svg>

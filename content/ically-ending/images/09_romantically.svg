@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">romantically</title>
+  <desc id="desc">Two place settings, a candle and a vase of roses</desc>
+  <rect width="512" height="320" rx="30" fill="#fbe9ef"/>
+  <ellipse cx="256" cy="188" rx="176" ry="46" fill="#d48192"/>
+    <path d="M90 193v45m331-45v45" stroke="#975e70" stroke-width="13" stroke-linecap="round"/>
+    <ellipse cx="256" cy="178" rx="171" ry="43" fill="#edb0b9"/>
+    <ellipse cx="154" cy="177" rx="45" ry="19" fill="#fff9ee" stroke="#c97889" stroke-width="4"/>
+    <ellipse cx="356" cy="177" rx="45" ry="19" fill="#fff9ee" stroke="#c97889" stroke-width="4"/>
+    <path d="M207 175v-61h16v61" fill="#fff9ee" stroke="#bc7e70" stroke-width="3"/>
+    <path d="M215 85q-16 20 0 24 15-4 0-24Z" fill="#ed9654"/>
+    <path d="M278 130v-57m0 39 27-34m-27 29-26-34" fill="none" stroke="#5d9877" stroke-width="5"/>
+    <circle cx="278" cy="68" r="13" fill="#bd586f"/><circle cx="306" cy="75" r="12" fill="#db7387"/><circle cx="253" cy="71" r="12" fill="#db7387"/>
+    <path d="M260 125h38l-4 48q-15 11-30 0Z" fill="#7966a3"/>
+    <path d="M156 94q-30-16-19-32 10-11 19 3 9-14 19-3 12 16-19 32Z" fill="#c66c86"/>
+  <text x="256" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#283554">romantically</text>
+</svg>
