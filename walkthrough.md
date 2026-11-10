@@ -25,4 +25,6 @@
 
 - Target version v1.14.0.
 - Deployment source is `master` via the GitHub Pages workflow.
+- [Initial deployment](https://github.com/usov-andrey/lucky-learning-world/actions/runs/42809375731) timed out while syncing files.
+- The retry packages only tracked files and reports deploy errors as failed jobs.
 - Revert the release commit on `master` to roll back the lesson.

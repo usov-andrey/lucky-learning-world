@@ -25,6 +25,13 @@ catastrophically.
 - [x] **AC-124**: The dropdown lists all eleven lessons exactly once, restores valid saved choices, and supports the new lesson in Learn, Tiles, Digital Test, and Paper Test.
 - [ ] **AC-125**: The full suite, coverage gate, and Chromium scenario pass. GitHub Pages serves v1.14.0 from master and all 54 new illustrations and audio files match the release.
 
+### Deployment retry
+
+The first Pages deployment (run 42809375731) timed out while syncing files.
+AC-125 additionally requires the retry to package the tracked snapshot of the
+release, including the legacy entry points and all 54 new media files. The
+Pages job must surface a deployment error as a failed job.
+
 ## Test Coverage
 
 - `tests/spelling-lesson-catalog.test.mjs`

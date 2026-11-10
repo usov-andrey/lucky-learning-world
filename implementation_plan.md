@@ -6,3 +6,4 @@
    pronunciation and definition MP3s with the approved Sonia settings.
 3. Extend the catalog, picker, and Chromium scenario checks for the new lesson.
 4. Bump the version to v1.14.0, deploy to GitHub Pages, and verify the live files.
+5. After the first Pages timeout, retry from a tracked Git snapshot and verify its published contents.

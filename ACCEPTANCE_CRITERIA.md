@@ -781,3 +781,5 @@ thoroughly.
 - **[AC-125] Verified Release and Deployment**
   - Unit tests, coverage gate, and Chromium main scenario pass. GitHub Pages
     serves v1.14.0 from master. All 54 new image and audio assets match the release.
+  - After the original deployment timed out, retry with a tracked-source
+    snapshot including legacy entry points. Surface deploy errors in the job status.
