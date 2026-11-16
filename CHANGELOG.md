@@ -7,6 +7,7 @@
 - **AC-126**: A stable `schwa-al` lesson presents all 18 photographed words in order, preserves the existing eleven lessons and is the default when there is no valid saved choice.
 - **AC-127**: All words have English explanations, examples, hints and original local illustrations. The 36 matching word and definition MP3s use approved British Sonia at `-15%`, with provenance.
 - **AC-128**: The picker shows twelve unique lessons and restores valid saved choices. Schwa ‹al› works in Learn, Tiles, Digital Test and Paper Test.
+- **AC-129**: The unit suite, coverage gate and Chromium scenario pass. GitHub Pages serves v1.15.0 and all 54 media assets match the release.
 
 ### 💻 Target Version Files Updated:
 - `package.json`: `v1.15.0`

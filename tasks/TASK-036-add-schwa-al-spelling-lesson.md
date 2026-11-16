@@ -1,7 +1,7 @@
 ---
 id: TASK-036
 title: "Add Schwa ‹al› Spelling Lesson"
-status: TESTED
+status: RELEASED
 version: v1.15.0
 created: 2026-11-16
 github_issue: null
@@ -18,7 +18,7 @@ festival, material, cathedral.
 - [x] **AC-126**: A stable `schwa-al` lesson presents all 18 photographed words in order, preserves the existing eleven lessons and is the default when there is no valid saved choice.
 - [x] **AC-127**: All words have English explanations, examples, hints and original local illustrations. The 36 matching word and definition MP3s use approved British Sonia at `-15%`, with provenance.
 - [x] **AC-128**: The picker shows twelve unique lessons and restores valid saved choices. Schwa ‹al› works in Learn, Tiles, Digital Test and Paper Test.
-- [ ] **AC-129**: The unit suite, coverage gate and Chromium scenario pass. GitHub Pages serves v1.15.0 and all 54 media assets match the release.
+- [x] **AC-129**: The unit suite, coverage gate and Chromium scenario pass. GitHub Pages serves v1.15.0 and all 54 media assets match the release.
 
 ## Verification
 
@@ -32,3 +32,6 @@ The Learn scenario checks both endpoints of the new lesson, animal and cathedral
 
 - `docs/releases/v1.15.0.md`
 - `docs/walkthroughs/TASK-036-walkthrough.md`
+
+GitHub Pages deployed commit `8b35458c0fa1676ae6c59b50c6724447eecd69f9`.
+The public version, manifest and all 54 media files were verified on 2026-11-16.
