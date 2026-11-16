@@ -40,6 +40,7 @@ Every feature, bugfix, or plan MUST have a corresponding task file in `tasks/`.
 | [TASK-033](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-033-add-st-saying-s-spelling-lesson.md) | Add ‹st› Saying /s/ Spelling Lesson | RELEASED | v1.12.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-034](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-034-add-silent-letters-spelling-lesson.md) | Add Silent Letters Spelling Lesson | RELEASED | v1.13.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 | [TASK-035](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-035-add-ically-spelling-lesson.md) | Add ‹-ically› Spelling Lesson | RELEASED | v1.14.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
+| [TASK-036](file:///D:/SD/personal/projects/lucky-learning-world/tasks/TASK-036-add-schwa-al-spelling-lesson.md) | Add Schwa ‹al› Spelling Lesson | TESTED | v1.15.0 | 4 ACs | `tests/spelling-lesson-catalog.test.mjs` | - |
 
 ---
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">crystal</title>
+  <desc id="desc">A cluster of three purple quartz crystals with flat faces</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#f0e9fc"/>
+  <ellipse cx="254" cy="219" rx="139" ry="20" fill="#ddd0f0"/><g transform="translate(201 185)"><path d="M-36 36l8-91L0-91l28 36 8 91Z" fill="#8b6ac8"/><path d="M-36 36l8-91L0-91v127Z" fill="#ba9ae7"/><path d="M-28-55L0-31l28-24M0-31v67" fill="none" stroke="#e1dafa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(258 155)"><path d="M-36 36l8-91L0-91l28 36 8 91Z" fill="#7753b9"/><path d="M-36 36l8-91L0-91v127Z" fill="#af89e3"/><path d="M-28-55L0-31l28-24M0-31v67" fill="none" stroke="#e1dafa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(320 189)"><path d="M-36 36l8-91L0-91l28 36 8 91Z" fill="#9077cd"/><path d="M-36 36l8-91L0-91v127Z" fill="#bca5e8"/><path d="M-28-55L0-31l28-24M0-31v67" fill="none" stroke="#e1dafa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M364 72v30m-15-15h30M143 101v21m-10-10h20" fill="none" stroke="#b28dcc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">crystal</text>
+</svg>

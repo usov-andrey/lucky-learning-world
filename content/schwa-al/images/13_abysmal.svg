@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">abysmal</title>
+  <desc id="desc">A collapsed tower of playing cards</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#faece9"/>
+  <ellipse cx="255" cy="221" rx="156" ry="16" fill="#eed6d0"/><g transform="translate(141 200) rotate(-58)"><rect x="-24" y="-33" width="48" height="66" rx="5" fill="#fffdf9"/><path d="M0-14C-23-31-25-4 0 14 25-4 23-31 0-14Z" fill="#e47c80"/></g><g transform="translate(213 192) rotate(55)"><rect x="-24" y="-33" width="48" height="66" rx="5" fill="#fffdf9"/><path d="M0-14C-23-31-25-4 0 14 25-4 23-31 0-14Z" fill="#e47c80"/></g><g transform="translate(267 211) rotate(84)"><rect x="-24" y="-33" width="48" height="66" rx="5" fill="#fffdf9"/><path d="M0-14C-23-31-25-4 0 14 25-4 23-31 0-14Z" fill="#e47c80"/></g><g transform="translate(343 191) rotate(-64)"><rect x="-24" y="-33" width="48" height="66" rx="5" fill="#fffdf9"/><path d="M0-14C-23-31-25-4 0 14 25-4 23-31 0-14Z" fill="#e47c80"/></g><path d="M239 68l11 27m47-17-16 19m34 7-25 11" fill="none" stroke="#cd825b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">abysmal</text>
+</svg>

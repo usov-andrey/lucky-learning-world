@@ -783,3 +783,11 @@ thoroughly.
     serves v1.14.0 from master. All 54 new image and audio assets match the release.
   - After the original deployment timed out, retry with a tracked-source
     snapshot including legacy entry points. Surface deploy errors in the job status.
+
+## 39. Add Schwa ‹al› Spelling Lesson (TASK-036)
+
+- **[AC-126]** A stable `schwa-al` lesson presents all 18 photographed words in order, preserves the existing eleven lessons and is the default when there is no valid saved choice.
+- **[AC-127]** All words have English explanations, examples, hints and original local illustrations. The 36 matching word and definition MP3s use approved British Sonia at `-15%`, with provenance.
+- **[AC-128]** The picker shows twelve unique lessons and restores valid saved choices. Schwa ‹al› works in Learn, Tiles, Digital Test and Paper Test.
+  - Learn navigation starts at animal and reaches cathedral after all 18 cards.
+- **[AC-129]** The unit suite, coverage gate and Chromium scenario pass. GitHub Pages serves v1.15.0 and all 54 media assets match the release.

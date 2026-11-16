@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">coral</title>
+  <desc id="desc">Pink branching coral and a blue fish underwater</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e6f6fc"/>
+  <path d="M78 233q115-49 220-12t146-8v27H78Z" fill="#ead1a4"/><path d="M208 224v-89l-39-36V69m39 99 43-44v-37m-43 102-68-37V119m111 10 26-22M306 229v-51l19-23v-28m-19 61-30-29v-23" fill="none" stroke="#e47c80" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="361" cy="97" rx="34" ry="20" fill="#79b5dc"/><path d="M331 97l-31-18v36Z" fill="#79b5dc"/><circle cx="375" cy="91" r="3" fill="#334766"/><circle cx="396" cy="69" r="6" fill="#fff"/><circle cx="411" cy="51" r="4" fill="#fff"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">coral</text>
+</svg>

@@ -1,9 +1,6 @@
-# TASK-035 Implementation Plan
+# TASK-036 Implementation Plan
 
-1. Transcribe the schoolbook list in order and add a new catalog lesson with
-   English definitions, explanations, examples, hints, and alt text.
-2. Illustrate each meaning with an original local SVG. Generate and check
-   pronunciation and definition MP3s with the approved Sonia settings.
-3. Extend the catalog, picker, and Chromium scenario checks for the new lesson.
-4. Bump the version to v1.14.0, deploy to GitHub Pages, and verify the live files.
-5. After the first Pages timeout, retry from a tracked Git snapshot and verify its published contents.
+1. Append Schwa ‹al› in the photographed order with English definitions, explanations, examples and hints.
+2. Create illustrations and generate word and definition tracks with the existing Sonia generator.
+3. Verify media, update catalog and picker checks and run the Chromium main scenario.
+4. Release v1.15.0 to GitHub Pages and check the published version and media.

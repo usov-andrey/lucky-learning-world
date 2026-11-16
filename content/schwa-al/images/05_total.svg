@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">total</title>
+  <desc id="desc">Two counters plus three counters make five</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#eaf3fb"/>
+  <circle cx="82" cy="155" r="10" fill="#79b5dc"/><circle cx="111" cy="155" r="10" fill="#79b5dc"/><circle cx="206" cy="155" r="10" fill="#79b5dc"/><circle cx="235" cy="155" r="10" fill="#79b5dc"/><circle cx="264" cy="155" r="10" fill="#79b5dc"/><circle cx="354" cy="155" r="10" fill="#6faa81"/><circle cx="382" cy="155" r="10" fill="#6faa81"/><circle cx="410" cy="155" r="10" fill="#6faa81"/><circle cx="438" cy="155" r="10" fill="#6faa81"/><circle cx="466" cy="155" r="10" fill="#6faa81"/><text x="157" y="164" text-anchor="middle" font-family="Arial,sans-serif" font-size="37" font-weight="700" fill="#334766">+</text><text x="310" y="164" text-anchor="middle" font-family="Arial,sans-serif" font-size="37" font-weight="700" fill="#334766">=</text><text x="97" y="206" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">2</text><text x="235" y="206" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">3</text><text x="411" y="206" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">5</text>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">total</text>
+</svg>

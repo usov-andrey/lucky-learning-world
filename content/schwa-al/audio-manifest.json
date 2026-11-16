@@ -1,0 +1,80 @@
+{
+  "lessonId": "schwa-al",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04, as required by DEVELOPMENT_RULES.md section 11.",
+  "words": [
+    {
+      "word": "animal",
+      "definition": "A living creature such as a dog, bird or fish."
+    },
+    {
+      "word": "coral",
+      "definition": "A tiny sea animal that often lives in a large group."
+    },
+    {
+      "word": "special",
+      "definition": "Different from usual in a way that makes it important or memorable."
+    },
+    {
+      "word": "plural",
+      "definition": "The form of a word used for more than one."
+    },
+    {
+      "word": "total",
+      "definition": "The amount you get when you add all the parts together."
+    },
+    {
+      "word": "equal",
+      "definition": "The same in amount, size or value."
+    },
+    {
+      "word": "external",
+      "definition": "On the outside of something, or coming from outside it."
+    },
+    {
+      "word": "several",
+      "definition": "More than two, but usually not a large number."
+    },
+    {
+      "word": "crystal",
+      "definition": "A solid whose tiny parts are arranged in a regular pattern."
+    },
+    {
+      "word": "casual",
+      "definition": "Relaxed and suited to an ordinary occasion."
+    },
+    {
+      "word": "capital",
+      "definition": "The city where a country's or region's government is based."
+    },
+    {
+      "word": "hospital",
+      "definition": "A place where doctors and nurses care for people who are ill or injured."
+    },
+    {
+      "word": "abysmal",
+      "definition": "Extremely bad."
+    },
+    {
+      "word": "natural",
+      "definition": "Found in nature or happening without being made by people."
+    },
+    {
+      "word": "journal",
+      "definition": "A book where you write down what happens, what you think or what you notice."
+    },
+    {
+      "word": "festival",
+      "definition": "An event or period when people celebrate something together."
+    },
+    {
+      "word": "material",
+      "definition": "What something is made from."
+    },
+    {
+      "word": "cathedral",
+      "definition": "The main church of the area a bishop looks after."
+    }
+  ]
+}

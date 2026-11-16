@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">external</title>
+  <desc id="desc">An arrow pointing to the outside wall of a small shed</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#ecf5fb"/>
+  <rect x="137" y="116" width="198" height="118" rx="4" fill="#86bdd8"/><path d="M118 124l116-79 116 79Z" fill="#7b6ba4"/><rect x="164" y="168" width="47" height="66" rx="4" fill="#537b9b"/><rect x="259" y="154" width="25" height="35" rx="4" fill="#c3e4f3"/><path d="M271 158v27m-8-12h17" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M332 129v101" fill="none" stroke="#4699bb" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M427 173h-74m18-15-18 15 18 15" fill="none" stroke="#bd6757" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M111 236h286" fill="none" stroke="#80ad84" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">external</text>
+</svg>

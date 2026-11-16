@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">capital</title>
+  <desc id="desc">A city skyline with a government building and a map pin</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#eaf1fd"/>
+  <rect x="90" y="144" width="61" height="84" rx="8" fill="#91aad3"/><rect x="154" y="123" width="43" height="105" rx="8" fill="#a1b7dd"/><rect x="315" y="137" width="49" height="91" rx="8" fill="#a1b7dd"/><rect x="366" y="115" width="51" height="113" rx="8" fill="#91aad3"/><rect x="192" y="137" width="129" height="90" rx="8" fill="#f6e3c7"/><path d="M179 146l77-43 78 43Z" fill="#deac55"/><rect x="208" y="152" width="12" height="63" rx="3" fill="#ba905e"/><rect x="237" y="152" width="12" height="63" rx="3" fill="#ba905e"/><rect x="266" y="152" width="12" height="63" rx="3" fill="#ba905e"/><rect x="295" y="152" width="12" height="63" rx="3" fill="#ba905e"/><path d="M255 110q-36-28-36-48a36 36 0 0 1 72 0q0 20-36 48Z" fill="#e47c80"/><circle cx="255" cy="62" r="13" fill="#ffede7"/><path d="M82 231h347" fill="none" stroke="#334766" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">capital</text>
+</svg>

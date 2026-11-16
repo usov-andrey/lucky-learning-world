@@ -1,33 +1,18 @@
-# TASK-035 Walkthrough
+# TASK-036 Walkthrough
 
 ## Lesson
 
-- Added the `‹-ically›` lesson with all 18 words in the schoolbook order.
-- Each word has an English definition, an explanation, an example sentence, a
-  hint, an original SVG illustration, and meaningful alt text.
-- Generated 18 pronunciation tracks and 18 definition tracks with
-  `en-GB-SoniaNeural` at `-15%` using edge-tts 7.3.1.
-- The new lesson is the default for players without a valid saved choice. The
-  dropdown still restores valid saved choices across all eleven lessons.
+- Added Schwa ‹al› with all 18 photographed words in order, from animal to cathedral.
+- Added English definitions, explanations, examples and hints, plus 18 original SVG illustrations with alt text.
+- Generated and decoded 36 word and definition tracks using edge-tts 7.3.1, British Sonia and a rate of −15%.
+- Schwa ‹al› is the default when there is no valid saved choice. The picker offers all twelve lessons.
 
 ## Verification
 
-- All 149 unit tests passed before and after the version bump.
-- The coverage gate passed with 83.01% lines, 66.23% branches, and 74.53% functions.
-- Chromium decoded all 36 non-silent MP3s and rendered all 18 SVGs. The
-  illustration grid was inspected.
-- The full Chromium scenario passed, including all 18 words in Learn, both
-  test modes, and a completed Tiles game.
-- QA logs, audio decoding results, and the illustration grid are kept locally
-  under `.state/outputs/TASK-035-*`.
+- Visually reviewed all 18 rendered illustrations and decoded all 36 MP3s in Chromium.
+- All 150 tests passed with coverage of 83.14% of lines, 66.09% of branches and 74.64% of functions.
+- The full Chromium scenario passed, including Learn through cathedral, Digital Test, Paper Test and a complete Tiles game.
 
 ## Release
 
-- Released v1.14.0 from `master` in commit `ca399f498c8dd5b2c4c199a2f5558cd9b353c213`. Pages deployed commit `b8db251f4f75520b535c1b6af3e9ccef40fddebe`.
-- [GitHub Pages deployment](https://github.com/usov-andrey/lucky-learning-world/actions/runs/42811082042) completed successfully.
-- Verified the public v1.14.0 build, the exact 18-word manifest, and all 54 media
-  files on 2026-11-10. SVG line endings were normalised before comparison.
-- The local file hashes are in `.state/outputs/TASK-035-live-verification.json`.
-- [Initial deployment](https://github.com/usov-andrey/lucky-learning-world/actions/runs/42809375731) timed out while syncing files.
-- The retry packages only tracked files and reports deploy errors as failed jobs.
-- Revert the release commit on `master` to roll back the lesson.
+- Planned release is v1.15.0 through GitHub Pages from master.

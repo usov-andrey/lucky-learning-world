@@ -1,8 +1,8 @@
 /**
  * Authoritative release metadata. Updated only by scripts/release.mjs.
  */
-export const APP_VERSION = "v1.14.0";
-export const BUILD_TIMESTAMP = "2026-11-10T11:39:29.526Z";
+export const APP_VERSION = "v1.15.0";
+export const BUILD_TIMESTAMP = "2026-11-16T11:56:37.982Z";
 
 // Lucky is in Thailand: show the build time in Bangkok local time (Asia/Bangkok,
 // UTC+7, no DST) rather than UTC, so it matches what she and her parent actually see

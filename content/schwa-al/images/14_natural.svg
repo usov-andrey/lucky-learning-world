@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">natural</title>
+  <desc id="desc">A waterfall flowing between green hills and trees</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e6f5ec"/>
+  <circle cx="360" cy="69" r="26" fill="#f3cb6f"/><path d="M71 204L176 78l91 126 75-93 100 93Z" fill="#81b09b"/><path d="M147 226l55-87 78-3 71 90Z" fill="#739388"/><path d="M226 137h47l-5 75h-67q19-28 25-75Z" fill="#7ac6df"/><path d="M241 148l-13 58m29-58-12 54" fill="none" stroke="#e6f9fb" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="244" cy="230" rx="96" ry="13" fill="#8fd0e1"/><rect x="120" y="180" width="10" height="44" rx="8" fill="#a37254"/><circle cx="125" cy="169" r="26" fill="#6faa81"/><circle cx="110" cy="182" r="17" fill="#6faa81"/><rect x="384" y="179" width="10" height="44" rx="8" fill="#a37254"/><circle cx="389" cy="168" r="26" fill="#6faa81"/><circle cx="374" cy="181" r="17" fill="#6faa81"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">natural</text>
+</svg>

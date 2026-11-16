@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">special</title>
+  <desc id="desc">A wrapped present with a gold star tag</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#fff1da"/>
+  <rect x="139" y="101" width="213" height="135" rx="11" fill="#8d79bd"/><rect x="127" y="87" width="238" height="42" rx="8" fill="#aa96df"/><rect x="230" y="87" width="32" height="149" rx="4" fill="#f6c671"/><path d="M246 88c-65 0-57-59-18-35l18 35c57-9 58-63 20-34Z" fill="none" stroke="#df9b40" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M261 96l62 45" fill="none" stroke="#ad6953" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="m330 123 9 16 19 3-14 13 3 19-17-9-17 9 3-19-14-13 19-3Z" fill="#edb751"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">special</text>
+</svg>

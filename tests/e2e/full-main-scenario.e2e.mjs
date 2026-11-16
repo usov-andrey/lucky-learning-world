@@ -287,15 +287,15 @@ test(
       );
       console.log(`[e2e] Math Mix complete: ${JSON.stringify(mixProgressSeen)}`);
 
-      // @task TASK-035
-      // @ac AC-124: The -ically lesson works across Learn, Digital, Paper and Tiles.
+      // @task TASK-036
+      // @ac AC-128: Schwa al works across Learn, Digital, Paper and Tiles.
       // --- Word Realm: Learn mode, all words forward and back ----------------
       await page.locator("#btn-enter-word").click();
-      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "ically-ending");
-      assert.equal(await page.locator("#spelling-lesson-select option").count(), 11);
-      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "ARTISTICALLY");
+      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "schwa-al");
+      assert.equal(await page.locator("#spelling-lesson-select option").count(), 12);
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "ANIMAL");
       const totalWords = await page.evaluate(() => window.appController.spellingEngine.deck.words.length);
-      assert.ok(totalWords > 1, "expected a spelling lesson with more than one word");
+      assert.equal(totalWords, 18);
 
       // bindTouchClick debounces repeat taps on the same button within 350ms
       // (anti-double-tap for touch devices) — space these out past that.
@@ -305,7 +305,7 @@ test(
       }
       let learnText = (await page.locator("#learn-progress-text").textContent()).trim();
       assert.equal(learnText, `Word ${totalWords} of ${totalWords}`);
-      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "CATASTROPHICALLY");
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "CATHEDRAL");
 
       for (let i = 1; i < totalWords; i += 1) {
         await page.locator("#btn-learn-prev").click();

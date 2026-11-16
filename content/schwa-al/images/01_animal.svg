@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">animal</title>
+  <desc id="desc">A rabbit with long ears sitting in grass</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#ecf6e7"/>
+  <ellipse cx="255" cy="219" rx="162" ry="22" fill="#cce5bf"/><ellipse cx="239" cy="170" rx="68" ry="52" fill="#bf9576"/><ellipse cx="279" cy="90" rx="15" ry="49" fill="#bf9576"/><ellipse cx="312" cy="85" rx="15" ry="48" fill="#bf9576"/><ellipse cx="279" cy="86" rx="7" ry="32" fill="#edb4a7"/><ellipse cx="312" cy="82" rx="7" ry="31" fill="#edb4a7"/><circle cx="292" cy="140" r="42" fill="#cfab8c"/><circle cx="180" cy="180" r="21" fill="#fbf3e8"/><ellipse cx="268" cy="210" rx="37" ry="14" fill="#cfab8c"/><circle cx="306" cy="134" r="4" fill="#334766"/><circle cx="329" cy="149" r="5" fill="#a46468"/><path d="M124 221l-8-14m8 14 1-22m-1 22 11-12" fill="none" stroke="#5b966f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M371 220l-8-14m8 14 1-22m-1 22 11-12" fill="none" stroke="#5b966f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">animal</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">equal</title>
+  <desc id="desc">A level balance scale holding two matching weights</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e9f5ed"/>
+  <path d="M256 80v147m-81 0h162M116 104h280" fill="none" stroke="#334766" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="256" cy="104" r="12" fill="#edb751"/><path d="m153 104-36 75h72l-36-75m206 0-36 75h72l-36-75" fill="none" stroke="#334766" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="127" y="149" width="54" height="30" rx="5" fill="#8d79bd"/><rect x="334" y="149" width="54" height="30" rx="5" fill="#8d79bd"/><path d="M110 178h86q-3 29-43 29t-43-29m206 0h86q-3 29-43 29t-43-29" fill="#edb751"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">equal</text>
+</svg>

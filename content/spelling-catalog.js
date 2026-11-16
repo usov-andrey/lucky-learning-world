@@ -1428,7 +1428,43 @@ export const ICALLY_ENDING_LESSON = {
   })
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON, ICALLY_ENDING_LESSON];
+export const SCHWA_AL_LESSON = {
+  id: "schwa-al",
+  title: "Spelling Test",
+  pageLabel: "Schwa ‹al›",
+  topic: "Schwa ‹al›",
+  wordCount: 18,
+  words: [
+    ["animal", "A living creature such as a dog, bird or fish.", "Animals get their energy by eating plants, other animals or both. Insects and people are animals too.", "We watched a small animal scurry under the hedge.", "A living creature, such as a bird or a dog", "A rabbit with long ears sitting in grass"],
+    ["coral", "A tiny sea animal that often lives in a large group.", "Many corals make hard skeletons. Over time, groups of these animals can build a reef where fish find food and shelter.", "A little blue fish swam through the branches of the coral.", "A sea animal that can help build a reef", "Pink branching coral and a blue fish underwater"],
+    ["special", "Different from usual in a way that makes it important or memorable.", "A day, place or object can be special because it means a lot to you.", "Lucky saved a special seat for her best friend.", "Important or different in a good way", "A wrapped present with a gold star tag"],
+    ["plural", "The form of a word used for more than one.", "Many nouns add s in the plural, like cats. Some change in another way, like mice or children.", "The plural of one foot is two feet.", "A word form for more than one", "One apple on the left and three apples on the right"],
+    ["total", "The amount you get when you add all the parts together.", "You find a total by adding the numbers in a group to see how much there is altogether.", "Two shells plus three shells make a total of five.", "The amount altogether", "Two counters plus three counters make five"],
+    ["equal", "The same in amount, size or value.", "Two groups can be equal even if their objects look different. What matters is that the amounts match.", "We cut the cake into four equal pieces.", "The same in amount or size", "A level balance scale holding two matching weights"],
+    ["external", "On the outside of something, or coming from outside it.", "An external part is on the outside of an object or building. The external wall of a house faces the outdoors.", "We painted the external wall of the shed blue.", "On the outside", "An arrow pointing to the outside wall of a small shed"],
+    ["several", "More than two, but usually not a large number.", "Use several when you want to say there were a few things without giving the exact number.", "Several birds landed on the garden fence.", "A few, without giving the exact number", "Four colourful birds perched on a garden fence"],
+    ["crystal", "A solid whose tiny parts are arranged in a regular pattern.", "Some crystals grow into shapes with flat sides and sharp corners. Salt, quartz and ice can all form crystals.", "A purple crystal sparkled in the sunlight.", "A solid that can grow flat sides and sharp corners", "A cluster of three purple quartz crystals with flat faces"],
+    ["casual", "Relaxed and suited to an ordinary occasion.", "Casual clothes are the sort of clothes you might wear to meet a friend or play in the park.", "Jeans and a T-shirt are fine for a casual picnic.", "Relaxed and informal", "A T-shirt, jeans and trainers laid out together"],
+    ["capital", "The city where a country's or region's government is based.", "The word capital can also mean a large letter, like the B at the start of Bangkok.", "Bangkok is the capital of Thailand.", "The city where a government is based", "A city skyline with a government building and a map pin"],
+    ["hospital", "A place where doctors and nurses care for people who are ill or injured.", "A hospital can have rooms for tests, operations and people who need to stay while they get better.", "The ambulance took the injured cyclist to hospital.", "A place where ill or injured people get medical care", "A hospital building with an ambulance parked beside it"],
+    ["abysmal", "Extremely bad.", "Abysmal is a strong word for a result or performance that is much worse than you hoped.", "Our first attempt at building a card tower was abysmal. It fell down at once.", "Extremely bad", "A collapsed tower of playing cards"],
+    ["natural", "Found in nature or happening without being made by people.", "Rainbows, shells and waterfalls are natural. The word can also describe something that feels normal or happens easily.", "The waterfall is a natural feature of the park.", "Found in nature", "A waterfall flowing between green hills and trees"],
+    ["journal", "A book where you write down what happens, what you think or what you notice.", "You can keep a journal to record your thoughts, describe a trip or track what you see in an experiment.", "Lucky drew the butterfly in her nature journal.", "A book for recording thoughts or observations", "An open notebook with dated notes, a butterfly sketch and a pencil"],
+    ["festival", "An event or period when people celebrate something together.", "A festival might mark a special time of year or bring people together for music, food, stories or traditions.", "We watched the lanterns glow at the festival.", "An event where people celebrate together", "Colourful lanterns and bunting hanging above a festival"],
+    ["material", "What something is made from.", "Wood, metal, glass and cloth are materials. People choose a material for what it can do, such as keeping rain out.", "Waterproof material keeps my raincoat dry inside.", "What an object is made of", "Three samples of wood, cloth and metal"],
+    ["cathedral", "The main church of the area a bishop looks after.", "A cathedral is often a large church with tall towers and stained glass, but what makes it a cathedral is its connection to a bishop.", "We looked up at the tall towers of the cathedral.", "The main church where a bishop is based", "A cathedral with two towers and a round stained glass window"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => {
+    const stem = `${String(index + 1).padStart(2, "0")}_${word}`;
+    return {
+      word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+      image: `content/schwa-al/images/${stem}.svg`,
+      audio: `content/schwa-al/audio/${stem}.mp3`,
+      definitionAudio: `content/schwa-al/audio/definitions/${stem}.mp3`
+    };
+  })
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON, ICALLY_ENDING_LESSON, SCHWA_AL_LESSON];
 export const DEFAULT_SPELLING_LESSON_ID = SPELLING_LESSONS.at(-1)?.id || PAGE_22_LESSON.id;
 
 export function getSpellingLesson(id) {

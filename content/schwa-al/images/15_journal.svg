@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">journal</title>
+  <desc id="desc">An open notebook with dated notes, a butterfly sketch and a pencil</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#fff3df"/>
+  <path d="M114 85q86-23 142 15 60-38 142-15v143q-79-23-142 9-62-32-142-9Z" fill="#c29480"/><path d="M122 77q83-22 134 15 55-37 134-15v138q-82-21-134 13-55-33-134-13Z" fill="#fffdfa"/><path d="M256 94v134M145 108h65m-65 20h86m-86 20h80m-80 20h76" fill="none" stroke="#b8c2ce" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="311" cy="139" rx="15" ry="21" fill="#8d79bd"/><ellipse cx="341" cy="139" rx="15" ry="21" fill="#e47c80"/><ellipse cx="312" cy="165" rx="12" ry="14" fill="#e47c80"/><ellipse cx="340" cy="165" rx="12" ry="14" fill="#8d79bd"/><path d="M326 129v52" fill="none" stroke="#334766" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M300 221l89-48" fill="none" stroke="#edb751" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="291" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#334766">journal</text>
+</svg>
