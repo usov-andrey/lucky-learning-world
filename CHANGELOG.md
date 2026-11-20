@@ -7,6 +7,7 @@
 - **AC-130**: The schwa-el lesson contains the 18 photographed words in order and is the default for a new or invalid selection.
 - **AC-131**: Each word has an English definition, explanation, example, hint and original illustration, plus British Sonia word and definition recordings at -15%.
 - **AC-132**: The picker offers all thirteen lessons, restores a saved choice and uses the new deck in Learn, Tiles, Digital Test and Paper Test.
+- **AC-133**: The unit suite, coverage gate and Chromium scenario pass. GitHub Pages serves v1.16.0 and all 54 lesson assets match the release.
 
 ### 💻 Target Version Files Updated:
 - `package.json`: `v1.16.0`
