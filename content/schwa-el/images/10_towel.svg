@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">towel</title>
+  <desc id="desc">A striped bath towel hanging over a rail</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e9f4f7" stroke="none" stroke-width="3"/>
+  <path d="M100 99h311" fill="none" stroke="#687f89" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="98" cy="99" rx="8" ry="8" fill="#98a9a7" stroke="#30475b" stroke-width="3"/>
+  <ellipse cx="413" cy="99" rx="8" ry="8" fill="#98a9a7" stroke="#30475b" stroke-width="3"/>
+  <path d="M175 85h156q10 1 10 14v95h-26v23H163l4-111q0-21 8-21z" fill="#72b8bf" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M176 86q9 8 6 25l-7 106m147-131q-8 9-7 24v84" fill="none" stroke="#438894" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M167 173h144m-144 12h144" fill="none" stroke="#f8e3a5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M171 218v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6m11-6v6" fill="none" stroke="#72b8bf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">towel</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">novel</title>
+  <desc id="desc">An open storybook with the heading Chapter One and a drawing of a sailing boat</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#edf0ff" stroke="none" stroke-width="3"/>
+  <path d="M100 78q77-25 156 10 76-34 156-10v140q-76-16-156 11-80-28-156-11z" fill="#638fa1" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M113 65q70-18 143 17v133q-66-31-143-14zm143 17q70-35 143-17v136q-71-14-143 14z" fill="#fff9e9" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="181" y="108" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#30475b">Chapter One</text>
+  <path d="M137 127l88 6m-88 12 75 6m-75 13 86 5" fill="none" stroke="#aaaba3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M298 160h68l-14 11h-39z" fill="#af7256" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M328 155v-46l-27 45zm5-42 23 37h-23z" fill="#81b7cb" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M295 178q12-6 23 0t23 0t24 0" fill="none" stroke="#77a6c0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">novel</text>
+</svg>

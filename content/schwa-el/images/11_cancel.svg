@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">cancel</title>
+  <desc id="desc">A picnic marked on a calendar with a red cross through it</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#fff2e6" stroke="none" stroke-width="3"/>
+  <rect x="164" y="66" width="184" height="149" rx="10" fill="#fff9ec" stroke="#30475b" stroke-width="3"/>
+  <rect x="165" y="67" width="182" height="39" rx="8" fill="#6e9fad" stroke="none" stroke-width="3"/>
+  <path d="M197 56v22" fill="none" stroke="#30475b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M229 56v22" fill="none" stroke="#30475b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M261 56v22" fill="none" stroke="#30475b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M293 56v22" fill="none" stroke="#30475b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M320 56v22" fill="none" stroke="#30475b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M207 152h100l-11 42h-78z" fill="#d5a066" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M231 151q0-47 26-47 26 0 26 47" fill="none" stroke="#9d704e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M230 159l9 26m18-26v27m27-27-8 26" fill="none" stroke="#af7d4e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M200 116l110 84m-3-84-104 83" fill="none" stroke="#bf5048" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">cancel</text>
+</svg>

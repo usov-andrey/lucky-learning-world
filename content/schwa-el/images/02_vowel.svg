@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">vowel</title>
+  <desc id="desc">Five coloured letter tiles showing A, E, I, O and U</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#fff2dd" stroke="none" stroke-width="3"/>
+  <g transform="translate(71 124) rotate(-8 34 36)"><rect x="2" y="5" width="66" height="70" rx="9" fill="#ccb99d" stroke="none" stroke-width="3"/><rect x="0" y="0" width="66" height="70" rx="9" fill="#a5d9d0" stroke="#30475b" stroke-width="3"/><text x="33" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-size="41" font-weight="700" fill="#30475b">A</text></g>
+  <g transform="translate(146 117) rotate(-4 34 36)"><rect x="2" y="5" width="66" height="70" rx="9" fill="#ccb99d" stroke="none" stroke-width="3"/><rect x="0" y="0" width="66" height="70" rx="9" fill="#f6b28f" stroke="#30475b" stroke-width="3"/><text x="33" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-size="41" font-weight="700" fill="#30475b">E</text></g>
+  <g transform="translate(221 110) rotate(0 34 36)"><rect x="2" y="5" width="66" height="70" rx="9" fill="#ccb99d" stroke="none" stroke-width="3"/><rect x="0" y="0" width="66" height="70" rx="9" fill="#f5d677" stroke="#30475b" stroke-width="3"/><text x="33" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-size="41" font-weight="700" fill="#30475b">I</text></g>
+  <g transform="translate(296 117) rotate(4 34 36)"><rect x="2" y="5" width="66" height="70" rx="9" fill="#ccb99d" stroke="none" stroke-width="3"/><rect x="0" y="0" width="66" height="70" rx="9" fill="#b5c9ef" stroke="#30475b" stroke-width="3"/><text x="33" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-size="41" font-weight="700" fill="#30475b">O</text></g>
+  <g transform="translate(371 124) rotate(8 34 36)"><rect x="2" y="5" width="66" height="70" rx="9" fill="#ccb99d" stroke="none" stroke-width="3"/><rect x="0" y="0" width="66" height="70" rx="9" fill="#d8b5db" stroke="#30475b" stroke-width="3"/><text x="33" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-size="41" font-weight="700" fill="#30475b">U</text></g>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">vowel</text>
+</svg>

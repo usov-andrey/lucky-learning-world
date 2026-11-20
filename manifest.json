@@ -1,5 +1,6 @@
 {
   "name": "Lucky's Learning World",
+  "version": "1.16.0",
   "short_name": "Lucky World",
   "description": "Gamified Multi-Subject Educational PWA for Primary School",
   "start_url": "./index.html",

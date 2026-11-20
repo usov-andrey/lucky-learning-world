@@ -287,13 +287,13 @@ test(
       );
       console.log(`[e2e] Math Mix complete: ${JSON.stringify(mixProgressSeen)}`);
 
-      // @task TASK-036
-      // @ac AC-128: Schwa al works across Learn, Digital, Paper and Tiles.
+      // @task TASK-037
+      // @ac AC-132: Schwa el works across Learn, Digital, Paper and Tiles.
       // --- Word Realm: Learn mode, all words forward and back ----------------
       await page.locator("#btn-enter-word").click();
-      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "schwa-al");
-      assert.equal(await page.locator("#spelling-lesson-select option").count(), 12);
-      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "ANIMAL");
+      assert.equal(await page.locator("#spelling-lesson-select").inputValue(), "schwa-el");
+      assert.equal(await page.locator("#spelling-lesson-select option").count(), 13);
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "LEVEL");
       const totalWords = await page.evaluate(() => window.appController.spellingEngine.deck.words.length);
       assert.equal(totalWords, 18);
 
@@ -305,7 +305,7 @@ test(
       }
       let learnText = (await page.locator("#learn-progress-text").textContent()).trim();
       assert.equal(learnText, `Word ${totalWords} of ${totalWords}`);
-      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "CATHEDRAL");
+      assert.equal((await page.locator("#learn-word-display").textContent()).trim(), "SCOUNDREL");
 
       for (let i = 1; i < totalWords; i += 1) {
         await page.locator("#btn-learn-prev").click();

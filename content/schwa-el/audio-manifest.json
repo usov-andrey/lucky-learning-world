@@ -1,0 +1,80 @@
+{
+  "lessonId": "schwa-el",
+  "voice": "en-GB-SoniaNeural",
+  "rate": "-15%",
+  "approval": "Reuses the Sonia British female voice approved for TASK-008 on 2026-08-04, as required by DEVELOPMENT_RULES.md section 11.",
+  "words": [
+    {
+      "word": "level",
+      "definition": "Flat, with both ends at the same height."
+    },
+    {
+      "word": "vowel",
+      "definition": "One of the letters a, e, i, o or u, or sometimes y."
+    },
+    {
+      "word": "novel",
+      "definition": "A book that tells a made-up story, usually in chapters."
+    },
+    {
+      "word": "camel",
+      "definition": "A large animal with one or two humps on its back."
+    },
+    {
+      "word": "model",
+      "definition": "A copy that shows what something looks like, often at a smaller size."
+    },
+    {
+      "word": "marvel",
+      "definition": "To feel wonder when you see something amazing."
+    },
+    {
+      "word": "tunnel",
+      "definition": "A passage that goes under the ground or through something."
+    },
+    {
+      "word": "barrel",
+      "definition": "A large round container with a curved middle and flat ends."
+    },
+    {
+      "word": "travel",
+      "definition": "To go from one place to another."
+    },
+    {
+      "word": "towel",
+      "definition": "A piece of cloth used to dry something."
+    },
+    {
+      "word": "cancel",
+      "definition": "To decide that a planned event will not happen."
+    },
+    {
+      "word": "mussel",
+      "definition": "A small animal with two hinged shells that lives in water."
+    },
+    {
+      "word": "morsel",
+      "definition": "A small piece of food, just enough for a bite."
+    },
+    {
+      "word": "snorkel",
+      "definition": "A tube that lets you breathe with your face just under the surface of the water."
+    },
+    {
+      "word": "sequel",
+      "definition": "A story that continues an earlier book, film or game."
+    },
+    {
+      "word": "yodel",
+      "definition": "To sing by quickly switching between a low voice and a high voice."
+    },
+    {
+      "word": "cockerel",
+      "definition": "A young male chicken."
+    },
+    {
+      "word": "scoundrel",
+      "definition": "Someone who tricks others or behaves dishonestly."
+    }
+  ]
+}

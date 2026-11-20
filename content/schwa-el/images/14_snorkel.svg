@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">snorkel</title>
+  <desc id="desc">A swimming mask beside a curved snorkel with its tip above water</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#def4f7" stroke="none" stroke-width="3"/>
+  <path d="M70 106q23-10 47 0t47 0t47 0t47 0t47 0t47 0t47 0t47 0v115H70z" fill="#a8d9dc" stroke="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M130 145q-15 2-17 15l3 24q1 10 10 11l32 2 14-13h17l14 13 32-2q9-1 11-13l1-26q-1-10-13-12z" fill="#71acc1" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M135 152h89q9 0 10 7l-1 20-24 4-14-13h-30l-13 13-23-4-1-20z" fill="#e1f3ef" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M303 174v14q0 21 16 21t18-21V66" fill="none" stroke="#30475b" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M303 174v14q0 21 16 21t18-21V66" fill="none" stroke="#e9b66b" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="327" y="58" width="19" height="21" rx="4" fill="#e47b62" stroke="#30475b" stroke-width="3"/>
+  <rect x="292" y="169" width="22" height="10" rx="4" fill="#738995" stroke="#30475b" stroke-width="3"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">snorkel</text>
+</svg>

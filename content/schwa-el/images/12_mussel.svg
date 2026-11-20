@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">mussel</title>
+  <desc id="desc">A dark blue mussel with its two shells slightly open</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#deeff1" stroke="none" stroke-width="3"/>
+  <path d="M91 211q82-54 149-23t167-9l32 39H82z" fill="#9ead9d" stroke="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M163 174q-10-32 19-52 52-40 121-47 43-6 52 15 14 35-29 57-44 25-125 42-26 3-38-15z" fill="#374e65" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M169 172q67-41 146-57 28-4 38 1 5 23-36 43l-103 34q-36 11-45-21z" fill="#dca789" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M166 180q44-14 85-29t103-29q-3 32-67 56-56 24-93 24-22 0-28-22z" fill="#465c79" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M179 158q64-55 139-65m-133 57q60-48 100-53" fill="none" stroke="#7896a9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M190 187q62-9 122-44" fill="none" stroke="#71859e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">mussel</text>
+</svg>

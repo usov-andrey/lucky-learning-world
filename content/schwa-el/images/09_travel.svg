@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">travel</title>
+  <desc id="desc">A train following a route between two places on a map</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e4f2f8" stroke="none" stroke-width="3"/>
+  <path d="M79 101l89-30 95 26 88-30 81 27-17 104-76-16-87 27-91-22-94 23z" fill="#fcf5db" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M168 72l-7 113m102-88-11 108m99-139-12 114" fill="none" stroke="#cecba8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M121 166q63-47 123-18t126-38" fill="none" stroke="#789a9c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(122 150)"><path d="M0 12q-19-23-12-33 11-15 23-2 9 11-11 35z" fill="#dd765c" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="0" cy="-14" rx="4" ry="4" fill="#fff5df" stroke="none" stroke-width="3"/></g>
+  <g transform="translate(373 98)"><path d="M0 12q-19-23-12-33 11-15 23-2 9 11-11 35z" fill="#dd765c" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="0" cy="-14" rx="4" ry="4" fill="#fff5df" stroke="none" stroke-width="3"/></g>
+  <rect x="209" y="111" width="66" height="30" rx="7" fill="#549bb0" stroke="#30475b" stroke-width="3"/>
+  <rect x="220" y="116" width="15" height="10" rx="2" fill="#eaf5ef" stroke="none" stroke-width="3"/>
+  <rect x="243" y="116" width="15" height="10" rx="2" fill="#eaf5ef" stroke="none" stroke-width="3"/>
+  <ellipse cx="223" cy="143" rx="6" ry="6" fill="#30475b" stroke="none" stroke-width="3"/>
+  <ellipse cx="261" cy="143" rx="6" ry="6" fill="#30475b" stroke="none" stroke-width="3"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">travel</text>
+</svg>

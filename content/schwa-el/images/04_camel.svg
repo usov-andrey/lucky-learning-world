@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">camel</title>
+  <desc id="desc">A one-humped camel walking over a sandy dune</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#fff1d7" stroke="none" stroke-width="3"/>
+  <path d="M38 202q106-54 224-10t217-6v48H38z" fill="#e7c083" stroke="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M146 153q-13-29 13-41 13-5 27-2 15-43 39-40 23 2 35 39l31 8q20 2 24-27l5-30q3-19 22-18l9 5 20 3q12 2 11 12-1 9-16 9l-18-1-10 52q-4 31-29 38l-5 44h-15l-3-47-9 3-8 39h-13l1-39-36 1-12 46h-15l6-52-17-4-14 52h-15l6-59z" fill="#c58b49" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M153 117q-16 4-18 32l-9 16m213-119-4-10 12 7" fill="none" stroke="#825c3d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="349" cy="56" rx="3" ry="3" fill="#30475b" stroke="none" stroke-width="3"/>
+  <ellipse cx="107" cy="202" rx="5" ry="2" fill="#a98861" stroke="none" stroke-width="3"/>
+  <ellipse cx="82" cy="209" rx="6" ry="2" fill="#a98861" stroke="none" stroke-width="3"/>
+  <ellipse cx="61" cy="212" rx="5" ry="2" fill="#a98861" stroke="none" stroke-width="3"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">camel</text>
+</svg>

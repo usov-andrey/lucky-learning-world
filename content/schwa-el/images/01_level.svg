@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">level</title>
+  <desc id="desc">A spirit level with its bubble centred on a straight shelf</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e6f5ec" stroke="none" stroke-width="3"/>
+  <rect x="79" y="166" width="354" height="16" rx="4" fill="#b27c52" stroke="none" stroke-width="3"/>
+  <path d="M123 183v33l31-33m236 0v33l-31-33" fill="#936345" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="132" y="118" width="248" height="48" rx="8" fill="#f6c75c" stroke="#30475b" stroke-width="3"/>
+  <rect x="199" y="127" width="114" height="27" rx="13" fill="#d3e59c" stroke="#30475b" stroke-width="3"/>
+  <ellipse cx="256" cy="140" rx="17" ry="8" fill="#f9ffe4" stroke="none" stroke-width="3"/>
+  <path d="M232 129v22m48-22v22" fill="none" stroke="#30475b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="158" cy="141" rx="9" ry="9" fill="#f8f2d9" stroke="#30475b" stroke-width="3"/>
+  <ellipse cx="354" cy="141" rx="9" ry="9" fill="#f8f2d9" stroke="#30475b" stroke-width="3"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">level</text>
+</svg>

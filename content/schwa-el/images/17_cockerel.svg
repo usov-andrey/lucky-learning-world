@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">cockerel</title>
+  <desc id="desc">A young male chicken with a red comb and curved tail feathers</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#f4f3dc" stroke="none" stroke-width="3"/>
+  <path d="M93 205q128-14 317-1" fill="none" stroke="#9aa57c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M248 172l-1 32-14 4m14-4 12 4m10-39 3 35-11 5m11-5 12 4" fill="none" stroke="#ad7750" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M208 150q-20-76-69-59 30 11 32 47-20-30-44-17 27 10 32 41-21-13-35-3 33 6 58 21z" fill="#397c76" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M179 142q29-31 65-19 29 3 43-31 18-35 46-14 17 15 1 42-22 24-29 39-26 46-80 31-35-7-46-48z" fill="#bc7249" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M286 102q18-40 44-26l9 12-9 25-12 5-9-8-13 4z" fill="#e9aa61" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M304 76q-9-11-1-16 6-2 10 5-1-17 8-13 4 0 5 12 12-11 15-2 1 7-8 14z" fill="#cd5b4c" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M339 88l16 6-16 7z" fill="#e2b554" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="329" cy="85" rx="3" ry="3" fill="#30475b" stroke="none" stroke-width="3"/>
+  <path d="M201 148q31-20 64-7-12 27-45 28z" fill="#cc935f" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M207 153l32-6m-28 13 24-6" fill="none" stroke="#a76f48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">cockerel</text>
+</svg>

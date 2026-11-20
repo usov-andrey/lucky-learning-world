@@ -1,6 +1,6 @@
-# TASK-036 Implementation Plan
+# TASK-037 implementation plan
 
-1. Append Schwa ‹al› in the photographed order with English definitions, explanations, examples and hints.
-2. Create illustrations and generate word and definition tracks with the existing Sonia generator.
-3. Verify media, update catalog and picker checks and run the Chromium main scenario.
-4. Release v1.15.0 to GitHub Pages and check the published version and media.
+1. Add the photographed words to the spelling catalogue and illustrate each meaning.
+2. Generate British Sonia pronunciation and definition audio from the lesson manifest.
+3. Exercise the new lesson in all four modes and check that existing selections are restored.
+4. Release v1.16.0 and compare the published catalogue and lesson assets to the tested files.

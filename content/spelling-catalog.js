@@ -1464,7 +1464,43 @@ export const SCHWA_AL_LESSON = {
   })
 };
 
-export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON, ICALLY_ENDING_LESSON, SCHWA_AL_LESSON];
+export const SCHWA_EL_LESSON = {
+  id: "schwa-el",
+  title: "Spelling Test",
+  pageLabel: "Schwa ‹el›",
+  topic: "Schwa ‹el›",
+  wordCount: 18,
+  words: [
+    ["level", "Flat, with both ends at the same height.", "If a shelf is level, a marble placed on it will stay still. If one end is higher, the marble will roll towards the lower end.", "Dad checked that the shelf was level before putting the books on it.", "Flat from one end to the other", "A spirit level with its bubble centred on a straight shelf"],
+    ["vowel", "One of the letters a, e, i, o or u, or sometimes y.", "A vowel letter can stand for a sound you make with your mouth open. Listen to the middle sounds in cat, cot and cut.", "The first vowel in lemon is e.", "A letter like a or e", "Five coloured letter tiles showing A, E, I, O and U"],
+    ["novel", "A book that tells a made-up story, usually in chapters.", "A novel follows characters through a longer story. One chapter might end just when you want to know what happens next.", "I read one chapter of my adventure novel every night.", "A long story told in a book", "An open storybook with the heading Chapter One and a drawing of a sailing boat"],
+    ["camel", "A large animal with one or two humps on its back.", "A camel stores fat in its humps. Its broad feet help it walk on soft sand.", "The camel left wide footprints in the sand.", "An animal with humps", "A one-humped camel walking over a sandy dune"],
+    ["model", "A copy that shows what something looks like, often at a smaller size.", "A model can help you explore a design. You can turn a model plane in your hands to see how its wings fit together.", "We built a model of a plane for the school fair.", "A small copy of something", "A toy aeroplane resting on a small display stand"],
+    ["marvel", "To feel wonder when you see something amazing.", "When you marvel at something, you pause to notice just how extraordinary it is.", "We stopped to marvel at the bright rainbow over the waterfall.", "To look at something in wonder", "A child looking up in wonder at a rainbow"],
+    ["tunnel", "A passage that goes under the ground or through something.", "A tunnel can run through a mountain or under a river. Trains and roads sometimes use tunnels to get to the other side.", "The train went through a dark tunnel in the hill.", "A passage through a hill or under the ground", "Railway tracks leading into a dark opening in a hillside"],
+    ["barrel", "A large round container with a curved middle and flat ends.", "Traditional wooden barrels have strips of wood held together by hoops. A barrel can collect rainwater from a roof.", "We filled our watering cans from the rain barrel.", "A rounded container often held together by hoops", "A wooden barrel with two metal hoops"],
+    ["travel", "To go from one place to another.", "You can travel on foot or by bicycle, boat, train or plane. A journey might take you across town or across the world.", "We travel by train when we visit my aunt.", "To go on a journey", "A train following a route between two places on a map"],
+    ["towel", "A piece of cloth used to dry something.", "The small loops in a fluffy towel help it soak up water. You might take one to the beach or hang one by the sink.", "I wrapped my wet hair in a soft towel.", "A cloth for drying yourself", "A striped bath towel hanging over a rail"],
+    ["cancel", "To decide that a planned event will not happen.", "People sometimes have to cancel a match or a trip when the weather makes it unsafe to go ahead.", "We had to cancel the picnic when the storm began.", "To call off a plan", "A picnic marked on a calendar with a red cross through it"],
+    ["mussel", "A small animal with two hinged shells that lives in water.", "A mussel can close its two shells to protect its soft body. Many sea mussels cling to rocks.", "We spotted a dark blue mussel on a rock at low tide.", "A water animal with two shells", "A dark blue mussel with its two shells slightly open"],
+    ["morsel", "A small piece of food, just enough for a bite.", "A morsel could be a crumb of cake or a small piece torn from a loaf.", "I broke off a morsel of bread and tasted it.", "A tiny bite of food", "A small bite of bread beside the loaf it came from"],
+    ["snorkel", "A tube that lets you breathe with your face just under the surface of the water.", "One end of the snorkel stays above the water. The other end has a mouthpiece, so you can breathe while looking down at fish.", "I used my snorkel to watch the striped fish below me.", "A breathing tube for swimming at the surface", "A swimming mask beside a curved snorkel with its tip above water"],
+    ["sequel", "A story that continues an earlier book, film or game.", "A sequel tells you what happens next. A favourite character might return for a whole new adventure.", "The first book ended at sea, so I borrowed the sequel to find out where the ship landed.", "A story that tells what happens next", "Two adventure books numbered one and two with a ship on each cover"],
+    ["yodel", "To sing by quickly switching between a low voice and a high voice.", "In a yodel, the singer lets the voice jump between low and high sounds in a way you can hear clearly.", "We heard the singer yodel high and low.", "To sing with quick jumps in pitch", "Low and high musical notes alternating above mountain peaks"],
+    ["cockerel", "A young male chicken.", "A cockerel has a comb on top of its head. As it grows, you may hear it begin to crow.", "The cockerel stretched his neck and crowed by the gate.", "A young male chicken", "A young male chicken with a red comb and curved tail feathers"],
+    ["scoundrel", "Someone who tricks others or behaves dishonestly.", "In an adventure story, a scoundrel might pretend to help the heroes while secretly taking their treasure.", "In our play, the scoundrel slipped the queen’s coin into his pocket.", "A dishonest person in a story", "A masked storybook thief slipping a gold coin into a pocket"]
+  ].map(([word, definition, extendedExplanation, exampleSentence, hint, imageAlt], index) => {
+    const stem = `${String(index + 1).padStart(2, "0")}_${word}`;
+    return {
+      word, definition, extendedExplanation, exampleSentence, hint, imageAlt,
+      image: `content/schwa-el/images/${stem}.svg`,
+      audio: `content/schwa-el/audio/${stem}.mp3`,
+      definitionAudio: `content/schwa-el/audio/definitions/${stem}.mp3`
+    };
+  })
+};
+
+export const SPELLING_LESSONS = [PAGE_22_LESSON, SCHWA_ER_LESSON, OR_SAYING_ER_LESSON, EAR_SAYING_ER_LESSON, U_SAYING_OO_LESSON, OUGH_GH_AUGH_LESSON, IVE_SAYING_IV_LESSON, IC_ENDING_LESSON, ST_SAYING_S_LESSON, SILENT_LETTERS_LESSON, ICALLY_ENDING_LESSON, SCHWA_AL_LESSON, SCHWA_EL_LESSON];
 export const DEFAULT_SPELLING_LESSON_ID = SPELLING_LESSONS.at(-1)?.id || PAGE_22_LESSON.id;
 
 export function getSpellingLesson(id) {

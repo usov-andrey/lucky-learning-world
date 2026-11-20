@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">scoundrel</title>
+  <desc id="desc">A masked storybook thief slipping a gold coin into a pocket</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#eee9f3" stroke="none" stroke-width="3"/>
+  <path d="M151 220q4-64 45-75l34-7 47 8q31 15 49 74z" fill="#667994" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="230" cy="110" rx="39" ry="43" fill="#c99170" stroke="none" stroke-width="3"/>
+  <path d="M191 107q-7-56 36-55 44-2 44 49l-22-13q-23 17-58 19z" fill="#574542" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M191 103q22-6 40-3 21-9 37-7l-3 15-16 9-16-3-13 8-21-4z" fill="#394653" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="216" cy="111" rx="4" ry="3" fill="#fff3de" stroke="none" stroke-width="3"/>
+  <ellipse cx="250" cy="105" rx="4" ry="3" fill="#fff3de" stroke="none" stroke-width="3"/>
+  <path d="M225 135q12 2 22-5" fill="none" stroke="#785548" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M269 184h42l-3 25-17 8-20-7z" fill="#50647e" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="290" cy="174" rx="12" ry="12" fill="#f7ca5f" stroke="#ad7b36" stroke-width="3"/>
+  <ellipse cx="290" cy="174" rx="7" ry="7" fill="none" stroke="#d69842" stroke-width="2"/>
+  <path d="M206 162q8 26 24 24l38-14" fill="none" stroke="#c99170" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">scoundrel</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">marvel</title>
+  <desc id="desc">A child looking up in wonder at a rainbow</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#e4f5ef" stroke="none" stroke-width="3"/>
+  <path d="M182 150a112 103 0 0 1 224 0" fill="none" stroke="#e47f79" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M189 150a105 96 0 0 1 210 0" fill="none" stroke="#efb56b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M196 150a98 89 0 0 1 196 0" fill="none" stroke="#edda82" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M203 150a91 82 0 0 1 182 0" fill="none" stroke="#83bd99" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M210 150a84 75 0 0 1 168 0" fill="none" stroke="#7faec5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M113 227q0-33 32-38l27-2q27 1 34 40z" fill="#608fa0" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="157" cy="163" rx="31" ry="33" fill="#ad7655" stroke="none" stroke-width="3"/>
+  <path d="M127 163q-10-45 25-46 29-5 38 24-20 4-27-6-9 17-36 28z" fill="#503e3b" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="176" cy="153" rx="3" ry="3" fill="#30475b" stroke="none" stroke-width="3"/>
+  <ellipse cx="180" cy="169" rx="4" ry="5" fill="#68473d" stroke="none" stroke-width="3"/>
+  <path d="M196 208q18-7 34-37l12-15" fill="none" stroke="#ad7655" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M233 167l13-8" fill="none" stroke="#ad7655" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">marvel</text>
+</svg>

@@ -9,6 +9,8 @@
 // @task TASK-033
 // @task TASK-034
 // @task TASK-035
+// @task TASK-037
+// @ac AC-132 Thirteen unique lessons and a persistent choice
 // @task TASK-036
 // @ac AC-128 Twelve lessons and saved choice
 // @ac AC-124 Eleven lessons, newest default, and saved choice
@@ -38,7 +40,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
-test("TASK-036 AC-128: compact picker defaults to Schwa al and persists dropdown changes", async () => {
+test("TASK-037 AC-132: compact picker defaults to Schwa el and persists dropdown changes", async () => {
   const htmlContent = fs.readFileSync(path.join(rootDir, "index.html"), "utf8");
   const cssContent = fs.readFileSync(path.join(rootDir, "styles.css"), "utf8");
   const dom = new JSDOM(htmlContent, { url: "http://localhost/" });
@@ -57,13 +59,13 @@ test("TASK-036 AC-128: compact picker defaults to Schwa al and persists dropdown
 
   const picker = app.elements.spellingLessonSelect;
   assert.equal(picker.tagName, "SELECT");
-  assert.equal(picker.options.length, 12, "Dropdown must contain every catalog lesson exactly once");
-  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 12);
+  assert.equal(picker.options.length, 13, "Dropdown must contain every catalog lesson exactly once");
+  assert.equal(new Set(Array.from(picker.options, option => option.value)).size, 13);
   assert.equal(document.querySelectorAll(".lesson-card").length, 0, "The expanding card grid must be removed");
-  assert.equal(picker.value, "schwa-al", "The newest catalog lesson must be selected without saved state");
-  assert.equal(app.selectedLessonId, "schwa-al");
-  assert.equal(app.spellingEngine.deck.id, "schwa-al");
-  assert.equal(app.elements.learnWordDisplay.textContent, "ANIMAL");
+  assert.equal(picker.value, "schwa-el", "The newest catalog lesson must be selected without saved state");
+  assert.equal(app.selectedLessonId, "schwa-el");
+  assert.equal(app.spellingEngine.deck.id, "schwa-el");
+  assert.equal(app.elements.learnWordDisplay.textContent, "LEVEL");
   assert.equal(picker.getAttribute("aria-label"), "Choose spelling lesson");
   assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?min-height:\s*var\(--min-touch-target\)/);
   assert.match(cssContent, /\.lesson-select\s*\{[\s\S]*?touch-action:\s*manipulation/);

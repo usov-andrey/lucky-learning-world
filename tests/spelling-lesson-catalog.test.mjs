@@ -10,6 +10,9 @@
 // @task TASK-033
 // @task TASK-034
 // @task TASK-035
+// @task TASK-037
+// @ac AC-130 Schwa el order and default
+// @ac AC-131 Illustrated words and Sonia audio
 // @task TASK-036
 // @ac AC-126 Schwa al catalog order and default
 // @ac AC-127 Local illustrations and approved audio
@@ -59,6 +62,7 @@ import {
   SILENT_LETTERS_LESSON,
   ICALLY_ENDING_LESSON,
   SCHWA_AL_LESSON,
+  SCHWA_EL_LESSON,
   SPELLING_LESSONS,
   DEFAULT_SPELLING_LESSON_ID,
   getSpellingLesson,
@@ -66,8 +70,8 @@ import {
   setSelectedSpellingLessonId
 } from "../content/spelling-catalog.js";
 
-test("TASK-036 AC-126: catalog exposes all twelve lessons and defaults to Schwa al", () => {
-  assert.equal(SPELLING_LESSONS.length, 12);
+test("TASK-037 AC-130: catalog exposes thirteen lessons and defaults to Schwa el", () => {
+  assert.equal(SPELLING_LESSONS.length, 13);
   assert.equal(PAGE_22_LESSON.id, "page-22");
   assert.equal(PAGE_22_LESSON.words.length, 18);
   assert.equal(SCHWA_ER_LESSON.id, "schwa-er");
@@ -89,7 +93,7 @@ test("TASK-036 AC-126: catalog exposes all twelve lessons and defaults to Schwa 
   assert.equal(SILENT_LETTERS_LESSON.id, "silent-letters");
   assert.equal(SILENT_LETTERS_LESSON.words.length, 18);
   assert.equal(ICALLY_ENDING_LESSON.id, "ically-ending");
-  assert.equal(DEFAULT_SPELLING_LESSON_ID, "schwa-al");
+  assert.equal(DEFAULT_SPELLING_LESSON_ID, "schwa-el");
 });
 
 test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson returns requested lesson or safely falls back to the newest lesson", () => {
@@ -105,8 +109,9 @@ test("TASK-005 AC-10 & AC-15, updated by TASK-032 AC-112: getSpellingLesson retu
   assert.equal(getSpellingLesson("silent-letters").id, "silent-letters");
   assert.equal(getSpellingLesson("ically-ending"), ICALLY_ENDING_LESSON);
   assert.equal(getSpellingLesson("schwa-al"), SCHWA_AL_LESSON);
-  assert.equal(getSpellingLesson("unknown-lesson-id"), SCHWA_AL_LESSON);
-  assert.equal(getSpellingLesson(null), SCHWA_AL_LESSON);
+  assert.equal(getSpellingLesson("schwa-el"), SCHWA_EL_LESSON);
+  assert.equal(getSpellingLesson("unknown-lesson-id"), SCHWA_EL_LESSON);
+  assert.equal(getSpellingLesson(null), SCHWA_EL_LESSON);
 });
 
 test("TASK-008 AC-25 & AC-26 and TASK-010 AC-29: catalog exposes complete Sonia-backed lesson content", () => {
@@ -443,6 +448,16 @@ test("TASK-036 AC-126 & AC-127: Schwa al keeps the textbook order and has comple
   ];
   assert.equal(SCHWA_AL_LESSON.pageLabel, "Schwa ‹al›");
   checkIllustratedLesson(SCHWA_AL_LESSON, expected, "TASK-036");
+});
+
+test("TASK-037 AC-130 & AC-131: Schwa el matches the schoolbook and includes matching local media", () => {
+  const expected = [
+    "level", "vowel", "novel", "camel", "model", "marvel",
+    "tunnel", "barrel", "travel", "towel", "cancel", "mussel",
+    "morsel", "snorkel", "sequel", "yodel", "cockerel", "scoundrel"
+  ];
+  assert.equal(SCHWA_EL_LESSON.pageLabel, "Schwa ‹el›");
+  checkIllustratedLesson(SCHWA_EL_LESSON, expected, "TASK-037");
 });
 
 function checkIllustratedLesson(lesson, expected, taskId) {

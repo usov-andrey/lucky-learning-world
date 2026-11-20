@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">morsel</title>
+  <desc id="desc">A small bite of bread beside the loaf it came from</desc>
+  <rect x="0" y="0" width="512" height="320" rx="32" fill="#fff2d9" stroke="none" stroke-width="3"/>
+  <path d="M110 167q0-66 59-77 67-14 110 14l21 28-22 7 3 14-20 16 12 19q-58 26-136 10-31-4-27-31z" fill="#bd804e" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M268 112q-15 5-15 19l8 11-14 15 11 11-6 13 20 11 5-14-6-12 15-10-4-14 19-9z" fill="#f6daa0" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M157 105l-10 20m44-23-14 28m47-22-12 25" fill="none" stroke="#f2d299" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M329 177l16-12 16 2 9 14-6 18-25 3-12-10z" fill="#d09860" stroke="#30475b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M335 182l11-10 12 2 4 9-5 10-17 2z" fill="#f4dba4" stroke="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="315" cy="197" rx="3" ry="2" fill="#ad774e" stroke="none" stroke-width="3"/>
+  <ellipse cx="377" cy="190" rx="3" ry="2" fill="#ad774e" stroke="none" stroke-width="3"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#30475b">morsel</text>
+</svg>
